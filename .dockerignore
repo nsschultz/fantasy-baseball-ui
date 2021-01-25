@@ -1,0 +1,13 @@
+/.git
+/.scannerwork
+/_deploy
+/build
+/coverage
+/node_modules
+/reports
+.dockerignore
+.gitignore
+Dockerfile
+Jenkinsfile
+LICENSE
+README.md
