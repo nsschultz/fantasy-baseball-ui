@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ui
+  namespace: baseball
+spec:
+  selector:
+    app: ui
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: ui
