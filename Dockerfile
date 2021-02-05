@@ -17,7 +17,7 @@ RUN --mount=type=cache,id=react,target=/app/node_modules npm ci --silent
 COPY . .
 RUN --mount=type=cache,id=react,target=/app/node_modules npm run build:docker
 
-FROM nschultz/base-nginx-runner:0.5.3
+FROM nschultz/base-nginx-runner:1.18.0
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/
 COPY --from=build /app/build /usr/share/nginx/html

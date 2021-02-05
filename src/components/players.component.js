@@ -6,15 +6,15 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
 const columns = [
-  { title: "First Name", field: "playerInfo.firstName" },
-  { title: "Last Name", field: "playerInfo.lastName" },
-  { title: "Age", field: "playerInfo.age", type: "numeric" },
-  { title: "Type", field: "playerInfo.type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
-  { title: "Position(s)", field: "playerInfo.positions" },
-  { title: "Team", field: "playerInfo.team" },
-  { title: "Status", field: "playerInfo.status", lookup: { 0: "", 1: "Disabled LIst", 2: "Not Available", 3: "New Entry" }},
-  { title: "League #1 Status", field: "leagueInfo.league1", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }},
-  { title: "League #2 Status", field: "leagueInfo.league2", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }}
+  { title: "First Name", field: "firstName" },
+  { title: "Last Name", field: "lastName" },
+  { title: "Age", field: "age", type: "numeric" },
+  { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
+  { title: "Position(s)", field: "positions" },
+  { title: "Team", field: "team" },
+  { title: "Status", field: "status", lookup: { 0: "", 1: "Disabled LIst", 2: "Not Available", 3: "New Entry" }},
+  { title: "League #1 Status", field: "league1", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }},
+  { title: "League #2 Status", field: "league2", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }}
 ];
 
 const tableIcons = {
