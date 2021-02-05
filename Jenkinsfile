@@ -20,8 +20,7 @@ pipeline {
             agent { label 'manager' }
             steps { script { sh """
                 #!/bin/bash
-                export ui_version=0.6.1
-                sed -i "s/{{version}}/$ui_version/g" ./_deploy/ui-deployment.yaml
+                sed -i "s/{{version}}/${VERSION_NUMBER}/g" ./_deploy/ui-deployment.yaml
                 kubectl apply -f ./_deploy/ui-deployment.yaml
                 kubectl apply -f ./_deploy/ui-service.yaml
                 kubectl apply -f ./_deploy/ui-ingress.yaml
