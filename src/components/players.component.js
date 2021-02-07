@@ -54,7 +54,12 @@ export default class Players extends Component {
       <div style={{ maxWidth: "100%" }}>
         {this.state.isLoading 
           ? <Typography variant="h6" noWrap>Loading Players...</Typography>
-          : <MaterialTable icons={tableIcons} title="Players" columns={columns} options={{ filtering: true }} data={this.state.players} />}
+          : <MaterialTable 
+              icons={tableIcons} 
+              title="Players" 
+              columns={columns} 
+              options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
+              data={this.state.players} />}
       </div>
     );
   }

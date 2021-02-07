@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'builder' }
     environment {
-        VERSION_NUMBER = '0.6.0'
+        VERSION_NUMBER = '0.6.1'
         IMAGE_VERSION = "${GIT_BRANCH == "main" ? VERSION_NUMBER : VERSION_NUMBER+"-"+GIT_BRANCH}"
         DOCKER_HUB = credentials("dockerhub-creds")
     }
@@ -20,6 +20,8 @@ pipeline {
             agent { label 'manager' }
             steps { script { sh """
                 #!/bin/bash
+                export ui_version=0.6.1
+                sed -i "s/{{version}}/$ui_version/g" ./_deploy/ui-deployment.yaml
                 kubectl apply -f ./_deploy/ui-deployment.yaml
                 kubectl apply -f ./_deploy/ui-service.yaml
                 kubectl apply -f ./_deploy/ui-ingress.yaml

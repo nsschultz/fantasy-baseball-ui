@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: nschultz/fantasy-baseball-ui:0.6.0
+        image: nschultz/fantasy-baseball-ui:{{version}}
         ports:
           - name: web
             containerPort: 8080
