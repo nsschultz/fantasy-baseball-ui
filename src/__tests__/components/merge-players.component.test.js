@@ -22,6 +22,7 @@ describe('Merge Players Component', () => {
     axios.post.mockImplementationOnce(() => Promise.resolve({}));
     button.simulate('click');
     await expect(spy).toBeCalled();
+    wrapper.update();
     await expect(button.props().disabled).toEqual(false);
     await expect(wrapper.state().severity).toEqual("success");
   });
@@ -30,6 +31,7 @@ describe('Merge Players Component', () => {
     axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
     button.simulate('click');
     await expect(spy).toBeCalled();
+    wrapper.update();
     await expect(button.props().disabled).toEqual(false);
     await expect(wrapper.state().severity).toEqual("error");
   });
