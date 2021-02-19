@@ -19,7 +19,7 @@ const columns = [
   { title: "League #1 Status", field: "league1", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }},
   { title: "League #2 Status", field: "league2", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }},
   { title: "Draft Rank", field: "draftRank", type: "numeric" },
-  { title: "Drafted Percentage", field: "draftedPercentage" }
+  { title: "Drafted Percentage", field: "draftedPercentage", type: "numeric" }
 ];
 
 const tableIcons = {
@@ -55,7 +55,6 @@ export default class Players extends Component {
     player.status = this.convertToNumber(player.status);
     player.league1 = this.convertToNumber(player.league1);
     player.league2 = this.convertToNumber(player.league2);
-    player.draftedPercentage = this.convertToNumber(player.draftedPercentage);
     return player;
   }
   
