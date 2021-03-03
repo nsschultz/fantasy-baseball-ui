@@ -3,8 +3,8 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import Home from "./components/home.component";
+import ImportExportData from "./components/import-export-data.component";
 import MenuIcon from '@material-ui/icons/Menu';
-import MergePlayers from "./components/merge-players.component";
 import Players from "./components/players.component";
 import React from 'react';
 
@@ -32,7 +32,7 @@ export default function App() {
       <List>
         <ListItem button component={Link} to="/" key="home"><ListItemText primary="Home"/></ListItem>
         <ListItem button component={Link} to="/players" key="players"><ListItemText primary="List Players"/></ListItem>
-        <ListItem button component={Link} to="/merge-players" key="merge-players"><ListItemText primary="Merge Players"/></ListItem>
+        <ListItem button component={Link} to="/import-export-data" key="import-export-data"><ListItemText primary="Import and Export Data"/></ListItem>
       </List>
     </div>
   );
@@ -70,7 +70,7 @@ export default function App() {
           <div className={classes.toolbar} />
           <Switch>
             <Route exact path="/"><Home/></Route>
-            <Route path="/merge-players"><MergePlayers/></Route>
+            <Route path="/import-export-data"><ImportExportData/></Route>
             <Route path="/players"><Players/></Route>
           </Switch>
         </main>
