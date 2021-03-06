@@ -1,5 +1,5 @@
 import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
-import React, { Component, forwardRef } from "react";
+import React, { Component, forwardRef } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
 import MaterialTable from 'material-table'
@@ -8,18 +8,18 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
 const columns = [
-  { title: "BHQ ID", field: "bhqId", type: "numeric" },
-  { title: "First Name", field: "firstName" },
-  { title: "Last Name", field: "lastName" },
-  { title: "Age", field: "age", type: "numeric" },
-  { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" }, type: "numeric" },
-  { title: "Position(s)", field: "positions" },
-  { title: "Team", field: "team" },
-  { title: "Status", field: "status", lookup: { 0: "", 1: "Disabled List", 2: "Not Available", 3: "New Entry" }},
-  { title: "League #1 Status", field: "league1", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }},
-  { title: "League #2 Status", field: "league2", lookup: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" }},
-  { title: "Draft Rank", field: "draftRank", type: "numeric" },
-  { title: "Drafted Percentage", field: "draftedPercentage", type: "numeric" }
+  { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
+  { title: 'First Name', field: 'firstName' },
+  { title: 'Last Name', field: 'lastName' },
+  { title: 'Age', field: 'age', type: 'numeric' },
+  { title: 'Type', field: 'type', lookup: { 0: '', 1: 'Batter', 2: 'Pitcher' }, type: 'numeric' },
+  { title: 'Position(s)', field: 'positions' },
+  { title: 'Team', field: 'team' },
+  { title: 'Status', field: 'status', lookup: { 0: '', 1: 'Disabled List', 2: 'Not Available', 3: 'New Entry' }},
+  { title: 'League #1 Status', field: 'league1', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
+  { title: 'League #2 Status', field: 'league2', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
+  { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
+  { title: 'Drafted Percentage', field: 'draftedPercentage', type: 'numeric' }
 ];
 
 const tableIcons = {
@@ -44,7 +44,7 @@ const tableIcons = {
 
 export default class Players extends Component {
   
-  state = { players: [], isLoading: true, severity: "", message: "", open: false };
+  state = { players: [], isLoading: true, severity: '', message: '', open: false };
   
   componentDidMount() { this.getPlayers(); }
 
@@ -60,25 +60,25 @@ export default class Players extends Component {
   
   getPlayers() {
     axios
-      .get("http://baseball-player-api.schultz.local/api/player")
+      .get('http://baseball-player-api.schultz.local/api/player')
       .then(response => this.setState(() => ({ players: response.data.players, isLoading: false })))
-      .catch(() => this.setState(() => ({ severity: "error", message: "Unable to load players", open: true, isLoading: false })));
+      .catch(() => this.setState(() => ({ severity: 'error', message: 'Unable to load players', open: true, isLoading: false })));
   }
 
   updatePlayer(id, player) {
     axios
       .put(`http://baseball-player-api.schultz.local/api/player/${id}`, player)
-      .then(() => this.setState(() => ({ severity: "success", message: "Successfully updated player", open: true })))
-      .catch(() => this.setState(() => ({ severity: "error", message: "Unable to update player", open: true })));
+      .then(() => this.setState(() => ({ severity: 'success', message: 'Successfully updated player', open: true })))
+      .catch(() => this.setState(() => ({ severity: 'error', message: 'Unable to update player', open: true })));
   }
     
   render() {
     return (
-      <div style={{ maxWidth: "100%" }}>
+      <div style={{ maxWidth: '100%' }}>
         {this.state.isLoading 
-          ? <Typography variant="h6" noWrap>Loading Players...</Typography>
+          ? <Typography variant='h6' noWrap>Loading Players...</Typography>
           : <MaterialTable 
-              title="Players" 
+              title='Players' 
               columns={columns} 
               icons={tableIcons} 
               options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
