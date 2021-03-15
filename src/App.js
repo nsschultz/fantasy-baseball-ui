@@ -1,11 +1,11 @@
 import { AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItem, ListItemText, Toolbar, Typography } from '@material-ui/core';
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import Home from "./components/home.component";
-import ImportExportData from "./components/import-export-data.component";
+import Home from './components/home';
+import ImportExportData from './components/import-export-data';
 import MenuIcon from '@material-ui/icons/Menu';
-import Players from "./components/players.component";
+import Players from './components/players';
 import React from 'react';
 
 const drawerWidth = 240;
@@ -30,9 +30,9 @@ export default function App() {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button component={Link} to="/" key="home"><ListItemText primary="Home"/></ListItem>
-        <ListItem button component={Link} to="/players" key="players"><ListItemText primary="List Players"/></ListItem>
-        <ListItem button component={Link} to="/import-export-data" key="import-export-data"><ListItemText primary="Import and Export Data"/></ListItem>
+        <ListItem button component={Link} to='/' key='home'><ListItemText primary='Home'/></ListItem>
+        <ListItem button component={Link} to='/players' key='players'><ListItemText primary='List Players'/></ListItem>
+        <ListItem button component={Link} to='/import-export-data' key='import-export-data'><ListItemText primary='Import and Export Data'/></ListItem>
       </List>
     </div>
   );
@@ -43,18 +43,18 @@ export default function App() {
     <BrowserRouter>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar}>
+        <AppBar position='fixed' className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} className={classes.menuButton}>
+            <IconButton color='inherit' aria-label='open drawer' edge='start' onClick={handleDrawerToggle} className={classes.menuButton}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>Baseball Analyzer</Typography>
+            <Typography variant='h6' noWrap>Baseball Analyzer</Typography>
           </Toolbar>
         </AppBar>
-        <nav className={classes.drawer} aria-label="mailbox folders">
-          <Hidden smUp implementation="css">
+        <nav className={classes.drawer} aria-label='mailbox folders'>
+          <Hidden smUp implementation='css'>
             <Drawer
-              variant="temporary" 
+              variant='temporary' 
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
               open={mobileOpen}
               onClose={handleDrawerToggle}
@@ -62,16 +62,16 @@ export default function App() {
               ModalProps={{keepMounted: true}}
             >{drawer}</Drawer>
           </Hidden>
-          <Hidden xsDown implementation="css">
-            <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>{drawer}</Drawer>
+          <Hidden xsDown implementation='css'>
+            <Drawer classes={{ paper: classes.drawerPaper }} variant='permanent' open>{drawer}</Drawer>
           </Hidden>
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route exact path="/"><Home/></Route>
-            <Route path="/import-export-data"><ImportExportData/></Route>
-            <Route path="/players"><Players/></Route>
+            <Route exact path='/'><Home/></Route>
+            <Route path='/import-export-data'><ImportExportData/></Route>
+            <Route path='/players'><Players/></Route>
           </Switch>
         </main>
       </div>
