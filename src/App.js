@@ -2,10 +2,10 @@ import { AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListIte
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import Home from './components/home.component';
-import ImportExportData from './components/import-export-data.component';
+import Home from './components/home';
+import ImportExportData from './components/import-export-data';
 import MenuIcon from '@material-ui/icons/Menu';
-import Players from './components/players.component';
+import Players from './components/players';
 import React from 'react';
 
 const drawerWidth = 240;

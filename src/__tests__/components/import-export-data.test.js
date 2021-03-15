@@ -1,4 +1,4 @@
-import ImportExportData from '../../components/import-export-data.component';
+import ImportExportData from '../../components/import-export-data';
 import React from 'react';
 import axios from 'axios';
 import { mount } from 'enzyme';
@@ -28,7 +28,6 @@ describe('Import Export Data Component', () => {
     await expect(postSpy).toBeCalled();
     wrapper.update();
     await expect(mergeButton.props().disabled).toEqual(false);
-    await expect(wrapper.state().severity).toEqual("success");
   });
 
   it('should handle errors on post', async () => {
@@ -37,7 +36,6 @@ describe('Import Export Data Component', () => {
     await expect(postSpy).toBeCalled();
     wrapper.update();
     await expect(mergeButton.props().disabled).toEqual(false);
-    await expect(wrapper.state().severity).toEqual("error");
   });
 
   it('should handle errors on get', async () => {
@@ -46,6 +44,5 @@ describe('Import Export Data Component', () => {
     await expect(getSpy).toBeCalled();
     wrapper.update();
     await expect(exportButton.props().disabled).toEqual(false);
-    await expect(wrapper.state().severity).toEqual("error");
   });
 });
