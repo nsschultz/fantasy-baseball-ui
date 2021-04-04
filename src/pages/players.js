@@ -42,7 +42,7 @@ const tableIcons = {
   //ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const Players = () => {
+export default () => {
   const [players, setPlayers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [severity, setSeverity] = useState('');
@@ -132,5 +132,3 @@ const Players = () => {
     </div>
   );
 }
-
-export default Players;

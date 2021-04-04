@@ -1,12 +1,17 @@
 import { AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItem, ListItemText, Toolbar, Typography } from '@material-ui/core';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import Home from './components/home';
-import ImportExportData from './components/import-export-data';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Home from './pages/home';
+import ImportExportData from './pages/import-export-data';
+import { Link } from 'react-router-dom';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuIcon from '@material-ui/icons/Menu';
-import Players from './components/players';
+import PeopleIcon from '@material-ui/icons/People';
+import Players from './pages/players';
 import React from 'react';
+import TransformIcon from '@material-ui/icons/Transform';
 
 const drawerWidth = 240;
 
@@ -24,19 +29,28 @@ export default function App() {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-   
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button component={Link} to='/' key='home'><ListItemText primary='Home'/></ListItem>
-        <ListItem button component={Link} to='/players' key='players'><ListItemText primary='List Players'/></ListItem>
-        <ListItem button component={Link} to='/import-export-data' key='import-export-data'><ListItemText primary='Import and Export Data'/></ListItem>
+        <ListItem button component={Link} to='/' key='home'>
+          <ListItemIcon><DashboardIcon/></ListItemIcon>
+          <ListItemText primary='Home'/>
+        </ListItem>
+        <ListItem button component={Link} to='/players' key='players'>
+          <ListItemIcon><PeopleIcon/></ListItemIcon>
+          <ListItemText primary='Players'/>
+        </ListItem>
+        <ListItem button component={Link} to='/import-export-data' key='import-export-data'>
+          <ListItemIcon><TransformIcon/></ListItemIcon>
+          <ListItemText primary='Integrations'/>
+        </ListItem>
       </List>
     </div>
   );
-  
+
   const handleDrawerToggle = () => { setMobileOpen(!mobileOpen); };
 
   return (

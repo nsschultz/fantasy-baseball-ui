@@ -1,4 +1,4 @@
-import Players from '../../components/players';
+import Players from '../../pages/players';
 import React from 'react';
 import axios from 'axios';
 import { mount } from 'enzyme';
@@ -9,8 +9,8 @@ describe('Players Component', () => {
   jest.mock('axios');
 
   afterEach(() => jest.clearAllMocks());
-  beforeEach(()=> getSpy = jest.spyOn(axios, 'get'));
-  beforeEach(()=> putSpy = jest.spyOn(axios, 'put'));
+  beforeEach(() => getSpy = jest.spyOn(axios, 'get'));
+  beforeEach(() => putSpy = jest.spyOn(axios, 'put'));
   
   it('should call get on load', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({data: {players: [{bhqId:1},{bhdId:2}]}}));

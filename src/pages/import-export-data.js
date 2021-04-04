@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import FileSaver  from 'file-saver';
 import axios from 'axios';
 
-const ImportExportData = () => {
+export default () => {
   const [severity, setSeverity] = useState('');
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
@@ -54,11 +54,11 @@ const ImportExportData = () => {
   return (
     <div>
       <Button disabled={disabled} variant='contained' color='primary' component='label'>
-        Upload Batter File
+        Upload Batters File
         <input type='file' onChange={onBatterFileChange} hidden />
       </Button>
       <Button disabled={disabled} variant='contained' color='primary' component='label'>
-        Upload Pitcher File
+        Upload Pitchers File
         <input type='file' onChange={onPitcherFileChange} hidden />
       </Button>
       <Button disabled={disabled} variant='contained' color='primary' onClick={() => { mergeOnClick() }}>Merge Players</Button>
@@ -69,5 +69,3 @@ const ImportExportData = () => {
     </div>
   );
 }
-
-export default ImportExportData;

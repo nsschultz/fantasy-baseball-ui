@@ -1,25 +1,27 @@
-import ImportExportData from '../../components/import-export-data';
+import ImportExportData from '../../pages/import-export-data';
 import React from 'react';
 import axios from 'axios';
 import { mount } from 'enzyme';
 
 describe('Import Export Data Component', () => {
-  let wrapper, postSpy, getSpy, exportButton, mergeButton;
+  let wrapper, postSpy, getSpy, exportButton, mergeButton, uploadBatterButton, uploadPitcherButton;
 
   jest.mock('axios');
 
   afterEach(() => jest.clearAllMocks());
-  beforeEach(()=> wrapper = mount(<ImportExportData/>));
-  beforeEach(()=> mergeButton = wrapper.find('button').at(0));
-  beforeEach(()=> exportButton = wrapper.find('button').at(1));
-  beforeEach(()=> postSpy = jest.spyOn(axios, 'post'));
-  beforeEach(()=> getSpy = jest.spyOn(axios, 'get'));
+  beforeEach(() => wrapper = mount(<ImportExportData/>));
+  beforeEach(() => uploadBatterButton = wrapper.find('label').at(0));
+  beforeEach(() => uploadPitcherButton = wrapper.find('label').at(1));
+  beforeEach(() => mergeButton = wrapper.find('button').at(0));
+  beforeEach(() => exportButton = wrapper.find('button').at(1));
+  beforeEach(() => postSpy = jest.spyOn(axios, 'post'));
+  beforeEach(() => getSpy = jest.spyOn(axios, 'get'));
   
   it('should render the buttons', () => {
+    expect(uploadBatterButton.text()).toEqual('Upload Batters File');
+    expect(uploadPitcherButton.text()).toEqual('Upload Pitchers File');
     expect(mergeButton.text()).toEqual('Merge Players');
-    expect(mergeButton.props().disabled).toEqual(false);
     expect(exportButton.text()).toEqual('Export Players');
-    expect(exportButton.props().disabled).toEqual(false);
   });
 
   it('should call post on merge click', async () => {
