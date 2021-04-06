@@ -1,8 +1,10 @@
-import { Button, Snackbar } from '@material-ui/core';
+import { Box, Button, Container, Grid, Snackbar } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
 import FileSaver  from 'file-saver';
+import { Helmet } from 'react-helmet';
+import IntegrationCard from '../components/integration-card';
 import axios from 'axios';
 
 export default () => {
@@ -50,22 +52,50 @@ export default () => {
     setOpen(op);
     setDisabled(dis);
   }
-  
+
+  const exportPlayersButton = (<Button disabled={disabled} variant='contained' color='primary' onClick={() => { exportOnClick() }}>Export</Button>);
+  const mergePlayersButton = (<Button disabled={disabled} variant='contained' color='primary' onClick={() => { mergeOnClick() }}>Merge</Button>);
+  const uploadBattersFileButton = (
+    <Button disabled={disabled} variant='contained' color='primary' component='label'>Upload<input type='file' onChange={onBatterFileChange} hidden/></Button>
+  );
+  const uploadPitchersFileButton = (
+    <Button disabled={disabled} variant='contained' color='primary' component='label'>Upload<input type='file' onChange={onPitcherFileChange} hidden/></Button>
+  );
+
   return (
-    <div>
-      <Button disabled={disabled} variant='contained' color='primary' component='label'>
-        Upload Batters File
-        <input type='file' onChange={onBatterFileChange} hidden />
-      </Button>
-      <Button disabled={disabled} variant='contained' color='primary' component='label'>
-        Upload Pitchers File
-        <input type='file' onChange={onPitcherFileChange} hidden />
-      </Button>
-      <Button disabled={disabled} variant='contained' color='primary' onClick={() => { mergeOnClick() }}>Merge Players</Button>
-      <Button disabled={disabled} variant='contained' color='primary' onClick={() => { exportOnClick() }}>Export Players</Button>
+    <>
+      <Helmet>
+        <title>Integrations | Fantasy Baseball Analyzer</title>
+      </Helmet>
+      <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
+        <Container maxWidth={false}>
+          <Grid container spacing={3}>
+            <Grid item key='uploadBatters' lg={6} md={6} xs={12}>
+              <IntegrationCard 
+                integration={{ title: 'Upload Batter File', description: 'Upload the latest version of the batting stats data.' }} 
+                integrationButton={uploadBattersFileButton}/>
+            </Grid>
+            <Grid item key='uploadPitchers' lg={6} md={6} xs={12}>
+              <IntegrationCard 
+                integration={{ title: 'Upload Pitcher File', description: 'Upload the latest version of the pitching stats data.' }} 
+                integrationButton={uploadPitchersFileButton}/>
+            </Grid>
+            <Grid item key='mergePlayers' lg={6} md={6} xs={12}>
+              <IntegrationCard 
+                integration={{ title: 'Merge Players', description: 'Merge the new stats data with the existing player data.' }} 
+                integrationButton={mergePlayersButton}/>
+            </Grid>
+            <Grid item key='exportPlayers' lg={6} md={6} xs={12}>
+              <IntegrationCard 
+                integration={{ title: 'Export Players', description: 'Download the latest version of the player data.' }} 
+                integrationButton={exportPlayersButton}/>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
       <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
-    </div>
+    </>
   );
 }

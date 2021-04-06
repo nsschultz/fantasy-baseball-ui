@@ -1,9 +1,10 @@
 import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
+import { Box, Container, Snackbar } from '@material-ui/core';
 import React, { forwardRef, useEffect, useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
-import MaterialTable from 'material-table'
-import { Snackbar } from '@material-ui/core';
+import { Helmet } from 'react-helmet';
+import MaterialTable from 'material-table';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
@@ -92,43 +93,50 @@ export default () => {
   }
     
   return (
-    <div style={{ maxWidth: '100%' }}>
-      {isLoading 
-        ? <Typography variant='h6' noWrap>Loading Players...</Typography>
-        : <MaterialTable 
-            title='Players' 
-            columns={columns} 
-            icons={tableIcons} 
-            options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
-            data={players}
-            editable={{
-              // onRowAdd: newData => new Promise((resolve) => { 
-              //   setTimeout(() => { 
-              //     this.setState(() => ({ players: [...this.state.players, newData] }));
-              //     resolve(); 
-              //   }, 10000) }),
-              // onRowDelete: oldData => new Promise((resolve) => {
-              //   setTimeout(() => {
-              //     const dataDelete = [...this.state.players];
-              //     const index = oldData.tableData.id;
-              //     dataDelete.splice(index, 1);
-              //     this.setState(() => ({ players: [...dataDelete] }));
-              //     resolve();
-              //   }, 10000) }),
-              onRowUpdate: (newData, oldData) => new Promise((resolve) => {
-                const fixedPlayer = fixPlayer(newData);
-                updatePlayer(newData.id, fixedPlayer);
-                const dataUpdate = [...players];
-                const index = oldData.tableData.id;
-                dataUpdate[index] = fixedPlayer;
-                setPlayers([...dataUpdate]);
-                resolve();
-              }),
-            }}
-          />}
+    <>
+      <Helmet>
+        <title>Players | Fantasy Baseball Analyzer</title>
+      </Helmet>
+      <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
+        <Container maxWidth={false}>
+          {isLoading 
+            ? <Typography color="textPrimary" gutterBottom variant="h4">Loading Players...</Typography>
+            : <MaterialTable 
+                title='Players' 
+                columns={columns} 
+                icons={tableIcons} 
+                options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
+                data={players}
+                editable={{
+                  // onRowAdd: newData => new Promise((resolve) => { 
+                  //   setTimeout(() => { 
+                  //     this.setState(() => ({ players: [...this.state.players, newData] }));
+                  //     resolve(); 
+                  //   }, 10000) }),
+                  // onRowDelete: oldData => new Promise((resolve) => {
+                  //   setTimeout(() => {
+                  //     const dataDelete = [...this.state.players];
+                  //     const index = oldData.tableData.id;
+                  //     dataDelete.splice(index, 1);
+                  //     this.setState(() => ({ players: [...dataDelete] }));
+                  //     resolve();
+                  //   }, 10000) }),
+                  onRowUpdate: (newData, oldData) => new Promise((resolve) => {
+                    const fixedPlayer = fixPlayer(newData);
+                    updatePlayer(newData.id, fixedPlayer);
+                    const dataUpdate = [...players];
+                    const index = oldData.tableData.id;
+                    dataUpdate[index] = fixedPlayer;
+                    setPlayers([...dataUpdate]);
+                    resolve();
+                  }),
+                }}
+              />}
+        </Container>
+      </Box>
       <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
-    </div>
+    </>
   );
 }
