@@ -1,5 +1,5 @@
 import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
-import { Box, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Box, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import React, { forwardRef, useEffect, useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
@@ -8,6 +8,7 @@ import MaterialTable from 'material-table';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import TableHeaderCell from '../components/table-header-cell';
 
 const columns = [
   { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
@@ -44,17 +45,36 @@ const tableIcons = {
   //ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const useStyles = makeStyles({ container: { maxHeight: 440 } });
+const compare = (a, b, orderBy) => b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
+
+const getComparator = (order, orderBy) => (a, b) => compare(a, b, orderBy) * (order === 'desc' ? 1 : -1);
+
+const stableSort = (array, comparator) => {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    return (order !== 0) ? order : a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+};
+
+const useStyles = makeStyles({ container: { maxHeight: 500 } });
 
 export default () => {
   const classes = useStyles();
-  const [players, setPlayers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [severity, setSeverity] = useState('');
+  const [limit, setLimit] = useState(25);
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState(null);
+  const [page, setPage] = useState(0);
+  const [players, setPlayers] = useState([]);
+  const [severity, setSeverity] = useState('');
   
   useEffect(() => { getPlayers(); }, []);
+
+  const buildSortHandler = (property) => (event) => handleRequestSort(event, property);
 
   const convertToNumber = (val) => { return parseInt(val, 10); };
 
@@ -65,6 +85,8 @@ export default () => {
     player.league2 = convertToNumber(player.league2);
     return player;
   };
+
+  const getAlign = (column) => column.type === 'numeric' ? 'right' : 'left';
   
   const getPlayers = () => {
     axios
@@ -82,6 +104,11 @@ export default () => {
   };
 
   const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
+    
+  const handleRequestSort = (event, property) => {
+    setOrder(orderBy === property && order === 'asc' ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
   
   const updatePlayer = (id, player) => {
     axios
@@ -103,7 +130,7 @@ export default () => {
       <Helmet>
         <title>Players | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
+      <Box sx={{ backgroundColor: 'background.default', py: 3 }}>
         <Container maxWidth={false}>
           {isLoading 
             ? <Typography align="left" color="textPrimary" variant="h4">Loading Players...</Typography>
@@ -113,16 +140,23 @@ export default () => {
                   <TableContainer className={classes.container}>
                     <Table stickyHeader size='small'>
                       <TableHead>
-                        <TableRow>
-                          {columns.map((column) => (<TableCell key={column.field} align={column.type === 'numeric' ? 'right' : 'left'}>{column.title}</TableCell>))}                        
+                        <TableRow>{columns.map((column) => 
+                          <TableHeaderCell 
+                            buildSortHandler={(key) => buildSortHandler(key)}
+                            column={column} 
+                            getAlign={(column) => getAlign(column)}
+                            key={column.field} 
+                            order={order}
+                            orderBy={orderBy}
+                          />)}
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {players.map((player) => {
+                        {stableSort(players, getComparator(order, orderBy)).slice(page*limit, (page+1)*limit).map((player) => {
                           return (
                             <TableRow hover key={player.id}>
                               {columns.map((column) => 
-                                <TableCell key={column.field} align={column.type === 'numeric' ? 'right' : 'left'}>{getValue(column, player[column.field])}</TableCell>
+                                <TableCell key={column.field} align={getAlign(column)}>{getValue(column, player[column.field])}</TableCell>
                               )}
                             </TableRow>
                           );
@@ -131,6 +165,15 @@ export default () => {
                     </Table>
                   </TableContainer>
                 </Paper>
+                <TablePagination 
+                  component="div" 
+                  count={players.length} 
+                  onPageChange={(event, newPage) => setPage(newPage)} 
+                  onRowsPerPageChange={(event) => setLimit(event.target.value)} 
+                  page={page} 
+                  rowsPerPage={limit} 
+                  rowsPerPageOptions={[25,50,100]}/>
+                {!isLoading ? null :
                 <MaterialTable 
                   title='Players' 
                   columns={columns} 
@@ -161,7 +204,7 @@ export default () => {
                       resolve();
                     }),
                   }}
-                />
+                />}
               </Box>}
         </Container>
       </Box>
