@@ -1,5 +1,5 @@
 import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
-import { Box, Container, Snackbar } from '@material-ui/core';
+import { Box, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import React, { forwardRef, useEffect, useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import MaterialTable from 'material-table';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
 
 const columns = [
   { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
@@ -20,7 +21,7 @@ const columns = [
   { title: 'League #1 Status', field: 'league1', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
   { title: 'League #2 Status', field: 'league2', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
   { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
-  { title: 'Drafted Percentage', field: 'draftedPercentage', type: 'numeric' }
+  { title: 'Drafted Percentage', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
 ];
 
 const tableIcons = {
@@ -43,7 +44,10 @@ const tableIcons = {
   //ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
+const useStyles = makeStyles({ container: { maxHeight: 440 } });
+
 export default () => {
+  const classes = useStyles();
   const [players, setPlayers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [severity, setSeverity] = useState('');
@@ -52,7 +56,7 @@ export default () => {
   
   useEffect(() => { getPlayers(); }, []);
 
-  const convertToNumber = (val) => { return parseInt(val, 10); }
+  const convertToNumber = (val) => { return parseInt(val, 10); };
 
   const fixPlayer = player => {
     player.type = convertToNumber(player.type);
@@ -60,7 +64,7 @@ export default () => {
     player.league1 = convertToNumber(player.league1);
     player.league2 = convertToNumber(player.league2);
     return player;
-  }
+  };
   
   const getPlayers = () => {
     axios
@@ -75,8 +79,10 @@ export default () => {
         setOpen(true); 
         setIsLoading(false);
       });
-  }
+  };
 
+  const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
+  
   const updatePlayer = (id, player) => {
     axios
       .put(`http://baseball-player-api.schultz.local/api/player/${id}`, player)
@@ -90,7 +96,7 @@ export default () => {
         setMessage('Unable to update player');
         setOpen(true); 
       });
-  }
+  };
     
   return (
     <>
@@ -100,41 +106,66 @@ export default () => {
       <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
         <Container maxWidth={false}>
           {isLoading 
-            ? <Typography color="textPrimary" gutterBottom variant="h4">Loading Players...</Typography>
-            : <MaterialTable 
-                title='Players' 
-                columns={columns} 
-                icons={tableIcons} 
-                options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
-                data={players}
-                editable={{
-                  // onRowAdd: newData => new Promise((resolve) => { 
-                  //   setTimeout(() => { 
-                  //     this.setState(() => ({ players: [...this.state.players, newData] }));
-                  //     resolve(); 
-                  //   }, 10000) }),
-                  // onRowDelete: oldData => new Promise((resolve) => {
-                  //   setTimeout(() => {
-                  //     const dataDelete = [...this.state.players];
-                  //     const index = oldData.tableData.id;
-                  //     dataDelete.splice(index, 1);
-                  //     this.setState(() => ({ players: [...dataDelete] }));
-                  //     resolve();
-                  //   }, 10000) }),
-                  onRowUpdate: (newData, oldData) => new Promise((resolve) => {
-                    const fixedPlayer = fixPlayer(newData);
-                    updatePlayer(newData.id, fixedPlayer);
-                    const dataUpdate = [...players];
-                    const index = oldData.tableData.id;
-                    dataUpdate[index] = fixedPlayer;
-                    setPlayers([...dataUpdate]);
-                    resolve();
-                  }),
-                }}
-              />}
+            ? <Typography align="left" color="textPrimary" variant="h4">Loading Players...</Typography>
+            :
+              <Box>
+                <Paper>
+                  <TableContainer className={classes.container}>
+                    <Table stickyHeader size='small'>
+                      <TableHead>
+                        <TableRow>
+                          {columns.map((column) => (<TableCell key={column.field} align={column.type === 'numeric' ? 'right' : 'left'}>{column.title}</TableCell>))}                        
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {players.map((player) => {
+                          return (
+                            <TableRow hover key={player.id}>
+                              {columns.map((column) => 
+                                <TableCell key={column.field} align={column.type === 'numeric' ? 'right' : 'left'}>{getValue(column, player[column.field])}</TableCell>
+                              )}
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Paper>
+                <MaterialTable 
+                  title='Players' 
+                  columns={columns} 
+                  icons={tableIcons} 
+                  options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
+                  data={players}
+                  editable={{
+                    // onRowAdd: newData => new Promise((resolve) => { 
+                    //   setTimeout(() => { 
+                    //     this.setState(() => ({ players: [...this.state.players, newData] }));
+                    //     resolve(); 
+                    //   }, 10000) }),
+                    // onRowDelete: oldData => new Promise((resolve) => {
+                    //   setTimeout(() => {
+                    //     const dataDelete = [...this.state.players];
+                    //     const index = oldData.tableData.id;
+                    //     dataDelete.splice(index, 1);
+                    //     this.setState(() => ({ players: [...dataDelete] }));
+                    //     resolve();
+                    //   }, 10000) }),
+                    onRowUpdate: (newData, oldData) => new Promise((resolve) => {
+                      const fixedPlayer = fixPlayer(newData);
+                      updatePlayer(newData.id, fixedPlayer);
+                      const dataUpdate = [...players];
+                      const index = oldData.tableData.id;
+                      dataUpdate[index] = fixedPlayer;
+                      setPlayers([...dataUpdate]);
+                      resolve();
+                    }),
+                  }}
+                />
+              </Box>}
         </Container>
       </Box>
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={() => setOpen(false)}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
     </>

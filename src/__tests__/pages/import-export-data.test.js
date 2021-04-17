@@ -18,10 +18,10 @@ describe('Import Export Data Component', () => {
   beforeEach(() => getSpy = jest.spyOn(axios, 'get'));
   
   it('should render the buttons', () => {
-    expect(uploadBatterButton.text()).toEqual('Upload Batters File');
-    expect(uploadPitcherButton.text()).toEqual('Upload Pitchers File');
-    expect(mergeButton.text()).toEqual('Merge Players');
-    expect(exportButton.text()).toEqual('Export Players');
+    expect(uploadBatterButton.text()).toEqual('Upload');
+    expect(uploadPitcherButton.text()).toEqual('Upload');
+    expect(mergeButton.text()).toEqual('Merge');
+    expect(exportButton.text()).toEqual('Export');
   });
 
   it('should call post on merge click', async () => {

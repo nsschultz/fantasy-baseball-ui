@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import React from 'react';
 import Sidebar from './sidebar';
 import Titlebar from './titlebar';
@@ -33,16 +34,16 @@ const LayoutWrapper = experimentalStyled('div')(
     flex: '1 1 auto',
     overflow: 'hidden',
     paddingTop: 64,
-    [theme.breakpoints.up('lg')]: { paddingLeft: 256 }
+    [theme.breakpoints.up('lg')]: { paddingLeft: 192 }
   })
 );
 
-export default ({ isLoggedIn }) => {
+const Layout = ({ isLoggedIn }) => {
   const [isMobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 
   return (
     <LayoutRoot>
-      <Titlebar isLoggedIn={isLoggedIn} onOpenMobileNaviation={() => setMobileNavigationOpen(true)}/>
+      <Titlebar isLoggedIn={isLoggedIn} onOpenMobileNavigation={() => setMobileNavigationOpen(true)}/>
       {isLoggedIn 
         ? <Sidebar onMobileClose={() => setMobileNavigationOpen(false)} openMobile={isMobileNavigationOpen}/>
         : null}
@@ -56,3 +57,9 @@ export default ({ isLoggedIn }) => {
     </LayoutRoot>
   );
 };
+
+Layout.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired
+};
+
+export default Layout;

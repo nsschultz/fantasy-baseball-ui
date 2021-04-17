@@ -4,15 +4,16 @@ import InputIcon from '@material-ui/icons/Input';
 import Logo from './logo';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useState } from 'react';
 
-export default ({ isLoggedIn, onOpenMobileNavigation }) => {
+const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
   const [notifications] = useState([]);
 
   return (
-    <AppBar color='background' elevation={0}>
+    <AppBar color='primary' elevation={0}>
       <Toolbar>
         <RouterLink to="/">
           <Logo/>
@@ -42,3 +43,10 @@ export default ({ isLoggedIn, onOpenMobileNavigation }) => {
     </AppBar>
   );
 };
+
+Titlebar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  onOpenMobileNavigation: PropTypes.func.isRequired,
+};
+
+export default Titlebar;

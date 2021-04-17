@@ -1,9 +1,10 @@
 import { Button, ListItem } from '@material-ui/core';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 
+import PropTypes from 'prop-types';
 import React from 'react';
 
-export default ({ href, icon: Icon, title }) => {
+const NavigationItem = ({ href, icon: Icon, title }) => {
   const location = useLocation();
   const active = href ? !!matchPath({ path: href, end: false  }, location.pathname) : false;
   
@@ -30,3 +31,11 @@ export default ({ href, icon: Icon, title }) => {
     </ListItem>
   );
 };
+
+NavigationItem.propTypes = {
+  href: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired,
+  title: PropTypes.string.isRequired,
+};
+
+export default NavigationItem;

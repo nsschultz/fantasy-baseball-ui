@@ -10,9 +10,7 @@ export default () => (
     </Helmet>
     <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
       <Container maxWidth="md">
-        <Typography align="center" color="textPrimary" variant="h2" >
-          Welcome to the Fantasy Baseball Analyzer
-        </Typography>
+        <Typography align="center" color="textPrimary" variant="h2">Welcome to the Fantasy Baseball Analyzer</Typography>
       </Container>
     </Box>
   </>

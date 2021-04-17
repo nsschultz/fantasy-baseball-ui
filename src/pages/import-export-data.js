@@ -93,7 +93,7 @@ export default () => {
           </Grid>
         </Container>
       </Box>
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={() => setOpen(false)}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
     </>
