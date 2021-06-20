@@ -1,14 +1,14 @@
 import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
 import { Box, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
 import { Helmet } from 'react-helmet';
 import MaterialTable from 'material-table';
+import TableHeaderCell from '../components/table/table-header-cell';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import TableHeaderCell from '../components/table-header-cell';
+import { makeStyles } from '@material-ui/styles';
 
 const columns = [
   { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
@@ -22,7 +22,7 @@ const columns = [
   { title: 'League #1 Status', field: 'league1', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
   { title: 'League #2 Status', field: 'league2', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
   { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
-  { title: 'Drafted Percentage', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
+  { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
 ];
 
 const tableIcons = {
@@ -45,7 +45,31 @@ const tableIcons = {
   //ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
+const applyFilter = (column, field) => {
+  if (column.lookup) return column.filterValue.length === 0 || column.filterValue.some(v => convertToNumber(v) === field);
+  if (column.type === 'numeric') return field === convertToNumber(column.filterValue);
+  return field && field.toLowerCase().includes(column.filterValue.toLowerCase());
+};
+
+const applyFilters = (columns, rows) => {
+  var columnsWithFilter = columns.filter((column) => column.filterValue);
+  if (columnsWithFilter.length == 0) return rows;
+  return rows.filter(row => columnsWithFilter.length == columnsWithFilter.filter(column => applyFilter(column, row[column.field])).length);
+};
+
+const convertToNumber = (val) => { return parseInt(val, 10); };
+
 const compare = (a, b, orderBy) => b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
+
+const fixPlayer = player => {
+  player.type = convertToNumber(player.type);
+  player.status = convertToNumber(player.status);
+  player.league1 = convertToNumber(player.league1);
+  player.league2 = convertToNumber(player.league2);
+  return player;
+};
+
+const getAlign = (column) => column.type === 'numeric' ? 'right' : 'left';
 
 const getComparator = (order, orderBy) => (a, b) => compare(a, b, orderBy) * (order === 'desc' ? 1 : -1);
 
@@ -58,10 +82,11 @@ const stableSort = (array, comparator) => {
   return stabilizedThis.map((el) => el[0]);
 };
 
-const useStyles = makeStyles({ container: { maxHeight: 500 } });
+const useStyles = makeStyles({ container: { display: 'flex', maxHeight: 750, overflowX: 'auto' } });
 
 export default () => {
   const classes = useStyles();
+  const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [limit, setLimit] = useState(25);
   const [message, setMessage] = useState('');
@@ -69,39 +94,56 @@ export default () => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(null);
   const [page, setPage] = useState(0);
+  const [playerCount, setPlayerCount] = useState(0);
   const [players, setPlayers] = useState([]);
+  const [rows, setRows] = useState([]);
   const [severity, setSeverity] = useState('');
   
-  useEffect(() => { getPlayers(); }, []);
+  useEffect(() => { 
+    isMountedRef.current = true;
+    getPlayers();
+    () => { isMountedRef.current = false; }
+   }, []);
+
+   useEffect(() => { 
+     setRows(buildRows(columns, players));
+   }, [limit, order, orderBy, page]);
+
+  const buildRows = (columns, rows) => {
+    const filteredRows = applyFilters(columns, rows);
+    setPlayerCount(filteredRows.length);
+    return stableSort(filteredRows, getComparator(order, orderBy))
+      .slice(page*limit, (page+1)*limit)
+      .map((row) => {
+        return (
+          <TableRow hover key={row.id}>
+            {columns.map((column) => 
+              <TableCell key={column.field} align={getAlign(column)}>{getValue(column, row[column.field])}</TableCell>
+            )}
+          </TableRow>
+        );
+      });
+  };
 
   const buildSortHandler = (property) => (event) => handleRequestSort(event, property);
 
-  const convertToNumber = (val) => { return parseInt(val, 10); };
-
-  const fixPlayer = player => {
-    player.type = convertToNumber(player.type);
-    player.status = convertToNumber(player.status);
-    player.league1 = convertToNumber(player.league1);
-    player.league2 = convertToNumber(player.league2);
-    return player;
-  };
-
-  const getAlign = (column) => column.type === 'numeric' ? 'right' : 'left';
-  
   const getPlayers = () => {
     axios
-      .get('http://baseball-player-api.schultz.local/api/player')
-      .then(response => { 
+    .get('http://baseball-player-api.schultz.local/api/player')
+    .then(response => { 
+      if (isMountedRef.current) {
+        setRows(buildRows(columns, response.data.players));
         setPlayers(response.data.players); 
         setIsLoading(false); 
-      })
-      .catch(() => { 
-        setSeverity('error');
-        setMessage('Unable to load players');
-        setOpen(true); 
-        setIsLoading(false);
-      });
-  };
+      }
+    })
+    .catch(() => { 
+      setSeverity('error');
+      setMessage('Unable to load players');
+      setOpen(true); 
+      setIsLoading(false);
+    });
+  }
 
   const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
     
@@ -109,6 +151,11 @@ export default () => {
     setOrder(orderBy === property && order === 'asc' ? 'desc' : 'asc');
     setOrderBy(property);
   };
+
+  const onHandleFilterChange = (field, filterValue) => {
+    columns.filter((column) => column.field === field).forEach((column) => column.filterValue = filterValue);
+    setRows(buildRows(columns, players));
+  }
   
   const updatePlayer = (id, player) => {
     axios
@@ -144,6 +191,7 @@ export default () => {
                           <TableHeaderCell 
                             buildSortHandler={(key) => buildSortHandler(key)}
                             column={column} 
+                            onHandleFilterChange={onHandleFilterChange}
                             getAlign={(column) => getAlign(column)}
                             key={column.field} 
                             order={order}
@@ -151,23 +199,13 @@ export default () => {
                           />)}
                         </TableRow>
                       </TableHead>
-                      <TableBody>
-                        {stableSort(players, getComparator(order, orderBy)).slice(page*limit, (page+1)*limit).map((player) => {
-                          return (
-                            <TableRow hover key={player.id}>
-                              {columns.map((column) => 
-                                <TableCell key={column.field} align={getAlign(column)}>{getValue(column, player[column.field])}</TableCell>
-                              )}
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
+                      <TableBody>{rows}</TableBody>
                     </Table>
                   </TableContainer>
                 </Paper>
                 <TablePagination 
                   component="div" 
-                  count={players.length} 
+                  count={playerCount} 
                   onPageChange={(event, newPage) => setPage(newPage)} 
                   onRowsPerPageChange={(event) => setLimit(event.target.value)} 
                   page={page} 

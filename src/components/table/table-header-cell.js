@@ -1,8 +1,10 @@
-import { TableCell, TableSortLabel } from '@material-ui/core';
-import React from 'react';
-import PropTypes from 'prop-types';
+import { IconButton, Popover, TableCell, TableSortLabel } from '@material-ui/core';
+import React, { useState } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { FilterList } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import TableFilter from './table-filter';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({ 
   visuallyHidden: {
@@ -18,8 +20,14 @@ const useStyles = makeStyles({
   }
 });
 
-const TableHeaderCell = ({ column, getAlign, buildSortHandler, order, orderBy }) => {
+const TableHeaderCell = ({ column, onHandleFilterChange, getAlign, buildSortHandler, order, orderBy }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpen = (event) => setAnchorEl(event.currentTarget);
+
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <TableCell key={column.field} align={getAlign(column)} sortDirection={orderBy === column.field ? order : false}>
@@ -27,6 +35,8 @@ const TableHeaderCell = ({ column, getAlign, buildSortHandler, order, orderBy })
         {column.title}
         {orderBy === column.field ? (<span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>) : null}
       </TableSortLabel>
+      <IconButton size="small" onClick={handleOpen}><FilterList fontSize="inherit"/></IconButton>
+      <Popover anchorEl={anchorEl} open={open} onClose={handleClose}><TableFilter column={column} onHandleFilterChange={onHandleFilterChange}/></Popover>
     </TableCell>
   );
 };
@@ -34,9 +44,10 @@ const TableHeaderCell = ({ column, getAlign, buildSortHandler, order, orderBy })
 TableHeaderCell.propTypes = {
   buildSortHandler: PropTypes.func.isRequired,
   column: PropTypes.object.isRequired,
+  onHandleFilterChange: PropTypes.func.isRequired,
   getAlign: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired
+  orderBy: PropTypes.string
 };
   
 export default TableHeaderCell;

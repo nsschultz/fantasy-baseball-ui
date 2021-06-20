@@ -25,7 +25,7 @@ const NavigationItem = ({ href, icon: Icon, title }) => {
         }}
         to={href}
       >
-        {Icon && (<Icon size="20" />)}
+        {Icon && (<Icon size='20'/>)}
         <span>{title}</span>
       </Button>
     </ListItem>

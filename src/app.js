@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import { StyledEngineProvider, ThemeProvider, createMuiTheme } from '@material-ui/core';
 
 import GlobalStyles from './components/global-styles';
 import Home from './pages/home';
@@ -81,9 +81,11 @@ export default function App() {
   const routing = useRoutes(routes);
   
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles/>
-      {routing}
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles/>
+        {routing}
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
