@@ -1,5 +1,5 @@
 import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
-import { Box, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { Box, Container, IconButton, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
@@ -117,6 +117,9 @@ export default () => {
       .map((row) => {
         return (
           <TableRow hover key={row.id}>
+            <TableCell>
+              <IconButton size='small'><Edit fontSize='inherit'/></IconButton>
+            </TableCell>
             {columns.map((column) => 
               <TableCell key={column.field} align={getAlign(column)}>{getValue(column, row[column.field])}</TableCell>
             )}
@@ -180,23 +183,25 @@ export default () => {
       <Box sx={{ backgroundColor: 'background.default', py: 3 }}>
         <Container maxWidth={false}>
           {isLoading 
-            ? <Typography align="left" color="textPrimary" variant="h4">Loading Players...</Typography>
+            ? <Typography align='left' color='textPrimary' variant='h4'>Loading Players...</Typography>
             :
               <Box>
                 <Paper>
                   <TableContainer className={classes.container}>
                     <Table stickyHeader size='small'>
                       <TableHead>
-                        <TableRow>{columns.map((column) => 
-                          <TableHeaderCell 
-                            buildSortHandler={(key) => buildSortHandler(key)}
-                            column={column} 
-                            onHandleFilterChange={onHandleFilterChange}
-                            getAlign={(column) => getAlign(column)}
-                            key={column.field} 
-                            order={order}
-                            orderBy={orderBy}
-                          />)}
+                        <TableRow>
+                          <TableCell align='left'/>
+                          {columns.map((column) => 
+                            <TableHeaderCell 
+                              buildSortHandler={(key) => buildSortHandler(key)}
+                              column={column} 
+                              onHandleFilterChange={onHandleFilterChange}
+                              getAlign={(column) => getAlign(column)}
+                              key={column.field} 
+                              order={order}
+                              orderBy={orderBy}
+                            />)}
                         </TableRow>
                       </TableHead>
                       <TableBody>{rows}</TableBody>
@@ -204,7 +209,7 @@ export default () => {
                   </TableContainer>
                 </Paper>
                 <TablePagination 
-                  component="div" 
+                  component='div' 
                   count={playerCount} 
                   onPageChange={(event, newPage) => setPage(newPage)} 
                   onRowsPerPageChange={(event) => setLimit(event.target.value)} 
