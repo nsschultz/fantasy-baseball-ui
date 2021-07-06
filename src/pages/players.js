@@ -1,10 +1,9 @@
-import { ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, Edit, FilterList, FirstPage, LastPage, Search } from '@material-ui/icons';
 import { Box, Container, IconButton, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
+import { Edit } from '@material-ui/icons';
 import { Helmet } from 'react-helmet';
-import MaterialTable from 'material-table';
 import TableHeaderCell from '../components/table/table-header-cell';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
@@ -24,26 +23,6 @@ const columns = [
   { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
   { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
 ];
-
-const tableIcons = {
-  //Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  //Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  //DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  //Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  //ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  //ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
 
 const applyFilter = (column, field) => {
   if (column.lookup) return column.filterValue.length === 0 || column.filterValue.some(v => convertToNumber(v) === field);
@@ -158,7 +137,16 @@ export default () => {
   const onHandleFilterChange = (field, filterValue) => {
     columns.filter((column) => column.field === field).forEach((column) => column.filterValue = filterValue);
     setRows(buildRows(columns, players));
-  }
+  };
+
+  const onRowUpdate = (newData, oldData) => {
+    const fixedPlayer = fixPlayer(newData);
+    updatePlayer(newData.id, fixedPlayer);
+    const dataUpdate = [...players];
+    const index = oldData.tableData.id;
+    dataUpdate[index] = fixedPlayer;
+    setPlayers([...dataUpdate]);
+  };
   
   const updatePlayer = (id, player) => {
     axios
@@ -172,6 +160,7 @@ export default () => {
         setSeverity('error');
         setMessage('Unable to update player');
         setOpen(true); 
+        onRowUpdate(null, null);
       });
   };
     
@@ -216,38 +205,6 @@ export default () => {
                   page={page} 
                   rowsPerPage={limit} 
                   rowsPerPageOptions={[25,50,100]}/>
-                {!isLoading ? null :
-                <MaterialTable 
-                  title='Players' 
-                  columns={columns} 
-                  icons={tableIcons} 
-                  options={{ filtering: true, paging: true, pageSize: 25, pageSizeOptions: [25,50,100] }} 
-                  data={players}
-                  editable={{
-                    // onRowAdd: newData => new Promise((resolve) => { 
-                    //   setTimeout(() => { 
-                    //     this.setState(() => ({ players: [...this.state.players, newData] }));
-                    //     resolve(); 
-                    //   }, 10000) }),
-                    // onRowDelete: oldData => new Promise((resolve) => {
-                    //   setTimeout(() => {
-                    //     const dataDelete = [...this.state.players];
-                    //     const index = oldData.tableData.id;
-                    //     dataDelete.splice(index, 1);
-                    //     this.setState(() => ({ players: [...dataDelete] }));
-                    //     resolve();
-                    //   }, 10000) }),
-                    onRowUpdate: (newData, oldData) => new Promise((resolve) => {
-                      const fixedPlayer = fixPlayer(newData);
-                      updatePlayer(newData.id, fixedPlayer);
-                      const dataUpdate = [...players];
-                      const index = oldData.tableData.id;
-                      dataUpdate[index] = fixedPlayer;
-                      setPlayers([...dataUpdate]);
-                      resolve();
-                    }),
-                  }}
-                />}
               </Box>}
         </Container>
       </Box>
