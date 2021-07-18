@@ -1,11 +1,20 @@
-import { Checkbox, Input, InputLabel, ListItemText, MenuItem, Select } from "@material-ui/core";
+import { Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select } from "@material-ui/core";
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  }
+}));
 
 const MenuProps = { PaperProps: { style: { maxHeight: 224, width: 250 } } };
 
 const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChange, title}) => {
+  const classes = useStyles();
   const [filters, setFilters] = useState(filterValues || []);
 
   const onChange = (event) => { 
@@ -14,7 +23,7 @@ const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChang
   };
 
   return (
-    <>
+    <FormControl className={classes.formControl}>
       <InputLabel>{title}</InputLabel>
       <Select
         multiple
@@ -23,7 +32,6 @@ const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChang
         input={<Input id={"select-multiple-checkbox" + id}/>}
         renderValue={(selecteds) => selecteds.map((selected) => lookup[selected]).join(", ")}
         MenuProps={MenuProps}
-        style={{ marginTop: 0 }}
       >
         {Object.keys(lookup).map((key) => (
           <MenuItem key={key} value={key}>
@@ -32,7 +40,7 @@ const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChang
           </MenuItem>
         ))}
       </Select>
-    </>
+    </FormControl>
   );
 };
 

@@ -37,6 +37,7 @@ const theme = createMuiTheme({
     background: { default: '#222222', paper: '#333333' },
     divider: '#444444',
     primary: { main: '#2c387e', secondary: '#1c54b2' },
+    secondary: { main: '#C80000', secondary: '#b81c33' },
     text: { disabled: '#808080', primary: '#ffffff', secondary: '#b3b3b3'  }
   },
   shadows: [

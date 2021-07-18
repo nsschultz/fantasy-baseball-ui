@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import FileSaver  from 'file-saver';
 import { Helmet } from 'react-helmet';
-import IntegrationCard from '../components/integration-card';
+import IntegrationCard from '../components/card/integration-card';
 import axios from 'axios';
 
 export default () => {

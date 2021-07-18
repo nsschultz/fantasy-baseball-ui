@@ -2,6 +2,7 @@ import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, Ta
 import React, { useEffect, useState } from 'react';
 
 import { Edit } from '@material-ui/icons';
+import EditDialog from '../input/edit-dialog';
 import PropTypes from 'prop-types';
 import TableHeaderCell from './table-header-cell';
 import { makeStyles } from '@material-ui/styles';
@@ -37,8 +38,10 @@ const stableSort = (array, comparator) => {
 
 const useStyles = makeStyles({ container: { display: 'flex', maxHeight: 750, overflowX: 'auto' } });
 
-const TableFilter = ({columns, values}) => {
+const CustomTable = ({columns, values, editTitle}) => {
   const classes = useStyles();
+  const [editOpen, setEditOpen] = useState(false);
+  const [editRow, setEditRow] = useState(null);
   const [limit, setLimit] = useState(25);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(null);
@@ -57,7 +60,7 @@ const TableFilter = ({columns, values}) => {
         return (
           <TableRow hover key={row.id}>
             <TableCell>
-              <IconButton size='small'><Edit fontSize='inherit'/></IconButton>
+              <IconButton onClick={() => handleEditOpen(row)} size='small'><Edit fontSize='inherit'/></IconButton>
             </TableCell>
             {columns.map((column) => 
               <TableCell key={column.field} align={getAlign(column)}>{getValue(column, row[column.field])}</TableCell>
@@ -70,7 +73,17 @@ const TableFilter = ({columns, values}) => {
   const buildSortHandler = (property) => (event) => handleRequestSort(event, property);
 
   const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
-    
+  
+  const handleEditClose = () => { 
+    setEditRow(null);
+    setEditOpen(false);
+   };
+
+  const handleEditOpen = (row) => {
+    setEditRow(row);
+    setEditOpen(true);
+   };
+
   const handleRequestSort = (event, property) => {
     setOrder(orderBy === property && order === 'asc' ? 'desc' : 'asc');
     setOrderBy(property);
@@ -80,46 +93,50 @@ const TableFilter = ({columns, values}) => {
     columns.filter((column) => column.field === field).forEach((column) => column.filterValue = filterValue);
     setRows(buildRows(columns, values));
   };
-   
+
   return (
-    <Box>
-      <Paper>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader size='small'>
-            <TableHead>
-              <TableRow>
-                <TableCell align='left'/>
-                {columns.map((column) => 
-                  <TableHeaderCell 
-                    buildSortHandler={(key) => buildSortHandler(key)}
-                    column={column} 
-                    onHandleFilterChange={onHandleFilterChange}
-                    getAlign={(column) => getAlign(column)}
-                    key={column.field} 
-                    order={order}
-                    orderBy={orderBy}
-                  />)}
-              </TableRow>
-            </TableHead>
-            <TableBody>{rows}</TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-      <TablePagination 
-        component='div' 
-        count={rowCount} 
-        onPageChange={(event, newPage) => setPage(newPage)} 
-        onRowsPerPageChange={(event) => setLimit(event.target.value)} 
-        page={page} 
-        rowsPerPage={limit} 
-        rowsPerPageOptions={[25,50,100]}/>
-    </Box>
+    <>
+      <Box>
+        <Paper>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader size='small'>
+              <TableHead>
+                <TableRow>
+                  <TableCell align='left'/>
+                  {columns.map((column) => 
+                    <TableHeaderCell 
+                      buildSortHandler={(key) => buildSortHandler(key)}
+                      column={column} 
+                      onHandleFilterChange={onHandleFilterChange}
+                      getAlign={(column) => getAlign(column)}
+                      key={column.field} 
+                      order={order}
+                      orderBy={orderBy}
+                    />)}
+                </TableRow>
+              </TableHead>
+              <TableBody>{rows}</TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+        <TablePagination 
+          component='div' 
+          count={rowCount} 
+          onPageChange={(event, newPage) => setPage(newPage)} 
+          onRowsPerPageChange={(event) => setLimit(event.target.value)} 
+          page={page} 
+          rowsPerPage={limit} 
+          rowsPerPageOptions={[25,50,100]}/>
+      </Box>
+      <EditDialog onClose={handleEditClose} open={editOpen} title={editTitle} object={editRow}/>
+    </>
   );
 }
 
-TableFilter.propTypes = { 
+CustomTable.propTypes = { 
   columns: PropTypes.array.isRequired,
+  editTitle: PropTypes.string,
   values: PropTypes.array.isRequired
 };
 
-export default TableFilter;
+export default CustomTable;

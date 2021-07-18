@@ -97,7 +97,7 @@ export default () => {
         <Container maxWidth={false}>
           {isLoading 
             ? <Typography align='left' color='textPrimary' variant='h4'>Loading Players...</Typography>
-            : <CustomTable columns={columns} values={players} />}
+            : <CustomTable columns={columns} values={players} editTitle='Edit Player'/>}
         </Container>
       </Box>
       <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={() => setOpen(false)}>
