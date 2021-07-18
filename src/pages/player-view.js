@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 const buildGrid = (key, title, content) => {
   return (
-    <Grid item key={key} lg={4} md={6} xs={12}>
+    <Grid item key={key} lg={3} md={6} xs={12}>
       <CustomCard title={title} content={content}/>
     </Grid>
   );
@@ -50,7 +50,6 @@ const buildTextField = (label, handleOnChange, defaultValue) => { return buildIn
 
 const PlayerView = ({player}) => {
   const [age, setAge] = useState(player ? player.age : 0);
-  const [bhqId, setBhqId] = useState(player ? player.bhqId : 0);
   const [draftedPercentage, setDraftedPercentage] = useState(player ? player.draftedPercentage : 0);
   const [draftRank, setDraftRank] = useState(player ? player.draftRank : 0);
   const [firstName, setFirstName] = useState(player ? player.firstName : '');
@@ -78,8 +77,6 @@ const PlayerView = ({player}) => {
     </>
   );
 
-  const idInfoContent = (buildNumberField('BHQ ID', (value) => setBhqId(value), bhqId));
-
   const leagueInfoContent = (
     <>
       {buildSelectField('League #1 Status', (value) => setLeague1(value), league1, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })} 
@@ -103,7 +100,6 @@ const PlayerView = ({player}) => {
       <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
         <Container maxWidth={false}>
           <Grid container spacing={3}>
-            {buildGrid('playerIds', 'IDs', idInfoContent)}
             {buildGrid('personInfo', 'Person Info', personInfoContent)}
             {buildGrid('baseballInfo', 'Baseball Info', baseballInfoContent)}
             {buildGrid('leagueInfo', 'League Info', leagueInfoContent)}

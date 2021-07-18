@@ -13,7 +13,7 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
   const [notifications] = useState([]);
 
   return (
-    <AppBar color='primary' elevation={0}>
+    <AppBar color='primary' elevation={5}>
       <Toolbar>
         <RouterLink to="/">
           <Logo/>

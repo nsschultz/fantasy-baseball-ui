@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, CardHeader, Divider } from '@material-ui/core';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -6,8 +6,9 @@ import React from 'react';
 const CustomCard = ({ title, content, additionalContent }) => (
   <Box boxShadow={5}>
     <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <CardHeader title={title} titleTypographyProps={{ align: 'center', color: 'textPrimary', variant: 'h4' }}/>
+      <Divider/>
       <CardContent>
-        <Typography align="center" color="textPrimary" gutterBottom variant="h4">{title}</Typography>
         {content}
       </CardContent>
       {additionalContent}

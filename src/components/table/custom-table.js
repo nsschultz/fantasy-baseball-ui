@@ -36,13 +36,13 @@ const stableSort = (array, comparator) => {
   return stabilizedThis.map((el) => el[0]);
 };
 
-const useStyles = makeStyles({ container: { display: 'flex', maxHeight: 750, overflowX: 'auto' } });
+const useStyles = makeStyles({ container: { display: 'flex', overflowX: 'initial' } });
 
 const CustomTable = ({columns, values, editTitle}) => {
   const classes = useStyles();
   const [editOpen, setEditOpen] = useState(false);
   const [editRow, setEditRow] = useState(null);
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(10);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(null);
   const [page, setPage] = useState(0);
@@ -126,7 +126,7 @@ const CustomTable = ({columns, values, editTitle}) => {
           onRowsPerPageChange={(event) => setLimit(event.target.value)} 
           page={page} 
           rowsPerPage={limit} 
-          rowsPerPageOptions={[25,50,100]}/>
+          rowsPerPageOptions={[10,25,50,100]}/>
       </Box>
       <EditDialog onClose={handleEditClose} open={editOpen} title={editTitle} object={editRow}/>
     </>

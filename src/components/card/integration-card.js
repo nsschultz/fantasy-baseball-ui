@@ -7,7 +7,7 @@ import React from 'react';
 const IntegrationCard = ({ integration, integrationButton }) => {
   const additionalContent = (
     <>
-      <Divider />
+      <Divider/>
       <Box sx={{ p: 2 }}>
         <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
           <Grid item sx={{ alignItems: 'center', display: 'flex' }}>
@@ -18,7 +18,7 @@ const IntegrationCard = ({ integration, integrationButton }) => {
     </>
   );
 
-  const content = (<Typography align="center" color="textSecondary" variant="body1">{integration.description}</Typography>);
+  const content = (<Typography align='center' color='textSecondary' variant='body1'>{integration.description}</Typography>);
 
   return (<CustomCard title={integration.title} content={content} additionalContent={additionalContent}/>);
 };

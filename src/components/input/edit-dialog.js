@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 
 import PlayerView from '../../pages/player-view';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ const EditDialog = ({onClose, open, title, object}) => {
 
   return (
     <Dialog fullWidth={true} maxWidth='lg' open={open}>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle disableTypography={true}><Typography color='textPrimary' variant='h4'>{title}</Typography></DialogTitle>
       <DialogContent><PlayerView player={object}/></DialogContent>
       <DialogActions>
         <Button onClick={handleSave} variant='contained' color='primary' component='label'>Save</Button>
