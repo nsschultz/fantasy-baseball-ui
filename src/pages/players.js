@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import CustomTable from '../components/table/custom-table';
 import { Helmet } from 'react-helmet';
+import PlayerView from './player-view';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
@@ -46,6 +47,8 @@ export default () => {
     () => { isMountedRef.current = false; }
   }, []);
 
+  const buildEdit = (handleEditClose, editOpen, editRow) => (<PlayerView onClose={handleEditClose} open={editOpen} player={editRow}/>);
+
   const getPlayers = () => {
     axios
     .get('http://baseball-player-api.schultz.local/api/player')
@@ -63,13 +66,14 @@ export default () => {
     });
   }
 
-  const onRowUpdate = (newData, oldData) => {
+  const onRowUpdate = (newData) => {
+    if (!newData) return;
     const fixedPlayer = fixPlayer(newData);
     updatePlayer(newData.id, fixedPlayer);
     const dataUpdate = [...players];
-    const index = oldData.tableData.id;
-    dataUpdate[index] = fixedPlayer;
+    dataUpdate[newData.id] = fixedPlayer;
     setPlayers([...dataUpdate]);
+    return players;
   };
   
   const updatePlayer = (id, player) => {
@@ -84,7 +88,6 @@ export default () => {
         setSeverity('error');
         setMessage('Unable to update player');
         setOpen(true); 
-        onRowUpdate(null, null);
       });
   };
     
@@ -97,7 +100,7 @@ export default () => {
         <Container maxWidth={false}>
           {isLoading 
             ? <Typography align='left' color='textPrimary' variant='h4'>Loading Players...</Typography>
-            : <CustomTable columns={columns} values={players} editTitle='Edit Player'/>}
+            : <CustomTable columns={columns} values={players} buildEdit={buildEdit} handleClose={onRowUpdate}/>}
         </Container>
       </Box>
       <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={() => setOpen(false)}>

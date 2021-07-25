@@ -2,7 +2,6 @@ import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, Ta
 import React, { useEffect, useState } from 'react';
 
 import { Edit } from '@material-ui/icons';
-import EditDialog from '../input/edit-dialog';
 import PropTypes from 'prop-types';
 import TableHeaderCell from './table-header-cell';
 import { makeStyles } from '@material-ui/styles';
@@ -38,7 +37,7 @@ const stableSort = (array, comparator) => {
 
 const useStyles = makeStyles({ container: { display: 'flex', overflowX: 'initial' } });
 
-const CustomTable = ({columns, values, editTitle}) => {
+const CustomTable = ({columns, values, buildEdit, handleClose}) => {
   const classes = useStyles();
   const [editOpen, setEditOpen] = useState(false);
   const [editRow, setEditRow] = useState(null);
@@ -74,9 +73,13 @@ const CustomTable = ({columns, values, editTitle}) => {
 
   const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
   
-  const handleEditClose = () => { 
+  const handleEditClose = (editedObject) => { 
     setEditRow(null);
     setEditOpen(false);
+    if (handleClose) {
+      const newValues = handleClose(editedObject);
+      setRows(buildRows(columns, newValues));
+    }
    };
 
   const handleEditOpen = (row) => {
@@ -128,15 +131,16 @@ const CustomTable = ({columns, values, editTitle}) => {
           rowsPerPage={limit} 
           rowsPerPageOptions={[10,25,50,100]}/>
       </Box>
-      <EditDialog onClose={handleEditClose} open={editOpen} title={editTitle} object={editRow}/>
+      {buildEdit && editRow ? buildEdit(handleEditClose, editOpen, editRow) : null}
     </>
   );
 }
 
 CustomTable.propTypes = { 
   columns: PropTypes.array.isRequired,
-  editTitle: PropTypes.string,
-  values: PropTypes.array.isRequired
+  values: PropTypes.array.isRequired,
+  buildEdit: PropTypes.func,
+  handleClose: PropTypes.func
 };
 
 export default CustomTable;

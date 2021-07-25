@@ -1,4 +1,4 @@
-import { Box, Container, Grid, MenuItem } from "@material-ui/core";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@material-ui/core";
 import React, { useState } from 'react';
 
 import CustomCard from "../components/card/custom-card";
@@ -48,7 +48,7 @@ const buildSelectField = (label, handleOnChange, defaultValue, lookup) => {
 
 const buildTextField = (label, handleOnChange, defaultValue) => { return buildInputField(label, handleOnChange, defaultValue, 'text'); }
 
-const PlayerView = ({player}) => {
+const PlayerView = ({onClose, open, player}) => {
   const [age, setAge] = useState(player ? player.age : 0);
   const [draftedPercentage, setDraftedPercentage] = useState(player ? player.draftedPercentage : 0);
   const [draftRank, setDraftRank] = useState(player ? player.draftRank : 0);
@@ -92,27 +92,56 @@ const PlayerView = ({player}) => {
     </>
   );
 
+  const handleCancel = () => { onClose(); };
+
+  const handleSave = () => { 
+    const newPlayer = Object.assign(player, {});
+    newPlayer.age = age;
+    newPlayer.draftedPercentage = draftedPercentage;
+    newPlayer.draftRank = draftRank;
+    newPlayer.firstName = firstName;
+    newPlayer.lastName = lastName;
+    newPlayer.league1 = league1;
+    newPlayer.league2 = league2;
+    newPlayer.positions = positions;
+    newPlayer.status = status;
+    newPlayer.team = team;
+    newPlayer.type = type;
+    onClose(newPlayer);
+   };
+
   return (
     <>
       <Helmet>
         <title>Player View | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
-        <Container maxWidth={false}>
-          <Grid container spacing={3}>
-            {buildGrid('personInfo', 'Person Info', personInfoContent)}
-            {buildGrid('baseballInfo', 'Baseball Info', baseballInfoContent)}
-            {buildGrid('leagueInfo', 'League Info', leagueInfoContent)}
-            {buildGrid('draftInfo', 'Draft Info', draftInfoContent)}
-          </Grid>
-        </Container>
-      </Box>
+      <Dialog fullWidth={true} maxWidth='lg' open={open}>
+        <DialogTitle disableTypography={true}><Typography color='textPrimary' variant='h4'>Edit Player</Typography></DialogTitle>
+        <DialogContent>
+          <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
+            <Container maxWidth={false}>
+              <Grid container spacing={3}>
+                {buildGrid('personInfo', 'Person Info', personInfoContent)}
+                {buildGrid('baseballInfo', 'Baseball Info', baseballInfoContent)}
+                {buildGrid('leagueInfo', 'League Info', leagueInfoContent)}
+                {buildGrid('draftInfo', 'Draft Info', draftInfoContent)}
+              </Grid>
+            </Container>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSave} variant='contained' color='primary' component='label'>Save</Button>
+          <Button onClick={handleCancel} variant='contained' color='secondary' component='label'>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
 
 PlayerView.propTypes = { 
-  player: PropTypes.object
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  player: PropTypes.object.isRequired
 };
 
 export default PlayerView;
