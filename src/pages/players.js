@@ -44,7 +44,7 @@ export default () => {
   useEffect(() => { 
     isMountedRef.current = true;
     getPlayers();
-    () => { isMountedRef.current = false; }
+    return () => { isMountedRef.current = false; };
   }, []);
 
   const buildEdit = (handleEditClose, editOpen, editRow) => (<PlayerView onClose={handleEditClose} open={editOpen} player={editRow}/>);

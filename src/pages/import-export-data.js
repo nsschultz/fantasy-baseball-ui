@@ -72,22 +72,26 @@ export default () => {
           <Grid container spacing={3}>
             <Grid item key='uploadBatters' lg={6} md={6} xs={12}>
               <IntegrationCard 
-                integration={{ title: 'Upload Batter File', description: 'Upload the latest version of the batting stats data.' }} 
+                title='Upload Batter File'
+                description='Upload the latest version of the batting stats data.'
                 integrationButton={uploadBattersFileButton}/>
             </Grid>
             <Grid item key='uploadPitchers' lg={6} md={6} xs={12}>
               <IntegrationCard 
-                integration={{ title: 'Upload Pitcher File', description: 'Upload the latest version of the pitching stats data.' }} 
+                title='Upload Pitcher File'
+                description='Upload the latest version of the pitching stats data.'
                 integrationButton={uploadPitchersFileButton}/>
             </Grid>
             <Grid item key='mergePlayers' lg={6} md={6} xs={12}>
               <IntegrationCard 
-                integration={{ title: 'Merge Players', description: 'Merge the new stats data with the existing player data.' }} 
+                title='Merge Players'
+                description='Merge the new stats data with the existing player data.'
                 integrationButton={mergePlayersButton}/>
             </Grid>
             <Grid item key='exportPlayers' lg={6} md={6} xs={12}>
               <IntegrationCard 
-                integration={{ title: 'Export Players', description: 'Download the latest version of the player data.' }} 
+                title='Export Players'
+                description='Download the latest version of the player data.'
                 integrationButton={exportPlayersButton}/>
             </Grid>
           </Grid>

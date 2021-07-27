@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 
-import CustomSelect from "../input/custom-select";
+import CustomSelect from "../input/custom-select-field";
 import CustomTextField from "../input/custom-text-field";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
