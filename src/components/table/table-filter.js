@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 
-import CustomSelect from "../input/custom-select-field";
+import CustomSelectField from "../input/custom-select-field";
 import CustomTextField from "../input/custom-text-field";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -23,7 +23,7 @@ const TableFilter = ({ column, onHandleFilterChange }) => {
   return (
     <div className={classes.filterModal}>
       {(column.lookup) 
-        ? <CustomSelect 
+        ? <CustomSelectField 
             id={column.id}
             title={column.title}
             field={column.field}

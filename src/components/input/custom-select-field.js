@@ -47,7 +47,7 @@ const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChang
 CustomSelectField.propTypes = { 
   field: PropTypes.string.isRequired,
   filterValues: PropTypes.array,
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   lookup: PropTypes.any.isRequired,
   onHandleFilterChange: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired

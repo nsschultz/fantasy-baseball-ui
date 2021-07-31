@@ -76,7 +76,7 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
   const handleEditClose = (editedObject) => { 
     setEditRow(null);
     setEditOpen(false);
-    if (handleClose) {
+    if (handleClose && editedObject) {
       const newValues = handleClose(editedObject);
       setRows(buildRows(columns, newValues));
     }
