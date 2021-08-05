@@ -13,7 +13,7 @@ const columns = [
   { title: 'First Name', field: 'firstName' },
   { title: 'Last Name', field: 'lastName' },
   { title: 'Age', field: 'age', type: 'numeric' },
-  { title: 'Type', field: 'type', lookup: { 0: '', 1: 'Batter', 2: 'Pitcher' }, type: 'numeric' },
+  { title: 'Type', field: 'type', lookup: { 0: '', 1: 'Batter', 2: 'Pitcher' } },
   { title: 'Position(s)', field: 'positions' },
   { title: 'Team', field: 'team' },
   { title: 'Status', field: 'status', lookup: { 0: '', 1: 'Disabled List', 2: 'Not Available', 3: 'New Entry' }},

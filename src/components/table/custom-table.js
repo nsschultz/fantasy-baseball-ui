@@ -18,7 +18,7 @@ const applyFilters = (columns, rows) => {
   return rows.filter(row => columnsWithFilter.length == columnsWithFilter.filter(column => applyFilter(column, row[column.field])).length);
 };
 
-const convertToNumber = (val) => { return parseInt(val, 10); };
+const convertToNumber = (val) => parseInt(val, 10);
 
 const compare = (a, b, orderBy) => b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
 
@@ -59,7 +59,7 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
         return (
           <TableRow hover key={row.id}>
             <TableCell>
-              <IconButton onClick={() => handleEditOpen(row)} size='small'><Edit fontSize='inherit'/></IconButton>
+              <IconButton id={'edit-'+row.id} onClick={() => handleEditOpen(row)} size='small'><Edit fontSize='inherit'/></IconButton>
             </TableCell>
             {columns.map((column) => 
               <TableCell key={column.field} align={getAlign(column)}>{getValue(column, row[column.field])}</TableCell>

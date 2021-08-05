@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select } from "@material-ui/core";
+import { Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
@@ -13,13 +13,13 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuProps = { PaperProps: { style: { maxHeight: 224, width: 250 } } };
 
-const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChange, title}) => {
+const CustomSelectField = ({field, filterValues, lookup, onHandleFilterChange, title}) => {
   const classes = useStyles();
   const [filters, setFilters] = useState(filterValues || []);
 
   const onChange = (event) => { 
     setFilters(event.target.value);
-    onHandleFilterChange(field, event.target.value);
+    onHandleFilterChange(event);
   };
 
   return (
@@ -29,8 +29,8 @@ const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChang
         multiple
         value={filters}
         onChange={(event) => onChange(event)}
-        input={<Input id={"select-multiple-checkbox" + id}/>}
-        renderValue={(selecteds) => selecteds.map((selected) => lookup[selected]).join(", ")}
+        input={<Input id={'select-multiple-checkbox-' + field}/>}
+        renderValue={(selecteds) => selecteds.map((selected) => lookup[selected]).join(', ')}
         MenuProps={MenuProps}
       >
         {Object.keys(lookup).map((key) => (
@@ -47,7 +47,6 @@ const CustomSelectField = ({field, filterValues, id, lookup, onHandleFilterChang
 CustomSelectField.propTypes = { 
   field: PropTypes.string.isRequired,
   filterValues: PropTypes.array,
-  id: PropTypes.string.isRequired,
   lookup: PropTypes.any.isRequired,
   onHandleFilterChange: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired

@@ -24,12 +24,11 @@ const TableFilter = ({ column, onHandleFilterChange }) => {
     <div className={classes.filterModal}>
       {(column.lookup) 
         ? <CustomSelectField 
-            id={column.id}
             title={column.title}
             field={column.field}
             lookup={column.lookup}
             filterValues={column.filterValue}
-            onHandleFilterChange={onHandleFilterChange}
+            onHandleFilterChange={onChange}
           />
         : <CustomTextField
             label={column.title}
