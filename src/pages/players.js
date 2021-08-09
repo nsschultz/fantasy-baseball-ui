@@ -23,16 +23,6 @@ const columns = [
   { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
 ];
 
-const convertToNumber = (val) => { return parseInt(val, 10); };
-
-const fixPlayer = player => {
-  player.type = convertToNumber(player.type);
-  player.status = convertToNumber(player.status);
-  player.league1 = convertToNumber(player.league1);
-  player.league2 = convertToNumber(player.league2);
-  return player;
-};
-
 export default () => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,14 +58,12 @@ export default () => {
 
   const onRowUpdate = (newData) => {
     if (!newData) return;
-    const fixedPlayer = fixPlayer(newData);
-    updatePlayer(newData.id, fixedPlayer);
-    const dataUpdate = [...players];
-    dataUpdate[newData.id] = fixedPlayer;
+    updatePlayer(newData.id, newData);
+    const dataUpdate = players.map(p => p.id === newData.id ? newData : p);
     setPlayers([...dataUpdate]);
-    return players;
+    return dataUpdate;
   };
-  
+
   const updatePlayer = (id, player) => {
     axios
       .put(`http://baseball-player-api.schultz.local/api/player/${id}`, player)

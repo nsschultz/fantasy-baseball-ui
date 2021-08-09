@@ -6,96 +6,99 @@ import CustomTextField from '../components/input/custom-text-field';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
-const buildGrid = (key, title, content) => {
-  return (
-    <Grid item key={key} lg={3} md={6} xs={12}>
-      <CustomCard title={title} content={content}/>
-    </Grid>
-  );
-};
+const buildGrid = (key, title, content) => (
+  <Grid item key={key} lg={3} md={6} xs={12}>
+    <CustomCard title={title} content={content}/>
+  </Grid>);
 
-const buildInputField = (label, handleOnChange, defaultValue, type) => {
-  return (
-    <CustomTextField
-      fullWidth
-      label={label}
-      onChange={(event) => handleOnChange(event.target.value)}
-      size='small'
-      defaultValue={defaultValue}
-      type={type}
-      variant='filled'
-    />
-  );
-}
+const buildInputField = (field, label, handleOnChange, defaultValue, type) => (
+  <CustomTextField
+    fullWidth
+    id={field}
+    label={label}
+    onChange={(event) => handleOnChange(event.target.value)}
+    size='small'
+    defaultValue={defaultValue}
+    type={type}
+    variant='filled'
+  />);
 
-const buildNumberField = (label, handleOnChange, defaultValue) => { return buildInputField(label, handleOnChange, defaultValue, 'number'); }
+const buildNumberField = (field, label, handleOnChange, defaultValue) => buildInputField(field, label, handleOnChange, defaultValue, 'number');
   
-const buildSelectField = (label, handleOnChange, defaultValue, lookup) => {
-  return (
-    <CustomTextField
-      select
-      fullWidth
-      label={label}
-      onChange={(event) => handleOnChange(event.target.value)}
-      size='small'
-      value={defaultValue}
-      variant='filled'
-    >
-      {Object.keys(lookup).map((key) => (<MenuItem key={key} value={key}>{lookup[key]}</MenuItem>))}
-    </CustomTextField>
-  );
-};
+const buildSelectField = (field, label, handleOnChange, defaultValue, lookup) => (
+  <CustomTextField
+    select
+    fullWidth
+    id={field}
+    label={label}
+    onChange={(event) => handleOnChange(event.target.value)}
+    size='small'
+    value={defaultValue}
+    variant='filled'
+  >
+    {Object.keys(lookup).map((key) => (<MenuItem key={key} value={key}>{lookup[key]}</MenuItem>))}
+  </CustomTextField>);
 
-const buildTextField = (label, handleOnChange, defaultValue) => { return buildInputField(label, handleOnChange, defaultValue, 'text'); }
+const buildTextField = (field, label, handleOnChange, defaultValue) => buildInputField(field, label, handleOnChange, defaultValue, 'text');
+
+const convertToNumber = (val) => parseInt(val, 10);
+
+const fixPlayer = player => {
+  player.type = convertToNumber(player.type);
+  player.status = convertToNumber(player.status);
+  player.league1 = convertToNumber(player.league1);
+  player.league2 = convertToNumber(player.league2);
+  return player;
+};
 
 const PlayerView = ({onClose, open, player}) => {
-  const [age, setAge] = useState(player ? player.age : 0);
-  const [draftedPercentage, setDraftedPercentage] = useState(player ? player.draftedPercentage : 0);
-  const [draftRank, setDraftRank] = useState(player ? player.draftRank : 0);
-  const [firstName, setFirstName] = useState(player ? player.firstName : '');
-  const [lastName, setLastName] = useState(player ? player.lastName : '');
-  const [league1, setLeague1] = useState(player ? player.league1 : 0);
-  const [league2, setLeague2] = useState(player ? player.league2 : 0);
-  const [positions, setPositions] = useState(player ? player.positions : '');
-  const [status, setStatus] = useState(player ? player.status : 0);
-  const [team, setTeam] = useState(player ? player.team : '');
-  const [type, setType] = useState(player ? player.type : 0);
+  const newPlayer = player ? JSON.parse(JSON.stringify(player)) : {};
+  const [age, setAge] = useState(newPlayer.age ?? 0);
+  const [draftedPercentage, setDraftedPercentage] = useState(newPlayer.draftedPercentage ?? 0);
+  const [draftRank, setDraftRank] = useState(newPlayer.draftRank ?? 0);
+  const [firstName, setFirstName] = useState(newPlayer.firstName ?? '');
+  const [lastName, setLastName] = useState(newPlayer.lastName ?? '');
+  const [league1, setLeague1] = useState(newPlayer.league1 ?? 0);
+  const [league2, setLeague2] = useState(newPlayer.league2 ?? 0);
+  const [positions, setPositions] = useState(newPlayer.positions ?? '');
+  const [status, setStatus] = useState(newPlayer.status ?? 0);
+  const [team, setTeam] = useState(newPlayer.team ?? '');
+  const [type, setType] = useState(newPlayer.type ?? 0);
 
   const baseballInfoContent = (
     <>
-      {buildSelectField('Type', (value) => setType(value), type, { 0: '', 1: 'Batter', 2: 'Pitcher' })}
-      {buildTextField('Position(s)', (value) => setPositions(value), positions)}
-      {buildTextField('Team', (value) => setTeam(value), team)}
-      {buildSelectField('Status', (value) => setStatus(value), status, { 0: '', 1: 'Disabled List', 2: 'Not Available', 3: 'New Entry' })}
+      {buildSelectField('type', 'Type', (value) => setType(value), type, { 0: '', 1: 'Batter', 2: 'Pitcher' })}
+      {buildTextField('positions', 'Position(s)', (value) => setPositions(value), positions)}
+      {buildTextField('team', 'Team', (value) => setTeam(value), team)}
+      {buildSelectField('status', 'Status', (value) => setStatus(value), status, { 0: '', 1: 'Disabled List', 2: 'Not Available', 3: 'New Entry' })}
     </>
   );
 
   const draftInfoContent = (
     <>
-      {buildNumberField('Draft Rank', (value) => setDraftRank(value), draftRank)}
-      {buildNumberField('Drafted %', (value) => setDraftedPercentage(value), draftedPercentage)}
+      {buildNumberField('draftRank', 'Draft Rank', (value) => setDraftRank(value), draftRank)}
+      {buildNumberField('draftedPercentage', 'Drafted %', (value) => setDraftedPercentage(value), draftedPercentage)}
     </>
   );
 
   const leagueInfoContent = (
     <>
-      {buildSelectField('League #1 Status', (value) => setLeague1(value), league1, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })} 
-      {buildSelectField('League #2 Status', (value) => setLeague2(value), league2, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })}
+      {buildSelectField('league1', 'League #1 Status', (value) => setLeague1(value), league1, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })} 
+      {buildSelectField('league2', 'League #2 Status', (value) => setLeague2(value), league2, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })}
     </>
   );
 
   const personInfoContent = (
     <>
-      {buildTextField('First Name', (value) => setFirstName(value), firstName)}
-      {buildTextField('Last Name', (value) => setLastName(value), lastName)}
-      {buildNumberField('Age', (value) => setAge(value), age)}
+      {buildTextField('firstName', 'First Name', (value) => setFirstName(value), firstName)}
+      {buildTextField('lastName', 'Last Name', (value) => setLastName(value), lastName)}
+      {buildNumberField('age', 'Age', (value) => setAge(value), age)}
     </>
   );
 
   const handleCancel = () => { onClose(); };
 
   const handleSave = () => { 
-    const newPlayer = Object.assign(player, {});
     newPlayer.age = age;
     newPlayer.draftedPercentage = draftedPercentage;
     newPlayer.draftRank = draftRank;
@@ -107,7 +110,7 @@ const PlayerView = ({onClose, open, player}) => {
     newPlayer.status = status;
     newPlayer.team = team;
     newPlayer.type = type;
-    onClose(newPlayer);
+    onClose(fixPlayer(newPlayer));
    };
 
   return (
