@@ -17,5 +17,6 @@ describe('Custom Card Component', () => {
     const wrapper = mount(<CustomCard title={title} content={(<h2>{content}</h2>)}/>);
     expect(wrapper.find('span').text()).toEqual(title);
     expect(wrapper.find('h2').text()).toEqual(content);
+    expect(wrapper.find('h1').isEmpty()).toEqual(true);
   });
 });

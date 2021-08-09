@@ -4,7 +4,7 @@ import { StyledEngineProvider, ThemeProvider, createMuiTheme } from '@material-u
 import GlobalStyles from './components/global-styles';
 import Home from './pages/home';
 import ImportExportData from './pages/import-export-data';
-import Layout from './components/layout';
+import Layout from './components/layout/layout';
 import NotFound from './pages/not-found';
 import Players from './pages/players';
 import React from 'react';
