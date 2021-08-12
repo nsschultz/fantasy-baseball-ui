@@ -42,7 +42,7 @@ describe('Players Page', () => {
     const wrapper = mount(<Players/>);
     await expect(getSpy).toBeCalled();
     wrapper.update();
-    expect(wrapper.find(TableBody).find('tr').length).toEqual(10);
+    expect(wrapper.find(TableBody).find('tr').length).toHaveLength(10);
   });
 
   it('should render when there is data error', async () => {
@@ -53,7 +53,7 @@ describe('Players Page', () => {
     expect(wrapper.find('h4').text()).toEqual('Loading Players...');
   });
 
-  it('should handle a failed update', async () => {
+  it('should handle a successful update', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
     axios.put.mockImplementationOnce(() => Promise.resolve({}));
     const wrapper = mount(<ThemeProvider theme={theme}><Players/></ThemeProvider>);
@@ -64,7 +64,7 @@ describe('Players Page', () => {
     wrapper.find(PlayerView).find(Button).at(0).simulate('click');
     wrapper.update();
     await expect(putSpy).toBeCalled();
-    expect(wrapper.find(TableBody).find('tr').length).toEqual(10);
+    expect(wrapper.find(TableBody).find('tr').length).toHaveLength(10);
   });
 
   it('should handle a failed update', async () => {
@@ -78,6 +78,6 @@ describe('Players Page', () => {
     wrapper.find(PlayerView).find(Button).at(0).simulate('click');
     wrapper.update();
     await expect(putSpy).toBeCalled();
-    expect(wrapper.find(TableBody).find('tr').length).toEqual(10);
+    expect(wrapper.find(TableBody).find('tr').length).toHaveLength(10);
   });
 });
