@@ -1,3 +1,5 @@
+docker run --rm -it --workdir /app -v $(pwd):/app -p 80:3000 node:13.12.0 bash
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
