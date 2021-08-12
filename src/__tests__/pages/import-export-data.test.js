@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { mount } from 'enzyme';
 
-describe('Import Export Data Component', () => {
+describe('Import Export Data Page', () => {
   let wrapper, postSpy, getSpy, exportButton, mergeButton, uploadBatterButton, uploadPitcherButton;
 
   jest.mock('axios');
@@ -28,23 +28,35 @@ describe('Import Export Data Component', () => {
     axios.post.mockImplementationOnce(() => Promise.resolve({}));
     mergeButton.simulate('click');
     await expect(postSpy).toBeCalled();
-    wrapper.update();
-    await expect(mergeButton.props().disabled).toEqual(false);
   });
 
-  it('should handle errors on post', async () => {
+  it('should handle errors on merge click', async () => {
     axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
     mergeButton.simulate('click');
     await expect(postSpy).toBeCalled();
-    wrapper.update();
-    await expect(mergeButton.props().disabled).toEqual(false);
   });
 
-  it('should handle errors on get', async () => {
+  it('should handle a file download', async () => {
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: 'new data' }));
+    exportButton.simulate('click');
+    await expect(getSpy).toBeCalled();
+  });
+
+  it('should handle errors on file download', async () => {
     axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
     exportButton.simulate('click');
     await expect(getSpy).toBeCalled();
-    wrapper.update();
-    await expect(exportButton.props().disabled).toEqual(false);
+  });
+
+  it('should handle a file upload', async () => {
+    axios.post.mockImplementationOnce(() => Promise.resolve({}));
+    uploadBatterButton.find('input').simulate('change', { target: { files: [new Blob(['file data'])] } });
+    await expect(postSpy).toBeCalled();
+  });
+
+  it('should handle a file upload error', async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+    uploadPitcherButton.find('input').simulate('change', { target: { files: [new Blob(['file data'])] } });
+    await expect(postSpy).toBeCalled();
   });
 });

@@ -23,7 +23,7 @@ describe('Custom Table', () => {
     { id: 20, name: 'Wickman, Bob',      age: 52, type: 2, draftedPercentage: .27 }
   ];
   
-  const theme = createMuiTheme({ palette: { background: { paper: '#b3b3b3'  } } });
+  const theme = createMuiTheme({ palette: { background: { paper: '#b3b3b3' } } });
 
   const getRows = (wrapper) => wrapper.find(TableBody).find('tr');
 
