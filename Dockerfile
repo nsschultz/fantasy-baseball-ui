@@ -2,7 +2,7 @@
 FROM node:13.12.0 as build
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 ENV JAVA_HOME=/usr/lib/jvm/default-java \
-    SONAR_VERSION=4.3.0.2102
+    SONAR_VERSION=4.5.0.2216
 # Need to install sonar to make sure that we can use a version that will run on ARM
 # Version needs to match the version that the plugin uses
 RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_VERSION.zip && \
