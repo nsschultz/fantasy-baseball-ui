@@ -42,7 +42,7 @@ describe('Players Page', () => {
     const wrapper = mount(<Players/>);
     await expect(getSpy).toBeCalled();
     wrapper.update();
-    expect(wrapper.find(TableBody).find('tr').length).toHaveLength(10);
+    expect(wrapper.find(TableBody).find('tr')).toHaveLength(10);
   });
 
   it('should render when there is data error', async () => {
@@ -64,7 +64,7 @@ describe('Players Page', () => {
     wrapper.find(PlayerView).find(Button).at(0).simulate('click');
     wrapper.update();
     await expect(putSpy).toBeCalled();
-    expect(wrapper.find(TableBody).find('tr').length).toHaveLength(10);
+    expect(wrapper.find(TableBody).find('tr')).toHaveLength(10);
   });
 
   it('should handle a failed update', async () => {
@@ -78,6 +78,6 @@ describe('Players Page', () => {
     wrapper.find(PlayerView).find(Button).at(0).simulate('click');
     wrapper.update();
     await expect(putSpy).toBeCalled();
-    expect(wrapper.find(TableBody).find('tr').length).toHaveLength(10);
+    expect(wrapper.find(TableBody).find('tr')).toHaveLength(10);
   });
 });
