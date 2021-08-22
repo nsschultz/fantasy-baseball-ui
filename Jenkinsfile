@@ -2,7 +2,7 @@ pipeline {
     agent { label 'builder' }
     environment {
         def props = readJSON file: 'package.json'
-        VERSION_NUMBER = props.version
+        VERSION_NUMBER = "${props.version}"
         IMAGE_VERSION = "${GIT_BRANCH == "main" ? VERSION_NUMBER : VERSION_NUMBER+"-"+GIT_BRANCH}"
         DOCKER_HUB = credentials("dockerhub-creds")
     }
