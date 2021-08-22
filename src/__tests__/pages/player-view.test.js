@@ -6,6 +6,11 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 describe('Player View Page', () => {
+  const enums = {
+    leagusStatuses: { "0": "Available", "1": "Rostered", "2": "Unavailable", "3": "Scouted" },
+    playerStatuses: { "0": "", "1": "Disabled List", "2": "Not Available", "3": "New Entry" },
+    playerTypes: { "0": "Unknown", "1": "Batter", "2": "Pitcher" }
+  };
   const existingPlayer = {
     age: 40,
     draftedPercentage: 0.36,
@@ -57,7 +62,7 @@ describe('Player View Page', () => {
       expect(value).toEqual(undefined);
       verifyPlayer(existingPlayer, 40, 0.36, 10, 'Nick', 'Schultz', 2, 3, '2B-SS', 0, 'MIL', 1);
     };
-    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView player={existingPlayer} open={true} onClose={onClose}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView player={existingPlayer} open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
     mutatePlayer(wrapper);
     wrapper.find(Button).at(1).simulate('click');
     wrapper.update();
@@ -71,7 +76,7 @@ describe('Player View Page', () => {
       verifyPlayer(existingPlayer, 40, 0.36, 10, 'Nick' , 'Schultz', 2, 3, '2B-SS', 0, 'MIL', 1);
       verifyPlayer(newPlayer     , 35, 0.07, 20, 'Annie', 'Oppman' , 1, 2, 'SP'   , 1, 'SF' , 2);
     };
-    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView player={existingPlayer} open={true} onClose={onClose}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView player={existingPlayer} open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
     mutatePlayer(wrapper);
     wrapper.find(Button).at(0).simulate('click');
     wrapper.update();
@@ -84,7 +89,7 @@ describe('Player View Page', () => {
       count++;
       verifyPlayer(newPlayer, 35, 0.07, 20, 'Annie', 'Oppman', 1, 2, 'SP', 1, 'SF', 2);
     };
-    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView open={true} onClose={onClose}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
     mutatePlayer(wrapper);
     wrapper.find(Button).at(0).simulate('click');
     wrapper.update();
