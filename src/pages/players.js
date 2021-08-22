@@ -1,5 +1,6 @@
 import { Box, Container, Snackbar } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
+import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums } from '../funcs/get-player-enum';
 
 import Alert from '@material-ui/lab/Alert';
 import CustomTable from '../components/table/custom-table';
@@ -8,36 +9,45 @@ import PlayerView from './player-view';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
-const columns = [
-  { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
-  { title: 'First Name', field: 'firstName' },
-  { title: 'Last Name', field: 'lastName' },
-  { title: 'Age', field: 'age', type: 'numeric' },
-  { title: 'Type', field: 'type', lookup: { 0: '', 1: 'Batter', 2: 'Pitcher' } },
-  { title: 'Position(s)', field: 'positions' },
-  { title: 'Team', field: 'team' },
-  { title: 'Status', field: 'status', lookup: { 0: '', 1: 'Disabled List', 2: 'Not Available', 3: 'New Entry' }},
-  { title: 'League #1 Status', field: 'league1', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
-  { title: 'League #2 Status', field: 'league2', lookup: { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' }},
-  { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
-  { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
-];
-
 export default () => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [leagusStatuses, setLeagueStatuses] = useState([]);
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
   const [players, setPlayers] = useState([]);
+  const [playerStatuses, setPlayerStatuses] = useState([]);
+  const [playerTypes, setPlayerTypes] = useState([])
   const [severity, setSeverity] = useState('');
+
+  const columns = [
+    { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
+    { title: 'First Name', field: 'firstName' },
+    { title: 'Last Name', field: 'lastName' },
+    { title: 'Age', field: 'age', type: 'numeric' },
+    { title: 'Type', field: 'type', lookup: playerTypes },
+    { title: 'Position(s)', field: 'positions' },
+    { title: 'Team', field: 'team' },
+    { title: 'Status', field: 'status', lookup: playerStatuses },
+    { title: 'League #1 Status', field: 'league1', lookup: leagusStatuses },
+    { title: 'League #2 Status', field: 'league2', lookup: leagusStatuses },
+    { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
+    { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
+  ];
   
   useEffect(() => { 
     isMountedRef.current = true;
+    getLeagueStatusEnums((response) => setLeagueStatuses(response));
+    getPlayerStatusEnums((response) => setPlayerStatuses(response));
+    getPlayerTypeEnums((response) => setPlayerTypes(response));
     getPlayers();
     return () => { isMountedRef.current = false; };
   }, []);
 
-  const buildEdit = (handleEditClose, editOpen, editRow) => (<PlayerView onClose={handleEditClose} open={editOpen} player={editRow}/>);
+  const buildEdit = (handleEditClose, editOpen, editRow) => {
+    const enums = { leagusStatuses: leagusStatuses, playerStatuses: playerStatuses, playerTypes: playerTypes }; 
+    return (<PlayerView onClose={handleEditClose} open={editOpen} player={editRow} enums={enums}/>);
+  };
 
   const getPlayers = () => {
     axios
@@ -54,7 +64,7 @@ export default () => {
       setOpen(true); 
       setIsLoading(false);
     });
-  }
+  };
 
   const onRowUpdate = (newData) => {
     if (!newData) return;

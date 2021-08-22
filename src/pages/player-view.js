@@ -51,7 +51,7 @@ const fixPlayer = player => {
   return player;
 };
 
-const PlayerView = ({onClose, open, player}) => {
+const PlayerView = ({onClose, open, player, enums}) => {
   const newPlayer = player ? JSON.parse(JSON.stringify(player)) : {};
   const [age, setAge] = useState(newPlayer.age ?? 0);
   const [draftedPercentage, setDraftedPercentage] = useState(newPlayer.draftedPercentage ?? 0);
@@ -67,10 +67,10 @@ const PlayerView = ({onClose, open, player}) => {
 
   const baseballInfoContent = (
     <>
-      {buildSelectField('type', 'Type', (value) => setType(value), type, { 0: '', 1: 'Batter', 2: 'Pitcher' })}
+      {buildSelectField('type', 'Type', (value) => setType(value), type, enums.playerTypes)}
       {buildTextField('positions', 'Position(s)', (value) => setPositions(value), positions)}
       {buildTextField('team', 'Team', (value) => setTeam(value), team)}
-      {buildSelectField('status', 'Status', (value) => setStatus(value), status, { 0: '', 1: 'Disabled List', 2: 'Not Available', 3: 'New Entry' })}
+      {buildSelectField('status', 'Status', (value) => setStatus(value), status, enums.playerStatuses)}
     </>
   );
 
@@ -83,8 +83,8 @@ const PlayerView = ({onClose, open, player}) => {
 
   const leagueInfoContent = (
     <>
-      {buildSelectField('league1', 'League #1 Status', (value) => setLeague1(value), league1, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })} 
-      {buildSelectField('league2', 'League #2 Status', (value) => setLeague2(value), league2, { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' })}
+      {buildSelectField('league1', 'League #1 Status', (value) => setLeague1(value), league1, enums.leagusStatuses)} 
+      {buildSelectField('league2', 'League #2 Status', (value) => setLeague2(value), league2, enums.leagusStatuses)}
     </>
   );
 
@@ -144,7 +144,8 @@ const PlayerView = ({onClose, open, player}) => {
 PlayerView.propTypes = { 
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  player: PropTypes.object.isRequired
+  player: PropTypes.object.isRequired,
+  enums: PropTypes.object.isRequired
 };
 
 export default PlayerView;

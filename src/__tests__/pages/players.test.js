@@ -30,6 +30,11 @@ describe('Players Page', () => {
 
   afterEach(() => jest.clearAllMocks());
   beforeEach(() => getSpy = jest.spyOn(axios, 'get'));
+  beforeEach(() => {
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { "0": "Available", "1": "Rostered", "2": "Unavailable", "3": "Scouted" } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { "0": "", "1": "Disabled List", "2": "Not Available", "3": "New Entry" } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { "0": "Unknown", "1": "Batter", "2": "Pitcher" } }));
+  });
   beforeEach(() => putSpy = jest.spyOn(axios, 'put'));
 
   it('should render the loading screen', async () => {
@@ -40,7 +45,7 @@ describe('Players Page', () => {
   it('should render the table with data', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
     const wrapper = mount(<Players/>);
-    await expect(getSpy).toBeCalled();
+    await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     expect(wrapper.find(TableBody).find('tr')).toHaveLength(10);
   });
@@ -48,7 +53,7 @@ describe('Players Page', () => {
   it('should render when there is data error', async () => {
     axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
     const wrapper = mount(<Players/>);
-    await expect(getSpy).toBeCalled();
+    await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     expect(wrapper.find('h4').text()).toEqual('Loading Players...');
   });
@@ -57,7 +62,7 @@ describe('Players Page', () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
     axios.put.mockImplementationOnce(() => Promise.resolve({}));
     const wrapper = mount(<ThemeProvider theme={theme}><Players/></ThemeProvider>);
-    await expect(getSpy).toBeCalled();
+    await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     wrapper.find('#edit-01').at(0).simulate('click');
     wrapper.update();
@@ -71,7 +76,7 @@ describe('Players Page', () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
     axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
     const wrapper = mount(<ThemeProvider theme={theme}><Players/></ThemeProvider>);
-    await expect(getSpy).toBeCalled();
+    await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     wrapper.find('#edit-01').at(0).simulate('click');
     wrapper.update();
