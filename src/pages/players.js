@@ -24,6 +24,8 @@ const columns = [
   { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
 ];
 
+const updateLookup = (field, lookup) => columns.filter((column) => column.field === field).forEach((column) => column.lookup = lookup);
+
 export default () => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,13 +39,19 @@ export default () => {
   
   useEffect(() => { 
     isMountedRef.current = true;
-    getLeagueStatusEnums((response) => setLeagueStatuses(response));
-    getPlayerStatusEnums((response) => setPlayerStatuses(response));
-    getPlayerTypeEnums((response) => setPlayerTypes(response));
-    columns['type'] = playerTypes;
-    columns['status'] = playerStatuses;
-    columns['league1'] = leagusStatuses;
-    columns['league2'] = leagusStatuses;
+    getLeagueStatusEnums((response) => { 
+      setLeagueStatuses(response);
+      updateLookup('league1', response);
+      updateLookup('league2', response);
+    });
+    getPlayerStatusEnums((response) => {
+      setPlayerStatuses(response);
+      updateLookup('status', response);
+    });
+    getPlayerTypeEnums((response) => {
+      setPlayerTypes(response);
+      updateLookup('type', response);
+    });
     getPlayers();
     return () => { isMountedRef.current = false; };
   }, []);
