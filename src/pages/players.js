@@ -9,6 +9,21 @@ import PlayerView from './player-view';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
+const columns = [
+  { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
+  { title: 'First Name', field: 'firstName' },
+  { title: 'Last Name', field: 'lastName' },
+  { title: 'Age', field: 'age', type: 'numeric' },
+  { title: 'Type', field: 'type', lookup: [] },
+  { title: 'Position(s)', field: 'positions' },
+  { title: 'Team', field: 'team' },
+  { title: 'Status', field: 'status', lookup: [] },
+  { title: 'League #1 Status', field: 'league1', lookup: [] },
+  { title: 'League #2 Status', field: 'league2', lookup: [] },
+  { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
+  { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
+];
+
 export default () => {
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,27 +34,16 @@ export default () => {
   const [playerStatuses, setPlayerStatuses] = useState([]);
   const [playerTypes, setPlayerTypes] = useState([])
   const [severity, setSeverity] = useState('');
-
-  const columns = [
-    { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
-    { title: 'First Name', field: 'firstName' },
-    { title: 'Last Name', field: 'lastName' },
-    { title: 'Age', field: 'age', type: 'numeric' },
-    { title: 'Type', field: 'type', lookup: playerTypes },
-    { title: 'Position(s)', field: 'positions' },
-    { title: 'Team', field: 'team' },
-    { title: 'Status', field: 'status', lookup: playerStatuses },
-    { title: 'League #1 Status', field: 'league1', lookup: leagusStatuses },
-    { title: 'League #2 Status', field: 'league2', lookup: leagusStatuses },
-    { title: 'Draft Rank', field: 'draftRank', type: 'numeric' },
-    { title: 'Drafted %', field: 'draftedPercentage', type: 'numeric', format: (value) => value.toFixed(2) }
-  ];
   
   useEffect(() => { 
     isMountedRef.current = true;
     getLeagueStatusEnums((response) => setLeagueStatuses(response));
     getPlayerStatusEnums((response) => setPlayerStatuses(response));
     getPlayerTypeEnums((response) => setPlayerTypes(response));
+    columns['type'] = playerTypes;
+    columns['status'] = playerStatuses;
+    columns['league1'] = leagusStatuses;
+    columns['league2'] = leagusStatuses;
     getPlayers();
     return () => { isMountedRef.current = false; };
   }, []);
