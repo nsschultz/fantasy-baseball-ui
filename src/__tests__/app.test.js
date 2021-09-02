@@ -1,5 +1,5 @@
 import App from '../app';
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
 import { mount } from 'enzyme';
 

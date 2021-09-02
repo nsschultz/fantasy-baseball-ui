@@ -1,7 +1,7 @@
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 
-import CustomCard from "../components/card/custom-card";
+import CustomCard from '../components/card/custom-card';
 import CustomTextField from '../components/input/custom-text-field';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';

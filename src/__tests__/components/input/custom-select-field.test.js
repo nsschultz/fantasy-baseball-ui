@@ -1,15 +1,21 @@
 import { Checkbox, InputLabel, ListItemText, MenuItem, Select } from '@material-ui/core';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { mount, shallow } from 'enzyme';
 
 import CustomSelectField from '../../../components/input/custom-select-field';
 import React from 'react';
-import { shallow } from 'enzyme';
 
 describe('Custom Select Field', () => {
   const lookupValues = { 0: 'Available', 1: 'Rostered', 2: 'Unavailable', 3: 'Scouted' };
+  const theme = createMuiTheme({ palette: { text: { secondary: '#b3b3b3' } } });
   const title = 'Select Title';
 
   it('should render with a title', () => {
     expect(shallow(<CustomSelectField filterValues={[]} lookup={lookupValues} title={title}/>).find(InputLabel).text()).toEqual(title);
+  });
+
+  it('should render without a title', () => {
+    expect(shallow(<CustomSelectField filterValues={[]} lookup={lookupValues}/>).find(InputLabel)).toHaveLength(0);
   });
 
   it('should render with a list of the items', () => {
@@ -21,7 +27,7 @@ describe('Custom Select Field', () => {
 
   it('should render with fields already selected', () => {
     const filterValues = ['1','3'];
-    const wrapper = shallow(<CustomSelectField filterValues={filterValues} lookup={lookupValues} title={title}/>);
+    const wrapper = mount(<ThemeProvider theme={theme}><CustomSelectField filterValues={filterValues} lookup={lookupValues} title={title} width={125}/></ThemeProvider>);
     const listItems = wrapper.find(MenuItem);
     listItems.forEach(item => { expect(item.find(Checkbox).prop('checked')).toEqual(filterValues.some(f => f === item.prop('value'))); });
     const select = wrapper.find(Select);

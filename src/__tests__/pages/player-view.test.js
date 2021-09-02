@@ -1,15 +1,15 @@
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-import { Button } from "@material-ui/core";
+import { Button } from '@material-ui/core';
 import PlayerView from '../../pages/player-view'
 import React from 'react';
 import { mount } from 'enzyme';
 
 describe('Player View Page', () => {
   const enums = {
-    leagusStatuses: { "0": "Available", "1": "Rostered", "2": "Unavailable", "3": "Scouted" },
-    playerStatuses: { "0": "", "1": "Disabled List", "2": "Not Available", "3": "New Entry" },
-    playerTypes: { "0": "Unknown", "1": "Batter", "2": "Pitcher" }
+    leagusStatuses: { '0': 'Available', '1': 'Rostered', '2': 'Unavailable', '3': 'Scouted' },
+    playerStatuses: { '0': '', '1': 'Disabled List', '2': 'Not Available', '3': 'New Entry' },
+    playerTypes: { '0': 'Unknown', '1': 'Batter', '2': 'Pitcher' }
   };
   const existingPlayer = {
     age: 40,

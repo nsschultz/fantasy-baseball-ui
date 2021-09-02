@@ -1,4 +1,4 @@
-import { TableBody, TablePagination } from "@material-ui/core";
+import { IconButton, TableBody, TablePagination } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import CustomTable from '../../../components/table/custom-table'
@@ -42,24 +42,32 @@ describe('Custom Table', () => {
 
   it('should sort in ascending order', () => { 
     const wrapper = mount(<ThemeProvider theme={theme}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
-    wrapper.find('span').at(0).simulate('click');
+    wrapper.find('span').at(2).simulate('click');
     expect(getRows(wrapper).at(0).find('td').at(1).text()).toEqual('Aaron, Hank');
     expect(getRows(wrapper).at(9).find('td').at(1).text()).toEqual('Wickman, Bob');
   });
 
   it('should sort in descending order', () => { 
     const wrapper = mount(<ThemeProvider theme={theme}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
-    wrapper.find('span').at(0).simulate('click');
-    wrapper.find('span').at(0).simulate('click');
+    wrapper.find('span').at(2).simulate('click');
+    wrapper.find('span').at(2).simulate('click');
     expect(getRows(wrapper).at(0).find('td').at(1).text()).toEqual('Yount, Robin');
     expect(getRows(wrapper).at(9).find('td').at(1).text()).toEqual('Braun, Ryan');
+  });
+
+  it('should only display the filters on click', () => { 
+    const wrapper = mount(<ThemeProvider theme={theme}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    expect(wrapper.find('table').find('input').exists()).toBeFalsy();
+    wrapper.find(IconButton).at(0).simulate('click');
+    wrapper.update();
+    expect(wrapper.find('table').find('input')).toHaveLength(4);
   });
 
   it('should handle filtering of text field', () => { 
     const wrapper = mount(<ThemeProvider theme={theme}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
     expect(getRows(wrapper)).toHaveLength(10);
-    wrapper.find('svg').at(1).simulate('click');
-    expect(wrapper.find('label').text()).toEqual('Name');
+    wrapper.find(IconButton).at(0).simulate('click');
+    wrapper.update();
     wrapper.find('input').at(0).simulate('change', { target: { value: 'Samantha' } });
     expect(getRows(wrapper)).toHaveLength(1);
   });
@@ -67,9 +75,9 @@ describe('Custom Table', () => {
   it('should handle filtering of numeric field', () => { 
     const wrapper = mount(<ThemeProvider theme={theme}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
     expect(getRows(wrapper)).toHaveLength(10);
-    wrapper.find('svg').at(3).simulate('click');
-    expect(wrapper.find('label').text()).toEqual('Age');
-    wrapper.find('input').at(0).simulate('change', { target: { value: '10' } });
+    wrapper.find(IconButton).at(0).simulate('click');
+    wrapper.update();
+    wrapper.find('input').at(1).simulate('change', { target: { value: '10' } });
     expect(getRows(wrapper)).toHaveLength(1);
   });
 

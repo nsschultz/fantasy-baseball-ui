@@ -1,25 +1,30 @@
-import { Backdrop, IconButton, Popover, TableCell, TableSortLabel } from "@material-ui/core";
+import { TableCell, TableSortLabel } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import React from 'react';
+import TableFilter from '../../../components/table/table-filter';
 import TableHeaderCell from '../../../components/table/table-header-cell';
 import { mount } from 'enzyme';
 
 describe('Table Header Cell', () => {
   const field = 'Field';
-  
   const theme = createMuiTheme({ palette: { background: { paper: '#b3b3b3'  } } });
+  const title = 'FieldTitle';
 
-  const createWrapper = (align, direction, sortField, title) => {
-    const column = { align: align, field: field, title: title };
-    return mount(<ThemeProvider theme={theme}>
-        <TableHeaderCell buildSortHandler={() => () => 'asc'} column={column} getAlign={(column) => column.align} order={direction} orderBy={sortField}/>
+  const createWrapper = (align, direction, sortField, open) =>
+    mount(
+      <ThemeProvider theme={theme}>
+        <TableHeaderCell 
+          buildSortHandler={() => () => 'asc'} 
+          column={{ align: align, field: field, title: title }} 
+          getAlign={(column) => column.align} 
+          order={direction} 
+          orderBy={sortField} 
+          filterVisible={open}/>
       </ThemeProvider>);
-  };
 
   const validateTableCell = (align, direction, sortField) => {
-    const title = 'FieldTitle';
-    const wrapper = createWrapper(align, direction, sortField, title);
+    const wrapper = createWrapper(align, direction, sortField);
     const tableCell = wrapper.find(TableCell);
     expect(tableCell.prop('align')).toEqual(align);
     expect(tableCell.prop('sortDirection')).toEqual(direction);
@@ -33,12 +38,13 @@ describe('Table Header Cell', () => {
 
   it('should render without sort direction', () => { validateTableCell('left', false, 'OtherField'); });
 
-  it('should render a popup with the filter', () => {
-    const wrapper = createWrapper('right', 'asc', field, 'FieldTitle');
-    expect(wrapper.find(Popover).prop('open')).toEqual(false);
-    wrapper.find(IconButton).at(0).simulate('click');
-    expect(wrapper.find(Popover).prop('open')).toEqual(true);
-    wrapper.find(Backdrop).simulate('click');
-    expect(wrapper.find(Popover).prop('open')).toEqual(false);
+  it('should render with the filter visible', () => {
+    const wrapper = createWrapper('right', 'asc', field, true);
+    expect(wrapper.find(TableFilter)).toHaveLength(1);
+  });
+
+  it('should render without the filter visible', () => {
+    const wrapper = createWrapper('right', 'asc', field, false);
+    expect(wrapper.find(TableFilter)).toHaveLength(0);
   });
 });

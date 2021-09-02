@@ -1,7 +1,8 @@
-import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
 import { Edit } from '@material-ui/icons';
+import { FilterList } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import TableHeaderCell from './table-header-cell';
 import { makeStyles } from '@material-ui/styles';
@@ -47,6 +48,7 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
   const [page, setPage] = useState(0);
   const [rowCount, setRowCount] = useState(0);
   const [rows, setRows] = useState([]);
+  const [filterVisible, setFilterVisible] = useState(false);
   
   useEffect(() => { setRows(buildRows(columns, values)); }, [limit, order, orderBy, page]);
 
@@ -87,6 +89,8 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
     setEditOpen(true);
    };
 
+  const handleFilterVisible = () => setFilterVisible(!filterVisible);
+
   const handleRequestSort = (event, property) => {
     setOrder(orderBy === property && order === 'asc' ? 'desc' : 'asc');
     setOrderBy(property);
@@ -105,7 +109,11 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
             <Table stickyHeader size='small'>
               <TableHead>
                 <TableRow>
-                  <TableCell align='left'/>
+                  <TableCell align='left'>
+                    <Tooltip title='Show Column Filters'>
+                      <IconButton size='small' onClick={handleFilterVisible}><FilterList fontSize='inherit'/></IconButton>
+                    </Tooltip>
+                  </TableCell>
                   {columns.map((column) => 
                     <TableHeaderCell 
                       buildSortHandler={(key) => buildSortHandler(key)}
@@ -115,6 +123,7 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
                       key={column.field} 
                       order={order}
                       orderBy={orderBy}
+                      filterVisible={filterVisible}
                     />)}
                 </TableRow>
               </TableHead>

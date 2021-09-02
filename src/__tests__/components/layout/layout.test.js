@@ -1,5 +1,5 @@
 import Layout from '../../../components/layout/layout';
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
 import Sidebar from '../../../components/layout/sidebar';
 import Titlebar from '../../../components/layout/titlebar';
