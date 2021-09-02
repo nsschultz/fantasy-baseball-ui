@@ -1,20 +1,12 @@
-import { Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select } from '@material-ui/core';
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from '@material-ui/core';
 import React, { useState } from 'react';
 
+import CustomInuptBase from './custom-input-base';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  }
-}));
+const MenuProps = { PaperProps: { style: { maxHeight: 224 } } };
 
-const MenuProps = { PaperProps: { style: { maxHeight: 224, width: 250 } } };
-
-const CustomSelectField = ({field, filterValues, lookup, onHandleFilterChange, title}) => {
-  const classes = useStyles();
+const CustomSelectField = ({field, filterValues, lookup, onHandleFilterChange, title, width}) => {
   const [filters, setFilters] = useState(filterValues || []);
 
   const onChange = (event) => { 
@@ -23,15 +15,16 @@ const CustomSelectField = ({field, filterValues, lookup, onHandleFilterChange, t
   };
 
   return (
-    <FormControl className={classes.formControl}>
-      <InputLabel>{title}</InputLabel>
+    <FormControl variant='outlined'>
+      {title ? <InputLabel>{title}</InputLabel> : null}
       <Select
         multiple
         value={filters}
         onChange={(event) => onChange(event)}
-        input={<Input id={'select-multiple-checkbox-' + field}/>}
+        input={<CustomInuptBase id={'select-multiple-checkbox-' + field}/>}
         renderValue={(selecteds) => selecteds.map((selected) => lookup[selected]).join(', ')}
         MenuProps={MenuProps}
+        style={{width: width ? width : 100}}
       >
         {Object.keys(lookup).map((key) => (
           <MenuItem key={key} value={key}>
@@ -49,7 +42,8 @@ CustomSelectField.propTypes = {
   filterValues: PropTypes.array,
   lookup: PropTypes.any.isRequired,
   onHandleFilterChange: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string,
+  width: PropTypes.number
 };
 
 export default CustomSelectField;

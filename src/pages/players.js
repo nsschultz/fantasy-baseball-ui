@@ -10,13 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
 const columns = [
-  { title: 'BHQ ID', field: 'bhqId', type: 'numeric' },
+  { title: 'BHQ ID', field: 'bhqId', type: 'numeric', width: 75 },
   { title: 'First Name', field: 'firstName' },
   { title: 'Last Name', field: 'lastName' },
-  { title: 'Age', field: 'age', type: 'numeric' },
+  { title: 'Age', field: 'age', type: 'numeric', width: 75 },
   { title: 'Type', field: 'type', lookup: [] },
   { title: 'Position(s)', field: 'positions' },
-  { title: 'Team', field: 'team' },
+  { title: 'Team', field: 'team', width: 75 },
   { title: 'Status', field: 'status', lookup: [] },
   { title: 'League #1 Status', field: 'league1', lookup: [] },
   { title: 'League #2 Status', field: 'league2', lookup: [] },

@@ -15,7 +15,7 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
   return (
     <AppBar color='primary' elevation={5}>
       <Toolbar>
-        <RouterLink to="/">
+        <RouterLink to='/'>
           <Logo/>
         </RouterLink>
         <Box sx={{ flexGrow: 1 }}/>
@@ -23,19 +23,19 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
           {isLoggedIn
             ?
               <>
-                <IconButton color="inherit">
-                  <Badge badgeContent={notifications.length} color="primary" variant="dot">
+                <IconButton color='inherit'>
+                  <Badge badgeContent={notifications.length} color='primary' variant='dot'>
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <IconButton color="inherit">
+                <IconButton color='inherit'>
                   <InputIcon/>
                 </IconButton>
               </>
             : null}
         </Hidden>
         <Hidden lgUp>
-          <IconButton color="inherit" onClick={onOpenMobileNavigation}>
+          <IconButton color='inherit' onClick={onOpenMobileNavigation}>
             <MenuIcon/>
           </IconButton>
         </Hidden>

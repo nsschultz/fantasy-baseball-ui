@@ -31,7 +31,7 @@ describe('Import Export Data Page', () => {
   });
 
   it('should handle errors on merge click', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     mergeButton.simulate('click');
     await expect(postSpy).toBeCalled();
   });
@@ -43,7 +43,7 @@ describe('Import Export Data Page', () => {
   });
 
   it('should handle errors on file download', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     exportButton.simulate('click');
     await expect(getSpy).toBeCalled();
   });
@@ -55,7 +55,7 @@ describe('Import Export Data Page', () => {
   });
 
   it('should handle a file upload error', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     uploadPitcherButton.find('input').simulate('change', { target: { files: [new Blob(['file data'])] } });
     await expect(postSpy).toBeCalled();
   });

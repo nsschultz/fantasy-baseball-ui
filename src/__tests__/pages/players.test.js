@@ -1,4 +1,4 @@
-import { Button, TableBody } from "@material-ui/core";
+import { Button, TableBody } from '@material-ui/core';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import PlayerView from '../../pages/player-view';
@@ -31,9 +31,9 @@ describe('Players Page', () => {
   afterEach(() => jest.clearAllMocks());
   beforeEach(() => getSpy = jest.spyOn(axios, 'get'));
   beforeEach(() => {
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { "0": "Available", "1": "Rostered", "2": "Unavailable", "3": "Scouted" } }));
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { "0": "", "1": "Disabled List", "2": "Not Available", "3": "New Entry" } }));
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { "0": "Unknown", "1": "Batter", "2": "Pitcher" } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { '0': 'Available', '1': 'Rostered', '2': 'Unavailable', '3': 'Scouted' } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { '0': '', '1': 'Disabled List', '2': 'Not Available', '3': 'New Entry' } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { '0': 'Unknown', '1': 'Batter', '2': 'Pitcher' } }));
   });
   beforeEach(() => putSpy = jest.spyOn(axios, 'put'));
 
@@ -51,7 +51,7 @@ describe('Players Page', () => {
   });
 
   it('should render when there is data error', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     const wrapper = mount(<Players/>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
@@ -74,7 +74,7 @@ describe('Players Page', () => {
 
   it('should handle a failed update', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
-    axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+    axios.put.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     const wrapper = mount(<ThemeProvider theme={theme}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
