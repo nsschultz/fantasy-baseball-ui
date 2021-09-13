@@ -1,9 +1,10 @@
 import { Button, TableBody } from '@material-ui/core';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+import GlobalTheme from '../../components/global-theme';
 import PlayerView from '../../pages/player-view';
 import Players from '../../pages/players';
 import React from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 import { mount } from 'enzyme';
 
@@ -24,8 +25,6 @@ describe('Players Page', () => {
     { id: '11', bhqId: 111, type: 1, firstName: 'Jose'     , lastName: 'Ramirez'  , age: 28, team: 'CLE', status: 0, positions: '3B', draftRank: 11, draftedPercentage: 0.00, league1: 2, league2: 2 },
   ];
 
-  const theme = createMuiTheme({ palette: { background: { paper: '#b3b3b3' } } });
-
   jest.mock('axios');
 
   afterEach(() => jest.clearAllMocks());
@@ -38,13 +37,13 @@ describe('Players Page', () => {
   beforeEach(() => putSpy = jest.spyOn(axios, 'put'));
 
   it('should render the loading screen', async () => {
-    const wrapper = mount(<Players/>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     expect(wrapper.find('h4').text()).toEqual('Loading Players...');
   });
 
   it('should render the table with data', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
-    const wrapper = mount(<Players/>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     expect(wrapper.find(TableBody).find('tr')).toHaveLength(10);
@@ -52,7 +51,7 @@ describe('Players Page', () => {
 
   it('should render when there is data error', async () => {
     axios.get.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
-    const wrapper = mount(<Players/>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     expect(wrapper.find('h4').text()).toEqual('Loading Players...');
@@ -61,7 +60,7 @@ describe('Players Page', () => {
   it('should handle a successful update', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
     axios.put.mockImplementationOnce(() => Promise.resolve({}));
-    const wrapper = mount(<ThemeProvider theme={theme}><Players/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     wrapper.find('#edit-01').at(0).simulate('click');
@@ -75,7 +74,7 @@ describe('Players Page', () => {
   it('should handle a failed update', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
     axios.put.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
-    const wrapper = mount(<ThemeProvider theme={theme}><Players/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
     wrapper.find('#edit-01').at(0).simulate('click');

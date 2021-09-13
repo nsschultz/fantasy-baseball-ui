@@ -5,6 +5,7 @@ import CustomCard from '../components/card/custom-card';
 import CustomTextField from '../components/input/custom-text-field';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/styles';
 
 const buildGrid = (key, title, content) => (
   <Grid item key={key} lg={3} md={6} xs={12}>
@@ -51,7 +52,12 @@ const fixPlayer = player => {
   return player;
 };
 
-const PlayerView = ({onClose, open, player, enums}) => {
+const useStyles = makeStyles((theme) => ({ 
+  box: { backgroundColor: 'background.default', minHeight: '100%', paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) }
+}));
+
+const PlayerView = ({ enums, onClose, open, player }) => {
+  const classes = useStyles();
   const newPlayer = player ? JSON.parse(JSON.stringify(player)) : {};
   const [age, setAge] = useState(newPlayer.age ?? 0);
   const [draftedPercentage, setDraftedPercentage] = useState(newPlayer.draftedPercentage ?? 0);
@@ -121,7 +127,7 @@ const PlayerView = ({onClose, open, player, enums}) => {
       <Dialog fullWidth={true} maxWidth='lg' open={open}>
         <DialogTitle disableTypography={true}><Typography color='textPrimary' variant='h4'>Edit Player</Typography></DialogTitle>
         <DialogContent>
-          <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
+          <Box className={classes.box}>
             <Container maxWidth={false}>
               <Grid container spacing={3}>
                 {buildGrid('personInfo', 'Person Info', personInfoContent)}
@@ -133,8 +139,8 @@ const PlayerView = ({onClose, open, player, enums}) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSave} variant='contained' color='primary' component='label'>Save</Button>
-          <Button onClick={handleCancel} variant='contained' color='secondary' component='label'>Cancel</Button>
+          <Button color='primary' onClick={handleSave} variant='contained' component='label'>Save</Button>
+          <Button color='secondary' onClick={handleCancel} variant='contained' component='label'>Cancel</Button>
         </DialogActions>
       </Dialog>
     </>
@@ -142,10 +148,10 @@ const PlayerView = ({onClose, open, player, enums}) => {
 }
 
 PlayerView.propTypes = { 
+  enums: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  player: PropTypes.object.isRequired,
-  enums: PropTypes.object.isRequired
+  player: PropTypes.object.isRequired
 };
 
 export default PlayerView;

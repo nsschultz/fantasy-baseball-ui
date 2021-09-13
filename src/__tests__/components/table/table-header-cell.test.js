@@ -1,19 +1,19 @@
 import { TableCell, TableSortLabel } from '@material-ui/core';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+import GlobalTheme from '../../../components/global-theme';
 import React from 'react';
 import TableFilter from '../../../components/table/table-filter';
 import TableHeaderCell from '../../../components/table/table-header-cell';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { mount } from 'enzyme';
 
 describe('Table Header Cell', () => {
   const field = 'Field';
-  const theme = createMuiTheme({ palette: { background: { paper: '#b3b3b3'  } } });
   const title = 'FieldTitle';
 
   const createWrapper = (align, direction, sortField, open) =>
     mount(
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={GlobalTheme()}>
         <TableHeaderCell 
           buildSortHandler={() => () => 'asc'} 
           column={{ align: align, field: field, title: title }} 
