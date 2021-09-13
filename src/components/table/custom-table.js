@@ -5,7 +5,6 @@ import { Edit } from '@material-ui/icons';
 import { FilterList } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import TableHeaderCell from './table-header-cell';
-import { makeStyles } from '@material-ui/styles';
 
 const applyFilter = (column, field) => {
   if (column.lookup) return column.filterValue.length === 0 || column.filterValue.some(v => convertToNumber(v) === field);
@@ -36,10 +35,7 @@ const stableSort = (array, comparator) => {
   return stabilizedThis.map((el) => el[0]);
 };
 
-const useStyles = makeStyles({ container: { display: 'flex', overflowX: 'initial' } });
-
 const CustomTable = ({columns, values, buildEdit, handleClose}) => {
-  const classes = useStyles();
   const [editOpen, setEditOpen] = useState(false);
   const [editRow, setEditRow] = useState(null);
   const [limit, setLimit] = useState(10);
@@ -105,7 +101,7 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
     <>
       <Box>
         <Paper>
-          <TableContainer className={classes.container}>
+          <TableContainer>
             <Table stickyHeader size='small'>
               <TableHead>
                 <TableRow>

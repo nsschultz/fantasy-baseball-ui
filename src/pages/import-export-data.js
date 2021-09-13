@@ -6,8 +6,19 @@ import FileSaver  from 'file-saver';
 import { Helmet } from 'react-helmet';
 import IntegrationCard from '../components/card/integration-card';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles((theme) => ({ 
+  box: { 
+    backgroundColor: 'background.default', 
+    minHeight: '100%', 
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3) 
+  }
+}));
 
 export default () => {
+  const classes = useStyles();
   const [severity, setSeverity] = useState('');
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
@@ -56,10 +67,10 @@ export default () => {
   const exportPlayersButton = (<Button disabled={disabled} variant='contained' color='primary' onClick={() => { exportOnClick() }}>Export</Button>);
   const mergePlayersButton = (<Button disabled={disabled} variant='contained' color='primary' onClick={() => { mergeOnClick() }}>Merge</Button>);
   const uploadBattersFileButton = (
-    <Button disabled={disabled} variant='contained' color='primary' component='label'>Upload<input type='file' onChange={onBatterFileChange} hidden/></Button>
+    <Button color='primary' component='label' disabled={disabled} variant='contained'>Upload<input type='file' onChange={onBatterFileChange} hidden/></Button>
   );
   const uploadPitchersFileButton = (
-    <Button disabled={disabled} variant='contained' color='primary' component='label'>Upload<input type='file' onChange={onPitcherFileChange} hidden/></Button>
+    <Button color='primary' component='label' disabled={disabled} variant='contained'>Upload<input type='file' onChange={onPitcherFileChange} hidden/></Button>
   );
 
   return (
@@ -67,7 +78,7 @@ export default () => {
       <Helmet>
         <title>Integrations | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box sx={{ backgroundColor: 'background.default', minHeight: '100%', py: 3 }}>
+      <Box className={classes.box}>
         <Container maxWidth={false}>
           <Grid container spacing={3}>
             <Grid item key='uploadBatters' lg={6} md={6} xs={12}>
@@ -97,7 +108,7 @@ export default () => {
           </Grid>
         </Container>
       </Box>
-      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={() => setOpen(false)}>
+      <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} autoHideDuration={2000} onClose={() => setOpen(false)} open={open}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
     </>

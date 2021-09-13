@@ -1,5 +1,7 @@
+import GlobalTheme from '../../components/global-theme';
 import ImportExportData from '../../pages/import-export-data';
 import React from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 import { mount } from 'enzyme';
 
@@ -9,7 +11,7 @@ describe('Import Export Data Page', () => {
   jest.mock('axios');
 
   afterEach(() => jest.clearAllMocks());
-  beforeEach(() => wrapper = mount(<ImportExportData/>));
+  beforeEach(() => wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ImportExportData/></ThemeProvider>));
   beforeEach(() => uploadBatterButton = wrapper.find('label').at(0));
   beforeEach(() => uploadPitcherButton = wrapper.find('label').at(1));
   beforeEach(() => mergeButton = wrapper.find('button').at(0));

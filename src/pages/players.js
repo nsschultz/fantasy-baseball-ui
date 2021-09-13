@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 import PlayerView from './player-view';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/styles';
 
 const columns = [
   { title: 'BHQ ID', field: 'bhqId', type: 'numeric', width: 75 },
@@ -26,7 +27,12 @@ const columns = [
 
 const updateLookup = (field, lookup) => columns.filter((column) => column.field === field).forEach((column) => column.lookup = lookup);
 
+const useStyles = makeStyles((theme) => ({ 
+  box: { backgroundColor: 'background.default', paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) }
+}));
+
 export default () => {
+  const classes = useStyles();
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [leagusStatuses, setLeagueStatuses] = useState([]);
@@ -58,7 +64,7 @@ export default () => {
 
   const buildEdit = (handleEditClose, editOpen, editRow) => {
     const enums = { leagusStatuses: leagusStatuses, playerStatuses: playerStatuses, playerTypes: playerTypes }; 
-    return (<PlayerView onClose={handleEditClose} open={editOpen} player={editRow} enums={enums}/>);
+    return (<PlayerView enums={enums} onClose={handleEditClose} open={editOpen} player={editRow}/>);
   };
 
   const getPlayers = () => {
@@ -106,14 +112,14 @@ export default () => {
       <Helmet>
         <title>Players | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box sx={{ backgroundColor: 'background.default', py: 3 }}>
+      <Box className={classes.box}>
         <Container maxWidth={false}>
           {isLoading 
             ? <Typography align='left' color='textPrimary' variant='h4'>Loading Players...</Typography>
-            : <CustomTable columns={columns} values={players} buildEdit={buildEdit} handleClose={onRowUpdate}/>}
+            : <CustomTable buildEdit={buildEdit} columns={columns} handleClose={onRowUpdate} values={players}/>}
         </Container>
       </Box>
-      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={() => setOpen(false)}>
+      <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} autoHideDuration={2000} onClose={() => setOpen(false)} open={open}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
     </>

@@ -19,11 +19,11 @@ const useStyles = makeStyles({
   }
 });
 
-const TableHeaderCell = ({ column, onHandleFilterChange, getAlign, buildSortHandler, order, orderBy, filterVisible }) => {
+const TableHeaderCell = ({ buildSortHandler, column, getAlign, onHandleFilterChange, order, filterVisible, orderBy }) => {
   const classes = useStyles();
-
+  
   return (
-    <TableCell key={column.field} align={getAlign(column)} sortDirection={orderBy === column.field ? order : false}>
+    <TableCell align={getAlign(column)} key={column.field} sortDirection={orderBy === column.field ? order : false}>
       <TableSortLabel active={orderBy === column.field} direction={orderBy === column.field ? order : 'asc'} onClick={buildSortHandler(column.field)}>
         {column.title}
         {orderBy === column.field ? (<span className={classes.visuallyHidden}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</span>) : null}
@@ -37,11 +37,11 @@ const TableHeaderCell = ({ column, onHandleFilterChange, getAlign, buildSortHand
 TableHeaderCell.propTypes = {
   buildSortHandler: PropTypes.func.isRequired,
   column: PropTypes.object.isRequired,
-  onHandleFilterChange: PropTypes.func.isRequired,
   getAlign: PropTypes.func.isRequired,
+  onHandleFilterChange: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string,
-  filterVisible: PropTypes.bool
+  filterVisible: PropTypes.bool,
+  orderBy: PropTypes.string
 };
   
 export default TableHeaderCell;

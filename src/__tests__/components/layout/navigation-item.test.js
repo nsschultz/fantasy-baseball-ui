@@ -1,8 +1,11 @@
 import { Button } from '@material-ui/core';
+import GlobalTheme from '../../../components/global-theme';
+import { MemoryRouter } from 'react-router-dom';
 import NavigationItem from '../../../components/layout/navigation-item';
 import PeopleIcon from '@material-ui/icons/People';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { mount } from 'enzyme';
 
 const mockLocation = { pathname: '/othersite', search: '', hash: '', state: null };
 
@@ -15,17 +18,27 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('Navigation Item Component', () => {
-  it('should render with a link', () => {
-    const wrapper = shallow(<NavigationItem href='/othersite' title='Test Title' icon={PeopleIcon}/>);
-    expect(wrapper.find('span').text()).toEqual('Test Title');
+  it('should render with active link', () => {
+    const wrapper = mount(
+      <ThemeProvider theme={GlobalTheme()}>
+        <MemoryRouter initialEntries={['/home']}>
+          <NavigationItem href='/othersite' title='Test Title' icon={PeopleIcon}/>
+        </MemoryRouter>
+      </ThemeProvider>);
+    expect(wrapper.find('span').at(0).text()).toEqual('Test Title');
     expect(wrapper.find(PeopleIcon)).toBeTruthy();
     expect(wrapper.find(Button).prop('to')).toEqual('/othersite');
   });
 
-  it('should render without a link', () => {
-    const wrapper = shallow(<NavigationItem title='Test Title' icon={PeopleIcon}/>);
-    expect(wrapper.find('span').text()).toEqual('Test Title');
+  it('should render with non-active link', () => {
+    const wrapper = mount(
+      <ThemeProvider theme={GlobalTheme()}>
+        <MemoryRouter initialEntries={['/home']}>
+          <NavigationItem href='/home' title='Test Title' icon={PeopleIcon}/>
+        </MemoryRouter>
+      </ThemeProvider>);
+    expect(wrapper.find('span').at(0).text()).toEqual('Test Title');
     expect(wrapper.find(PeopleIcon)).toBeTruthy();
-    expect(wrapper.find(Button).prop('to')).toEqual(undefined);
+    expect(wrapper.find(Button).prop('to')).toEqual('/home');
   });
 });

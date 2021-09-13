@@ -45,7 +45,7 @@ const Layout = ({ isLoggedIn }) => {
     <LayoutRoot>
       <Titlebar isLoggedIn={isLoggedIn} onOpenMobileNavigation={() => setMobileNavigationOpen(true)}/>
       {isLoggedIn 
-        ? <Sidebar onMobileClose={() => setMobileNavigationOpen(false)} openMobile={isMobileNavigationOpen}/>
+        ? <Sidebar openMobile={isMobileNavigationOpen} onMobileClose={() => setMobileNavigationOpen(false)}/>
         : null}
       <LayoutWrapper>
         <LayoutContainer>

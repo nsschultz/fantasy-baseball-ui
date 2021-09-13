@@ -3,9 +3,9 @@ import { Box, Card, CardContent, CardHeader, Divider } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const CustomCard = ({ title, content, additionalContent }) => (
+const CustomCard = ({ content, title, additionalContent }) => (
   <Box boxShadow={5}>
-    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Card>
       <CardHeader title={title} titleTypographyProps={{ align: 'center', color: 'textPrimary', variant: 'h4' }}/>
       <Divider/>
       <CardContent>
@@ -17,8 +17,8 @@ const CustomCard = ({ title, content, additionalContent }) => (
 );
 
 CustomCard.propTypes = {
-  title: PropTypes.string.isRequired,
   content: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
   additionalContent: PropTypes.object
 };
 

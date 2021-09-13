@@ -1,8 +1,8 @@
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
 import { Button } from '@material-ui/core';
+import GlobalTheme from '../../components/global-theme';
 import PlayerView from '../../pages/player-view'
 import React from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { mount } from 'enzyme';
 
 describe('Player View Page', () => {
@@ -25,7 +25,6 @@ describe('Player View Page', () => {
     type: 1
   };
   const findSelect = 'ForwardRef(Select)';
-  const theme = createMuiTheme({ palette: { text: { secondary: '#b3b3b3'  } } });
 
   const mutatePlayer = (wrapper) => {
     wrapper.find('input').find('#firstName').at(0).simulate('change', { target: { value: 'Annie' } });
@@ -62,7 +61,7 @@ describe('Player View Page', () => {
       expect(value).toEqual(undefined);
       verifyPlayer(existingPlayer, 40, 0.36, 10, 'Nick', 'Schultz', 2, 3, '2B-SS', 0, 'MIL', 1);
     };
-    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView player={existingPlayer} open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><PlayerView player={existingPlayer} open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
     mutatePlayer(wrapper);
     wrapper.find(Button).at(1).simulate('click');
     wrapper.update();
@@ -76,7 +75,7 @@ describe('Player View Page', () => {
       verifyPlayer(existingPlayer, 40, 0.36, 10, 'Nick' , 'Schultz', 2, 3, '2B-SS', 0, 'MIL', 1);
       verifyPlayer(newPlayer     , 35, 0.07, 20, 'Annie', 'Oppman' , 1, 2, 'SP'   , 1, 'SF' , 2);
     };
-    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView player={existingPlayer} open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><PlayerView player={existingPlayer} open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
     mutatePlayer(wrapper);
     wrapper.find(Button).at(0).simulate('click');
     wrapper.update();
@@ -89,7 +88,7 @@ describe('Player View Page', () => {
       count++;
       verifyPlayer(newPlayer, 35, 0.07, 20, 'Annie', 'Oppman', 1, 2, 'SP', 1, 'SF', 2);
     };
-    const wrapper = mount(<ThemeProvider theme={theme}><PlayerView open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><PlayerView open={true} onClose={onClose} enums={enums}/></ThemeProvider>);
     mutatePlayer(wrapper);
     wrapper.find(Button).at(0).simulate('click');
     wrapper.update();

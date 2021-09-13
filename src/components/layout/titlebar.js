@@ -7,9 +7,15 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { makeStyles } from '@material-ui/styles';
 import { useState } from 'react';
 
+const useStyles = makeStyles({ 
+  box: { flexGrow: 1 },
+});
+
 const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
+  const classes = useStyles();
   const [notifications] = useState([]);
 
   return (
@@ -18,7 +24,7 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
         <RouterLink to='/'>
           <Logo/>
         </RouterLink>
-        <Box sx={{ flexGrow: 1 }}/>
+        <Box className={classes.box}/>
         <Hidden lgDown>
           {isLoggedIn
             ?

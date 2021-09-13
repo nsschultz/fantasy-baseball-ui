@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 const TableFilter = ({ column, onHandleFilterChange }) => {
   const input = createRef();
-
   const onChange = (event) => { onHandleFilterChange(column.field, event.target.value); };
 
   return (
@@ -14,19 +13,19 @@ const TableFilter = ({ column, onHandleFilterChange }) => {
       {(column.lookup) 
         ? <CustomSelectField 
             field={column.field}
-            lookup={column.lookup}
             filterValues={column.filterValue}
+            lookup={column.lookup}
             onHandleFilterChange={onChange}
             width={column.width}
           />
         : <CustomInuptBase
-            onChange={(event) => onChange(event)}
-            size='small'
-            type={column.type === 'numeric' ? 'number' : 'search'}
             defaultValue={column.filterValue ? column.type === 'numeric' ? parseInt(column.filterValue, 10) : column.filterValue : null}
+            onChange={(event) => onChange(event)}
             ref={input}
-            variant='outlined'
+            size='small'
             style={{width: column.width ? column.width : 100}}
+            type={column.type === 'numeric' ? 'number' : 'search'}
+            variant='outlined'
           />
       }
     </div>
