@@ -72,7 +72,7 @@ export default () => {
     .get('http://baseball-player-api.schultz.local/api/player')
     .then(response => { 
       if (isMountedRef.current) {
-        setPlayers(response.data.players); 
+        setPlayers(response.data); 
         setIsLoading(false); 
       }
     })
