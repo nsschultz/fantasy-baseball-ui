@@ -42,7 +42,7 @@ describe('Players Page', () => {
   });
 
   it('should render the table with data', async () => {
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
     const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
     wrapper.update();
@@ -58,7 +58,7 @@ describe('Players Page', () => {
   });
 
   it('should handle a successful update', async () => {
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
     axios.put.mockImplementationOnce(() => Promise.resolve({}));
     const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);
@@ -72,7 +72,7 @@ describe('Players Page', () => {
   });
 
   it('should handle a failed update', async () => {
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: { players: players } }));
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
     axios.put.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><Players/></ThemeProvider>);
     await expect(getSpy).toHaveBeenCalledTimes(4);

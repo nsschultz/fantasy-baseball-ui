@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
   boxOuter: { display: 'flex', flexDirection: 'column', height: '100%' },
   drawerPaperLgDown: { width: 192 },
   drawerPaperLgUp: { height: 'calc(100% - 64px)', top: 64, width: 192 },
-
 }));
 
 const Sidebar = ({ onMobileClose, openMobile }) => {
