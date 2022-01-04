@@ -1,7 +1,7 @@
 import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
-import { Edit } from '@material-ui/icons';
+import CustomTableRow from './custom-table-row';
 import { FilterList } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import TableHeaderCell from './table-header-cell';
@@ -22,8 +22,6 @@ const convertToNumber = (val) => parseInt(val, 10);
 
 const compare = (a, b, orderBy) => b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0;
 
-const getAlign = (column) => column.type === 'numeric' ? 'right' : 'left';
-
 const getComparator = (order, orderBy) => (a, b) => compare(a, b, orderBy) * (order === 'desc' ? 1 : -1);
 
 const stableSort = (array, comparator) => {
@@ -35,7 +33,7 @@ const stableSort = (array, comparator) => {
   return stabilizedThis.map((el) => el[0]);
 };
 
-const CustomTable = ({columns, values, buildEdit, handleClose}) => {
+const ParentTable = ({columns, values, buildEdit, childColumnSelector, childRowSelector, childTitle, handleClose}) => {
   const [editOpen, setEditOpen] = useState(false);
   const [editRow, setEditRow] = useState(null);
   const [limit, setLimit] = useState(10);
@@ -45,7 +43,7 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
   const [rowCount, setRowCount] = useState(0);
   const [rows, setRows] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false);
-  
+
   useEffect(() => { setRows(buildRows(columns, values)); }, [limit, order, orderBy, page]);
 
   const buildRows = (columns, rows) => {
@@ -53,23 +51,21 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
     setRowCount(filteredRows.length);
     return stableSort(filteredRows, getComparator(order, orderBy))
       .slice(page*limit, (page+1)*limit)
-      .map((row) => {
+      .map((row) => { 
         return (
-          <TableRow hover key={row.id}>
-            <TableCell>
-              <IconButton id={'edit-'+row.id} onClick={() => handleEditOpen(row)} size='small'><Edit fontSize='inherit'/></IconButton>
-            </TableCell>
-            {columns.map((column) => 
-              <TableCell key={column.field} align={getAlign(column)}>{getValue(column, row[column.field])}</TableCell>
-            )}
-          </TableRow>
+          <CustomTableRow 
+            childColumns={childColumnSelector(row)} 
+            childRows={childRowSelector(row)} 
+            childTitle={childTitle} 
+            columns={columns} 
+            handleEditOpen={(r) => handleEditOpen(r)} 
+            key={row.id} 
+            values={row}/>
         );
       });
   };
 
   const buildSortHandler = (property) => (event) => handleRequestSort(event, property);
-
-  const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
   
   const handleEditClose = (editedObject) => { 
     setEditRow(null);
@@ -115,7 +111,6 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
                       buildSortHandler={(key) => buildSortHandler(key)}
                       column={column} 
                       onHandleFilterChange={onHandleFilterChange}
-                      getAlign={(column) => getAlign(column)}
                       key={column.field} 
                       order={order}
                       orderBy={orderBy}
@@ -141,11 +136,14 @@ const CustomTable = ({columns, values, buildEdit, handleClose}) => {
   );
 }
 
-CustomTable.propTypes = { 
+ParentTable.propTypes = { 
   columns: PropTypes.array.isRequired,
   values: PropTypes.array.isRequired,
   buildEdit: PropTypes.func,
+  childColumnSelector: PropTypes.func,
+  childRowSelector: PropTypes.func,
+  childTitle: PropTypes.string,
   handleClose: PropTypes.func
 };
 
-export default CustomTable;
+export default ParentTable;

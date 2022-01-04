@@ -3,6 +3,7 @@ import { TableCell, TableSortLabel } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableFilter from './table-filter';
+import { getAlign } from './table-funcs';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({ 
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-const TableHeaderCell = ({ buildSortHandler, column, getAlign, onHandleFilterChange, order, filterVisible, orderBy }) => {
+const TableHeaderCell = ({ buildSortHandler, column, onHandleFilterChange, order, filterVisible, orderBy }) => {
   const classes = useStyles();
   
   return (
@@ -37,7 +38,6 @@ const TableHeaderCell = ({ buildSortHandler, column, getAlign, onHandleFilterCha
 TableHeaderCell.propTypes = {
   buildSortHandler: PropTypes.func.isRequired,
   column: PropTypes.object.isRequired,
-  getAlign: PropTypes.func.isRequired,
   onHandleFilterChange: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   filterVisible: PropTypes.bool,
