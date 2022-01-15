@@ -10,6 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
 
+const statsDisplay = { 
+  1: 'Year to Date', 
+  2: 'Projected', 
+  3: 'Combined'
+};
+
 const columns = [
   { title: 'BHQ ID', field: 'bhqId', type: 'numeric', width: 75 },
   { title: 'First Name', field: 'firstName' },
@@ -26,7 +32,7 @@ const columns = [
 ];
 
 const columnsBattingStats = [
-  { title: '', field: 'type' },
+  { title: '', field: 'statsType', lookup: statsDisplay },
   { title: 'AB', field: 'atBats', type: 'numeric' },
   { title: 'R', field: 'runs', type: 'numeric' },
   { title: 'H', field: 'hits', type: 'numeric' },
@@ -51,7 +57,7 @@ const columnsBattingStats = [
 ];
 
 const columnsPitchingStats = [
-  { title: '', field: 'type' },
+  { title: '', field: 'statsType', lookup: statsDisplay },
   { title: 'W', field: 'wins', type: 'numeric' },
   { title: 'L', field: 'losses', type: 'numeric' },
   { title: 'QS', field: 'qualityStarts', type: 'numeric' },
@@ -74,23 +80,7 @@ const columnsPitchingStats = [
   { title: 'BPV', field: 'basePerformanceValue', type: 'numeric', format: (value) => value.toFixed(0)}
 ];
 
-const statsDisplays = { 
-  YTD: 'Year to Date', 
-  PROJ: 'Projected', 
-  CMBD: 'Combined'
-};
-
-const statsSelectors = [ 'YTD', 'PROJ', 'CMBD' ];
-
-const getChildRows = (player) => getDisplayStats(player.type == 1 ? player.battingStats : player.pitchingStats);
-
-const getDisplayStats = (stats) => {
-  return statsSelectors.map(s => {
-    var ds = stats[s];
-    ds.type = statsDisplays[s];
-    return ds;
-  });
-};
+const getChildRows = (player) => player.type == 1 ? player.battingStats : player.pitchingStats;
 
 const statsSelection = (player) => player.type == 1 ? columnsBattingStats : columnsPitchingStats;
 
@@ -138,7 +128,7 @@ export default () => {
 
   const getPlayers = () => {
     axios
-    .get('http://baseball-player-api.schultz.local/api/player')
+    .get('http://baseball-player-api.schultz.local/api/v1/player')
     .then(response => { 
       if (isMountedRef.current) {
         setPlayers(response.data); 
@@ -163,7 +153,7 @@ export default () => {
 
   const updatePlayer = (id, player) => {
     axios
-      .put(`http://baseball-player-api.schultz.local/api/player/${id}`, player)
+      .put(`http://baseball-player-api.schultz.local/api/v1/player/${id}`, player)
       .then(() => {
         setSeverity('success');
         setMessage('Successfully updated player');
