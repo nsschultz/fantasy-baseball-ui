@@ -1,13 +1,13 @@
 import { IconButton, TableBody, TablePagination } from '@material-ui/core';
 
-import CustomTable from '../../../components/table/custom-table'
 import GlobalTheme from '../../../components/global-theme';
+import ParentTable from '../../../components/table/parent-table';
 import React from 'react';
 import TableHeaderCell from '../../../components/table/table-header-cell';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { mount } from 'enzyme';
 
-describe('Custom Table', () => {
+describe('Parent Table', () => {
   let columns; 
   
   const rows = [
@@ -34,20 +34,20 @@ describe('Custom Table', () => {
   ]);
 
   it('should render', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(wrapper.find(TableHeaderCell)).toHaveLength(columns.length);
     expect(getRows(wrapper)).toHaveLength(10);
   });
 
   it('should sort in ascending order', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     wrapper.find('span').at(2).simulate('click');
     expect(getRows(wrapper).at(0).find('td').at(1).text()).toEqual('Aaron, Hank');
     expect(getRows(wrapper).at(9).find('td').at(1).text()).toEqual('Wickman, Bob');
   });
 
   it('should sort in descending order', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     wrapper.find('span').at(2).simulate('click');
     wrapper.find('span').at(2).simulate('click');
     expect(getRows(wrapper).at(0).find('td').at(1).text()).toEqual('Yount, Robin');
@@ -55,7 +55,7 @@ describe('Custom Table', () => {
   });
 
   it('should only display the filters on click', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(wrapper.find('table').find('input').exists()).toBeFalsy();
     wrapper.find(IconButton).at(0).simulate('click');
     wrapper.update();
@@ -63,7 +63,7 @@ describe('Custom Table', () => {
   });
 
   it('should handle filtering of text field', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(getRows(wrapper)).toHaveLength(10);
     wrapper.find(IconButton).at(0).simulate('click');
     wrapper.update();
@@ -72,7 +72,7 @@ describe('Custom Table', () => {
   });
 
   it('should handle filtering of numeric field', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(getRows(wrapper)).toHaveLength(10);
     wrapper.find(IconButton).at(0).simulate('click');
     wrapper.update();
@@ -82,12 +82,12 @@ describe('Custom Table', () => {
 
   it('should handle filtering of select field', () => { 
     columns[2].filterValue = ['0'];
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(getRows(wrapper)).toHaveLength(2);
   });
   
   it('should handle moving to the next page and back', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(getRows(wrapper)).toHaveLength(10);
     wrapper.find('ForwardRef(KeyboardArrowRightIcon)').simulate('click');
     expect(getRows(wrapper)).toHaveLength(1);
@@ -96,7 +96,7 @@ describe('Custom Table', () => {
   });
 
   it('should handle changing the page size', () => { 
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows}/></ThemeProvider>);
     expect(wrapper.find(TablePagination).props().rowsPerPage).toEqual(10);
     wrapper.find(TablePagination).props().onRowsPerPageChange({ target: { value: 25 } });
     wrapper.update();
@@ -112,7 +112,7 @@ describe('Custom Table', () => {
       expect(editRow).toEqual(rows[0]);
       handleEditClose();
     };
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows} handleClose={handleClose} buildEdit={buildEdit}/></ThemeProvider>);
+    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><ParentTable columns={columns} values={rows} handleClose={handleClose} buildEdit={buildEdit}/></ThemeProvider>);
     wrapper.find('#edit-10').at(0).simulate('click');
     expect(closeCount).toEqual(0);
     expect(editCount).toEqual(1);
@@ -131,9 +131,32 @@ describe('Custom Table', () => {
       expect(editRow).toEqual(rows[0]);
       handleEditClose(editRow);
     };
-    const wrapper = mount(<ThemeProvider theme={GlobalTheme()}><CustomTable columns={columns} values={rows} handleClose={handleClose} buildEdit={buildEdit}/></ThemeProvider>);
+    const wrapper = mount(
+      <ThemeProvider theme={GlobalTheme()}>
+        <ParentTable 
+          buildEdit={buildEdit}
+          columns={columns} 
+          handleClose={handleClose} 
+          values={rows}/>
+      </ThemeProvider>);
     wrapper.find('#edit-10').at(0).simulate('click');
     expect(closeCount).toEqual(1);
     expect(editCount).toEqual(1);
+  });
+
+  it('should handle displaying a child table', () => { 
+    const wrapper = mount(
+      <ThemeProvider theme={GlobalTheme()}>
+        <ParentTable 
+          childColumnSelector={() => columns}
+          childRowSelector={() => rows}
+          childTitle='Child Title'
+          columns={columns} 
+          values={rows}/>
+      </ThemeProvider>);
+      expect(getRows(wrapper)).toHaveLength(20);
+      wrapper.find('#expand-10').at(0).simulate('click');
+      wrapper.update();
+      expect(getRows(wrapper)).toHaveLength(32);
   });
 });

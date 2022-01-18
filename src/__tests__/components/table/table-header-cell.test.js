@@ -16,8 +16,7 @@ describe('Table Header Cell', () => {
       <ThemeProvider theme={GlobalTheme()}>
         <TableHeaderCell 
           buildSortHandler={() => () => 'asc'} 
-          column={{ align: align, field: field, title: title }} 
-          getAlign={(column) => column.align} 
+          column={{ field: field, title: title, type: 'right' === align ? 'numeric' : 'string' }} 
           order={direction} 
           orderBy={sortField} 
           filterVisible={open}/>

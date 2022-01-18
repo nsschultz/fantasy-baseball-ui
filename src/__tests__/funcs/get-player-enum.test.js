@@ -14,21 +14,21 @@ describe('Get Player Enum Fuction', () => {
     const expected = { '0': 'Available', '1': 'Rostered', '2': 'Unavailable', '3': 'Scouted' };
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: expected }));
     getLeagueStatusEnums((response) => { expect(response).toEqual(expected); });
-    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/player/enum-map?enumType=LeagueStatus');
+    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=LeagueStatus');
   });
 
   it('should get PlayerStatus', async () => {
     const expected = { '0': '', '1': 'Disabled List', '2': 'Not Available', '3': 'New Entry' };
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: expected }));
     getPlayerStatusEnums((response) => { expect(response).toEqual(expected); });
-    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/player/enum-map?enumType=PlayerStatus');
+    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=PlayerStatus');
   });
 
   it('should get PlayerType', async () => {
     const expected = { '0': 'Unknown', '1': 'Batter', '2': 'Pitcher' };
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: expected }));
     getPlayerTypeEnums((response) => { expect(response).toEqual(expected); });
-    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/player/enum-map?enumType=PlayerType');
+    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=PlayerType');
   });
 
   it('should handle errors', async () => {
