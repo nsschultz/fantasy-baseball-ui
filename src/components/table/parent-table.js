@@ -54,8 +54,8 @@ const ParentTable = ({columns, values, buildEdit, childColumnSelector, childRowS
       .map((row) => { 
         return (
           <CustomTableRow 
-            childColumns={childColumnSelector(row)} 
-            childRows={childRowSelector(row)} 
+            childColumns={childColumnSelector ? childColumnSelector(row) : null} 
+            childRows={childRowSelector ? childRowSelector(row) : null} 
             childTitle={childTitle} 
             columns={columns} 
             handleEditOpen={(r) => handleEditOpen(r)} 

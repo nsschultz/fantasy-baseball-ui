@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const IntegrationCard = ({ description, integrationButton, title }) => {
+  const classes = useStyles();
   const additionalContent = (
     <>
       <Divider/>
@@ -24,7 +25,6 @@ const IntegrationCard = ({ description, integrationButton, title }) => {
       </Box>
     </>
   );
-  const classes = useStyles();
   const content = (<Typography align='center' color='textSecondary' variant='body1'>{description}</Typography>);
 
   return (<CustomCard additionalContent={additionalContent} content={content} title={title} />);

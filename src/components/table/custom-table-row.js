@@ -7,7 +7,12 @@ import PropTypes from 'prop-types';
 import { getAlign } from './table-funcs';
 import { makeStyles } from '@material-ui/styles';
 
-const getValue = (column, value) => column.format && typeof value === 'number' ? column.format(value) : column.lookup ? column.lookup[value] : value;
+const getValue = (column, value) => 
+  column.format && typeof value === 'number' 
+    ? column.format(value) 
+    : column.lookup 
+      ? column.lookup[value] 
+      : value;
 
 const useStyles = makeStyles({ 
   collapse: {
@@ -30,8 +35,8 @@ const CustomTableRow = ({columns, values, childColumns, childRows, childTitle, h
 
   const buildChildTable = (values) => {
     return (
-      <TableRow key={values.id+'-stats'}>
-        <TableCell className={classes.collapse} colSpan={columns.length+(needsActionCell()?1:0)}>
+      <TableRow key={'child-table'+values.id}>
+        <TableCell className={classes.collapse} colSpan={columns.length + 1}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <ChildTable columns={childColumns} rows={childRows} title={childTitle}/>
           </Collapse>
