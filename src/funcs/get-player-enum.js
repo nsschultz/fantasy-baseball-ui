@@ -10,3 +10,4 @@ const getPlayersEnumMap = (enumType, handleResponse) => {
 export const getLeagueStatusEnums = (handleResponse) => { getPlayersEnumMap('LeagueStatus', handleResponse); };
 export const getPlayerStatusEnums = (handleResponse) => { getPlayersEnumMap('PlayerStatus', handleResponse); };
 export const getPlayerTypeEnums   = (handleResponse) => { getPlayersEnumMap('PlayerType'  , handleResponse); };
+export const getStatsTypeEnums    = (handleResponse) => { getPlayersEnumMap('StatsType'   , handleResponse); };

@@ -1,6 +1,6 @@
 import { Box, Container, Snackbar } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
-import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums } from '../funcs/get-player-enum';
+import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getStatsTypeEnums } from '../funcs/get-player-enum';
 
 import Alert from '@material-ui/lab/Alert';
 import { Helmet } from 'react-helmet';
@@ -9,12 +9,6 @@ import PlayerView from './player-view';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/styles';
-
-const statsDisplay = { 
-  1: 'Year to Date', 
-  2: 'Projected', 
-  3: 'Combined'
-};
 
 const columns = [
   { title: 'BHQ ID', field: 'bhqId', type: 'numeric', width: 75 },
@@ -32,7 +26,7 @@ const columns = [
 ];
 
 const columnsBattingStats = [
-  { title: '', field: 'statsType', lookup: statsDisplay },
+  { title: '', field: 'statsType' },
   { title: 'AB', field: 'atBats', type: 'numeric' },
   { title: 'R', field: 'runs', type: 'numeric' },
   { title: 'H', field: 'hits', type: 'numeric' },
@@ -57,7 +51,7 @@ const columnsBattingStats = [
 ];
 
 const columnsPitchingStats = [
-  { title: '', field: 'statsType', lookup: statsDisplay },
+  { title: '', field: 'statsType' },
   { title: 'W', field: 'wins', type: 'numeric' },
   { title: 'L', field: 'losses', type: 'numeric' },
   { title: 'QS', field: 'qualityStarts', type: 'numeric' },
@@ -84,7 +78,9 @@ const getChildRows = (player) => player.type == 1 ? player.battingStats : player
 
 const statsSelection = (player) => player.type == 1 ? columnsBattingStats : columnsPitchingStats;
 
-const updateLookup = (field, lookup) => columns.filter((column) => column.field === field).forEach((column) => column.lookup = lookup);
+const updateLookupOnColumns = (field, lookup, cols) => cols.filter((column) => column.field === field).forEach((column) => column.lookup = lookup);
+
+const updateLookup = (field, lookup) => updateLookupOnColumns(field, lookup, columns);
 
 const useStyles = makeStyles((theme) => ({ 
   box: { backgroundColor: 'background.default', paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) }
@@ -101,6 +97,7 @@ export default () => {
   const [playerStatuses, setPlayerStatuses] = useState([]);
   const [playerTypes, setPlayerTypes] = useState([])
   const [severity, setSeverity] = useState('');
+  const [statTypes, setStatTypes] = useState([]);
   
   useEffect(() => { 
     isMountedRef.current = true;
@@ -117,12 +114,17 @@ export default () => {
       setPlayerTypes(response);
       updateLookup('type', response);
     });
+    getStatsTypeEnums((response) => {
+      setStatTypes(response);
+      updateLookupOnColumns('statsType', response, columnsBattingStats);
+      updateLookupOnColumns('statsType', response, columnsPitchingStats);
+    });
     getPlayers();
     return () => { isMountedRef.current = false; };
   }, []);
 
   const buildEdit = (handleEditClose, editOpen, editRow) => {
-    const enums = { leagusStatuses: leagusStatuses, playerStatuses: playerStatuses, playerTypes: playerTypes }; 
+    const enums = { leagusStatuses: leagusStatuses, playerStatuses: playerStatuses, playerTypes: playerTypes, statTypes: statTypes }; 
     return (<PlayerView enums={enums} onClose={handleEditClose} open={editOpen} player={editRow}/>);
   };
 
