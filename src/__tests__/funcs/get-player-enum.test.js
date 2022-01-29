@@ -1,4 +1,4 @@
-import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums } from '../../funcs/get-player-enum';
+import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getStatsTypeEnums } from '../../funcs/get-player-enum';
 
 import axios from 'axios';
 
@@ -29,6 +29,13 @@ describe('Get Player Enum Fuction', () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: expected }));
     getPlayerTypeEnums((response) => { expect(response).toEqual(expected); });
     await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=PlayerType');
+  });
+
+  it('should get StatsType', async () => {
+    const expected = { '0': 'Unknown', '1': 'Year to Date', '2': 'Projected', '3' :'Combined' };
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: expected }));
+    getStatsTypeEnums((response) => { expect(response).toEqual(expected); });
+    await expect(getSpy).toHaveBeenCalledWith('http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=StatsType');
   });
 
   it('should handle errors', async () => {
