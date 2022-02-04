@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Snackbar } from '@material-ui/core';
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import Alert from '@material-ui/lab/Alert';
@@ -19,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const [severity, setSeverity] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const [severity, setSeverity] = useState('');
 
   const exportOnClick = () => {
     setDisabled(true);
@@ -33,7 +34,17 @@ export default () => {
         setSnackbar('success', '', false, false);
       })
       .catch(() => setSnackbar('error', 'Failed to export the players.', true, false));
-  }
+  };
+
+  const handleDialogClose = (shouldClear) => {
+    setDialogOpen(false);
+    if (!shouldClear) return;
+    setDisabled(true);
+    axios
+      .delete('http://baseball-player-api.schultz.local/api/v1/player')
+      .then(() => setSnackbar('success', 'Successfully cleared the players.', true, false))
+      .catch(() => setSnackbar('error', 'Failed to clear the players.', true, false));
+  };
 
   const mergeOnClick = () => {
     setDisabled(true);
@@ -41,7 +52,7 @@ export default () => {
       .post('http://baseball-player-api.schultz.local/api/v1/player/merge')
       .then(() => setSnackbar('success', 'Successfully completed the player merge.', true, false))
       .catch(() => setSnackbar('error', 'Failed to complete the player merge.', true, false));
-  }
+  };
 
   const onBatterFileChange = event => onFileChange(event.target.files[0], 'batters');
 
@@ -53,7 +64,7 @@ export default () => {
       .post(`http://baseball-player-api.schultz.local/api/v1/bhq-stats/${type}/upload`, formData)
       .then(() => setSnackbar('success', `Successfully uploaded the ${type} file.`, true, false))
       .catch(() => setSnackbar('error', `Failed to upload the ${type} file.`, true, false));
-  }
+  };
 
   const onPitcherFileChange = event => onFileChange(event.target.files[0], 'pitchers');
 
@@ -62,15 +73,19 @@ export default () => {
     setMessage(msg);
     setOpen(op);
     setDisabled(dis);
-  }
+  };
 
-  const exportPlayersButton = (<Button disabled={disabled} variant='contained' color='primary' onClick={() => { exportOnClick() }}>Export</Button>);
-  const mergePlayersButton = (<Button disabled={disabled} variant='contained' color='primary' onClick={() => { mergeOnClick() }}>Merge</Button>);
+  const clearPlayersButton = 
+    (<Button color='primary' disabled={disabled} onClick={() => setDialogOpen(true)} variant='contained'>Clear</Button>);
+  const exportPlayersButton = 
+    (<Button color='primary' disabled={disabled} onClick={() => exportOnClick()} variant='contained'>Export</Button>);
+  const mergePlayersButton = 
+    (<Button color='primary' disabled={disabled} onClick={() => mergeOnClick()} variant='contained'>Merge</Button>);
   const uploadBattersFileButton = (
-    <Button color='primary' component='label' disabled={disabled} variant='contained'>Upload<input type='file' onChange={onBatterFileChange} hidden/></Button>
+    <Button color='primary' component='label' disabled={disabled} variant='contained'>Upload<input hidden onChange={onBatterFileChange} type='file'/></Button>
   );
   const uploadPitchersFileButton = (
-    <Button color='primary' component='label' disabled={disabled} variant='contained'>Upload<input type='file' onChange={onPitcherFileChange} hidden/></Button>
+    <Button color='primary' component='label' disabled={disabled} variant='contained'>Upload<input hidden onChange={onPitcherFileChange} type='file'/></Button>
   );
 
   return (
@@ -105,9 +120,24 @@ export default () => {
                 description='Download the latest version of the player data.'
                 integrationButton={exportPlayersButton}/>
             </Grid>
+            <Grid item key='clearPlayers' lg={6} md={6} xs={12}>
+              <IntegrationCard 
+                title='Clear Players'
+                description='Clear the list of players from the previous season.'
+                integrationButton={clearPlayersButton}/>
+            </Grid>
           </Grid>
         </Container>
       </Box>
+      <Dialog open={dialogOpen} onClose={() => handleDialogClose(false)}>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to clear the players?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color='primary' onClick={() => handleDialogClose(false)} variant='contained'>No</Button>
+          <Button color='secondary' onClick={() => handleDialogClose(true)} variant='contained'>Yes</Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} autoHideDuration={2000} onClose={() => setOpen(false)} open={open}>
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>
