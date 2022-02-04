@@ -1,3 +1,5 @@
+import { Button, Dialog } from '@material-ui/core';
+
 import GlobalTheme from '../../components/global-theme';
 import ImportExportData from '../../pages/import-export-data';
 import React from 'react';
@@ -6,7 +8,7 @@ import axios from 'axios';
 import { mount } from 'enzyme';
 
 describe('Import Export Data Page', () => {
-  let wrapper, postSpy, getSpy, exportButton, mergeButton, uploadBatterButton, uploadPitcherButton;
+  let wrapper, deleteSpy, getSpy, postSpy, clearButton, exportButton, mergeButton, uploadBatterButton, uploadPitcherButton;
 
   jest.mock('axios');
 
@@ -16,6 +18,8 @@ describe('Import Export Data Page', () => {
   beforeEach(() => uploadPitcherButton = wrapper.find('label').at(1));
   beforeEach(() => mergeButton = wrapper.find('button').at(0));
   beforeEach(() => exportButton = wrapper.find('button').at(1));
+  beforeEach(() => clearButton = wrapper.find('button').at(2));
+  beforeEach(() => deleteSpy = jest.spyOn(axios, 'delete'));
   beforeEach(() => postSpy = jest.spyOn(axios, 'post'));
   beforeEach(() => getSpy = jest.spyOn(axios, 'get'));
   
@@ -24,6 +28,7 @@ describe('Import Export Data Page', () => {
     expect(uploadPitcherButton.text()).toEqual('Upload');
     expect(mergeButton.text()).toEqual('Merge');
     expect(exportButton.text()).toEqual('Export');
+    expect(clearButton.text()).toEqual('Clear');
   });
 
   it('should call post on merge click', async () => {
@@ -60,5 +65,25 @@ describe('Import Export Data Page', () => {
     axios.post.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
     uploadPitcherButton.find('input').simulate('change', { target: { files: [new Blob(['file data'])] } });
     await expect(postSpy).toBeCalled();
+  });
+
+  it('should handle a clear being cancelled', async () => {
+    clearButton.simulate('click');
+    wrapper.find(Dialog).find(Button).at(0).simulate('click');
+    await expect(deleteSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should handle a clear being approved', async () => {
+    axios.delete.mockImplementationOnce(() => Promise.resolve({}));
+    clearButton.simulate('click');
+    wrapper.find(Dialog).find(Button).at(1).simulate('click');
+    await expect(deleteSpy).toBeCalled();
+  });
+
+  it('should handle an error being thrown on clear', async () => {
+    axios.delete.mockImplementationOnce(() => Promise.reject(new Error('errorMessage')));
+    clearButton.simulate('click');
+    wrapper.find(Dialog).find(Button).at(1).simulate('click');
+    await expect(deleteSpy).toBeCalled();
   });
 });

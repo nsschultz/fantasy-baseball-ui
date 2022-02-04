@@ -66,11 +66,11 @@ const columnsPitchingStats = [
   { title: 'GB%', field: 'groundBallRate', type: 'numeric', format: (value) => value.toFixed(2) },
   { title: 'ERA', field: 'earnedRunAverage', type: 'numeric', format: (value) => value.toFixed(2) },
   { title: 'BABIP', field: 'battingAverageOnBallsInPlay', type: 'numeric', format: (value) => value.toFixed(3) },
-  { title: 'SR', field: 'strandRate', type: 'numeric' },
+  { title: 'SR', field: 'strandRate', type: 'numeric', format: (value) => value.toFixed(2) },
   { title: 'CMD', field: 'command', type: 'numeric', format: (value) => value.toFixed(2) },
   { title: 'DOM', field: 'dominance', type: 'numeric', format: (value) => value.toFixed(2) },
   { title: 'CON', field: 'control', type: 'numeric', format: (value) => value.toFixed(2) },
-  { title: 'GB/FB', field: 'groundBallToFlyBallRate', type: 'numeric' },
+  { title: 'GB/FB', field: 'groundBallToFlyBallRate', type: 'numeric', format: (value) => value.toFixed(2) },
   { title: 'BPV', field: 'basePerformanceValue', type: 'numeric', format: (value) => value.toFixed(0)}
 ];
 
