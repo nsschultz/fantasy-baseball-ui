@@ -28,7 +28,7 @@ export default () => {
   const exportOnClick = () => {
     setDisabled(true);
     axios
-      .get('http://baseball-player-api.schultz.local/api/v1/player/export', { responseType: 'blob' })
+      .get('http://baseball-player-api.schultz.local/api/v1/action/export', { responseType: 'blob' })
       .then(response => {
         FileSaver.saveAs(new Blob([response.data]), 'players.csv');
         setSnackbar('success', '', false, false);
@@ -49,7 +49,7 @@ export default () => {
   const mergeOnClick = () => {
     setDisabled(true);
     axios
-      .post('http://baseball-player-api.schultz.local/api/v1/player/merge')
+      .post('http://baseball-player-api.schultz.local/api/v1/action/merge')
       .then(() => setSnackbar('success', 'Successfully completed the player merge.', true, false))
       .catch(() => setSnackbar('error', 'Failed to complete the player merge.', true, false));
   };
@@ -61,7 +61,7 @@ export default () => {
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
-      .post(`http://baseball-player-api.schultz.local/api/v1/bhq-stats/${type}/upload`, formData)
+      .post(`http://baseball-player-api.schultz.local/api/v1/projection/${type}/upload`, formData)
       .then(() => setSnackbar('success', `Successfully uploaded the ${type} file.`, true, false))
       .catch(() => setSnackbar('error', `Failed to upload the ${type} file.`, true, false));
   };
