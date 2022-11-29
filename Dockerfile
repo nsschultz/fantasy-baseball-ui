@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM node:13.12.0 as build
+FROM node:19.1.0 as dev
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 ENV JAVA_HOME=/usr/lib/jvm/default-java \
     SONAR_VERSION=4.5.0.2216
@@ -12,12 +12,19 @@ RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribu
     mv sonar-scanner-$SONAR_VERSION /root/.sonar/native-sonar-scanner/sonar-scanner-$SONAR_VERSION-linux
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+
+FROM dev as build
 COPY ["package.json", "package-lock.json", "./"]
 RUN --mount=type=cache,id=react,target=/app/node_modules npm ci --silent
 COPY . .
 RUN --mount=type=cache,id=react,target=/app/node_modules npm run build:docker
 
-FROM nschultz/base-nginx-runner:1.18.0
+FROM nginx:1.23.2 AS base-nginx-runner
+RUN useradd -u 5000 ng-user && \
+    mkdir -p /var/run/nginx /var/tmp/nginx && \
+    chown -R ng-user:ng-user /usr/share/nginx /var/run/nginx /var/tmp/nginx
+USER ng-user:ng-user
+CMD ["nginx", "-g", "daemon off;"]
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/
 COPY --from=build /app/build /usr/share/nginx/html

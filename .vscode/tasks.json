@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "npm",
+      "type": "process",
+      "args": ["run", "build:default"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "restore",
+      "command": "npm",
+      "type": "process",
+      "args": ["ci"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run",
+      "command": "npm",
+      "type": "process",
+      "args": ["run", "start"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test",
+      "command": "npm",
+      "type": "process",
+      "args": ["run", "test"],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
