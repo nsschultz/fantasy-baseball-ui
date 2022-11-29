@@ -1,1 +1,1 @@
-export const getAlign = (column) => column.type === 'numeric' ? 'right' : 'left';
+export const getAlign = (column) => (column.type === "numeric" ? "right" : "left");

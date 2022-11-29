@@ -1,13 +1,23 @@
-/.git
-/.scannerwork
-/_deploy
-/build
-/coverage
-/node_modules
-/reports
+# build files
+
+build/
+node_modules/
+
+# files not needed for build
+
+\_deploy/
+\_dev/
+.git/
+.vscode/
 .dockerignore
 .gitignore
 Dockerfile
 Jenkinsfile
 LICENSE
 README.md
+
+# scanning data
+
+.scannerwork/
+coverage/
+reports/

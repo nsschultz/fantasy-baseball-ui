@@ -16,14 +16,14 @@ spec:
         app: ui
     spec:
       containers:
-      - name: ui
-        image: nschultz/fantasy-baseball-ui:{{version}}
-        ports:
-          - name: web
-            containerPort: 8080
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 5
+        - name: ui
+          image: nschultz/fantasy-baseball-ui:{{version}}
+          ports:
+            - name: web
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5

@@ -4,9 +4,9 @@ env:
   node: true
   "jest/globals": true
 extends:
-  - 'plugin:react/recommended'
-  - 'plugin:sonarjs/recommended'
-  - 'eslint:recommended'
+  - "plugin:react/recommended"
+  - "plugin:sonarjs/recommended"
+  - "eslint:recommended"
 parser: "babel-eslint"
 parserOptions:
   ecmaFeatures:
@@ -17,11 +17,12 @@ plugins:
   - react
   - sonarjs
   - jest
-rules: {
-  "jest/no-disabled-tests": "warn",
-  "jest/no-focused-tests": "error",
-  "jest/no-identical-title": "error",
-  "jest/prefer-to-have-length": "warn",
-  "jest/valid-expect": "error",
-  "react/display-name": "off",
-}
+rules:
+  {
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "react/display-name": "off",
+  }
