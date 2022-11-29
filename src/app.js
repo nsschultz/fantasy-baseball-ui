@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from "react-router-dom";
-import { StyledEngineProvider, ThemeProvider } from "@material-ui/core";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 
 import GlobalStyles from "./components/global-styles";
 import GlobalTheme from "./components/global-theme";

@@ -1,14 +1,13 @@
-import { Box, Container, Snackbar } from "@material-ui/core";
+import { Box, Container, Snackbar, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getStatsTypeEnums } from "../funcs/get-player-enum";
 
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/lab/Alert";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
 import PlayerView from "./player-view";
-import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const columns = [
   { title: "BHQ ID", field: "bhqId", type: "numeric", width: 75 },

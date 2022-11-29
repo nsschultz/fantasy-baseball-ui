@@ -1,10 +1,10 @@
-import { Button } from "@material-ui/core";
+import { Button, ThemeProvider } from "@mui/material";
+
 import GlobalTheme from "../../../components/global-theme";
 import { MemoryRouter } from "react-router-dom";
 import NavigationItem from "../../../components/layout/navigation-item";
-import PeopleIcon from "@material-ui/icons/People";
+import { People } from "@mui/icons-material";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 const mockLocation = { pathname: "/othersite", search: "", hash: "", state: null };
@@ -22,12 +22,12 @@ describe("Navigation Item Component", () => {
     const wrapper = mount(
       <ThemeProvider theme={GlobalTheme()}>
         <MemoryRouter initialEntries={["/home"]}>
-          <NavigationItem href="/othersite" title="Test Title" icon={PeopleIcon} />
+          <NavigationItem href="/othersite" title="Test Title" icon={People} />
         </MemoryRouter>
       </ThemeProvider>
     );
     expect(wrapper.find("span").at(0).text()).toEqual("Test Title");
-    expect(wrapper.find(PeopleIcon)).toBeTruthy();
+    expect(wrapper.find(People)).toBeTruthy();
     expect(wrapper.find(Button).prop("to")).toEqual("/othersite");
   });
 
@@ -35,12 +35,12 @@ describe("Navigation Item Component", () => {
     const wrapper = mount(
       <ThemeProvider theme={GlobalTheme()}>
         <MemoryRouter initialEntries={["/home"]}>
-          <NavigationItem href="/home" title="Test Title" icon={PeopleIcon} />
+          <NavigationItem href="/home" title="Test Title" icon={People} />
         </MemoryRouter>
       </ThemeProvider>
     );
     expect(wrapper.find("span").at(0).text()).toEqual("Test Title");
-    expect(wrapper.find(PeopleIcon)).toBeTruthy();
+    expect(wrapper.find(People)).toBeTruthy();
     expect(wrapper.find(Button).prop("to")).toEqual("/home");
   });
 });

@@ -1,10 +1,9 @@
-import { Button, TableBody } from "@material-ui/core";
+import { Button, TableBody, ThemeProvider } from "@mui/material";
 
 import GlobalTheme from "../../components/global-theme";
 import PlayerView from "../../pages/player-view";
 import Players from "../../pages/players";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
 import axios from "axios";
 import { mount } from "enzyme";
 

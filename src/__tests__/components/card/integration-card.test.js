@@ -1,8 +1,8 @@
-import { Button } from "@material-ui/core";
+import { Button, ThemeProvider } from "@mui/material";
+
 import GlobalTheme from "../../../components/global-theme";
 import IntegrationCard from "../../../components/card/integration-card";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core";
 import { mount } from "enzyme";
 
 describe("Integration Card Component", () => {

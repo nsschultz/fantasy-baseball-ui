@@ -1,11 +1,11 @@
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 import CustomCard from "../components/card/custom-card";
 import CustomTextField from "../components/input/custom-text-field";
 import { Helmet } from "react-helmet";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const buildGrid = (key, title, content) => (
   <Grid item key={key} lg={3} md={6} xs={12}>

@@ -1,9 +1,9 @@
-import { Box, Divider, Grid, Typography } from "@material-ui/core";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 
 import CustomCard from "./custom-card";
 import PropTypes from "prop-types";
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   box: { padding: theme.spacing(2) },

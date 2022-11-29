@@ -1,8 +1,8 @@
-import { Box, Container, Typography } from "@material-ui/core";
+import { Box, Container, Typography } from "@mui/material";
 
 import { Helmet } from "react-helmet";
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   box: { backgroundColor: "background.default", minHeight: "100%", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },

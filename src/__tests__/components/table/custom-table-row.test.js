@@ -1,8 +1,8 @@
+import { TableCell, ThemeProvider } from "@mui/material";
+
 import CustomTableRow from "../../../components/table/custom-table-row";
 import GlobalTheme from "../../../components/global-theme";
 import React from "react";
-import { TableCell } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 describe("Custom Table Row", () => {

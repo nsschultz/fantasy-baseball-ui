@@ -1,8 +1,8 @@
+import { Hidden, ThemeProvider } from "@mui/material";
+
 import GlobalTheme from "../../../components/global-theme";
-import { Hidden } from "@material-ui/core";
 import React from "react";
 import Sidebar from "../../../components/layout/sidebar";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 const mockLocation = { pathname: "/othersite", search: "", hash: "", state: null };

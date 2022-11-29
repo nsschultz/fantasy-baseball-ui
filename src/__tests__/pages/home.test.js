@@ -1,7 +1,7 @@
 import GlobalTheme from "../../components/global-theme";
 import Home from "../../pages/home";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@mui/material";
 import { mount } from "enzyme";
 
 describe("Home Page", () => {

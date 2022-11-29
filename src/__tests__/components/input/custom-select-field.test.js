@@ -1,10 +1,9 @@
-import { Checkbox, InputLabel, ListItemText, MenuItem, Select } from "@material-ui/core";
+import { Checkbox, InputLabel, ListItemText, MenuItem, Select, ThemeProvider } from "@mui/material";
 import { mount, shallow } from "enzyme";
 
 import CustomSelectField from "../../../components/input/custom-select-field";
 import GlobalTheme from "../../../components/global-theme";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
 
 describe("Custom Select Field", () => {
   const lookupValues = { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" };

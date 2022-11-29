@@ -1,8 +1,8 @@
-import { Box, Container, Typography } from "@material-ui/core";
+import { Box, Container, Typography } from "@mui/material";
 
 import { Helmet } from "react-helmet";
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   box: { backgroundColor: "background.default", display: "flex", flexDirection: "column", height: "100%", justifyContent: "center" },

@@ -1,9 +1,8 @@
-import { TableBody, TableCell, TableHead } from "@material-ui/core";
+import { TableBody, TableCell, TableHead, ThemeProvider } from "@mui/material";
 
 import ChildTable from "../../../components/table/child-table";
 import GlobalTheme from "../../../components/global-theme";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 describe("Child Table", () => {

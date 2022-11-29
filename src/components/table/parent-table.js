@@ -1,8 +1,8 @@
-import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@material-ui/core";
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import CustomTableRow from "./custom-table-row";
-import { FilterList } from "@material-ui/icons";
+import { FilterList } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import TableHeaderCell from "./table-header-cell";
 

@@ -1,10 +1,10 @@
-import { TableCell, TableSortLabel } from "@material-ui/core";
+import { TableCell, TableSortLabel } from "@mui/material";
 
 import PropTypes from "prop-types";
 import React from "react";
 import TableFilter from "./table-filter";
 import { getAlign } from "./table-funcs";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   visuallyHidden: {

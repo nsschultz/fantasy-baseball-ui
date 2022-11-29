@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Sidebar from "./sidebar";
 import Titlebar from "./titlebar";
-import { experimentalStyled } from "@material-ui/core";
+import { experimentalStyled } from "@mui/material";
 import { useState } from "react";
 
 const LayoutContainer = experimentalStyled("div")({

@@ -3,7 +3,7 @@ import Layout from "../../../components/layout/layout";
 import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import Sidebar from "../../../components/layout/sidebar";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@mui/material";
 import Titlebar from "../../../components/layout/titlebar";
 import { mount } from "enzyme";
 

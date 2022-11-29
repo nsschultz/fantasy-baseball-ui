@@ -1,7 +1,7 @@
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "../../../components/layout/sidebar-icon";
 
 import React from "react";
-import { SvgIcon } from "@material-ui/core";
+import { SvgIcon } from "@mui/material";
 import { shallow } from "enzyme";
 
 describe("Sidebar Icon Component", () => {

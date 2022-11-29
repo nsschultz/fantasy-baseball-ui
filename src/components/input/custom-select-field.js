@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@material-ui/core";
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@mui/material";
 import React, { useState } from "react";
 
 import CustomInuptBase from "./custom-input-base";

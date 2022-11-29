@@ -1,10 +1,10 @@
-import { Box, Drawer, Hidden, List } from "@material-ui/core";
+import { Box, Drawer, Hidden, List } from "@mui/material";
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "./sidebar-icon";
 
 import NavigationItem from "./navigation-item";
 import PropTypes from "prop-types";
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 

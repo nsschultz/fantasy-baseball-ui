@@ -1,4 +1,4 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 import React from "react";
 import Titlebar from "../../../components/layout/titlebar";
 import { shallow } from "enzyme";

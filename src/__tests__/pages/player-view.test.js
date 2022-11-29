@@ -1,8 +1,8 @@
-import { Button } from "@material-ui/core";
+import { Button, ThemeProvider } from "@mui/material";
+
 import GlobalTheme from "../../components/global-theme";
 import PlayerView from "../../pages/player-view";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 describe("Player View Page", () => {

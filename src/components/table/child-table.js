@@ -1,10 +1,10 @@
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 
 import CustomTableRow from "./custom-table-row";
 import PropTypes from "prop-types";
 import React from "react";
 import { getAlign } from "./table-funcs";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   box: { paddingBottom: theme.spacing(2), paddingTop: theme.spacing(2) },

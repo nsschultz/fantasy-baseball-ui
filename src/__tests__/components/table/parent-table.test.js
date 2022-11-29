@@ -1,10 +1,9 @@
-import { IconButton, TableBody, TablePagination } from "@material-ui/core";
+import { IconButton, TableBody, TablePagination, ThemeProvider } from "@mui/material";
 
 import GlobalTheme from "../../../components/global-theme";
 import ParentTable from "../../../components/table/parent-table";
 import React from "react";
 import TableHeaderCell from "../../../components/table/table-header-cell";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 describe("Parent Table", () => {

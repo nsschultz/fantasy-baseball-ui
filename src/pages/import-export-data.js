@@ -1,12 +1,12 @@
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@material-ui/core";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@mui/material";
 import React, { useState } from "react";
 
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@mui/lab/Alert";
 import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
 import axios from "axios";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   box: {

@@ -1,11 +1,11 @@
-import { Collapse, IconButton, TableCell, TableRow } from "@material-ui/core";
-import { Edit, KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import { Collapse, IconButton, TableCell, TableRow } from "@mui/material";
+import { Edit, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import React, { useState } from "react";
 
 import ChildTable from "./child-table";
 import PropTypes from "prop-types";
 import { getAlign } from "./table-funcs";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const getValue = (column, value) => (column.format && typeof value === "number" ? column.format(value) : column.lookup ? column.lookup[value] : value);
 

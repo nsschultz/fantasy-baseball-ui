@@ -1,7 +1,7 @@
 import GlobalTheme from "../../../components/global-theme";
 import React from "react";
 import TableFilter from "../../../components/table/table-filter";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@mui/material";
 import { mount } from "enzyme";
 
 describe("Table Filter", () => {

@@ -1,13 +1,11 @@
-import { AppBar, Badge, Box, Hidden, IconButton, Toolbar } from "@material-ui/core";
+import { AppBar, Badge, Box, Hidden, IconButton, Toolbar } from "@mui/material";
+import { Input, Menu, Notifications } from "@mui/icons-material";
 
-import InputIcon from "@material-ui/icons/Input";
 import Logo from "./logo";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
 import PropTypes from "prop-types";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 
 const useStyles = makeStyles({
@@ -30,18 +28,18 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
             <>
               <IconButton color="inherit">
                 <Badge badgeContent={notifications.length} color="primary" variant="dot">
-                  <NotificationsIcon />
+                  <Notifications />
                 </Badge>
               </IconButton>
               <IconButton color="inherit">
-                <InputIcon />
+                <Input />
               </IconButton>
             </>
           ) : null}
         </Hidden>
         <Hidden lgUp>
           <IconButton color="inherit" onClick={onOpenMobileNavigation}>
-            <MenuIcon />
+            <Menu />
           </IconButton>
         </Hidden>
       </Toolbar>

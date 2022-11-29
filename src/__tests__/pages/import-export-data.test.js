@@ -1,9 +1,8 @@
-import { Button, Dialog } from "@material-ui/core";
+import { Button, Dialog, ThemeProvider } from "@mui/material";
 
 import GlobalTheme from "../../components/global-theme";
 import ImportExportData from "../../pages/import-export-data";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
 import axios from "axios";
 import { mount } from "enzyme";
 

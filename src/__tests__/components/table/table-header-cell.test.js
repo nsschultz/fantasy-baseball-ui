@@ -1,10 +1,9 @@
-import { TableCell, TableSortLabel } from "@material-ui/core";
+import { TableCell, TableSortLabel, ThemeProvider } from "@mui/material";
 
 import GlobalTheme from "../../../components/global-theme";
 import React from "react";
 import TableFilter from "../../../components/table/table-filter";
 import TableHeaderCell from "../../../components/table/table-header-cell";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { mount } from "enzyme";
 
 describe("Table Header Cell", () => {

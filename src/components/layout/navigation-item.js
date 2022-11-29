@@ -1,9 +1,9 @@
-import { Button, ListItem } from "@material-ui/core";
+import { Button, ListItem } from "@mui/material";
 import { NavLink as RouterLink, matchPath, useLocation } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   button: {

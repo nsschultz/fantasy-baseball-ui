@@ -1,7 +1,7 @@
 import CustomTextField from "../../../components/input/custom-text-field";
 import GlobalTheme from "../../../components/global-theme";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@mui/material";
 import { mount } from "enzyme";
 
 describe("Custom Text Field", () => {
