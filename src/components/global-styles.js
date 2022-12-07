@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default (theme) => {
+const GlobalStyle = (theme) => {
   useStyles(theme);
   return null;
 };
+
+export default GlobalStyle;

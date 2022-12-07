@@ -1,16 +1,26 @@
-import { IconButton } from "@mui/material";
-import React from "react";
+import { render, screen } from "@testing-library/react";
+
+import { MemoryRouter } from "react-router-dom";
 import Titlebar from "../../../components/layout/titlebar";
-import { shallow } from "enzyme";
 
-describe("Titlebar Component", () => {
-  it("should render when logged in", () => {
-    const wrapper = shallow(<Titlebar isLoggedIn={true} />);
-    expect(wrapper.find(IconButton)).toHaveLength(3);
-  });
+test("should render when logged in", () => {
+  render(
+    <MemoryRouter initialEntries={["/home"]}>
+      <Titlebar isLoggedIn={true} />
+    </MemoryRouter>
+  );
+  expect(screen.getByTestId("titlebar-notifcation")).toBeVisible();
+  expect(screen.getByTestId("titlebar-logout")).toBeVisible();
+  expect(screen.getByTestId("titlebar-mobile-menu")).toBeVisible();
+});
 
-  it("should render when not logged in", () => {
-    const wrapper = shallow(<Titlebar isLoggedIn={false} />);
-    expect(wrapper.find(IconButton)).toHaveLength(1);
-  });
+test("should render when not logged in", () => {
+  render(
+    <MemoryRouter initialEntries={["/home"]}>
+      <Titlebar isLoggedIn={false} />
+    </MemoryRouter>
+  );
+  expect(screen.queryByTestId("titlebar-notifcation")).toBeFalsy();
+  expect(screen.queryByTestId("titlebar-logout")).toBeFalsy();
+  expect(screen.queryByTestId("titlebar-mobile-menu")).toBeVisible();
 });

@@ -1,36 +1,30 @@
-import { Hidden, ThemeProvider } from "@mui/material";
+import { render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../../components/global-theme";
-import React from "react";
+import { MemoryRouter } from "react-router-dom";
 import Sidebar from "../../../components/layout/sidebar";
-import { mount } from "enzyme";
+import { ThemeProvider } from "@mui/material";
 
-const mockLocation = { pathname: "/othersite", search: "", hash: "", state: null };
-
-jest.mock("react-router-dom", () => {
-  const originalModule = jest.requireActual("react-router-dom");
-  return {
-    ...originalModule,
-    useLocation: () => mockLocation,
-  };
+test("should render with mobile", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <MemoryRouter initialEntries={["/home"]}>
+        <Sidebar onMobileClose={() => {}} openMobile={true} />
+      </MemoryRouter>
+    </ThemeProvider>
+  );
+  expect(screen.getByTestId("sidebar-desktop-drawer")).toBeVisible();
+  expect(screen.getByTestId("sidebar-mobile-drawer")).toBeVisible();
 });
 
-describe("Sidebar Component", () => {
-  it("should render with mobile", () => {
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
-        <Sidebar onMobileClose={() => {}} openMobile={true} />
-      </ThemeProvider>
-    );
-    expect(wrapper.find(Hidden)).toHaveLength(2);
-  });
-
-  it("should render without mobile", () => {
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
+test("should render without mobile", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <MemoryRouter initialEntries={["/home"]}>
         <Sidebar onMobileClose={() => {}} openMobile={false} />
-      </ThemeProvider>
-    );
-    expect(wrapper.find(Hidden)).toHaveLength(2);
-  });
+      </MemoryRouter>
+    </ThemeProvider>
+  );
+  expect(screen.getByTestId("sidebar-desktop-drawer")).toBeVisible();
+  expect(screen.queryByTestId("sidebar-mobile-drawer")).toBeFalsy();
 });

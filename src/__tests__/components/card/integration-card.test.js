@@ -1,19 +1,16 @@
 import { Button, ThemeProvider } from "@mui/material";
+import { render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../../components/global-theme";
 import IntegrationCard from "../../../components/card/integration-card";
-import React from "react";
-import { mount } from "enzyme";
 
-describe("Integration Card Component", () => {
-  it("should render the integration card", () => {
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
-        <IntegrationCard title="Card Title" description="Card Description" integrationButton={<Button>Button Text</Button>} />
-      </ThemeProvider>
-    );
-    expect(wrapper.find("span").at(0).text()).toEqual("Card Title");
-    expect(wrapper.find("p").text()).toEqual("Card Description");
-    expect(wrapper.find("button").text()).toEqual("Button Text");
-  });
+test("should render the integration card", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <IntegrationCard title="Card Title" description="Card Description" integrationButton={<Button>Button Text</Button>} />
+    </ThemeProvider>
+  );
+  expect(screen.getByText("Card Title")).toBeTruthy();
+  expect(screen.getByText("Card Description")).toBeTruthy();
+  expect(screen.getByText("Button Text")).toBeTruthy();
 });

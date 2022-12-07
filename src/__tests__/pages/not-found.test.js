@@ -1,12 +1,8 @@
-import NotFound from "../../pages/not-found";
-import React from "react";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-describe("Not Found Page", () => {
-  it("should render the message", () =>
-    expect(
-      mount(<NotFound />)
-        .find("h1")
-        .text()
-    ).toEqual("404: The page you are looking for is not here"));
+import NotFound from "../../pages/not-found";
+
+test("should render the message", () => {
+  render(<NotFound />);
+  expect(screen.getByText("404: The page you are looking for is not here")).toBeTruthy();
 });

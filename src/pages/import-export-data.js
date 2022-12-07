@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+const ImportExportData = () => {
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -160,3 +160,5 @@ export default () => {
     </>
   );
 };
+
+export default ImportExportData;

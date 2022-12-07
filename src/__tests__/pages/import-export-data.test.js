@@ -1,95 +1,132 @@
-import { Button, Dialog, ThemeProvider } from "@mui/material";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../components/global-theme";
 import ImportExportData from "../../pages/import-export-data";
-import React from "react";
+import { ThemeProvider } from "@mui/material";
 import axios from "axios";
-import { mount } from "enzyme";
+import user from "@testing-library/user-event";
 
-describe("Import Export Data Page", () => {
-  let wrapper, deleteSpy, getSpy, postSpy, clearButton, exportButton, mergeButton, uploadBatterButton, uploadPitcherButton;
+let deleteSpy, getSpy, postSpy;
 
-  jest.mock("axios");
+jest.mock("axios");
 
-  afterEach(() => jest.clearAllMocks());
-  beforeEach(
-    () =>
-      (wrapper = mount(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      ))
+afterEach(() => jest.clearAllMocks());
+beforeEach(() => (deleteSpy = jest.spyOn(axios, "delete")));
+beforeEach(() => (postSpy = jest.spyOn(axios, "post")));
+beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
+
+test("should render the buttons", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
   );
-  beforeEach(() => (uploadBatterButton = wrapper.find("label").at(0)));
-  beforeEach(() => (uploadPitcherButton = wrapper.find("label").at(1)));
-  beforeEach(() => (mergeButton = wrapper.find("button").at(0)));
-  beforeEach(() => (exportButton = wrapper.find("button").at(1)));
-  beforeEach(() => (clearButton = wrapper.find("button").at(2)));
-  beforeEach(() => (deleteSpy = jest.spyOn(axios, "delete")));
-  beforeEach(() => (postSpy = jest.spyOn(axios, "post")));
-  beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
+  expect(screen.getAllByRole("button")).toHaveLength(5);
+  expect(screen.getAllByLabelText("Upload")).toHaveLength(2);
+  expect(screen.getByRole("button", { name: "Merge" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Export" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Clear" })).toBeVisible();
+});
 
-  it("should render the buttons", () => {
-    expect(uploadBatterButton.text()).toEqual("Upload");
-    expect(uploadPitcherButton.text()).toEqual("Upload");
-    expect(mergeButton.text()).toEqual("Merge");
-    expect(exportButton.text()).toEqual("Export");
-    expect(clearButton.text()).toEqual("Clear");
-  });
+test("should call post on merge click", () => {
+  axios.post.mockImplementationOnce(() => Promise.resolve({}));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Merge" }));
+  expect(postSpy).toBeCalled();
+});
 
-  it("should call post on merge click", async () => {
-    axios.post.mockImplementationOnce(() => Promise.resolve({}));
-    mergeButton.simulate("click");
-    await expect(postSpy).toBeCalled();
-  });
+test("should handle errors on merge click", () => {
+  axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Merge" }));
+  expect(postSpy).toBeCalled();
+});
 
-  it("should handle errors on merge click", async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-    mergeButton.simulate("click");
-    await expect(postSpy).toBeCalled();
-  });
+test("should handle a file download", () => {
+  axios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Export" }));
+  expect(getSpy).toBeCalled();
+});
 
-  it("should handle a file download", async () => {
-    axios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
-    exportButton.simulate("click");
-    await expect(getSpy).toBeCalled();
-  });
+test("should handle errors on file download", () => {
+  axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Export" }));
+  expect(getSpy).toBeCalled();
+});
 
-  it("should handle errors on file download", async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-    exportButton.simulate("click");
-    await expect(getSpy).toBeCalled();
-  });
+test("should handle a file upload", () => {
+  axios.post.mockImplementationOnce(() => Promise.resolve({}));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  const button = screen.getAllByRole("button", { name: "Upload" })[0];
+  user.upload(button, new Blob(["file data"]));
+  expect(postSpy).toBeCalled();
+});
 
-  it("should handle a file upload", async () => {
-    axios.post.mockImplementationOnce(() => Promise.resolve({}));
-    uploadBatterButton.find("input").simulate("change", { target: { files: [new Blob(["file data"])] } });
-    await expect(postSpy).toBeCalled();
-  });
+test("should handle a file upload error", () => {
+  axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  const button = screen.getAllByRole("button", { name: "Upload" })[1];
+  user.upload(button, new Blob(["file data"]));
+  expect(postSpy).toBeCalled();
+});
 
-  it("should handle a file upload error", async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-    uploadPitcherButton.find("input").simulate("change", { target: { files: [new Blob(["file data"])] } });
-    await expect(postSpy).toBeCalled();
-  });
+test("should handle a clear being cancelled", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+  fireEvent.click(screen.getByRole("button", { name: "No" }));
+  expect(deleteSpy).toHaveBeenCalledTimes(0);
+});
 
-  it("should handle a clear being cancelled", async () => {
-    clearButton.simulate("click");
-    wrapper.find(Dialog).find(Button).at(0).simulate("click");
-    await expect(deleteSpy).toHaveBeenCalledTimes(0);
-  });
+test("should handle a clear being approved", () => {
+  axios.delete.mockImplementationOnce(() => Promise.resolve({}));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+  fireEvent.click(screen.getByRole("button", { name: "Yes" }));
+  expect(deleteSpy).toHaveBeenCalledTimes(1);
+});
 
-  it("should handle a clear being approved", async () => {
-    axios.delete.mockImplementationOnce(() => Promise.resolve({}));
-    clearButton.simulate("click");
-    wrapper.find(Dialog).find(Button).at(1).simulate("click");
-    await expect(deleteSpy).toBeCalled();
-  });
-
-  it("should handle an error being thrown on clear", async () => {
-    axios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-    clearButton.simulate("click");
-    wrapper.find(Dialog).find(Button).at(1).simulate("click");
-    await expect(deleteSpy).toBeCalled();
-  });
+test("should handle an error being thrown on clear", () => {
+  axios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <ImportExportData />
+    </ThemeProvider>
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+  fireEvent.click(screen.getByRole("button", { name: "Yes" }));
+  expect(deleteSpy).toHaveBeenCalledTimes(1);
 });

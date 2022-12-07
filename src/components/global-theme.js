@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
-export default () =>
-  createMuiTheme({
+const GlobalTheme = () =>
+  createTheme({
     palette: {
       action: {
         active: "#ffffff",
@@ -66,3 +66,5 @@ export default () =>
       overline: { fontWeight: 500 },
     },
   });
+
+export default GlobalTheme;

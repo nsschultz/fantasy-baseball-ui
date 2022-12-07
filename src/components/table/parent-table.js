@@ -14,8 +14,8 @@ const applyFilter = (column, field) => {
 
 const applyFilters = (columns, rows) => {
   var columnsWithFilter = columns.filter((column) => column.filterValue);
-  if (columnsWithFilter.length == 0) return rows;
-  return rows.filter((row) => columnsWithFilter.length == columnsWithFilter.filter((column) => applyFilter(column, row[column.field])).length);
+  if (columnsWithFilter.length === 0) return rows;
+  return rows.filter((row) => columnsWithFilter.length === columnsWithFilter.filter((column) => applyFilter(column, row[column.field])).length);
 };
 
 const convertToNumber = (val) => parseInt(val, 10);
@@ -106,7 +106,7 @@ const ParentTable = ({ columns, values, buildEdit, childColumnSelector, childRow
                 <TableRow>
                   <TableCell align="left">
                     <Tooltip title="Show Column Filters">
-                      <IconButton size="small" onClick={handleFilterVisible}>
+                      <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small">
                         <FilterList fontSize="inherit" />
                       </IconButton>
                     </Tooltip>

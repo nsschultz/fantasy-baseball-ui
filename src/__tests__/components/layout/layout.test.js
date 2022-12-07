@@ -1,40 +1,31 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import GlobalTheme from "../../../components/global-theme";
 import Layout from "../../../components/layout/layout";
 import { MemoryRouter } from "react-router-dom";
-import React from "react";
-import Sidebar from "../../../components/layout/sidebar";
 import { ThemeProvider } from "@mui/material";
-import Titlebar from "../../../components/layout/titlebar";
-import { mount } from "enzyme";
 
-describe("Layout Component", () => {
-  it("should render when logged in", () => {
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
-        <MemoryRouter initialEntries={["/home"]}>
-          <Layout isLoggedIn={true} />
-        </MemoryRouter>
-      </ThemeProvider>
-    );
-    expect(wrapper.find(Titlebar)).toHaveLength(1);
-    expect(wrapper.find(Sidebar)).toHaveLength(1);
-    wrapper.find(Titlebar).props().onOpenMobileNavigation();
-    wrapper.update();
-    expect(wrapper.find(Sidebar).prop("openMobile")).toEqual(true);
-    wrapper.find(Sidebar).props().onMobileClose();
-    wrapper.update();
-    expect(wrapper.find(Sidebar).prop("openMobile")).toEqual(false);
-  });
+test("should render when logged in", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <MemoryRouter initialEntries={["/home"]}>
+        <Layout isLoggedIn={true} />
+      </MemoryRouter>
+    </ThemeProvider>
+  );
+  expect(screen.getByTestId("layout-titlebar")).toBeVisible();
+  fireEvent.click(screen.getByTestId("titlebar-mobile-menu"));
+  expect(screen.getByTestId("layout-sidebar")).toBeVisible();
+});
 
-  it("should render when not logged in", () => {
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
-        <MemoryRouter initialEntries={["/home"]}>
-          <Layout isLoggedIn={false} />
-        </MemoryRouter>
-      </ThemeProvider>
-    );
-    expect(wrapper.find(Titlebar)).toHaveLength(1);
-    expect(wrapper.find(Sidebar)).toHaveLength(0);
-  });
+test("should render when not logged in", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <MemoryRouter initialEntries={["/home"]}>
+        <Layout isLoggedIn={false} />
+      </MemoryRouter>
+    </ThemeProvider>
+  );
+  expect(screen.getByTestId("layout-titlebar")).toBeVisible();
+  expect(screen.queryByTestId("layout-sidebar")).toBeFalsy();
 });

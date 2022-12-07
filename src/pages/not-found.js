@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   box: { backgroundColor: "background.default", display: "flex", flexDirection: "column", height: "100%", justifyContent: "center" },
 });
 
-export default () => {
+const NotFound = () => {
   const classes = useStyles();
 
   return (
@@ -29,3 +29,5 @@ export default () => {
     </>
   );
 };
+
+export default NotFound;

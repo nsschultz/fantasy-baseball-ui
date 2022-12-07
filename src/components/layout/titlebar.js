@@ -1,4 +1,4 @@
-import { AppBar, Badge, Box, Hidden, IconButton, Toolbar } from "@mui/material";
+import { AppBar, Badge, Box, IconButton, Toolbar } from "@mui/material";
 import { Input, Menu, Notifications } from "@mui/icons-material";
 
 import Logo from "./logo";
@@ -23,25 +23,21 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
           <Logo />
         </RouterLink>
         <Box className={classes.box} />
-        <Hidden lgDown>
-          {isLoggedIn ? (
-            <>
-              <IconButton color="inherit">
-                <Badge badgeContent={notifications.length} color="primary" variant="dot">
-                  <Notifications />
-                </Badge>
-              </IconButton>
-              <IconButton color="inherit">
-                <Input />
-              </IconButton>
-            </>
-          ) : null}
-        </Hidden>
-        <Hidden lgUp>
-          <IconButton color="inherit" onClick={onOpenMobileNavigation}>
-            <Menu />
-          </IconButton>
-        </Hidden>
+        {isLoggedIn ? (
+          <>
+            <IconButton color="inherit" data-testid="titlebar-notifcation" sx={{ display: { xs: "none", lg: "block" } }}>
+              <Badge badgeContent={notifications.length} color="primary" variant="dot">
+                <Notifications />
+              </Badge>
+            </IconButton>
+            <IconButton color="inherit" data-testid="titlebar-logout" sx={{ display: { xs: "none", lg: "block" } }}>
+              <Input />
+            </IconButton>
+          </>
+        ) : null}
+        <IconButton color="inherit" data-testid="titlebar-mobile-menu" onClick={onOpenMobileNavigation} sx={{ display: { xs: "block", lg: "none" } }}>
+          <Menu />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

@@ -74,9 +74,9 @@ const columnsPitchingStats = [
   { title: "BPV", field: "basePerformanceValue", type: "numeric", format: (value) => value.toFixed(0) },
 ];
 
-const getChildRows = (player) => (player.type == 1 ? player.battingStats : player.pitchingStats);
+const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
 
-const statsSelection = (player) => (player.type == 1 ? columnsBattingStats : columnsPitchingStats);
+const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
 
 const updateLookupOnColumns = (field, lookup, cols) => cols.filter((column) => column.field === field).forEach((column) => (column.lookup = lookup));
 
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   box: { backgroundColor: "background.default", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },
 }));
 
-export default () => {
+const Players = () => {
   const classes = useStyles();
   const isMountedRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -200,3 +200,5 @@ export default () => {
     </>
   );
 };
+
+export default Players;

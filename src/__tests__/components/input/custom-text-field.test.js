@@ -1,18 +1,16 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+
 import CustomTextField from "../../../components/input/custom-text-field";
 import GlobalTheme from "../../../components/global-theme";
-import React from "react";
 import { ThemeProvider } from "@mui/material";
-import { mount } from "enzyme";
 
-describe("Custom Text Field", () => {
-  it("should render the text field", () => {
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
-        <CustomTextField />
-      </ThemeProvider>
-    );
-    const input = wrapper.find("input");
-    input.instance().value = "Text Change";
-    expect(input.instance().value).toEqual("Text Change");
-  });
+test("should render the text field", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <CustomTextField />
+    </ThemeProvider>
+  );
+  const input = screen.getByRole("textbox");
+  fireEvent.change(input, { target: { value: "Text Change" } });
+  expect(input.value).toBe("Text Change");
 });

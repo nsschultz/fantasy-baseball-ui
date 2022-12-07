@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   box: { backgroundColor: "background.default", minHeight: "100%", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },
 }));
 
-export default () => {
+const Home = () => {
   const classes = useStyles();
 
   return (
@@ -26,3 +26,5 @@ export default () => {
     </>
   );
 };
+
+export default Home;

@@ -1,12 +1,9 @@
-import Logo from "../../../components/layout/logo";
-import React from "react";
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-describe("Logo Component", () => {
-  it("should render the logo", () =>
-    expect(
-      shallow(<Logo />)
-        .find("img")
-        .prop("src")
-    ).toEqual("/static/logo-056.png"));
+import Logo from "../../../components/layout/logo";
+
+test("should render the logo", () => {
+  render(<Logo />);
+  const image = screen.getByAltText("logo");
+  expect(image.src).toContain("/static/logo-056.png");
 });

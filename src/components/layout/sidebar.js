@@ -1,4 +1,4 @@
-import { Box, Drawer, Hidden, List } from "@mui/material";
+import { Box, Drawer, List } from "@mui/material";
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "./sidebar-icon";
 
 import NavigationItem from "./navigation-item";
@@ -27,7 +27,7 @@ const Sidebar = ({ onMobileClose, openMobile }) => {
 
   useEffect(() => {
     if (openMobile && onMobileClose) onMobileClose();
-  }, [location.pathname]);
+  }, [location.pathname, onMobileClose, openMobile]);
 
   const content = (
     <Box className={classes.boxOuter}>
@@ -43,16 +43,27 @@ const Sidebar = ({ onMobileClose, openMobile }) => {
 
   return (
     <>
-      <Hidden lgUp>
-        <Drawer anchor="left" classes={{ paper: classes.drawerPaperLgDown }} onClose={onMobileClose} open={openMobile} variant="temporary">
-          {content}
-        </Drawer>
-      </Hidden>
-      <Hidden lgDown>
-        <Drawer anchor="left" classes={{ paper: classes.drawerPaperLgUp }} open variant="persistent">
-          {content}
-        </Drawer>
-      </Hidden>
+      <Drawer
+        anchor="left"
+        classes={{ paper: classes.drawerPaperLgDown }}
+        data-testid="sidebar-mobile-drawer"
+        onClose={onMobileClose}
+        open={openMobile}
+        sx={{ display: { xs: "block", lg: "none" } }}
+        variant="temporary"
+      >
+        {content}
+      </Drawer>
+      <Drawer
+        anchor="left"
+        classes={{ paper: classes.drawerPaperLgUp }}
+        data-testid="sidebar-desktop-drawer"
+        open
+        variant="persistent"
+        sx={{ display: { xs: "none", lg: "block" } }}
+      >
+        {content}
+      </Drawer>
     </>
   );
 };

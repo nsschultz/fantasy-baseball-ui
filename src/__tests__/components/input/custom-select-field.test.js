@@ -1,59 +1,69 @@
-import { Checkbox, InputLabel, ListItemText, MenuItem, Select, ThemeProvider } from "@mui/material";
-import { mount, shallow } from "enzyme";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomSelectField from "../../../components/input/custom-select-field";
 import GlobalTheme from "../../../components/global-theme";
-import React from "react";
+import { ThemeProvider } from "@mui/material";
 
-describe("Custom Select Field", () => {
-  const lookupValues = { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" };
-  const title = "Select Title";
+const lookupValues = { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" };
+const title = "Select Title";
 
-  it("should render with a title", () => {
-    expect(
-      shallow(<CustomSelectField filterValues={[]} lookup={lookupValues} title={title} />)
-        .find(InputLabel)
-        .text()
-    ).toEqual(title);
-  });
+test("should render with a title", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <CustomSelectField filterValues={[]} lookup={lookupValues} title={title} />
+    </ThemeProvider>
+  );
+  expect(screen.getByText(title)).toBeInTheDocument();
+});
 
-  it("should render without a title", () => {
-    expect(shallow(<CustomSelectField filterValues={[]} lookup={lookupValues} />).find(InputLabel)).toHaveLength(0);
-  });
+test("should render without a title", () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <CustomSelectField filterValues={[]} lookup={lookupValues} />
+    </ThemeProvider>
+  );
+  expect(screen.queryByText(title)).toBeFalsy();
+});
 
-  it("should render with a list of the items", () => {
-    const wrapper = shallow(<CustomSelectField filterValues={[]} lookup={lookupValues} title={title} />);
-    const listItems = wrapper.find(MenuItem);
-    expect(listItems).toHaveLength(4);
-    listItems.forEach((item) => {
-      expect(item.find(ListItemText).prop("primary")).toEqual(lookupValues[item.prop("value")]);
-    });
-  });
+test("should render with a list of the items", async () => {
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <CustomSelectField filterValues={[]} lookup={lookupValues} title={title} />
+    </ThemeProvider>
+  );
+  const customSelect = screen.getByRole("button");
+  fireEvent.keyDown(customSelect, { key: "ArrowDown" });
+  expect(await screen.findByText("Available")).toBeVisible();
+  expect(await screen.findByText("Rostered")).toBeVisible();
+  expect(await screen.findByText("Unavailable")).toBeVisible();
+  expect(await screen.findByText("Scouted")).toBeVisible();
+});
 
-  it("should render with fields already selected", () => {
-    const filterValues = ["1", "3"];
-    const wrapper = mount(
-      <ThemeProvider theme={GlobalTheme()}>
-        <CustomSelectField filterValues={filterValues} lookup={lookupValues} title={title} width={125} />
-      </ThemeProvider>
-    );
-    const listItems = wrapper.find(MenuItem);
-    listItems.forEach((item) => {
-      expect(item.find(Checkbox).prop("checked")).toEqual(filterValues.some((f) => f === item.prop("value")));
-    });
-    const select = wrapper.find(Select);
-    expect(select.prop("value")).toEqual(filterValues);
-    const render = select.render();
-    expect(render.text()).toEqual("Rostered, Scouted");
-  });
+test("should render with fields already selected", () => {
+  const filterValues = ["1", "3"];
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <CustomSelectField filterValues={filterValues} lookup={lookupValues} title={title} width={125} />
+    </ThemeProvider>
+  );
+  expect(screen.getByText("Rostered, Scouted")).toBeVisible();
+});
 
-  it("should handle onChange events", () => {
-    let existingField = "OldField";
-    let existingValue = "Old";
-    const onHandleFilterChange = (event) => (existingValue = event.target.value);
-    const wrapper = shallow(<CustomSelectField field={existingField} lookup={lookupValues} onHandleFilterChange={onHandleFilterChange} title={title} />);
-    expect(existingValue).toEqual("Old");
-    wrapper.find(Select).simulate("change", { target: { name: "width", value: "New" } });
-    expect(existingValue).toEqual("New");
-  });
+test("should handle onChange events", async () => {
+  const onHandleFilterChange = (event) => (existingValue = event.target.value);
+  let existingField = "TestField";
+  let existingValue = "Old";
+  render(
+    <ThemeProvider theme={GlobalTheme()}>
+      <CustomSelectField field={existingField} lookup={lookupValues} onHandleFilterChange={onHandleFilterChange} title={title} />
+    </ThemeProvider>
+  );
+  const customSelect = screen.getByRole("button");
+  expect(existingValue).toBe("Old");
+  fireEvent.keyDown(customSelect, { key: "ArrowDown" });
+  fireEvent.click(await screen.findByText("Available"));
+  fireEvent.keyDown(customSelect, { key: "ArrowDown" });
+  fireEvent.click(await screen.findByText("Scouted"));
+  expect(existingValue).toEqual(["0", "3"]);
+  expect(screen.getByText("Available, Scouted")).toBeVisible();
 });

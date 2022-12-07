@@ -1,13 +1,17 @@
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "../../../components/layout/sidebar-icon";
+import { render, screen } from "@testing-library/react";
 
-import React from "react";
-import { SvgIcon } from "@mui/material";
-import { shallow } from "enzyme";
+test("should render the HomeIcon", () => {
+  render(<HomeIcon />);
+  expect(screen.getAllByTestId("home-icon")).toHaveLength(1);
+});
 
-describe("Sidebar Icon Component", () => {
-  it("should render the HomeIcon", () => expect(shallow(<HomeIcon />).find(SvgIcon)).toHaveLength(1));
+test("should render the IntegrationIcon", () => {
+  render(<IntegrationIcon />);
+  expect(screen.getAllByTestId("integration-icon")).toHaveLength(1);
+});
 
-  it("should render the IntegrationIcon", () => expect(shallow(<IntegrationIcon />).find(SvgIcon)).toHaveLength(1));
-
-  it("should render the PlayerIcon", () => expect(shallow(<PlayerIcon />).find(SvgIcon)).toHaveLength(1));
+test("should render the PlayerIcon", () => {
+  render(<PlayerIcon />);
+  expect(screen.getAllByTestId("player-icon")).toHaveLength(1);
 });
