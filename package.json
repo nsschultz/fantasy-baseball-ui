@@ -29,12 +29,12 @@
     "sonarqube-scanner": "^2.8.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "chmod +x ./env.sh && ./env.sh && cp env-config.js public/ && react-scripts start",
     "lint": "eslint src",
     "test": "CI=true react-scripts test --silent --coverage --testResultsProcessor jest-sonar-reporter --detectOpenHandles",
     "sonar": "node sonar-project.js",
     "build:default": "react-scripts build",
-    "build:docker": "npm run build:default && npm run lint && npm run test && npm run sonar"
+    "build:scan": "npm run build:default && npm run lint && npm run test && npm run sonar"
   },
   "eslintConfig": {
     "extends": [

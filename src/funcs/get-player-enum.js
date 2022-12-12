@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getPlayersEnumMap = (enumType, handleResponse) => {
   axios
-    .get(`http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=${enumType}`)
+    .get(`${window.env.PLAYER_API_URL}/api/v1/player/enum-map?enumType=${enumType}`)
     .then((response) => {
       handleResponse(response.data);
     })

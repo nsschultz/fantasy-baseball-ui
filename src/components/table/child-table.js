@@ -30,7 +30,7 @@ const ChildTable = ({ columns, rows, title }) => {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <CustomTableRow columns={columns} key={row.id} values={row} />
+            <CustomTableRow columns={columns} key={row.statsType} values={row} />
           ))}
         </TableBody>
       </Table>

@@ -25,17 +25,22 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
         <Box className={classes.box} />
         {isLoggedIn ? (
           <>
-            <IconButton color="inherit" data-testid="titlebar-notifcation" sx={{ display: { xs: "none", lg: "block" } }}>
-              <Badge badgeContent={notifications.length} color="primary" variant="dot">
+            <IconButton color="inherit" data-testid="titlebar-notifcation" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
+              <Badge badgeContent={notifications.length} color="secondary" variant="dot">
                 <Notifications />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" data-testid="titlebar-logout" sx={{ display: { xs: "none", lg: "block" } }}>
+            <IconButton color="inherit" data-testid="titlebar-logout" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
               <Input />
             </IconButton>
           </>
         ) : null}
-        <IconButton color="inherit" data-testid="titlebar-mobile-menu" onClick={onOpenMobileNavigation} sx={{ display: { xs: "block", lg: "none" } }}>
+        <IconButton
+          color="inherit"
+          data-testid="titlebar-mobile-menu"
+          onClick={onOpenMobileNavigation}
+          sx={{ display: { xs: "inline-flex", lg: "none" }, padding: 1.5 }}
+        >
           <Menu />
         </IconButton>
       </Toolbar>

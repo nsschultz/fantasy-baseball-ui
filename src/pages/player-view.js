@@ -134,8 +134,8 @@ const PlayerView = ({ enums, onClose, open, player }) => {
         <title>Player View | Fantasy Baseball Analyzer</title>
       </Helmet>
       <Dialog fullWidth={true} maxWidth="lg" open={open}>
-        <DialogTitle disableTypography={true}>
-          <Typography color="textPrimary" variant="h4">
+        <DialogTitle>
+          <Typography color="textPrimary" component="span" variant="h4">
             Edit Player
           </Typography>
         </DialogTitle>

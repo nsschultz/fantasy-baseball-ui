@@ -1,7 +1,10 @@
 # build files 
 build/
 node_modules/
+env-config.js
 # scanning data
 .scannerwork/
 coverage/
 reports/
+# other
+.DS_Store

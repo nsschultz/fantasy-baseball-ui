@@ -27,7 +27,7 @@ const Sidebar = ({ onMobileClose, openMobile }) => {
 
   useEffect(() => {
     if (openMobile && onMobileClose) onMobileClose();
-  }, [location.pathname, onMobileClose, openMobile]);
+  }, [location.pathname]);
 
   const content = (
     <Box className={classes.boxOuter}>

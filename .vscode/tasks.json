@@ -12,7 +12,7 @@
       "label": "build-and-scan",
       "command": "npm",
       "type": "process",
-      "args": ["run", "build:docker"],
+      "args": ["run", "build:scan"],
       "problemMatcher": "$msCompile"
     },
     {

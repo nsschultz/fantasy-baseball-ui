@@ -7,7 +7,13 @@ pipeline {
     DOCKER_HUB = credentials("dockerhub-creds")
   }
   stages {
-  stage('build and publish') { 
+    stage ('build and scan') {
+      steps { script { sh  """
+        #!/bin/bash
+        sh _dev/scripts/ci.sh
+      """ } } 
+    }
+    stage('build and publish release') { 
       steps { script { sh  """
         #!/bin/bash
         docker build -t nschultz/fantasy-baseball-ui:${IMAGE_VERSION} .

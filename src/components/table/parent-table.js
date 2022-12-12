@@ -106,7 +106,7 @@ const ParentTable = ({ columns, values, buildEdit, childColumnSelector, childRow
                 <TableRow>
                   <TableCell align="left">
                     <Tooltip title="Show Column Filters">
-                      <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small">
+                      <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
                         <FilterList fontSize="inherit" />
                       </IconButton>
                     </Tooltip>

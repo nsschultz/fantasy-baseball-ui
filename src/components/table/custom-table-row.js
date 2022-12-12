@@ -43,7 +43,7 @@ const CustomTableRow = ({ columns, values, childColumns, childRows, childTitle, 
 
   const buildEditButton = (values) => {
     return (
-      <IconButton data-testid={"row-edit-" + values.id} onClick={() => handleEditOpen(values)} size="small">
+      <IconButton data-testid={"row-edit-" + values.id} onClick={() => handleEditOpen(values)} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
         <Edit fontSize="inherit" />
       </IconButton>
     );
@@ -51,7 +51,7 @@ const CustomTableRow = ({ columns, values, childColumns, childRows, childTitle, 
 
   const buildExpandButton = (values) => {
     return (
-      <IconButton data-testid={"row-expand-" + values.id} onClick={() => setOpen(!open)} size="small">
+      <IconButton data-testid={"row-expand-" + values.id} onClick={() => setOpen(!open)} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
         {open ? <KeyboardArrowUp fontSize="inherit" /> : <KeyboardArrowDown fontSize="inherit" />}
       </IconButton>
     );

@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:experimental
+# syntax=docker/dockerfile:1
 FROM node:19.1.0 as dev
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 ENV JAVA_HOME=/usr/lib/jvm/default-java \
@@ -17,14 +17,18 @@ FROM dev as build
 COPY ["package.json", "package-lock.json", "./"]
 RUN --mount=type=cache,id=react,target=/app/node_modules npm ci --silent
 COPY . .
-RUN --mount=type=cache,id=react,target=/app/node_modules npm run build:docker
+RUN --mount=type=cache,id=react,target=/app/node_modules npm run build:default
 
-FROM nginx:1.23.2 AS base-nginx-runner
+FROM nginx:1.23.2
+WORKDIR /usr/share/nginx/html/
+COPY env.sh .
+COPY .env .
 RUN useradd -u 5000 ng-user && \
     mkdir -p /var/run/nginx /var/tmp/nginx && \
     chown -R ng-user:ng-user /usr/share/nginx /var/run/nginx /var/tmp/nginx
 USER ng-user:ng-user
-CMD ["nginx", "-g", "daemon off;"]
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/
-COPY --from=build /app/build /usr/share/nginx/html
+RUN chmod +x ./env.sh
+CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
+COPY --from=build /app/build .

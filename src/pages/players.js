@@ -132,7 +132,7 @@ const Players = () => {
 
   const getPlayers = () => {
     axios
-      .get("http://baseball-player-api.schultz.local/api/v1/player")
+      .get(`${window.env.PLAYER_API_URL}/api/v1/player`)
       .then((response) => {
         if (isMountedRef.current) {
           setPlayers(response.data);
@@ -157,7 +157,7 @@ const Players = () => {
 
   const updatePlayer = (id, player) => {
     axios
-      .put(`http://baseball-player-api.schultz.local/api/v1/player/${id}`, player)
+      .put(`${window.env.PLAYER_API_URL}/api/v1/player/${id}`, player)
       .then(() => {
         setSeverity("success");
         setMessage("Successfully updated player");
