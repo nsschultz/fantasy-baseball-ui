@@ -28,7 +28,7 @@ const ImportExportData = () => {
   const exportOnClick = () => {
     setDisabled(true);
     axios
-      .get(`${window.env.PLAYER_API_URL}/api/v1/action/export`, { responseType: "blob" })
+      .get(`${window.env.PLAYER_API_URL}/api/v2/action/export`, { responseType: "blob" })
       .then((response) => {
         FileSaver.saveAs(new Blob([response.data]), "players.csv");
         setSnackbar("success", "", false, false);
@@ -41,7 +41,7 @@ const ImportExportData = () => {
     if (!shouldClear) return;
     setDisabled(true);
     axios
-      .delete(`${window.env.PLAYER_API_URL}/api/v1/player`)
+      .delete(`${window.env.PLAYER_API_URL}/api/v2/player`)
       .then(() => setSnackbar("success", "Successfully cleared the players.", true, false))
       .catch(() => setSnackbar("error", "Failed to clear the players.", true, false));
   };
@@ -61,7 +61,7 @@ const ImportExportData = () => {
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
-      .post(`${window.env.PLAYER_API_URL}/api/v1/projection/${type}/upload`, formData)
+      .post(`${window.env.PLAYER_API_URL}/api/v2/action/upload/projection/${type}`, formData)
       .then(() => setSnackbar("success", `Successfully uploaded the ${type} file.`, true, false))
       .catch(() => setSnackbar("error", `Failed to upload the ${type} file.`, true, false));
   };
