@@ -46,14 +46,6 @@ const ImportExportData = () => {
       .catch(() => setSnackbar("error", "Failed to clear the players.", true, false));
   };
 
-  const mergeOnClick = () => {
-    setDisabled(true);
-    axios
-      .post(`${window.env.PLAYER_API_URL}/api/v1/action/merge`)
-      .then(() => setSnackbar("success", "Successfully completed the player merge.", true, false))
-      .catch(() => setSnackbar("error", "Failed to complete the player merge.", true, false));
-  };
-
   const onBatterFileChange = (event) => onFileChange(event.target.files[0], "batters");
 
   const onFileChange = (file, type) => {
@@ -80,22 +72,20 @@ const ImportExportData = () => {
       Clear
     </Button>
   );
+
   const exportPlayersButton = (
     <Button color="primary" disabled={disabled} onClick={() => exportOnClick()} variant="contained">
       Export
     </Button>
   );
-  const mergePlayersButton = (
-    <Button color="primary" disabled={disabled} onClick={() => mergeOnClick()} variant="contained">
-      Merge
-    </Button>
-  );
+
   const uploadBattersFileButton = (
     <Button color="primary" component="label" disabled={disabled} variant="contained">
       Upload
       <input hidden onChange={onBatterFileChange} type="file" />
     </Button>
   );
+
   const uploadPitchersFileButton = (
     <Button color="primary" component="label" disabled={disabled} variant="contained">
       Upload
@@ -123,13 +113,6 @@ const ImportExportData = () => {
                 title="Upload Pitcher File"
                 description="Upload the latest version of the pitching stats data."
                 integrationButton={uploadPitchersFileButton}
-              />
-            </Grid>
-            <Grid item key="mergePlayers" lg={6} md={6} xs={12}>
-              <IntegrationCard
-                title="Merge Players"
-                description="Merge the new stats data with the existing player data."
-                integrationButton={mergePlayersButton}
               />
             </Grid>
             <Grid item key="exportPlayers" lg={6} md={6} xs={12}>

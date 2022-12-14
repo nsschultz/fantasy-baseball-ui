@@ -21,33 +21,10 @@ test("should render the buttons", () => {
       <ImportExportData />
     </ThemeProvider>
   );
-  expect(screen.getAllByRole("button")).toHaveLength(5);
+  expect(screen.getAllByRole("button")).toHaveLength(4);
   expect(screen.getAllByLabelText("Upload")).toHaveLength(2);
-  expect(screen.getByRole("button", { name: "Merge" })).toBeVisible();
   expect(screen.getByRole("button", { name: "Export" })).toBeVisible();
   expect(screen.getByRole("button", { name: "Clear" })).toBeVisible();
-});
-
-test("should call post on merge click", () => {
-  axios.post.mockImplementationOnce(() => Promise.resolve({}));
-  render(
-    <ThemeProvider theme={GlobalTheme()}>
-      <ImportExportData />
-    </ThemeProvider>
-  );
-  fireEvent.click(screen.getByRole("button", { name: "Merge" }));
-  expect(postSpy).toBeCalled();
-});
-
-test("should handle errors on merge click", () => {
-  axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-  render(
-    <ThemeProvider theme={GlobalTheme()}>
-      <ImportExportData />
-    </ThemeProvider>
-  );
-  fireEvent.click(screen.getByRole("button", { name: "Merge" }));
-  expect(postSpy).toBeCalled();
 });
 
 test("should handle a file download", () => {

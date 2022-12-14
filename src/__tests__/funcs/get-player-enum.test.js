@@ -15,7 +15,7 @@ test("should get LeagueStatus", async () => {
   getLeagueStatusEnums((response) => {
     expect(response).toEqual(expected);
   });
-  await expect(getSpy).toHaveBeenCalledWith("http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=LeagueStatus");
+  await expect(getSpy).toHaveBeenCalledWith("/api/v2/enum-map?enumType=LeagueStatus");
 });
 
 test("should get PlayerStatus", async () => {
@@ -24,7 +24,7 @@ test("should get PlayerStatus", async () => {
   getPlayerStatusEnums((response) => {
     expect(response).toEqual(expected);
   });
-  await expect(getSpy).toHaveBeenCalledWith("http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=PlayerStatus");
+  await expect(getSpy).toHaveBeenCalledWith("/api/v2/enum-map?enumType=PlayerStatus");
 });
 
 test("should get PlayerType", async () => {
@@ -33,7 +33,7 @@ test("should get PlayerType", async () => {
   getPlayerTypeEnums((response) => {
     expect(response).toEqual(expected);
   });
-  await expect(getSpy).toHaveBeenCalledWith("http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=PlayerType");
+  await expect(getSpy).toHaveBeenCalledWith("/api/v2/enum-map?enumType=PlayerType");
 });
 
 test("should get StatsType", async () => {
@@ -42,7 +42,7 @@ test("should get StatsType", async () => {
   getStatsTypeEnums((response) => {
     expect(response).toEqual(expected);
   });
-  await expect(getSpy).toHaveBeenCalledWith("http://baseball-player-api.schultz.local/api/v1/player/enum-map?enumType=StatsType");
+  await expect(getSpy).toHaveBeenCalledWith("/api/v2/enum-map?enumType=StatsType");
 });
 
 test("should handle errors", async () => {
