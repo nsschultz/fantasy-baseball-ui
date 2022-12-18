@@ -6,9 +6,9 @@ scanner(
     options: {
       "sonar.projectKey": "fantasy-baseball-ui",
       "sonar.sources": "./src",
-      "sonar.exclusions": "**/__tests__/**, **/index.js, **/reportWebVitals.js, **/setupTests.js",
-      "sonar.tests": "./src/__tests__",
-      "sonar.test.inclusions": "./src/__tests__/**/*.test.js",
+      "sonar.exclusions": "**/*.test.js, **/index.js, **/reportWebVitals.js, **/setupTests.js",
+      "sonar.tests": "./src",
+      "sonar.test.inclusions": "**/*.test.js",
       "sonar.typescript.lcov.reportPaths": "coverage/lcov.info",
       "sonar.testExecutionReportPaths": "reports/test-report.xml",
     },
