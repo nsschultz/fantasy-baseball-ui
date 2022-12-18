@@ -11,6 +11,14 @@ const useStyles = makeStyles((theme) => ({
   gridItem: { alignItems: "center", display: "flex" },
 }));
 
+/**
+ * A wrapper over the CustomCard that creates the content for integration purposes.
+ *
+ * @param {object} description       (Required) The description of the integration.
+ * @param {object} integrationButton (Required) The button that kicks off the integration.
+ * @param {string} title             (Required) The title of the card.
+ * @returns A new instance of the IntegrationCard.
+ */
 const IntegrationCard = ({ description, integrationButton, title }) => {
   const classes = useStyles();
   const additionalContent = (
@@ -30,7 +38,6 @@ const IntegrationCard = ({ description, integrationButton, title }) => {
       {description}
     </Typography>
   );
-
   return <CustomCard additionalContent={additionalContent} content={content} title={title} />;
 };
 
