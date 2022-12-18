@@ -24,6 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Creates a new ListItem with a Button that contains an Icon and text value. Used for navigating around the site.
+ * @param {string}      href  (Required) The URL that clicking the button routes you to.
+ * @param {elementType} icon  (Required) The icon to displayed next to the button.
+ * @param {string}      title (Required) The value to display on the button.
+ * @returns A new instance of the NavigationItem.
+ */
 const NavigationItem = ({ href, icon: Icon, title }) => {
   const location = useLocation();
   const active = !!matchPath({ path: href, end: false }, location.pathname);

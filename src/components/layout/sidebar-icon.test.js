@@ -1,17 +1,15 @@
-import { HomeIcon, IntegrationIcon, PlayerIcon } from "../../../components/layout/sidebar-icon";
+import { HomeIcon, IntegrationIcon, PlayerIcon } from "./sidebar-icon";
 import { render, screen } from "@testing-library/react";
 
-test("should render the HomeIcon", () => {
+test("HomeIcon should render", () => {
   render(<HomeIcon />);
   expect(screen.getAllByTestId("home-icon")).toHaveLength(1);
 });
-
-test("should render the IntegrationIcon", () => {
+test("IntegrationIcon should render", () => {
   render(<IntegrationIcon />);
   expect(screen.getAllByTestId("integration-icon")).toHaveLength(1);
 });
-
-test("should render the PlayerIcon", () => {
+test("PlayerIcon should render", () => {
   render(<PlayerIcon />);
   expect(screen.getAllByTestId("player-icon")).toHaveLength(1);
 });

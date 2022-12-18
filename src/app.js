@@ -34,6 +34,10 @@ const routes = [
 
 const theme = GlobalTheme();
 
+/**
+ * The object that ties the entire site together.
+ * @returns A new instance of the App.
+ */
 export default function App() {
   const routing = useRoutes(routes);
 

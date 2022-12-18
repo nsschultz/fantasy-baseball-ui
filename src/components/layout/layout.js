@@ -34,6 +34,11 @@ const LayoutWrapper = experimentalStyled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { paddingLeft: 192 },
 }));
 
+/**
+ * The base layout for the website with a Titlebar and Sidebar. Changes based on whether the user is logged in or not.
+ * @param {bool} isLoggedIn (Required) Boolean that indicates if the user is logged in or not.
+ * @returns A new instance of the Layout.
+ */
 const Layout = ({ isLoggedIn }) => {
   const [isMobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 

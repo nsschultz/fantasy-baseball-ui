@@ -21,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
   drawerPaperLgUp: { height: "calc(100% - 64px)", top: 64, width: 192 },
 }));
 
+/**
+ * The information that shows up on the side screen.
+ * @param {func} onMobileClose (Required) The function that is called when on mobile and the sidebar is closed.
+ * @param {bool} openMobile    (Required) Boolean that indicates if the sidebar should be open (only used on mobile).
+ * @returns A new instance of the Sidebar.
+ */
 const Sidebar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();

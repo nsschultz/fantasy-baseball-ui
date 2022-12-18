@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 
-import App from "../app";
+import App from "./app";
 import { MemoryRouter } from "react-router-dom";
 
-it("should render", () => {
+test("App should render", () => {
   render(
     <MemoryRouter initialEntries={["/home"]}>
       <App />

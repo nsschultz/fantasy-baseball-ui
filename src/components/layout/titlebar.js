@@ -12,6 +12,12 @@ const useStyles = makeStyles({
   box: { flexGrow: 1 },
 });
 
+/**
+ * The bar that sits at the top of the screen. Displays different options depending on if the user is logged in or not.
+ * @param {bool} isLoggedIn             (Required) Boolean that indicates if the user is logged in.
+ * @param {func} onOpenMobileNavigation (Required) Function that is called on mobile devices to open the menu.
+ * @returns A new instance of the Titlebar.
+ */
 const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
   const classes = useStyles();
   const [notifications] = useState([]);

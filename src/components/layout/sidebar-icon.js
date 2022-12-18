@@ -1,12 +1,20 @@
 import React from "react";
 import { SvgIcon } from "@mui/material";
 
+/**
+ * SvgIcon of a house.
+ * @returns A new instance of the HomeIcon.
+ */
 export const HomeIcon = () => (
   <SvgIcon data-testid="home-icon">
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
   </SvgIcon>
 );
 
+/**
+ * SvgIcon of a arrows pointing east and west.
+ * @returns A new instance of the IntegrationIcon.
+ */
 export const IntegrationIcon = () => (
   <SvgIcon data-testid="integration-icon">
     <svg width="100%" height="100%" viewBox="0 0 136 136">
@@ -17,6 +25,10 @@ export const IntegrationIcon = () => (
   </SvgIcon>
 );
 
+/**
+ * SvgIcon of a baseball player.
+ * @returns A new instance of the PlayerIcon.
+ */
 export const PlayerIcon = () => (
   <SvgIcon data-testid="player-icon">
     <svg width="100%" height="100%" viewBox="0 0 1000 1000">
