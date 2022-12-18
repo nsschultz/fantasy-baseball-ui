@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  * A wrapper over the CustomCard that creates the content for integration purposes.
- *
  * @param {object} description       (Required) The description of the integration.
  * @param {object} integrationButton (Required) The button that kicks off the integration.
  * @param {string} title             (Required) The title of the card.
@@ -21,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const IntegrationCard = ({ description, integrationButton, title }) => {
   const classes = useStyles();
+
   const additionalContent = (
     <>
       <Divider />
@@ -33,11 +33,13 @@ const IntegrationCard = ({ description, integrationButton, title }) => {
       </Box>
     </>
   );
+
   const content = (
     <Typography align="center" color="textSecondary" variant="body1">
       {description}
     </Typography>
   );
+
   return <CustomCard additionalContent={additionalContent} content={content} title={title} />;
 };
 

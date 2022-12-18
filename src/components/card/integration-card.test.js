@@ -5,7 +5,7 @@ import GlobalTheme from "../global-theme";
 import IntegrationCard from "./integration-card";
 
 describe("IntegrationCard", () => {
-  it("should render", () => {
+  test("should render", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
         <IntegrationCard title="Card Title" description="Card Description" integrationButton={<Button>Button Text</Button>} />

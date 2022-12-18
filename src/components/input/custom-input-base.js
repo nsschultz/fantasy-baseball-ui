@@ -1,6 +1,9 @@
 import { InputBase } from "@mui/material";
 import { withStyles } from "@mui/styles";
 
+/**
+ * (Deprecated) Wrapper over the InputBase that just adds styling.
+ */
 export default withStyles((theme) => ({
   root: {
     "label + &": {
