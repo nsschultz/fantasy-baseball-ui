@@ -33,7 +33,6 @@ const IntegrationCard = ({ description, integrationButton, title }) => {
       </Box>
     </>
   );
-
   const content = (
     <Typography align="center" color="textSecondary" variant="body1">
       {description}
@@ -42,11 +41,9 @@ const IntegrationCard = ({ description, integrationButton, title }) => {
 
   return <CustomCard additionalContent={additionalContent} content={content} title={title} />;
 };
-
 IntegrationCard.propTypes = {
   description: PropTypes.string.isRequired,
   integrationButton: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
 };
-
 export default IntegrationCard;

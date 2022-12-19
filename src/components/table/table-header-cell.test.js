@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../../../components/global-theme";
-import TableHeaderCell from "../../../components/table/table-header-cell";
+import GlobalTheme from "../global-theme";
+import TableHeaderCell from "./table-header-cell";
 import { ThemeProvider } from "@mui/material";
 
 const field = "Field";
@@ -33,18 +33,19 @@ const validateTableCell = (align, direction, sortField, open) => {
   }
 };
 
-test("should render with sort ascending direction", () => {
-  validateTableCell("right", "asc", field, false);
-});
-
-test("should render with sort descending direction", () => {
-  validateTableCell("right", "desc", field, false);
-});
-
-test("should render without sort direction", () => {
-  validateTableCell("left", false, "OtherField", false);
-});
-
-test("should render with the filter visible", () => {
-  validateTableCell("left", false, "OtherField", true);
+describe("TableHeaderCell", () => {
+  describe("should render", () => {
+    test("with sort ascending direction", () => {
+      validateTableCell("right", "asc", field, false);
+    });
+    test("with sort descending direction", () => {
+      validateTableCell("right", "desc", field, false);
+    });
+    test("without sort direction", () => {
+      validateTableCell("left", false, "OtherField", false);
+    });
+    test("with the filter visible", () => {
+      validateTableCell("left", false, "OtherField", true);
+    });
+  });
 });

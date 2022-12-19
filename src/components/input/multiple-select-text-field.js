@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 /**
  * Wrapper that turns the CustomTextField into a multi-select input.
+ * @param {object} displayProps                  (Required) An object that contains all of the properties needed to render the text field.
  * @param {func}   displayProps.disableChecker   (Optional) Function that is used to determine if certain options should be disabled.
  * @param {string} displayProps.label            (Optional) The value to use as the label.
  * @param {func}   displayProps.listItemBuilder  (Required) Function that determines how the text shows up in the list items.
@@ -19,10 +20,6 @@ import PropTypes from "prop-types";
 const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItems, selectedValues }) => {
   const [values, setValues] = useState(selectedValues || []);
 
-  /**
-   * Updates the state of the value and passes the event on to function that was provided by the parent object.
-   * @param {object} event The change event.
-   */
   const onChange = (value) => {
     setValues(value);
     handleOnChange(value);
@@ -52,18 +49,16 @@ const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItem
     </CustomTextField>
   );
 };
-
 MultipleSelectTextField.propTypes = {
   displayProps: PropTypes.exact({
     disableChecker: PropTypes.func,
     label: PropTypes.string,
     listItemBuilder: PropTypes.func.isRequired,
     textValueBuilder: PropTypes.func.isRequired,
-  }),
+  }).isRequired,
   field: PropTypes.string.isRequired,
   handleOnChange: PropTypes.func.isRequired,
   menuItems: PropTypes.object.isRequired,
   selectedValues: PropTypes.array,
 };
-
 export default MultipleSelectTextField;

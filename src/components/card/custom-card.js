@@ -20,11 +20,9 @@ const CustomCard = ({ additionalContent, content, title }) => (
     </Card>
   </Box>
 );
-
 CustomCard.propTypes = {
   additionalContent: PropTypes.object,
   content: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
 };
-
 export default CustomCard;

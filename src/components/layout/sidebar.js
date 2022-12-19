@@ -13,7 +13,6 @@ const items = [
   { href: "/app/players", icon: PlayerIcon, title: "Players" },
   { href: "/app/import-export-data", icon: IntegrationIcon, title: "Integrations" },
 ];
-
 const useStyles = makeStyles((theme) => ({
   boxInner: { padding: theme.spacing(2) },
   boxOuter: { display: "flex", flexDirection: "column", height: "100%" },
@@ -31,10 +30,6 @@ const Sidebar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
 
-  useEffect(() => {
-    if (openMobile && onMobileClose) onMobileClose();
-  }, [location.pathname]);
-
   const content = (
     <Box className={classes.boxOuter}>
       <Box className={classes.boxInner}>
@@ -46,6 +41,10 @@ const Sidebar = ({ onMobileClose, openMobile }) => {
       </Box>
     </Box>
   );
+
+  useEffect(() => {
+    if (openMobile && onMobileClose) onMobileClose();
+  }, [location.pathname]);
 
   return (
     <>
@@ -73,10 +72,8 @@ const Sidebar = ({ onMobileClose, openMobile }) => {
     </>
   );
 };
-
 Sidebar.propTypes = {
   onMobileClose: PropTypes.func.isRequired,
   openMobile: PropTypes.bool.isRequired,
 };
-
 export default Sidebar;

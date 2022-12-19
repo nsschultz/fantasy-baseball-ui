@@ -20,7 +20,21 @@ const useStyles = makeStyles({
  */
 const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
   const classes = useStyles();
+
   const [notifications] = useState([]);
+
+  const buildButtons = () => (
+    <>
+      <IconButton color="inherit" data-testid="titlebar-notifcation" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
+        <Badge badgeContent={notifications.length} color="secondary" variant="dot">
+          <Notifications />
+        </Badge>
+      </IconButton>
+      <IconButton color="inherit" data-testid="titlebar-logout" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
+        <Input />
+      </IconButton>
+    </>
+  );
 
   return (
     <AppBar color="primary" elevation={5}>
@@ -29,18 +43,7 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
           <Logo />
         </RouterLink>
         <Box className={classes.box} />
-        {isLoggedIn ? (
-          <>
-            <IconButton color="inherit" data-testid="titlebar-notifcation" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
-              <Badge badgeContent={notifications.length} color="secondary" variant="dot">
-                <Notifications />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit" data-testid="titlebar-logout" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
-              <Input />
-            </IconButton>
-          </>
-        ) : null}
+        {isLoggedIn ? buildButtons() : null}
         <IconButton
           color="inherit"
           data-testid="titlebar-mobile-menu"
@@ -53,10 +56,8 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
     </AppBar>
   );
 };
-
 Titlebar.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   onOpenMobileNavigation: PropTypes.func.isRequired,
 };
-
 export default Titlebar;

@@ -20,28 +20,36 @@ const useStyles = makeStyles({
   },
 });
 
-const TableHeaderCell = ({ buildSortHandler, column, onHandleFilterChange, order, filterVisible, orderBy }) => {
+/**
+ * Creates a new header cell for the table with sorting and filtering as options.
+ * @param {object} column             (Required) Object containing all of the information about the column.
+ * @param {func}   filterVisible      (Optional) Indicates if the filter should be visible or not.
+ * @param {func}   handleFilterChange (Required) Handles events that occur when the filter is changed.
+ * @param {func}   handleSortRequest  (Required) Handles sort requests events.
+ * @param {string} order              (Required) The order (asc or desc) that the table is being sorted by.
+ * @param {string} orderBy            (Optional) Indicates the column that sort is being applied to.
+ * @returns A new instance of the TableHeaderCell.
+ */
+const TableHeaderCell = ({ column, filterVisible, handleFilterChange, handleSortRequest, order, orderBy }) => {
   const classes = useStyles();
 
   return (
     <TableCell align={getAlign(column)} key={column.field} sortDirection={orderBy === column.field ? order : false}>
-      <TableSortLabel active={orderBy === column.field} direction={orderBy === column.field ? order : "asc"} onClick={buildSortHandler(column.field)}>
+      <TableSortLabel active={orderBy === column.field} direction={orderBy === column.field ? order : "asc"} onClick={handleSortRequest}>
         {column.title}
         {orderBy === column.field ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
       </TableSortLabel>
       <br />
-      {filterVisible ? <TableFilter column={column} onHandleFilterChange={onHandleFilterChange} /> : null}
+      {filterVisible ? <TableFilter column={column} handleFilterChange={handleFilterChange} /> : null}
     </TableCell>
   );
 };
-
 TableHeaderCell.propTypes = {
-  buildSortHandler: PropTypes.func.isRequired,
   column: PropTypes.object.isRequired,
-  onHandleFilterChange: PropTypes.func.isRequired,
-  order: PropTypes.string.isRequired,
   filterVisible: PropTypes.bool,
+  handleFilterChange: PropTypes.func.isRequired,
+  handleSortRequest: PropTypes.func.isRequired,
+  order: PropTypes.string.isRequired,
   orderBy: PropTypes.string,
 };
-
 export default TableHeaderCell;

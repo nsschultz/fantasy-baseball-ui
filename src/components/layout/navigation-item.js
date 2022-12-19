@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const NavigationItem = ({ href, icon: Icon, title }) => {
   const location = useLocation();
+
   const active = !!matchPath({ path: href, end: false }, location.pathname);
   const classes = useStyles({ active: active });
 
@@ -45,11 +46,9 @@ const NavigationItem = ({ href, icon: Icon, title }) => {
     </ListItem>
   );
 };
-
 NavigationItem.propTypes = {
   href: PropTypes.string.isRequired,
   icon: PropTypes.elementType.isRequired,
   title: PropTypes.string.isRequired,
 };
-
 export default NavigationItem;

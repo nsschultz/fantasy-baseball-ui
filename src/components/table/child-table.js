@@ -10,6 +10,13 @@ const useStyles = makeStyles((theme) => ({
   box: { paddingBottom: theme.spacing(2), paddingTop: theme.spacing(2) },
 }));
 
+/**
+ * Wrapper around a Table with a title that doesn't have complex options.
+ * @param {array}  columns (Required) The columns for the child table.
+ * @param {array}  rows    (Required) The rows for the child table.
+ * @param {string} title   (Required) The title of the child table.
+ * @returns A new instance of the ChildTable.
+ */
 const ChildTable = ({ columns, rows, title }) => {
   const classes = useStyles();
 
@@ -37,11 +44,9 @@ const ChildTable = ({ columns, rows, title }) => {
     </Box>
   );
 };
-
 ChildTable.propTypes = {
   columns: PropTypes.array.isRequired,
   rows: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
 };
-
 export default ChildTable;

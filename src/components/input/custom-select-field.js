@@ -17,10 +17,6 @@ import PropTypes from "prop-types";
 const CustomSelectField = ({ existingValues, field, handleOnChange, lookup, title, width }) => {
   const [values, setValues] = useState(existingValues || []);
 
-  /**
-   * Updates the state of the value and passes the event on to function that was provided by the parent object.
-   * @param {object} event The change event.
-   */
   const onChange = (event) => {
     setValues(event.target.value);
     handleOnChange(event);
@@ -47,7 +43,6 @@ const CustomSelectField = ({ existingValues, field, handleOnChange, lookup, titl
     </FormControl>
   );
 };
-
 CustomSelectField.propTypes = {
   existingValues: PropTypes.array,
   field: PropTypes.string.isRequired,
@@ -56,5 +51,4 @@ CustomSelectField.propTypes = {
   title: PropTypes.string,
   width: PropTypes.number,
 };
-
 export default CustomSelectField;

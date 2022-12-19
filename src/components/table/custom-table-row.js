@@ -7,8 +7,7 @@ import PropTypes from "prop-types";
 import { getAlign } from "./table-funcs";
 import { makeStyles } from "@mui/styles";
 
-const getValue = (column, value) => (column.format && typeof value === "number" ? column.format(value) : column.lookup ? column.lookup[value] : value);
-
+const getDisplayValue = (column, value) => (column.format ? column.format(value) : column.lookup ? column.lookup[value] : value);
 const useStyles = makeStyles({
   collapse: {
     paddingBottom: 0,
@@ -16,71 +15,71 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomTableRow = ({ columns, values, childColumns, childRows, childTitle, handleEditOpen }) => {
+/**
+ * Wrapper around the TableRow that adds the ability to add a child table and edit functionality.
+ * @param {object} childProps         (Optional) The properties for the child table.
+ * @param {array}  childProps.columns (Required) The columns for the child table.
+ * @param {array}  childProps.rows    (Required) The rows for the child table.
+ * @param {string} childProps.title   (Required) The title of the child table.
+ * @param {array}  columns            (Required) The columns from the parent table.
+ * @param {func}   handleEditOpen     (Optional) The function that is called when the edit button is clicked.
+ *                                               Providing this function determines if the button exists or not.
+ * @param {object} values             (Required) The actual values that make up the row.
+ * @returns A new instance of the CustomTableRow.
+ */
+const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
   const classes = useStyles();
+
   const [open, setOpen] = useState(false);
 
-  const buildActionCell = (values) => {
-    return (
-      <TableCell>
-        {childColumns ? buildExpandButton(values) : null}
-        {handleEditOpen ? buildEditButton(values) : null}
+  const buildActionCell = (values) => (
+    <TableCell>
+      {childProps ? buildExpandButton(values) : null}
+      {handleEditOpen ? buildEditButton(values) : null}
+    </TableCell>
+  );
+  const buildChildTable = (values) => (
+    <TableRow key={"child-table" + values.id}>
+      <TableCell className={classes.collapse} colSpan={columns.length + 1}>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <ChildTable columns={childProps.columns} rows={childProps.rows} title={childProps.title} />
+        </Collapse>
       </TableCell>
-    );
-  };
-
-  const buildChildTable = (values) => {
-    return (
-      <TableRow key={"child-table" + values.id}>
-        <TableCell className={classes.collapse} colSpan={columns.length + 1}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <ChildTable columns={childColumns} rows={childRows} title={childTitle} />
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    );
-  };
-
-  const buildEditButton = (values) => {
-    return (
-      <IconButton data-testid={"row-edit-" + values.id} onClick={() => handleEditOpen(values)} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
-        <Edit fontSize="inherit" />
-      </IconButton>
-    );
-  };
-
-  const buildExpandButton = (values) => {
-    return (
-      <IconButton data-testid={"row-expand-" + values.id} onClick={() => setOpen(!open)} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
-        {open ? <KeyboardArrowUp fontSize="inherit" /> : <KeyboardArrowDown fontSize="inherit" />}
-      </IconButton>
-    );
-  };
-
-  const needsActionCell = () => childColumns || handleEditOpen;
+    </TableRow>
+  );
+  const buildEditButton = (values) => (
+    <IconButton data-testid={"row-edit-" + values.id} onClick={() => handleEditOpen(values)} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
+      <Edit fontSize="inherit" />
+    </IconButton>
+  );
+  const buildExpandButton = (values) => (
+    <IconButton data-testid={"row-expand-" + values.id} onClick={() => setOpen(!open)} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
+      {open ? <KeyboardArrowUp fontSize="inherit" /> : <KeyboardArrowDown fontSize="inherit" />}
+    </IconButton>
+  );
 
   return (
     <>
       <TableRow hover key={values.id} sx={{ "& > *": { borderBottom: "none" } }}>
-        {needsActionCell() ? buildActionCell(values) : null}
+        {childProps || handleEditOpen ? buildActionCell(values) : null}
         {columns.map((column) => (
           <TableCell key={column.field} align={getAlign(column)}>
-            {getValue(column, values[column.field])}
+            {getDisplayValue(column, values[column.field])}
           </TableCell>
         ))}
       </TableRow>
-      {childColumns ? buildChildTable(values) : null}
+      {childProps ? buildChildTable(values) : null}
     </>
   );
 };
-
 CustomTableRow.propTypes = {
+  childProps: PropTypes.exact({
+    columns: PropTypes.array.isRequired,
+    rows: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
+  }),
   columns: PropTypes.array.isRequired,
-  values: PropTypes.object.isRequired,
-  childColumns: PropTypes.array,
-  childRows: PropTypes.array,
-  childTitle: PropTypes.string,
   handleEditOpen: PropTypes.func,
+  values: PropTypes.object.isRequired,
 };
-
 export default CustomTableRow;

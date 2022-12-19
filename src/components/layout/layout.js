@@ -11,13 +11,11 @@ const LayoutContainer = experimentalStyled("div")({
   flex: "1 1 auto",
   overflow: "hidden",
 });
-
 const LayoutContent = experimentalStyled("div")({
   flex: "1 1 auto",
   height: "100%",
   overflow: "auto",
 });
-
 const LayoutRoot = experimentalStyled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: "flex",
@@ -25,7 +23,6 @@ const LayoutRoot = experimentalStyled("div")(({ theme }) => ({
   overflow: "hidden",
   width: "100%",
 }));
-
 const LayoutWrapper = experimentalStyled("div")(({ theme }) => ({
   display: "flex",
   flex: "1 1 auto",
@@ -42,16 +39,18 @@ const LayoutWrapper = experimentalStyled("div")(({ theme }) => ({
 const Layout = ({ isLoggedIn }) => {
   const [isMobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 
+  const buildSidebar = () => (
+    <div data-testid="layout-sidebar">
+      <Sidebar openMobile={isMobileNavigationOpen} onMobileClose={() => setMobileNavigationOpen(false)} />
+    </div>
+  );
+
   return (
     <LayoutRoot>
       <div data-testid="layout-titlebar">
         <Titlebar isLoggedIn={isLoggedIn} onOpenMobileNavigation={() => setMobileNavigationOpen(true)} />
       </div>
-      {isLoggedIn ? (
-        <div data-testid="layout-sidebar">
-          <Sidebar openMobile={isMobileNavigationOpen} onMobileClose={() => setMobileNavigationOpen(false)} />
-        </div>
-      ) : null}
+      {isLoggedIn ? buildSidebar() : null}
       <LayoutWrapper>
         <LayoutContainer>
           <LayoutContent>
@@ -62,9 +61,7 @@ const Layout = ({ isLoggedIn }) => {
     </LayoutRoot>
   );
 };
-
 Layout.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
 };
-
 export default Layout;
