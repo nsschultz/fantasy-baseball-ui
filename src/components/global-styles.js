@@ -17,9 +17,13 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+/**
+ * Creates the global styles for the base objects (material or html).
+ * @param {object} theme The GlobalTheme object.
+ * @returns A new instance of the GlobalStyles object.
+ */
 const GlobalStyles = (theme) => {
   useStyles(theme);
   return null;
 };
-
 export default GlobalStyles;

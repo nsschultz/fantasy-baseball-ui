@@ -1,5 +1,9 @@
 import { createTheme } from "@mui/material/styles";
 
+/**
+ * The theme (colors, spacing, and fonts) for the project.
+ * @returns A new instance of the GlobalThemes object.
+ */
 const GlobalTheme = () =>
   createTheme({
     palette: {
@@ -47,5 +51,4 @@ const GlobalTheme = () =>
       overline: { fontWeight: 500 },
     },
   });
-
 export default GlobalTheme;
