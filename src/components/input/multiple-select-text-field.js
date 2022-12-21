@@ -34,8 +34,8 @@ const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItem
       SelectProps={{
         multiple: true,
         onChange: (event) => onChange(event.target.value),
-        renderValue: (selecteds) => displayProps.textValueBuilder(menuItems, selecteds),
-        value: values,
+        renderValue: () => displayProps.textValueBuilder(),
+        value: selectedValues || [],
       }}
       size="small"
       variant="filled"

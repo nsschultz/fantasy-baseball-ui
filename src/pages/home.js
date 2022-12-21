@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
   box: { backgroundColor: "background.default", minHeight: "100%", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },
 }));
 
+/**
+ * Creates a new instance of the home page.
+ * @returns A new instance of Home.
+ */
 const Home = () => {
   const classes = useStyles();
 
@@ -26,5 +30,4 @@ const Home = () => {
     </>
   );
 };
-
 export default Home;

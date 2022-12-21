@@ -17,8 +17,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Creates a new instance of the import/export page.
+ * @returns A new instance of ImportExportData.
+ */
 const ImportExportData = () => {
   const classes = useStyles();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [message, setMessage] = useState("");
@@ -35,7 +40,6 @@ const ImportExportData = () => {
       })
       .catch(() => setSnackbar("error", "Failed to export the players.", true, false));
   };
-
   const handleDialogClose = (shouldClear) => {
     setDialogOpen(false);
     if (!shouldClear) return;
@@ -45,9 +49,7 @@ const ImportExportData = () => {
       .then(() => setSnackbar("success", "Successfully cleared the players.", true, false))
       .catch(() => setSnackbar("error", "Failed to clear the players.", true, false));
   };
-
   const onBatterFileChange = (event) => onFileChange(event.target.files[0], "batters");
-
   const onFileChange = (file, type) => {
     setDisabled(true);
     const formData = new FormData();
@@ -57,9 +59,7 @@ const ImportExportData = () => {
       .then(() => setSnackbar("success", `Successfully uploaded the ${type} file.`, true, false))
       .catch(() => setSnackbar("error", `Failed to upload the ${type} file.`, true, false));
   };
-
   const onPitcherFileChange = (event) => onFileChange(event.target.files[0], "pitchers");
-
   const setSnackbar = (sev, msg, op, dis) => {
     setSeverity(sev);
     setMessage(msg);
@@ -72,20 +72,17 @@ const ImportExportData = () => {
       Clear
     </Button>
   );
-
   const exportPlayersButton = (
     <Button color="primary" disabled={disabled} onClick={() => exportOnClick()} variant="contained">
       Export
     </Button>
   );
-
   const uploadBattersFileButton = (
     <Button color="primary" component="label" disabled={disabled} variant="contained">
       Upload
       <input hidden onChange={onBatterFileChange} type="file" />
     </Button>
   );
-
   const uploadPitchersFileButton = (
     <Button color="primary" component="label" disabled={disabled} variant="contained">
       Upload
@@ -143,5 +140,4 @@ const ImportExportData = () => {
     </>
   );
 };
-
 export default ImportExportData;

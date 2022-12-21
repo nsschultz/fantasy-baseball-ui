@@ -8,6 +8,10 @@ const useStyles = makeStyles({
   box: { backgroundColor: "background.default", display: "flex", flexDirection: "column", height: "100%", justifyContent: "center" },
 });
 
+/**
+ * Creates a new instance of the not found page.
+ * @returns A new instance of NotFound.
+ */
 const NotFound = () => {
   const classes = useStyles();
 
@@ -29,5 +33,4 @@ const NotFound = () => {
     </>
   );
 };
-
 export default NotFound;

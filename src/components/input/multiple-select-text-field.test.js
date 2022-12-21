@@ -130,7 +130,13 @@ const positionMap = {
   UTIL: { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
 };
 
+const lineItemBuilder = (lookup, key) => lookup[key].fullName;
+const textValueBuilder = () => selectedValues.map((selected) => positionMap[selected].code).join(",");
+
+let selectedValues = ["2B", "3B"];
+
 afterEach(cleanup);
+afterEach(() => (selectedValues = ["2B", "3B"]));
 
 describe("MultiSelectTextField", () => {
   describe("should render with", () => {
@@ -138,11 +144,7 @@ describe("MultiSelectTextField", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MultipleSelectTextField
-            displayProps={{
-              label: "Position(s)",
-              listItemBuilder: (lookup, key) => lookup[key].fullName,
-              textValueBuilder: (menuItems, selecteds) => selecteds.map((selected) => menuItems[selected].code).join(","),
-            }}
+            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
             field="positions"
             handleOnChange={(values) => values}
             menuItems={positionMap}
@@ -155,15 +157,11 @@ describe("MultiSelectTextField", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MultipleSelectTextField
-            displayProps={{
-              label: "Position(s)",
-              listItemBuilder: (lookup, key) => lookup[key].fullName,
-              textValueBuilder: (menuItems, selecteds) => selecteds.map((selected) => menuItems[selected].code).join(","),
-            }}
+            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
             field="positions"
             handleOnChange={(values) => values}
             menuItems={positionMap}
-            selectedValues={["2B", "3B"]}
+            selectedValues={selectedValues}
           />
         </ThemeProvider>
       );
@@ -176,13 +174,13 @@ describe("MultiSelectTextField", () => {
             displayProps={{
               disableChecker: (menuItems, selectedValues, key) => selectedValues.some((v) => menuItems[v].additionalPositions.some((ap) => ap.code === key)),
               label: "Position(s)",
-              listItemBuilder: (lookup, key) => lookup[key].fullName,
-              textValueBuilder: (menuItems, selecteds) => selecteds.map((selected) => menuItems[selected].code).join(","),
+              listItemBuilder: lineItemBuilder,
+              textValueBuilder: textValueBuilder,
             }}
             field="positions"
             handleOnChange={(values) => values}
             menuItems={positionMap}
-            selectedValues={["2B", "3B"]}
+            selectedValues={selectedValues}
           />
         </ThemeProvider>
       );
@@ -196,15 +194,11 @@ describe("MultiSelectTextField", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MultipleSelectTextField
-            displayProps={{
-              label: "Position(s)",
-              listItemBuilder: (lookup, key) => lookup[key].fullName,
-              textValueBuilder: (menuItems, selecteds) => selecteds.map((selected) => menuItems[selected].code).join(","),
-            }}
+            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
             field="positions"
             handleOnChange={(values) => values}
             menuItems={positionMap}
-            selectedValues={["2B", "3B"]}
+            selectedValues={selectedValues}
           />
         </ThemeProvider>
       );
@@ -217,15 +211,10 @@ describe("MultiSelectTextField", () => {
   });
   describe("should change value", () => {
     test("when selecting a new value", async () => {
-      let selectedValues = ["2B", "3B"];
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MultipleSelectTextField
-            displayProps={{
-              label: "Position(s)",
-              listItemBuilder: (lookup, key) => lookup[key].fullName,
-              textValueBuilder: (menuItems, selecteds) => selecteds.map((selected) => menuItems[selected].code).join(","),
-            }}
+            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
             field="positions"
             handleOnChange={(values) => (selectedValues = values)}
             menuItems={positionMap}
@@ -240,15 +229,10 @@ describe("MultiSelectTextField", () => {
       expect(screen.getByText("2B,3B,SS")).toBeVisible();
     });
     test("when deselecting an old value", async () => {
-      let selectedValues = ["2B", "3B"];
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MultipleSelectTextField
-            displayProps={{
-              label: "Position(s)",
-              listItemBuilder: (lookup, key) => lookup[key].fullName,
-              textValueBuilder: (menuItems, selecteds) => selecteds.map((selected) => menuItems[selected].code).join(","),
-            }}
+            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
             field="positions"
             handleOnChange={(values) => (selectedValues = values)}
             menuItems={positionMap}

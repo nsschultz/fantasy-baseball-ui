@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../../components/global-theme";
-import Players from "../../pages/players";
+import GlobalTheme from "../components/global-theme";
+import Players from "./players";
 import { ThemeProvider } from "@mui/material";
 import axios from "axios";
 
