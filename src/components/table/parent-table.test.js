@@ -60,7 +60,7 @@ describe("ParentTable", () => {
       fireEvent.click(screen.getByLabelText("Go to previous page"));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
     });
-    xtest("and handle changing the page size", async () => {
+    xtest("and handle changing the page size", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <ParentTable columns={columns} values={rows} />
@@ -68,7 +68,7 @@ describe("ParentTable", () => {
       );
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
       fireEvent.mouseDown(screen.getByRole("button", { name: "Rows per page: 10" }));
-      fireEvent.click(await screen.findByText("25"));
+      fireEvent.click(screen.getByText("25"));
       expect(screen.getAllByRole("row")).toHaveLength(rows.length + 1);
     });
   });

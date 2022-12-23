@@ -167,39 +167,39 @@ describe("MultiSelectTextField", () => {
       render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       expect(screen.getByText("2B,3B")).toBeVisible();
     });
-    test("with disabled values", async () => {
+    test("with disabled values", () => {
       render(<TestWrapper disableChecker={disableChecker} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-      expect(await screen.findByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
-      expect(await screen.findByRole("option", { name: "Shortstop" })).not.toHaveAttribute("aria-disabled");
-      expect(await screen.findByRole("option", { name: "Middle Infielder" })).toHaveAttribute("aria-disabled");
+      expect(screen.getByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
+      expect(screen.getByRole("option", { name: "Shortstop" })).not.toHaveAttribute("aria-disabled");
+      expect(screen.getByRole("option", { name: "Middle Infielder" })).toHaveAttribute("aria-disabled");
     });
-    test("without disabled values", async () => {
+    test("without disabled values", () => {
       render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-      expect(await screen.findByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
-      expect(await screen.findByRole("option", { name: "Shortstop" })).not.toHaveAttribute("aria-disabled");
-      expect(await screen.findByRole("option", { name: "Middle Infielder" })).not.toHaveAttribute("aria-disabled");
+      expect(screen.getByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
+      expect(screen.getByRole("option", { name: "Shortstop" })).not.toHaveAttribute("aria-disabled");
+      expect(screen.getByRole("option", { name: "Middle Infielder" })).not.toHaveAttribute("aria-disabled");
     });
   });
   describe("should change value", () => {
-    test("when selecting a new value", async () => {
+    test("when selecting a new value", () => {
       render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-      fireEvent.click(await screen.findByText("Shortstop"));
+      fireEvent.click(screen.getByText("Shortstop"));
       expect(startValues).toEqual(["2B", "3B", "SS"]);
-      expect(await screen.findByText("2B,3B,SS")).toBeVisible();
+      expect(screen.getByText("2B,3B,SS")).toBeVisible();
     });
-    test("when deselecting an old value", async () => {
+    test("when deselecting an old value", () => {
       render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-      fireEvent.click(await screen.findByText("Third Baseman"));
+      fireEvent.click(screen.getByText("Third Baseman"));
       expect(startValues).toEqual(["2B"]);
-      expect(await screen.findByText("2B")).toBeVisible();
+      expect(screen.getByText("2B")).toBeVisible();
     });
   });
 });

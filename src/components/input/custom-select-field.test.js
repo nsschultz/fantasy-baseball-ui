@@ -34,28 +34,28 @@ describe("CustomSelectField", () => {
       render(<TestWrapper existingValues={[]} title={undefined} width={undefined} />);
       expect(screen.queryByText(title)).toBeFalsy();
     });
-    test("with a list of the items", async () => {
+    test("with a list of the items", () => {
       render(<TestWrapper existingValues={[]} title={title} width={undefined} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-      expect(await screen.findByText("Available")).toBeVisible();
-      expect(await screen.findByText("Rostered")).toBeVisible();
-      expect(await screen.findByText("Unavailable")).toBeVisible();
-      expect(await screen.findByText("Scouted")).toBeVisible();
+      expect(screen.getByText("Available")).toBeVisible();
+      expect(screen.getByText("Rostered")).toBeVisible();
+      expect(screen.getByText("Unavailable")).toBeVisible();
+      expect(screen.getByText("Scouted")).toBeVisible();
     });
     test("with fields already selected", () => {
       render(<TestWrapper existingValues={["1", "3"]} title={title} width={125} />);
       expect(screen.getByText("Rostered, Scouted")).toBeVisible();
     });
   });
-  test("should handle onChange events", async () => {
+  test("should handle onChange events", () => {
     render(<TestWrapper existingValues={[]} title={title} width={undefined} />);
     const customSelect = screen.getByRole("button");
     expect(existingValue).toBe("Old");
     fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-    fireEvent.click(await screen.findByText("Available"));
+    fireEvent.click(screen.getByText("Available"));
     fireEvent.keyDown(customSelect, { key: "ArrowDown" });
-    fireEvent.click(await screen.findByText("Scouted"));
+    fireEvent.click(screen.getByText("Scouted"));
     expect(existingValue).toEqual(["0", "3"]);
     expect(screen.getByText("Available, Scouted")).toBeVisible();
   });
