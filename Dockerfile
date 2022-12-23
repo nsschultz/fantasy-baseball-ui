@@ -15,9 +15,9 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 FROM dev as build
 COPY ["package.json", "package-lock.json", "./"]
-RUN --mount=type=cache,id=react,target=/app/node_modules npm ci --silent
+RUN npm ci --silent
 COPY . .
-RUN --mount=type=cache,id=react,target=/app/node_modules npm run build:default
+RUN npm run build:default
 
 FROM nginx:1.23.2
 WORKDIR /usr/share/nginx/html/
