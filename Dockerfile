@@ -14,6 +14,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm ci --silent
+RUN sudo chown -R 1000:1000 "/root/.npm"
 
 FROM dev as build
 COPY . .
