@@ -8,13 +8,7 @@
       "args": ["run", "build:default"],
       "problemMatcher": "$msCompile"
     },
-    {
-      "label": "build-and-scan",
-      "command": "npm",
-      "type": "process",
-      "args": ["run", "build:scan"],
-      "problemMatcher": "$msCompile"
-    },
+
     {
       "label": "restore",
       "command": "npm",
@@ -34,6 +28,13 @@
       "command": "npm",
       "type": "process",
       "args": ["run", "test"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test-and-scan",
+      "command": "npm",
+      "type": "process",
+      "args": ["run", "build:scan"],
       "problemMatcher": "$msCompile"
     }
   ]

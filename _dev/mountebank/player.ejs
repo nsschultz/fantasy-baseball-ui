@@ -5,7 +5,7 @@
       "responses": [{ "is": { "statusCode": 200, "body": "Healthy" } }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v1/action/export" } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/action/export" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -19,15 +19,60 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "POST", "path": "/api/v1/action/merge" } }],
+      "predicates": [{
+        "or": [
+          { "equals": { "method": "POST", "path": "/api/v2/action/upload/projection/batters" } },
+          { "equals": { "method": "POST", "path": "/api/v2/action/upload/projection/pitchers" } }
+        ]
+      }],
+      "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
+    },
+    {
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "LeagueStatus" } } }],
+      "responses": [{ 
+        "is": { 
+          "statusCode": 200, 
+          "body": { "0": "Available", "1": "Rostered", "2": "Unavailable", "3": "Scouted" },
+          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
+         } 
+      }]
+    },
+    {
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "PlayerStatus" } } }],
+      "responses": [{ 
+        "is": { 
+          "statusCode": 200, 
+          "body": { "0": "", "1": "Disabled List", "2": "Not Available", "3": "New Entry" },
+          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
+         } 
+      }]
+    },
+    {
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "PlayerType" } } }],
+      "responses": [{ 
+        "is": { 
+          "statusCode": 200, 
+          "body": { "0": "Unknown", "1": "Batter", "2": "Pitcher" },
+          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
+         } 
+      }]
+    },
+    {
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "StatsType" } } }],
+      "responses": [{ 
+        "is": { 
+          "statusCode": 200, 
+          "body": { "0": "Unknown", "1": "Year to Date", "2": "Projected", "3": "Combined" },
+          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
+         } 
+      }]
+    },
+    {
+      "predicates": [{ "equals": { "method": "DELETE", "path": "/api/v2/player" } }],
       "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
     },
     {
-      "predicates": [{ "equals": { "method": "DELETE", "path": "/api/v1/player" } }],
-      "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
-    },
-    {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v1/player" } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/player" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -40,7 +85,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "OPTIONS", "path": "/api/v1/player" } }],
+      "predicates": [{ "equals": { "method": "OPTIONS", "path": "/api/v2/player" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 204, 
@@ -52,7 +97,7 @@
       }]
     },
     {
-      "predicates": [{ "startsWith": { "method": "OPTIONS", "path": "/api/v1/player/" } }],
+      "predicates": [{ "startsWith": { "method": "OPTIONS", "path": "/api/v2/player/" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 204, 
@@ -65,57 +110,21 @@
       }]
     },
     {
-      "predicates": [{ "startsWith": { "method": "PUT", "path": "/api/v1/player/" } }],
+      "predicates": [{ "startsWith": { "method": "PUT", "path": "/api/v2/player/" } }],
       "responses": [{ "is": { "statusCode": 200, "body": {}, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v1/player/enum-map", "query": { "enumType": "LeagueStatus" } } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/team" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
-          "body": { "0": "Available", "1": "Rostered", "2": "Unavailable", "3": "Scouted" },
-          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
-         } 
+          "body": "<%- stringify(filename, './responses/teams.json') %>",
+          "headers": { 
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Content-Type": "application/json; charset=utf-8"
+          }
+        } 
       }]
-    },
-    {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v1/player/enum-map", "query": { "enumType": "PlayerStatus" } } }],
-      "responses": [{ 
-        "is": { 
-          "statusCode": 200, 
-          "body": { "0": "", "1": "Disabled List", "2": "Not Available", "3": "New Entry" },
-          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
-         } 
-      }]
-    },
-    {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v1/player/enum-map", "query": { "enumType": "PlayerType" } } }],
-      "responses": [{ 
-        "is": { 
-          "statusCode": 200, 
-          "body": { "0": "Unknown", "1": "Batter", "2": "Pitcher" },
-          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
-         } 
-      }]
-    },
-    {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v1/player/enum-map", "query": { "enumType": "StatsType" } } }],
-      "responses": [{ 
-        "is": { 
-          "statusCode": 200, 
-          "body": { "0": "Unknown", "1": "Year to Date", "2": "Projected", "3": "Combined" },
-          "headers": { "Access-Control-Allow-Origin": "http://localhost:3000", "Content-Type": "application/json; charset=utf-8" }
-         } 
-      }]
-    },
-    {
-      "predicates": [{
-        "or": [
-          { "equals": { "method": "POST", "path": "/api/v1/projection/batters/upload" } },
-          { "equals": { "method": "POST", "path": "/api/v1/projection/pitchers/upload" } }
-        ]
-      }],
-      "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
     }
   ]
 }

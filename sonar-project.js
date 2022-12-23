@@ -11,6 +11,7 @@ scanner(
       "sonar.test.inclusions": "**/*.test.js",
       "sonar.typescript.lcov.reportPaths": "coverage/lcov.info",
       "sonar.testExecutionReportPaths": "reports/test-report.xml",
+      "sonar.sourceEncoding": "UTF-8",
     },
   },
   () => {}

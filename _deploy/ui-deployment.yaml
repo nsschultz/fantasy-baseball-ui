@@ -21,9 +21,14 @@ spec:
           ports:
             - name: web
               containerPort: 8080
+          env:
+            - name: PLAYER_API_URL
+              value: "http://baseball-player-api.schultz.local"
+            - name: POSITION_API_URL
+              value: "http://baseball-position-api.schultz.local"
           livenessProbe:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 5
+            initialDelaySeconds: 30
+            periodSeconds: 60

@@ -34,7 +34,7 @@
     "test": "CI=true react-scripts test --silent --coverage --testResultsProcessor jest-sonar-reporter --detectOpenHandles",
     "sonar": "node sonar-project.js",
     "build:default": "react-scripts build",
-    "build:scan": "npm run build:default && npm run lint && npm run test && npm run sonar"
+    "build:scan": "npm run lint && npm run test && npm run sonar"
   },
   "eslintConfig": {
     "extends": [

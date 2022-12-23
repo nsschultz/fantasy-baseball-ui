@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import GlobalTheme from "../global-theme";
 import MultipleSelectTextField from "./multiple-select-text-field";
 import { ThemeProvider } from "@mui/material";
+import { useState } from "react";
 
 const positionMap = {
   C: {
@@ -131,7 +132,7 @@ const positionMap = {
 };
 
 const lineItemBuilder = (lookup, key) => lookup[key].fullName;
-const textValueBuilder = () => selectedValues.map((selected) => positionMap[selected].code).join(",");
+const textValueBuilder = () => selectedValues.map((selected) => positionMap[selected].code).join();
 
 let selectedValues = ["2B", "3B"];
 
@@ -211,40 +212,54 @@ describe("MultiSelectTextField", () => {
   });
   describe("should change value", () => {
     test("when selecting a new value", async () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MultipleSelectTextField
-            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-            field="positions"
-            handleOnChange={(values) => (selectedValues = values)}
-            menuItems={positionMap}
-            selectedValues={selectedValues}
-          />
-        </ThemeProvider>
-      );
+      const TestWrapper = () => {
+        const [stateValues, setStateValues] = useState(selectedValues);
+        return (
+          <ThemeProvider theme={GlobalTheme()}>
+            <MultipleSelectTextField
+              displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
+              field="positions"
+              handleOnChange={(values) => {
+                setStateValues(values);
+                selectedValues = values;
+              }}
+              menuItems={positionMap}
+              selectedValues={stateValues}
+            />
+          </ThemeProvider>
+        );
+      };
+      render(<TestWrapper />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(await screen.findByText("Shortstop"));
       expect(selectedValues).toEqual(["2B", "3B", "SS"]);
-      expect(screen.getByText("2B,3B,SS")).toBeVisible();
+      expect(await screen.findByText("2B,3B,SS")).toBeVisible();
     });
     test("when deselecting an old value", async () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MultipleSelectTextField
-            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-            field="positions"
-            handleOnChange={(values) => (selectedValues = values)}
-            menuItems={positionMap}
-            selectedValues={selectedValues}
-          />
-        </ThemeProvider>
-      );
+      const TestWrapper = () => {
+        const [stateValues, setStateValues] = useState(selectedValues);
+        return (
+          <ThemeProvider theme={GlobalTheme()}>
+            <MultipleSelectTextField
+              displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
+              field="positions"
+              handleOnChange={(values) => {
+                setStateValues(values);
+                selectedValues = values;
+              }}
+              menuItems={positionMap}
+              selectedValues={stateValues}
+            />
+          </ThemeProvider>
+        );
+      };
+      render(<TestWrapper />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(await screen.findByText("Third Baseman"));
       expect(selectedValues).toEqual(["2B"]);
-      expect(screen.getByText("2B")).toBeVisible();
+      expect(await screen.findByText("2B")).toBeVisible();
     });
   });
 });

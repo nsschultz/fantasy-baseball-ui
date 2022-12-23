@@ -1,6 +1,6 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { buildPositionMap, isChildPosition } from "../funcs/position-helper";
+import { buildPositionList, buildPositionMap, isChildPosition } from "../funcs/position-helper";
 import { buildTeamDisplay, buildTeamMap } from "../funcs/team-helper";
 
 import CustomCard from "../components/card/custom-card";
@@ -9,6 +9,20 @@ import { Helmet } from "react-helmet";
 import MultipleSelectTextField from "../components/input/multiple-select-text-field";
 import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
+
+const samplePlayer = {
+  age: 0,
+  draftedPercentage: 0,
+  draftRank: 9999,
+  firstName: "",
+  lastName: "",
+  league1: 0,
+  league2: 0,
+  positions: [],
+  status: 0,
+  team: {},
+  type: 0,
+};
 
 const buildDefaultSelectField = (field, label, handleOnChange, defaultValue, lookup) =>
   buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (lookup, key) => lookup[key]);
@@ -79,21 +93,21 @@ const useStyles = makeStyles((theme) => ({
 const PlayerView = ({ lookups, onClose, open, player }) => {
   const classes = useStyles();
 
-  const newPlayer = player ? JSON.parse(JSON.stringify(player)) : {};
+  const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const teamMap = buildTeamMap(lookups.teams);
 
-  const [age, setAge] = useState(newPlayer.age ?? 0);
-  const [draftedPercentage, setDraftedPercentage] = useState(newPlayer.draftedPercentage ?? 0);
-  const [draftRank, setDraftRank] = useState(newPlayer.draftRank ?? 0);
-  const [firstName, setFirstName] = useState(newPlayer.firstName ?? "");
-  const [lastName, setLastName] = useState(newPlayer.lastName ?? "");
-  const [league1, setLeague1] = useState(newPlayer.league1 ?? 0);
-  const [league2, setLeague2] = useState(newPlayer.league2 ?? 0);
-  const [positions, setPositions] = useState(newPlayer.positions ?? []);
-  const [status, setStatus] = useState(newPlayer.status ?? 0);
-  const [team, setTeam] = useState(newPlayer.team ?? lookups.teams[0]);
-  const [type, setType] = useState(newPlayer.type ?? 0);
-  const [positionMap, setPositionMap] = useState(buildPositionMap(lookups.positions, type) ?? {});
+  const [age, setAge] = useState(newPlayer.age);
+  const [draftedPercentage, setDraftedPercentage] = useState(newPlayer.draftedPercentage);
+  const [draftRank, setDraftRank] = useState(newPlayer.draftRank);
+  const [firstName, setFirstName] = useState(newPlayer.firstName);
+  const [lastName, setLastName] = useState(newPlayer.lastName);
+  const [league1, setLeague1] = useState(newPlayer.league1);
+  const [league2, setLeague2] = useState(newPlayer.league2);
+  const [positions, setPositions] = useState(newPlayer.positions);
+  const [status, setStatus] = useState(newPlayer.status);
+  const [team, setTeam] = useState(newPlayer.team || lookups.teams[0]);
+  const [type, setType] = useState(newPlayer.type);
+  const [positionMap, setPositionMap] = useState(buildPositionMap(lookups.positions, type));
 
   const baseballInfoContent = (
     <>
@@ -117,7 +131,7 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
             textValueBuilder: () => positions.map((p) => p.code).join(),
           }}
           field="positions"
-          handleOnChange={(values) => setPositions(values.map((v) => positionMap[v]))}
+          handleOnChange={(values) => setPositions(buildPositionList(values, positionMap))}
           menuItems={positionMap}
           selectedValues={positions.map((p) => p.code)}
         />

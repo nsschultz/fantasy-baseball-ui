@@ -1,5 +1,6 @@
 import { Box, Container, Snackbar, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import { buildPositionDisplayMap, matchAnyPosition } from "../funcs/position-helper";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
 
 import Alert from "@mui/lab/Alert";
@@ -7,7 +8,6 @@ import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
 import PlayerView from "./player-view";
 import axios from "axios";
-import { buildPositionDisplayMap } from "../funcs/position-helper";
 import { buildTeamDisplayMap } from "../funcs/team-helper";
 import { makeStyles } from "@mui/styles";
 
@@ -19,8 +19,8 @@ const columns = [
   { field: "type", lookup: [], title: "Type" },
   {
     field: "positions",
-    filterMatcher: (filterValue, field) => filterValue.some((v) => field.some((f) => f.code === v || f.additionalPositions.some((ap) => ap.code === v))),
-    format: (value) => value.map((p) => p.code).toString(),
+    filterMatcher: (filterValue, field) => filterValue.some((v) => matchAnyPosition(field, v, true)),
+    format: (value) => value.map((p) => p.code).join(),
     lookup: [],
     title: "Position(s)",
   },
@@ -38,7 +38,6 @@ const columns = [
   { field: "draftRank", title: "Draft Rank", type: "numeric" },
   { field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %", type: "numeric" },
 ];
-
 const columnsBattingStats = [
   { title: "", field: "statsType" },
   { title: "AB", field: "atBats", type: "numeric" },
@@ -63,7 +62,6 @@ const columnsBattingStats = [
   { title: "SPD", field: "speed", type: "numeric", format: (value) => value.toFixed(0) },
   { title: "BPV", field: "basePerformanceValue", type: "numeric", format: (value) => value.toFixed(0) },
 ];
-
 const columnsPitchingStats = [
   { title: "", field: "statsType" },
   { title: "W", field: "wins", type: "numeric" },
@@ -90,17 +88,17 @@ const columnsPitchingStats = [
 ];
 
 const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
-
 const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
-
 const updateLookupOnColumns = (field, lookup, cols) => cols.filter((column) => column.field === field).forEach((column) => (column.lookup = lookup));
-
 const updateLookup = (field, lookup) => updateLookupOnColumns(field, lookup, columns);
-
 const useStyles = makeStyles((theme) => ({
   box: { backgroundColor: "background.default", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },
 }));
 
+/**
+ * The player window which is used for admin level function against players.
+ * @returns A new instance of Player.
+ */
 const Players = () => {
   const classes = useStyles();
   const isMountedRef = useRef(null);
@@ -113,7 +111,6 @@ const Players = () => {
   const [playerTypes, setPlayerTypes] = useState([]);
   const [positions, setPositions] = useState([]);
   const [severity, setSeverity] = useState("");
-  const [statTypes, setStatTypes] = useState([]);
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
@@ -131,15 +128,14 @@ const Players = () => {
       setPlayerTypes(response);
       updateLookup("type", response);
     });
-    getStatsTypeEnums((response) => {
-      setStatTypes(response);
-      updateLookupOnColumns("statsType", response, columnsBattingStats);
-      updateLookupOnColumns("statsType", response, columnsPitchingStats);
-    });
     getPositions((response) => {
       setPositions(response);
       const positionMap = buildPositionDisplayMap(response);
       updateLookup("positions", positionMap);
+    });
+    getStatsTypeEnums((response) => {
+      updateLookupOnColumns("statsType", response, columnsBattingStats);
+      updateLookupOnColumns("statsType", response, columnsPitchingStats);
     });
     getTeams((response) => {
       setTeams(response);
@@ -159,7 +155,6 @@ const Players = () => {
     };
     return <PlayerView lookups={lookups} onClose={handleEditClose} open={editOpen} player={editRow} />;
   };
-
   const getPlayers = () => {
     axios
       .get(`${window.env.PLAYER_API_URL}/api/v2/player`)
@@ -176,7 +171,6 @@ const Players = () => {
         setIsLoading(false);
       });
   };
-
   const onRowUpdate = (newData) => {
     if (!newData) return;
     updatePlayer(newData.id, newData);
@@ -184,7 +178,6 @@ const Players = () => {
     setPlayers([...dataUpdate]);
     return dataUpdate;
   };
-
   const updatePlayer = (id, player) => {
     axios
       .put(`${window.env.PLAYER_API_URL}/api/v2/player/${id}`, player)
@@ -227,5 +220,4 @@ const Players = () => {
     </>
   );
 };
-
 export default Players;

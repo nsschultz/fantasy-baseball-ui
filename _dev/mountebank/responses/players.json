@@ -1,7 +1,19 @@
 [
   {
-    "team": "MIL",
-    "positions": "SS",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "379e76bb-af9c-490f-b8d1-73a0f3cdb9f8",
     "bhqId": 5053,
     "type": 1,
@@ -29,8 +41,42 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "1B-2B-3B",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "0aa22cce-8c66-4b09-9b5d-7ac2db34bbe3",
     "bhqId": 6179,
     "type": 1,
@@ -58,8 +104,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "C",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "f44be3eb-2a2b-476d-ac6f-27244bc47978",
     "bhqId": 5508,
     "type": 1,
@@ -87,8 +133,20 @@
     ]
   },
   {
-    "team": "TOR",
-    "positions": "3B",
+    "team": { "code": "TOR", "alternativeCode": null, "leagueId": "AL", "city": "Toronto", "nickname": "Blue Jays" },
+    "positions": [
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "9f0384ee-02a9-43b7-88dc-4d9c7f530dda",
     "bhqId": 5407,
     "type": 1,
@@ -116,8 +174,31 @@
     ]
   },
   {
-    "team": "MIA",
-    "positions": "2B-SS",
+    "team": { "code": "MIA", "alternativeCode": null, "leagueId": "NL", "city": "Miami", "nickname": "Marlins" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "5801e077-cc58-43e9-ad4a-f9802fee7369",
     "bhqId": 6209,
     "type": 1,
@@ -145,8 +226,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "1b43560c-6ac5-4e77-9368-631a24e16e6f",
     "bhqId": 5333,
     "type": 1,
@@ -174,8 +255,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "010ae0a2-84ee-48cf-9cf7-8a2ec508cc33",
     "bhqId": 5988,
     "type": 1,
@@ -203,8 +284,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "C",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "18fa5de6-e188-45f4-be68-f95140061639",
     "bhqId": 6581,
     "type": 1,
@@ -232,8 +313,8 @@
     ]
   },
   {
-    "team": "CIN",
-    "positions": "OF",
+    "team": { "code": "CIN", "alternativeCode": null, "leagueId": "NL", "city": "Cincinnati", "nickname": "Reds" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "b1f37406-2a67-4b8c-91c1-75a50a6f763d",
     "bhqId": 6216,
     "type": 1,
@@ -261,8 +342,31 @@
     ]
   },
   {
-    "team": "TB",
-    "positions": "3B-SS",
+    "team": { "code": "TB", "alternativeCode": "TAM", "leagueId": "AL", "city": "Tampa Bay", "nickname": "Rays" },
+    "positions": [
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "e9137344-a90c-4d35-be6f-cd3f435542eb",
     "bhqId": 6589,
     "type": 1,
@@ -290,8 +394,31 @@
     ]
   },
   {
-    "team": "CLE",
-    "positions": "2B-SS",
+    "team": { "code": "CLE", "alternativeCode": null, "leagueId": "AL", "city": "Cleveland", "nickname": "Guardians" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "096483e1-eaf6-4eb8-85b1-6492ff7db10d",
     "bhqId": 6002,
     "type": 1,
@@ -319,8 +446,32 @@
     ]
   },
   {
-    "team": "MIN",
-    "positions": "2B-SS-OF",
+    "team": { "code": "MIN", "alternativeCode": null, "leagueId": "AL", "city": "Minnesota", "nickname": "Twins" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      },
+      { "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }
+    ],
     "id": "a7da4769-9b95-4317-8a35-251d4ec5fd20",
     "bhqId": 5611,
     "type": 1,
@@ -348,8 +499,31 @@
     ]
   },
   {
-    "team": "STL",
-    "positions": "2B-3B",
+    "team": { "code": "STL", "alternativeCode": null, "leagueId": "NL", "city": "St. Louis", "nickname": "Cardinals" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "b690f262-e87a-4038-add9-6d64af2ada29",
     "bhqId": 6885,
     "type": 1,
@@ -377,8 +551,8 @@
     ]
   },
   {
-    "team": "DET",
-    "positions": "OF",
+    "team": { "code": "DET", "alternativeCode": null, "leagueId": "AL", "city": "Detriot", "nickname": "Tigers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "8a03b582-c34a-4f16-afa5-6f3447a4b47a",
     "bhqId": 6881,
     "type": 1,
@@ -406,8 +580,31 @@
     ]
   },
   {
-    "team": "ATL",
-    "positions": "2B-SS",
+    "team": { "code": "ATL", "alternativeCode": null, "leagueId": "NL", "city": "Atlanta", "nickname": "Braves" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "2399dd10-b652-4796-8248-80b3975a936a",
     "bhqId": 7096,
     "type": 1,
@@ -435,8 +632,8 @@
     ]
   },
   {
-    "team": "PHI",
-    "positions": "OF",
+    "team": { "code": "PHI", "alternativeCode": null, "leagueId": "NL", "city": "Philadelphia", "nickname": "Phillies" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "17c04c57-e2a3-4265-b4e7-173c97bbb1cd",
     "bhqId": 3941,
     "type": 1,
@@ -464,8 +661,31 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "1B-2B",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "ac2a670c-6da8-4252-99fd-7d952706a816",
     "bhqId": 6009,
     "type": 1,
@@ -493,8 +713,20 @@
     ]
   },
   {
-    "team": "PHI",
-    "positions": "1B",
+    "team": { "code": "PHI", "alternativeCode": null, "leagueId": "NL", "city": "Philadelphia", "nickname": "Phillies" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "a54864b7-9923-44aa-8627-3acb70462246",
     "bhqId": 5391,
     "type": 1,
@@ -522,8 +754,20 @@
     ]
   },
   {
-    "team": "CIN",
-    "positions": "2B",
+    "team": { "code": "CIN", "alternativeCode": null, "leagueId": "NL", "city": "Cincinnati", "nickname": "Reds" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "d1df308b-1ea9-4419-8729-d2cac3753e6b",
     "bhqId": 6637,
     "type": 1,
@@ -551,8 +795,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "C",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "19abc855-4ce0-40f7-8e58-8808a15f0462",
     "bhqId": 5472,
     "type": 1,
@@ -580,8 +824,8 @@
     ]
   },
   {
-    "team": "NYY",
-    "positions": "OF",
+    "team": { "code": "NYY", "alternativeCode": null, "leagueId": "AL", "city": "New York", "nickname": "Yankees" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "1fe5d5b4-e833-4828-ac28-4bd253c78aa0",
     "bhqId": 5048,
     "type": 1,
@@ -609,8 +853,42 @@
     ]
   },
   {
-    "team": "SD",
-    "positions": "2B-3B-SS",
+    "team": { "code": "SD", "alternativeCode": null, "leagueId": "NL", "city": "San Diego", "nickname": "Padres" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "29a2c849-3eca-4a32-a695-d42dfdc865cd",
     "bhqId": 6596,
     "type": 1,
@@ -638,8 +916,20 @@
     ]
   },
   {
-    "team": "NYM",
-    "positions": "SS",
+    "team": { "code": "NYM", "alternativeCode": null, "leagueId": "NL", "city": "New York", "nickname": "Mets" },
+    "positions": [
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "7b7017f3-7de6-4348-b4a9-81286367d15c",
     "bhqId": 4528,
     "type": 1,
@@ -667,8 +957,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "82a7ac73-8279-481f-b41e-49b0b9901250",
     "bhqId": 2567,
     "type": 1,
@@ -696,8 +986,11 @@
     ]
   },
   {
-    "team": "KC",
-    "positions": "C-OF",
+    "team": { "code": "KC", "alternativeCode": null, "leagueId": "AL", "city": "Kansas City", "nickname": "Royals" },
+    "positions": [
+      { "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] },
+      { "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }
+    ],
     "id": "643d1447-e90a-4677-898a-bd1d02bed609",
     "bhqId": 6806,
     "type": 1,
@@ -725,8 +1018,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "d017942e-c5f9-49bf-9fb7-dbd129dedcab",
     "bhqId": 6774,
     "type": 1,
@@ -754,8 +1047,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "C",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "3d71e823-f1e8-49e5-aad1-97f39ca448ef",
     "bhqId": 5316,
     "type": 1,
@@ -783,8 +1076,42 @@
     ]
   },
   {
-    "team": "TB",
-    "positions": "1B-2B-3B",
+    "team": { "code": "TB", "alternativeCode": "TAM", "leagueId": "AL", "city": "Tampa Bay", "nickname": "Rays" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "081f3aa5-b16c-4e83-80d7-1b905c525a72",
     "bhqId": 6053,
     "type": 1,
@@ -812,8 +1139,43 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "1B-2B-3B-OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      },
+      { "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }
+    ],
     "id": "f39e1057-9003-4ea5-9360-94c12b1cec69",
     "bhqId": 4611,
     "type": 1,
@@ -841,8 +1203,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "C",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "0354b4bf-2ef4-47be-bf08-ecaa1704873c",
     "bhqId": 6444,
     "type": 1,
@@ -870,8 +1232,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "23889720-3073-4c37-a7dd-63fdb633498b",
     "bhqId": 5083,
     "type": 1,
@@ -899,8 +1261,20 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "3B",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "43ee2b05-10b6-4894-a6cd-5c47a2f45160",
     "bhqId": 5981,
     "type": 1,
@@ -928,8 +1302,8 @@
     ]
   },
   {
-    "team": "SEA",
-    "positions": "OF",
+    "team": { "code": "SEA", "alternativeCode": null, "leagueId": "AL", "city": "Seattle", "nickname": "Mariners" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "e2f3a018-6216-43fa-a24c-96d5f6f61685",
     "bhqId": 6883,
     "type": 1,
@@ -957,8 +1331,21 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "2B-OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      { "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }
+    ],
     "id": "1b6f447e-affe-4509-845a-09aadeba3b4c",
     "bhqId": 7015,
     "type": 1,
@@ -986,8 +1373,21 @@
     ]
   },
   {
-    "team": "PHI",
-    "positions": "1B-OF",
+    "team": { "code": "PHI", "alternativeCode": null, "leagueId": "NL", "city": "Philadelphia", "nickname": "Phillies" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      },
+      { "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }
+    ],
     "id": "ed798f1a-0241-4b94-98a7-876fe949ee91",
     "bhqId": 4800,
     "type": 1,
@@ -1015,8 +1415,8 @@
     ]
   },
   {
-    "team": "TOR",
-    "positions": "OF",
+    "team": { "code": "TOR", "alternativeCode": null, "leagueId": "AL", "city": "Toronto", "nickname": "Blue Jays" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "47b9f5a7-811a-4a16-9385-f575de5d4389",
     "bhqId": 4363,
     "type": 1,
@@ -1044,8 +1444,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "C",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "e21028aa-5084-42b6-aa62-10cbcde98ce2",
     "bhqId": 6945,
     "type": 1,
@@ -1073,8 +1473,20 @@
     ]
   },
   {
-    "team": "ATL",
-    "positions": "SS",
+    "team": { "code": "ATL", "alternativeCode": null, "leagueId": "NL", "city": "Atlanta", "nickname": "Braves" },
+    "positions": [
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "e8774047-7ff9-43e7-b709-f7f66cb4def9",
     "bhqId": 5129,
     "type": 1,
@@ -1102,8 +1514,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "31ac324b-fed5-4aec-80ee-f14688e07919",
     "bhqId": 4886,
     "type": 1,
@@ -1131,8 +1543,20 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "1B",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "17331001-9ba0-478d-ae5d-141f64d84196",
     "bhqId": 5199,
     "type": 1,
@@ -1160,8 +1584,8 @@
     ]
   },
   {
-    "team": "HOU",
-    "positions": "OF",
+    "team": { "code": "HOU", "alternativeCode": null, "leagueId": "AL", "city": "Houston", "nickname": "Astros" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "379f2dec-88b0-46c4-961e-40e5df7ba20f",
     "bhqId": 5736,
     "type": 1,
@@ -1189,8 +1613,20 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SS",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "ebe41b0a-d144-4f3d-8c57-3b4f5300b44f",
     "bhqId": 6582,
     "type": 1,
@@ -1218,8 +1654,42 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "2B-3B-SS",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "3B",
+        "fullName": "Third Baseman",
+        "playerType": 1,
+        "sortOrder": 3,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      },
+      {
+        "code": "SS",
+        "fullName": "Shortstop",
+        "playerType": 1,
+        "sortOrder": 4,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "bf019d49-25bd-4885-9d2b-55ee958fe547",
     "bhqId": 5741,
     "type": 1,
@@ -1247,8 +1717,11 @@
     ]
   },
   {
-    "team": "ARZ",
-    "positions": "C-OF",
+    "team": { "code": "ARZ", "alternativeCode": "ARI", "leagueId": "NL", "city": "Arizona", "nickname": "Diamondbacks" },
+    "positions": [
+      { "code": "C", "fullName": "Catcher", "playerType": 1, "sortOrder": 0, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] },
+      { "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }
+    ],
     "id": "1e6f7190-9b05-4abe-b88d-e4624f4b555d",
     "bhqId": 6373,
     "type": 1,
@@ -1276,8 +1749,20 @@
     ]
   },
   {
-    "team": "ARZ",
-    "positions": "1B",
+    "team": { "code": "ARZ", "alternativeCode": "ARI", "leagueId": "NL", "city": "Arizona", "nickname": "Diamondbacks" },
+    "positions": [
+      {
+        "code": "1B",
+        "fullName": "First Baseman",
+        "playerType": 1,
+        "sortOrder": 1,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "CIF", "fullName": "Corner Infielder", "playerType": 1, "sortOrder": 5, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "ef0b95a8-da60-4c25-926d-cf60476821b0",
     "bhqId": 4775,
     "type": 1,
@@ -1305,8 +1790,20 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "2B",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      {
+        "code": "2B",
+        "fullName": "Second Baseman",
+        "playerType": 1,
+        "sortOrder": 2,
+        "additionalPositions": [
+          { "code": "IF", "fullName": "Infielder", "playerType": 1, "sortOrder": 7, "additionalPositions": [] },
+          { "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] },
+          { "code": "MIF", "fullName": "Middle Infielder", "playerType": 1, "sortOrder": 6, "additionalPositions": [] }
+        ]
+      }
+    ],
     "id": "c4608bbb-dc81-4891-9775-78946407d39c",
     "bhqId": 4217,
     "type": 1,
@@ -1334,8 +1831,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "OF",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "OF", "fullName": "Outfielder", "playerType": 1, "sortOrder": 11, "additionalPositions": [{ "code": "UTIL", "fullName": "Utility", "playerType": 1, "sortOrder": 13, "additionalPositions": [] }] }],
     "id": "1a2b372b-44b2-4989-8af0-6499a2659c87",
     "bhqId": 4335,
     "type": 1,
@@ -1363,8 +1860,11 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP-RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "62795f8a-bdf9-433c-86f0-ee63d2ba9fb6",
     "bhqId": 7023,
     "type": 2,
@@ -1392,8 +1892,11 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP-RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "48b7aa93-3463-4fc2-b9b1-0311e5c60277",
     "bhqId": 6580,
     "type": 2,
@@ -1421,8 +1924,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "0035735d-c42e-43da-8ae2-fbc476692203",
     "bhqId": 7020,
     "type": 2,
@@ -1450,8 +1953,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "P",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }],
     "id": "6d69e269-8028-4703-b0f2-62a2dcdb15dc",
     "bhqId": 6675,
     "type": 2,
@@ -1479,8 +1982,8 @@
     ]
   },
   {
-    "team": "CLE",
-    "positions": "SP",
+    "team": { "code": "CLE", "alternativeCode": null, "leagueId": "AL", "city": "Cleveland", "nickname": "Guardians" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "c6ba6850-6017-4ab3-9090-81b83d046c5a",
     "bhqId": 5890,
     "type": 2,
@@ -1508,8 +2011,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "23950b3c-eef2-4d71-ada6-fc67d88d53e3",
     "bhqId": 3976,
     "type": 2,
@@ -1537,8 +2040,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "9a4be7e0-e5a0-4281-99ff-4b498401d124",
     "bhqId": 3677,
     "type": 2,
@@ -1566,8 +2069,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "50e93fc7-68d6-4523-875f-0bb344cb91e5",
     "bhqId": 5924,
     "type": 2,
@@ -1595,8 +2098,11 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP-RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "952984f5-7fb4-4a29-92a2-bd90a01c5cc3",
     "bhqId": 3955,
     "type": 2,
@@ -1624,8 +2130,8 @@
     ]
   },
   {
-    "team": "CLE",
-    "positions": "RP",
+    "team": { "code": "CLE", "alternativeCode": null, "leagueId": "AL", "city": "Cleveland", "nickname": "Guardians" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "bd9c9d88-4fe4-492a-b70a-f60982b8216d",
     "bhqId": 6122,
     "type": 2,
@@ -1653,8 +2159,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "d0fc0a0d-2d4d-4040-89dd-d67ed85a69e9",
     "bhqId": 6724,
     "type": 2,
@@ -1682,8 +2188,8 @@
     ]
   },
   {
-    "team": "NYM",
-    "positions": "RP",
+    "team": { "code": "NYM", "alternativeCode": null, "leagueId": "NL", "city": "New York", "nickname": "Mets" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "c378cd4e-d49d-44fb-8b63-adb7abc1ff64",
     "bhqId": 5187,
     "type": 2,
@@ -1711,8 +2217,8 @@
     ]
   },
   {
-    "team": "HOU",
-    "positions": "SP",
+    "team": { "code": "HOU", "alternativeCode": null, "leagueId": "AL", "city": "Houston", "nickname": "Astros" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "7198c9e4-12ef-4035-b539-7ee9ad8b3345",
     "bhqId": 6538,
     "type": 2,
@@ -1740,8 +2246,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "153215ee-f49a-4b7d-a910-72fa3a9d47cb",
     "bhqId": 4951,
     "type": 2,
@@ -1769,8 +2275,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "64583442-204f-4f02-b223-a397cdf09d90",
     "bhqId": 5351,
     "type": 2,
@@ -1798,8 +2304,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "a920a779-1a2a-40ce-ba10-69f9b022e458",
     "bhqId": 3659,
     "type": 2,
@@ -1827,8 +2333,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "36147a16-d7c4-48bb-b647-b8d59a5ec899",
     "bhqId": 5085,
     "type": 2,
@@ -1856,8 +2362,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "91ed9cb9-e41a-4214-85be-dc6f6cef224b",
     "bhqId": 6187,
     "type": 2,
@@ -1885,8 +2391,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "e0deb378-7f52-4742-a2f9-75ae12346db4",
     "bhqId": 5864,
     "type": 2,
@@ -1914,8 +2420,11 @@
     ]
   },
   {
-    "team": "MIN",
-    "positions": "SP-RP",
+    "team": { "code": "MIN", "alternativeCode": null, "leagueId": "AL", "city": "Minnesota", "nickname": "Twins" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "35601382-71e5-41c5-ba1e-542441107a98",
     "bhqId": 5072,
     "type": 2,
@@ -1943,8 +2452,8 @@
     ]
   },
   {
-    "team": "NYM",
-    "positions": "RP",
+    "team": { "code": "NYM", "alternativeCode": null, "leagueId": "NL", "city": "New York", "nickname": "Mets" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "38e839cc-52b8-49e2-a677-51846d2dca95",
     "bhqId": 5098,
     "type": 2,
@@ -1972,8 +2481,8 @@
     ]
   },
   {
-    "team": "CLE",
-    "positions": "SP",
+    "team": { "code": "CLE", "alternativeCode": null, "leagueId": "AL", "city": "Cleveland", "nickname": "Guardians" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "4cc4cef2-30b0-425b-91a1-799d9a4c812f",
     "bhqId": 5601,
     "type": 2,
@@ -2001,8 +2510,11 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP-RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "a0dcc1fb-0beb-4b1f-8f19-c6d7568b573d",
     "bhqId": 6694,
     "type": 2,
@@ -2030,8 +2542,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "39c2b781-d30c-4c4e-bb7a-42134a9b249a",
     "bhqId": 5627,
     "type": 2,
@@ -2059,8 +2571,8 @@
     ]
   },
   {
-    "team": "SEA",
-    "positions": "RP",
+    "team": { "code": "SEA", "alternativeCode": null, "leagueId": "AL", "city": "Seattle", "nickname": "Mariners" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "8d89ac4c-28ef-48bb-b6f4-b4bd7ae55022",
     "bhqId": 6142,
     "type": 2,
@@ -2088,8 +2600,8 @@
     ]
   },
   {
-    "team": "SD",
-    "positions": "SP",
+    "team": { "code": "SD", "alternativeCode": null, "leagueId": "NL", "city": "San Diego", "nickname": "Padres" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "a07eb266-0b30-43c6-b53c-7b0e8a2bb883",
     "bhqId": 5237,
     "type": 2,
@@ -2117,8 +2629,8 @@
     ]
   },
   {
-    "team": "PHI",
-    "positions": "SP",
+    "team": { "code": "PHI", "alternativeCode": null, "leagueId": "NL", "city": "Philadelphia", "nickname": "Phillies" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "f2915b39-76e3-47d8-8dc3-44ce0ff4b793",
     "bhqId": 4784,
     "type": 2,
@@ -2146,8 +2658,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "111adb78-e25e-45ef-ab8f-67389b691964",
     "bhqId": 5879,
     "type": 2,
@@ -2175,8 +2687,11 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP-RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "392b9ad3-2e05-4496-965e-044013da057b",
     "bhqId": 5138,
     "type": 2,
@@ -2204,8 +2719,8 @@
     ]
   },
   {
-    "team": "OAK",
-    "positions": "RP",
+    "team": { "code": "OAK", "alternativeCode": null, "leagueId": "AL", "city": "Oakland", "nickname": "Athletics" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "faccb3da-4eca-413e-b119-930b7ae8f76e",
     "bhqId": 5831,
     "type": 2,
@@ -2233,8 +2748,8 @@
     ]
   },
   {
-    "team": "SEA",
-    "positions": "SP",
+    "team": { "code": "SEA", "alternativeCode": null, "leagueId": "AL", "city": "Seattle", "nickname": "Mariners" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "0ae9f4c0-1349-481b-9bd0-a649ba6615dc",
     "bhqId": 4614,
     "type": 2,
@@ -2262,8 +2777,8 @@
     ]
   },
   {
-    "team": "PHI",
-    "positions": "RP",
+    "team": { "code": "PHI", "alternativeCode": null, "leagueId": "NL", "city": "Philadelphia", "nickname": "Phillies" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "25f7a378-4ce3-41f1-86c0-5e631e47cd35",
     "bhqId": 2972,
     "type": 2,
@@ -2291,8 +2806,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "ca82ac78-e3c3-4051-a15b-a70ef623d6c3",
     "bhqId": 5255,
     "type": 2,
@@ -2320,8 +2835,8 @@
     ]
   },
   {
-    "team": "TOR",
-    "positions": "RP",
+    "team": { "code": "TOR", "alternativeCode": null, "leagueId": "AL", "city": "Toronto", "nickname": "Blue Jays" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "e7d67172-ee82-4a30-9bb1-ff3d51285cf6",
     "bhqId": 6099,
     "type": 2,
@@ -2349,8 +2864,8 @@
     ]
   },
   {
-    "team": "MIN",
-    "positions": "SP",
+    "team": { "code": "MIN", "alternativeCode": null, "leagueId": "AL", "city": "Minnesota", "nickname": "Twins" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "b55cf6a3-77fc-4689-bae8-694d34055070",
     "bhqId": 6719,
     "type": 2,
@@ -2378,8 +2893,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "b78b26fa-88c7-4f12-addb-585140bacde7",
     "bhqId": 6729,
     "type": 2,
@@ -2407,8 +2922,8 @@
     ]
   },
   {
-    "team": "NYM",
-    "positions": "SP",
+    "team": { "code": "NYM", "alternativeCode": null, "leagueId": "NL", "city": "New York", "nickname": "Mets" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "341681b1-c99b-4c2b-90f7-9b1af902ddc2",
     "bhqId": 2841,
     "type": 2,
@@ -2436,8 +2951,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "eb338553-881b-45df-b252-70b47040b42c",
     "bhqId": 6578,
     "type": 2,
@@ -2465,8 +2980,8 @@
     ]
   },
   {
-    "team": "SD",
-    "positions": "SP",
+    "team": { "code": "SD", "alternativeCode": null, "leagueId": "NL", "city": "San Diego", "nickname": "Padres" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "f774ff89-a188-4adb-a2ab-38186a60a609",
     "bhqId": 5006,
     "type": 2,
@@ -2494,8 +3009,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "9eadde7d-b72e-4a6e-9ac3-77075ae359b0",
     "bhqId": 5955,
     "type": 2,
@@ -2523,8 +3038,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "4b264e78-617a-477e-8d27-177c878fec9a",
     "bhqId": 7024,
     "type": 2,
@@ -2552,8 +3067,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "6f353142-40d0-41df-ac78-2b437c7c2263",
     "bhqId": 5358,
     "type": 2,
@@ -2581,8 +3096,11 @@
     ]
   },
   {
-    "team": "BOS",
-    "positions": "SP-RP",
+    "team": { "code": "BOS", "alternativeCode": null, "leagueId": "AL", "city": "Boston", "nickname": "Red Sox" },
+    "positions": [
+      { "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] },
+      { "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }
+    ],
     "id": "61712e5d-41a6-4df7-8394-f4c71ba0f401",
     "bhqId": 6633,
     "type": 2,
@@ -2610,8 +3128,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "RP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "RP", "fullName": "Relief Pitcher", "playerType": 2, "sortOrder": 101, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "dff2cb50-a73b-40df-bdc0-f229299769de",
     "bhqId": 6226,
     "type": 2,
@@ -2639,8 +3157,8 @@
     ]
   },
   {
-    "team": "MIL",
-    "positions": "SP",
+    "team": { "code": "MIL", "alternativeCode": null, "leagueId": "NL", "city": "Milwaukee", "nickname": "Brewers" },
+    "positions": [{ "code": "SP", "fullName": "Starting Pitcher", "playerType": 2, "sortOrder": 100, "additionalPositions": [{ "code": "P", "fullName": "Pitcher", "playerType": 2, "sortOrder": 102, "additionalPositions": [] }] }],
     "id": "9876ba8d-d95d-44de-9460-1f4f0c3b09d1",
     "bhqId": 5427,
     "type": 2,

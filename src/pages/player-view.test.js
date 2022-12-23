@@ -317,4 +317,42 @@ describe("PlayerView", () => {
       expect(count).toEqual(1);
     });
   });
+  describe("should not accept values", () => {
+    test("below the min", () => {
+      let count = 0;
+      const onClose = (newPlayer) => {
+        count++;
+        expect(newPlayer.age).toEqual(0);
+        expect(newPlayer.draftedPercentage).toEqual(0);
+        expect(newPlayer.draftRank).toEqual(1);
+      };
+      render(
+        <ThemeProvider theme={GlobalTheme()}>
+          <PlayerView lookups={lookups} player={existingPlayer} open={true} onClose={onClose} />
+        </ThemeProvider>
+      );
+      fireEvent.change(screen.getByLabelText("Age"), { target: { value: -35 } });
+      fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: -20 } });
+      fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: -0.07 } });
+      fireEvent.click(screen.getByText("Save"));
+      expect(count).toEqual(1);
+    });
+    test("above the max", () => {
+      let count = 0;
+      const onClose = (newPlayer) => {
+        count++;
+        expect(newPlayer.draftedPercentage).toEqual(1);
+        expect(newPlayer.draftRank).toEqual(9999);
+      };
+      render(
+        <ThemeProvider theme={GlobalTheme()}>
+          <PlayerView lookups={lookups} player={existingPlayer} open={true} onClose={onClose} />
+        </ThemeProvider>
+      );
+      fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 1234567890 } });
+      fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 1234567890 } });
+      fireEvent.click(screen.getByText("Save"));
+      expect(count).toEqual(1);
+    });
+  });
 });

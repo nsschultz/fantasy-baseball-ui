@@ -1,8 +1,8 @@
 import { Checkbox, ListItemText, MenuItem } from "@mui/material";
-import React, { useState } from "react";
 
 import CustomTextField from "./custom-text-field";
 import PropTypes from "prop-types";
+import React from "react";
 
 /**
  * Wrapper that turns the CustomTextField into a multi-select input.
@@ -17,38 +17,29 @@ import PropTypes from "prop-types";
  * @param {array}  selectedValues                (Optional) An array of values that have alrady been selected (the array contains the keys).
  * @returns A new instance of the MultipleSelectTextField.
  */
-const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItems, selectedValues }) => {
-  const [values, setValues] = useState(selectedValues || []);
-
-  const onChange = (value) => {
-    setValues(value);
-    handleOnChange(value);
-  };
-
-  return (
-    <CustomTextField
-      fullWidth
-      id={field}
-      label={displayProps.label}
-      select
-      SelectProps={{
-        multiple: true,
-        onChange: (event) => onChange(event.target.value),
-        renderValue: () => displayProps.textValueBuilder(),
-        value: selectedValues || [],
-      }}
-      size="small"
-      variant="filled"
-    >
-      {Object.keys(menuItems).map((key) => (
-        <MenuItem disabled={displayProps.disableChecker && displayProps.disableChecker(menuItems, values, key)} key={key} value={key}>
-          <Checkbox checked={values.indexOf(key.toString()) > -1} color="secondary" />
-          <ListItemText primary={displayProps.listItemBuilder(menuItems, key)} />
-        </MenuItem>
-      ))}
-    </CustomTextField>
-  );
-};
+const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItems, selectedValues }) => (
+  <CustomTextField
+    fullWidth
+    id={field}
+    label={displayProps.label}
+    select
+    SelectProps={{
+      multiple: true,
+      onChange: (event) => handleOnChange(event.target.value),
+      renderValue: () => displayProps.textValueBuilder(),
+      value: selectedValues || [],
+    }}
+    size="small"
+    variant="filled"
+  >
+    {Object.keys(menuItems).map((key) => (
+      <MenuItem disabled={displayProps.disableChecker && displayProps.disableChecker(menuItems, selectedValues, key)} key={key} value={key}>
+        <Checkbox checked={(selectedValues || []).indexOf(key.toString()) > -1} color="secondary" />
+        <ListItemText primary={displayProps.listItemBuilder(menuItems, key)} />
+      </MenuItem>
+    ))}
+  </CustomTextField>
+);
 MultipleSelectTextField.propTypes = {
   displayProps: PropTypes.exact({
     disableChecker: PropTypes.func,

@@ -31,7 +31,6 @@ class BattingStats {
     this.basePerformanceValue = 0;
   }
 }
-
 class PitchingStats {
   constructor(type) {
     this.statsType = type;
@@ -60,7 +59,6 @@ class PitchingStats {
     this.basePerformanceValue = 0;
   }
 }
-
 class Player {
   constructor(id, type, fName, lName, age, team, status, pos, l1, l2) {
     this.id = id;
@@ -84,95 +82,499 @@ class Player {
 let getSpy, putSpy;
 
 const defaultRowDisplay = 10;
-
 const players = [
-  new Player("01", 1, "Fernando", "Tatis Jr.", 22, "SD", 0, "SS", 0, 0),
-  new Player("02", 1, "Ronald", "Acuna Jr.", 23, "ATL", 0, "OF", 0, 1),
-  new Player("03", 1, "Mookie", "Betts", 28, "LAD", 0, "OF", 0, 2),
-  new Player("04", 1, "Juan", "Soto", 22, "WAS", 3, "OF", 0, 3),
-  new Player("05", 1, "Trea", "Turner", 28, "LAD", 0, "SS", 1, 0),
-  new Player("06", 2, "Jacob", "deGrom", 33, "NYM", 1, "SP", 1, 1),
-  new Player("07", 2, "Gerrit", "Cole", 30, "NYY", 0, "SP", 1, 2),
-  new Player("08", 1, "Mike", "Trout", 29, "LAA", 2, "OF", 1, 3),
-  new Player("09", 1, "Christian", "Yelich", 29, "MIL", 0, "OF", 9, 0.11, 2, 0),
-  new Player("10", 1, "Trevor", "Story", 28, "COL", 0, "SS", 2, 1),
-  new Player("11", 1, "Jose", "Ramirez", 28, "CLE", 0, "3B", 2, 2),
+  new Player(
+    "01",
+    1,
+    "Fernando",
+    "Tatis Jr.",
+    22,
+    { code: "SD", alternativeCode: null, leagueId: "NL", city: "San Diego", nickname: "Padres" },
+    0,
+    [
+      {
+        code: "SS",
+        fullName: "Shortstop",
+        playerType: 1,
+        sortOrder: 4,
+        additionalPositions: [
+          { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+          { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+          { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+        ],
+      },
+    ],
+    0,
+    0
+  ),
+  new Player(
+    "02",
+    1,
+    "Ronald",
+    "Acuna Jr.",
+    23,
+    { code: "ATL", alternativeCode: null, leagueId: "NL", city: "Atlanta", nickname: "Braves" },
+    0,
+    [
+      {
+        code: "OF",
+        fullName: "Outfielder",
+        playerType: 1,
+        sortOrder: 11,
+        additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+      },
+    ],
+    0,
+    1
+  ),
+  new Player(
+    "03",
+    1,
+    "Mookie",
+    "Betts",
+    28,
+    { code: "LAD", alternativeCode: "LA", leagueId: "NL", city: "Los Angeles", nickname: "Dodgers" },
+    0,
+    [
+      {
+        code: "OF",
+        fullName: "Outfielder",
+        playerType: 1,
+        sortOrder: 11,
+        additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+      },
+    ],
+    0,
+    2
+  ),
+  new Player(
+    "04",
+    1,
+    "Juan",
+    "Soto",
+    22,
+    { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
+    3,
+    [
+      {
+        code: "OF",
+        fullName: "Outfielder",
+        playerType: 1,
+        sortOrder: 11,
+        additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+      },
+    ],
+    0,
+    3
+  ),
+  new Player(
+    "05",
+    1,
+    "Trea",
+    "Turner",
+    28,
+    { code: "LAD", alternativeCode: "LA", leagueId: "NL", city: "Los Angeles", nickname: "Dodgers" },
+    0,
+    [
+      {
+        code: "SS",
+        fullName: "Shortstop",
+        playerType: 1,
+        sortOrder: 4,
+        additionalPositions: [
+          { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+          { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+          { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+        ],
+      },
+    ],
+    1,
+    0
+  ),
+  new Player(
+    "06",
+    2,
+    "Jacob",
+    "deGrom",
+    33,
+    { code: "NYM", alternativeCode: null, leagueId: "NL", city: "New York", nickname: "Mets" },
+    1,
+    [
+      {
+        code: "SP",
+        fullName: "Starting Pitcher",
+        playerType: 2,
+        sortOrder: 100,
+        additionalPositions: [{ code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] }],
+      },
+    ],
+    1,
+    1
+  ),
+  new Player(
+    "07",
+    2,
+    "Gerrit",
+    "Cole",
+    30,
+    { code: "NYY", alternativeCode: null, leagueId: "AL", city: "New York", nickname: "Yankees" },
+    0,
+    [
+      {
+        code: "SP",
+        fullName: "Starting Pitcher",
+        playerType: 2,
+        sortOrder: 100,
+        additionalPositions: [{ code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] }],
+      },
+    ],
+    1,
+    2
+  ),
+  new Player(
+    "08",
+    1,
+    "Mike",
+    "Trout",
+    29,
+    { code: "LAA", alternativeCode: null, leagueId: "AL", city: "Los Angeles", nickname: "Angels" },
+    2,
+    [
+      {
+        code: "OF",
+        fullName: "Outfielder",
+        playerType: 1,
+        sortOrder: 11,
+        additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+      },
+    ],
+    1,
+    3
+  ),
+  new Player(
+    "09",
+    1,
+    "Christian",
+    "Yelich",
+    29,
+    { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" },
+    0,
+    [
+      {
+        code: "OF",
+        fullName: "Outfielder",
+        playerType: 1,
+        sortOrder: 11,
+        additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+      },
+    ],
+    9,
+    0.11,
+    2,
+    0
+  ),
+  new Player(
+    "10",
+    1,
+    "Trevor",
+    "Story",
+    28,
+    { code: "COL", alternativeCode: null, leagueId: "NL", city: "Colorado", nickname: "Rockies" },
+    0,
+    [
+      {
+        code: "SS",
+        fullName: "Shortstop",
+        playerType: 1,
+        sortOrder: 4,
+        additionalPositions: [
+          { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+          { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+          { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+        ],
+      },
+    ],
+    2,
+    1
+  ),
+  new Player(
+    "11",
+    1,
+    "Jose",
+    "Ramirez",
+    28,
+    { code: "CLE", alternativeCode: null, leagueId: "AL", city: "Cleveland", nickname: "Guardians" },
+    0,
+    [
+      {
+        code: "3B",
+        fullName: "Third Baseman",
+        playerType: 1,
+        sortOrder: 3,
+        additionalPositions: [
+          { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+          { code: "CIF", fullName: "Corner Infielder", playerType: 1, sortOrder: 5, additionalPositions: [] },
+          { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+        ],
+      },
+    ],
+    2,
+    2
+  ),
+];
+const positions = [
+  {
+    code: "C",
+    fullName: "Catcher",
+    playerType: 1,
+    sortOrder: 0,
+    additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+  },
+  {
+    code: "1B",
+    fullName: "First Baseman",
+    playerType: 1,
+    sortOrder: 1,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+      { code: "CIF", fullName: "Corner Infielder", playerType: 1, sortOrder: 5, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "2B",
+    fullName: "Second Baseman",
+    playerType: 1,
+    sortOrder: 2,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "3B",
+    fullName: "Third Baseman",
+    playerType: 1,
+    sortOrder: 3,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "CIF", fullName: "Corner Infielder", playerType: 1, sortOrder: 5, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "SS",
+    fullName: "Shortstop",
+    playerType: 1,
+    sortOrder: 4,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "CIF",
+    fullName: "Corner Infielder",
+    playerType: 1,
+    sortOrder: 5,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "MIF",
+    fullName: "Middle Infielder",
+    playerType: 1,
+    sortOrder: 6,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "IF",
+    fullName: "Infielder",
+    playerType: 1,
+    sortOrder: 7,
+    additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+  },
+  {
+    code: "LF",
+    fullName: "Left Fielder",
+    playerType: 1,
+    sortOrder: 8,
+    additionalPositions: [
+      { code: "OF", fullName: "Outfielder", playerType: 1, sortOrder: 11, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "CF",
+    fullName: "Center Feilder",
+    playerType: 1,
+    sortOrder: 9,
+    additionalPositions: [
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+      { code: "OF", fullName: "Outfielder", playerType: 1, sortOrder: 11, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "RF",
+    fullName: "Right Fielder",
+    playerType: 1,
+    sortOrder: 10,
+    additionalPositions: [
+      { code: "OF", fullName: "Outfielder", playerType: 1, sortOrder: 11, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "OF",
+    fullName: "Outfielder",
+    playerType: 1,
+    sortOrder: 11,
+    additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+  },
+  {
+    code: "DH",
+    fullName: "Designated Hitter",
+    playerType: 1,
+    sortOrder: 12,
+    additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
+  },
+  { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+  {
+    code: "SP",
+    fullName: "Starting Pitcher",
+    playerType: 2,
+    sortOrder: 100,
+    additionalPositions: [{ code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] }],
+  },
+  {
+    code: "RP",
+    fullName: "Relief Pitcher",
+    playerType: 2,
+    sortOrder: 101,
+    additionalPositions: [{ code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] }],
+  },
+  { code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] },
+  { code: "", fullName: "Unknown", playerType: 0, sortOrder: 2147483647, additionalPositions: [] },
+];
+const teams = [
+  { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },
+  { code: "ARZ", alternativeCode: "ARI", leagueId: "NL", city: "Arizona", nickname: "Diamondbacks" },
+  { code: "ATL", alternativeCode: null, leagueId: "NL", city: "Atlanta", nickname: "Braves" },
+  { code: "BAL", alternativeCode: null, leagueId: "AL", city: "Baltimore", nickname: "Orioles" },
+  { code: "BOS", alternativeCode: null, leagueId: "AL", city: "Boston", nickname: "Red Sox" },
+  { code: "CHC", alternativeCode: null, leagueId: "NL", city: "Chicago", nickname: "Cubs" },
+  { code: "CIN", alternativeCode: null, leagueId: "NL", city: "Cincinnati", nickname: "Reds" },
+  { code: "CLE", alternativeCode: null, leagueId: "AL", city: "Cleveland", nickname: "Guardians" },
+  { code: "COL", alternativeCode: null, leagueId: "NL", city: "Colorado", nickname: "Rockies" },
+  { code: "CWS", alternativeCode: "CHW", leagueId: "AL", city: "Chicago", nickname: "White Sox" },
+  { code: "DET", alternativeCode: null, leagueId: "AL", city: "Detriot", nickname: "Tigers" },
+  { code: "HOU", alternativeCode: null, leagueId: "AL", city: "Houston", nickname: "Astros" },
+  { code: "KC", alternativeCode: null, leagueId: "AL", city: "Kansas City", nickname: "Royals" },
+  { code: "LAA", alternativeCode: null, leagueId: "AL", city: "Los Angeles", nickname: "Angels" },
+  { code: "LAD", alternativeCode: "LA", leagueId: "NL", city: "Los Angeles", nickname: "Dodgers" },
+  { code: "MIA", alternativeCode: null, leagueId: "NL", city: "Miami", nickname: "Marlins" },
+  { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" },
+  { code: "MIN", alternativeCode: null, leagueId: "AL", city: "Minnesota", nickname: "Twins" },
+  { code: "NYM", alternativeCode: null, leagueId: "NL", city: "New York", nickname: "Mets" },
+  { code: "NYY", alternativeCode: null, leagueId: "AL", city: "New York", nickname: "Yankees" },
+  { code: "OAK", alternativeCode: null, leagueId: "AL", city: "Oakland", nickname: "Athletics" },
+  { code: "PHI", alternativeCode: null, leagueId: "NL", city: "Philadelphia", nickname: "Phillies" },
+  { code: "PIT", alternativeCode: null, leagueId: "NL", city: "Pittsburgh", nickname: "Pirates" },
+  { code: "SD", alternativeCode: null, leagueId: "NL", city: "San Diego", nickname: "Padres" },
+  { code: "SEA", alternativeCode: null, leagueId: "AL", city: "Seattle", nickname: "Mariners" },
+  { code: "SF", alternativeCode: null, leagueId: "NL", city: "San Francisco", nickname: "Giants" },
+  { code: "STL", alternativeCode: null, leagueId: "NL", city: "St. Louis", nickname: "Cardinals" },
+  { code: "TB", alternativeCode: "TAM", leagueId: "AL", city: "Tampa Bay", nickname: "Rays" },
+  { code: "TEX", alternativeCode: null, leagueId: "AL", city: "Texas", nickname: "Rangers" },
+  { code: "TOR", alternativeCode: null, leagueId: "AL", city: "Toronto", nickname: "Blue Jays" },
+  { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
 ];
 
 jest.mock("axios");
-
 afterEach(() => jest.clearAllMocks());
 beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
 beforeEach(() => {
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" } }));
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: { 0: "", 1: "Disabled List", 2: "Not Available", 3: "New Entry" } }));
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: { 0: "Unknown", 1: "Batter", 2: "Pitcher" } }));
+  axios.get.mockImplementationOnce(() => Promise.resolve({ data: positions }));
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: { 0: "Unknown", 1: "Year to Date", 2: "Projected", 3: "Combined" } }));
+  axios.get.mockImplementationOnce(() => Promise.resolve({ data: teams }));
 });
 beforeEach(() => (putSpy = jest.spyOn(axios, "put")));
 
-test("should render the table with data", async () => {
-  axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
-  render(
-    <ThemeProvider theme={GlobalTheme()}>
-      <Players />
-    </ThemeProvider>
-  );
-  expect(getSpy).toHaveBeenCalledTimes(5);
-  expect(screen.getByText("Loading Players...")).toBeVisible();
-  await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
-  fireEvent.click(screen.getByTestId("row-expand-01"));
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4);
-  fireEvent.click(screen.getByTestId("row-expand-06"));
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4 + 4);
-});
-
-test("should render when there is data error", async () => {
-  axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-  render(
-    <ThemeProvider theme={GlobalTheme()}>
-      <Players />
-    </ThemeProvider>
-  );
-  expect(getSpy).toHaveBeenCalledTimes(5);
-  expect(screen.getByText("Loading Players...")).toBeVisible();
-  await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
-  expect(screen.queryByText("Loading Players...")).toBeFalsy();
-});
-
-test("should handle a successful update", async () => {
-  axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
-  axios.put.mockImplementationOnce(() => Promise.resolve({}));
-  render(
-    <ThemeProvider theme={GlobalTheme()}>
-      <Players />
-    </ThemeProvider>
-  );
-  expect(getSpy).toHaveBeenCalledTimes(5);
-  expect(screen.getByText("Loading Players...")).toBeVisible();
-  await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
-  fireEvent.click(screen.getByTestId("row-edit-01"));
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
-  expect(putSpy).toBeCalled();
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
-});
-
-test("should handle a failed update", async () => {
-  axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
-  axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-  render(
-    <ThemeProvider theme={GlobalTheme()}>
-      <Players />
-    </ThemeProvider>
-  );
-  expect(getSpy).toHaveBeenCalledTimes(5);
-  expect(screen.getByText("Loading Players...")).toBeVisible();
-  await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
-  fireEvent.click(screen.getByTestId("row-edit-01"));
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
-  expect(putSpy).toBeCalled();
-  expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+describe("Player", () => {
+  describe("should render", () => {
+    test("the table with data", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(
+        <ThemeProvider theme={GlobalTheme()}>
+          <Players />
+        </ThemeProvider>
+      );
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("row-expand-01"));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4);
+      fireEvent.click(screen.getByTestId("row-expand-06"));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4 + 4);
+    });
+    test("when there is data error", async () => {
+      axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      render(
+        <ThemeProvider theme={GlobalTheme()}>
+          <Players />
+        </ThemeProvider>
+      );
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.queryByText("Loading Players...")).toBeFalsy();
+    });
+  });
+  describe("should handle a", () => {
+    test("successful update", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      axios.put.mockImplementationOnce(() => Promise.resolve({}));
+      render(
+        <ThemeProvider theme={GlobalTheme()}>
+          <Players />
+        </ThemeProvider>
+      );
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("row-edit-01"));
+      fireEvent.click(screen.getByRole("button", { name: "Save" }));
+      expect(putSpy).toBeCalled();
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+    });
+    test("failed update", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      render(
+        <ThemeProvider theme={GlobalTheme()}>
+          <Players />
+        </ThemeProvider>
+      );
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("row-edit-01"));
+      fireEvent.click(screen.getByRole("button", { name: "Save" }));
+      expect(putSpy).toBeCalled();
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+    });
+  });
 });
