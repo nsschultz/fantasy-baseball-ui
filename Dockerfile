@@ -12,10 +12,10 @@ RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribu
     mv sonar-scanner-$SONAR_VERSION /root/.sonar/native-sonar-scanner/sonar-scanner-$SONAR_VERSION-linux
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-
-FROM dev as build
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm ci --silent
+
+FROM dev as build
 COPY . .
 RUN npm run build:default
 
