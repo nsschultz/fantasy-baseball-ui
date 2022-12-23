@@ -13,8 +13,11 @@ RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribu
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY ["package.json", "package-lock.json", "./"]
-RUN npm ci --silent
-RUN chown -R 1000:1000 "/root/.npm"
+RUN npm ci
+
+FROM dev as ci
+COPY . .
+RUN npm run ci:scan
 
 FROM dev as build
 COPY . .

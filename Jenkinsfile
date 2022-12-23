@@ -10,7 +10,7 @@ pipeline {
     stage ('build and scan') {
       steps { script { sh  """
         #!/bin/bash
-        sh _dev/scripts/ci.sh
+        docker build --target ci -t nschultz/fantasy-baseball-ui:${IMAGE_VERSION} .
       """ } } 
     }
     stage('build and publish release') { 
