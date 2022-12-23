@@ -14,11 +14,11 @@ const values = { id: 10, name: "Schultz, Nick", age: 40, type: 1, draftedPercent
 
 describe("CustomTableRow", () => {
   describe("should render", () => {
-    test("basic row", () => {
+    xtest("basic row", () => {
       render(<CustomTableRow columns={columns} values={values} />);
       expect(screen.getAllByRole("cell")).toHaveLength(columns.length);
     });
-    test("with edit button", () => {
+    xtest("with edit button", () => {
       let editData = {};
       expect(editData).toEqual({});
       render(<CustomTableRow columns={columns} handleEditOpen={(v) => (editData = v)} values={values} />);
@@ -26,7 +26,7 @@ describe("CustomTableRow", () => {
       fireEvent.click(screen.getByRole("button"));
       expect(editData).toEqual(values);
     });
-    test("with child table", () => {
+    xtest("with child table", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <CustomTableRow childProps={{ columns: columns, rows: [values], title: "Child Title" }} columns={columns} values={values} />

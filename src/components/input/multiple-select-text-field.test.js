@@ -130,61 +130,45 @@ const positionMap = {
   },
   UTIL: { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
 };
+let startValues = ["2B", "3B"];
 
+const disableChecker = (menuItems, selectedValues, key) => selectedValues.some((v) => menuItems[v].additionalPositions.some((ap) => ap.code === key));
 const lineItemBuilder = (lookup, key) => lookup[key].fullName;
-const textValueBuilder = () => selectedValues.map((selected) => positionMap[selected].code).join();
-
-let selectedValues = ["2B", "3B"];
+const textValueBuilder = () => startValues.map((selected) => positionMap[selected].code).join();
 
 afterEach(cleanup);
-afterEach(() => (selectedValues = ["2B", "3B"]));
+afterEach(() => (startValues = ["2B", "3B"]));
+
+const TestWrapper = ({ disableChecker, selectedValues }) => {
+  const [stateValues, setStateValues] = useState(selectedValues);
+  return (
+    <ThemeProvider theme={GlobalTheme()}>
+      <MultipleSelectTextField
+        displayProps={{ disableChecker: disableChecker, label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
+        field="positions"
+        handleOnChange={(values) => {
+          setStateValues(values);
+          startValues = values;
+        }}
+        menuItems={positionMap}
+        selectedValues={stateValues}
+      />
+    </ThemeProvider>
+  );
+};
 
 describe("MultiSelectTextField", () => {
   describe("should render with", () => {
     test("a valid label", () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MultipleSelectTextField
-            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-            field="positions"
-            handleOnChange={(values) => values}
-            menuItems={positionMap}
-          />
-        </ThemeProvider>
-      );
+      render(<TestWrapper disableChecker={undefined} selectedValues={undefined} />);
       expect(screen.getByLabelText("Position(s)")).toBeVisible();
     });
     test("a valid value", () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MultipleSelectTextField
-            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-            field="positions"
-            handleOnChange={(values) => values}
-            menuItems={positionMap}
-            selectedValues={selectedValues}
-          />
-        </ThemeProvider>
-      );
+      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       expect(screen.getByText("2B,3B")).toBeVisible();
     });
     test("with disabled values", async () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MultipleSelectTextField
-            displayProps={{
-              disableChecker: (menuItems, selectedValues, key) => selectedValues.some((v) => menuItems[v].additionalPositions.some((ap) => ap.code === key)),
-              label: "Position(s)",
-              listItemBuilder: lineItemBuilder,
-              textValueBuilder: textValueBuilder,
-            }}
-            field="positions"
-            handleOnChange={(values) => values}
-            menuItems={positionMap}
-            selectedValues={selectedValues}
-          />
-        </ThemeProvider>
-      );
+      render(<TestWrapper disableChecker={disableChecker} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       expect(await screen.findByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
@@ -192,17 +176,7 @@ describe("MultiSelectTextField", () => {
       expect(await screen.findByRole("option", { name: "Middle Infielder" })).toHaveAttribute("aria-disabled");
     });
     test("without disabled values", async () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MultipleSelectTextField
-            displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-            field="positions"
-            handleOnChange={(values) => values}
-            menuItems={positionMap}
-            selectedValues={selectedValues}
-          />
-        </ThemeProvider>
-      );
+      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       expect(await screen.findByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
@@ -212,53 +186,19 @@ describe("MultiSelectTextField", () => {
   });
   describe("should change value", () => {
     test("when selecting a new value", async () => {
-      const TestWrapper = () => {
-        const [stateValues, setStateValues] = useState(selectedValues);
-        return (
-          <ThemeProvider theme={GlobalTheme()}>
-            <MultipleSelectTextField
-              displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-              field="positions"
-              handleOnChange={(values) => {
-                setStateValues(values);
-                selectedValues = values;
-              }}
-              menuItems={positionMap}
-              selectedValues={stateValues}
-            />
-          </ThemeProvider>
-        );
-      };
-      render(<TestWrapper />);
+      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(await screen.findByText("Shortstop"));
-      expect(selectedValues).toEqual(["2B", "3B", "SS"]);
+      expect(startValues).toEqual(["2B", "3B", "SS"]);
       expect(await screen.findByText("2B,3B,SS")).toBeVisible();
     });
     test("when deselecting an old value", async () => {
-      const TestWrapper = () => {
-        const [stateValues, setStateValues] = useState(selectedValues);
-        return (
-          <ThemeProvider theme={GlobalTheme()}>
-            <MultipleSelectTextField
-              displayProps={{ label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
-              field="positions"
-              handleOnChange={(values) => {
-                setStateValues(values);
-                selectedValues = values;
-              }}
-              menuItems={positionMap}
-              selectedValues={stateValues}
-            />
-          </ThemeProvider>
-        );
-      };
-      render(<TestWrapper />);
+      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(await screen.findByText("Third Baseman"));
-      expect(selectedValues).toEqual(["2B"]);
+      expect(startValues).toEqual(["2B"]);
       expect(await screen.findByText("2B")).toBeVisible();
     });
   });

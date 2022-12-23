@@ -5,7 +5,7 @@
       "label": "build",
       "command": "npm",
       "type": "process",
-      "args": ["run", "build:default"],
+      "args": ["run", "build"],
       "problemMatcher": "$msCompile"
     },
 
@@ -34,7 +34,7 @@
       "label": "test-and-scan",
       "command": "npm",
       "type": "process",
-      "args": ["run", "build:scan"],
+      "args": ["run", "ci"],
       "problemMatcher": "$msCompile"
     }
   ]

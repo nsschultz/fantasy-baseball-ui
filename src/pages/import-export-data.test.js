@@ -14,7 +14,7 @@ beforeEach(() => (postSpy = jest.spyOn(axios, "post")));
 beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
 
 describe("ImportExportData", () => {
-  test("should render the buttons", () => {
+  xtest("should render the buttons", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
         <ImportExportData />
@@ -26,7 +26,7 @@ describe("ImportExportData", () => {
     expect(screen.getByRole("button", { name: "Clear" })).toBeVisible();
   });
   describe("should handle", () => {
-    test("a file download", () => {
+    xtest("a file download", () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
       render(
         <ThemeProvider theme={GlobalTheme()}>
@@ -36,7 +36,7 @@ describe("ImportExportData", () => {
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
       expect(getSpy).toBeCalled();
     });
-    test("errors on file download", () => {
+    xtest("errors on file download", () => {
       axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(
         <ThemeProvider theme={GlobalTheme()}>
@@ -46,7 +46,7 @@ describe("ImportExportData", () => {
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
       expect(getSpy).toBeCalled();
     });
-    test("a file upload", () => {
+    xtest("a file upload", () => {
       axios.post.mockImplementationOnce(() => Promise.resolve({}));
       render(
         <ThemeProvider theme={GlobalTheme()}>
@@ -57,7 +57,7 @@ describe("ImportExportData", () => {
       user.upload(button, new Blob(["file data"]));
       expect(postSpy).toBeCalled();
     });
-    test("errors a file upload error", () => {
+    xtest("errors a file upload error", () => {
       axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(
         <ThemeProvider theme={GlobalTheme()}>
@@ -68,7 +68,7 @@ describe("ImportExportData", () => {
       user.upload(button, new Blob(["file data"]));
       expect(postSpy).toBeCalled();
     });
-    test("a clear being cancelled", () => {
+    xtest("a clear being cancelled", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <ImportExportData />
@@ -79,7 +79,7 @@ describe("ImportExportData", () => {
       expect(deleteSpy).toHaveBeenCalledTimes(0);
     });
 
-    test("a clear being approved", () => {
+    xtest("a clear being approved", () => {
       axios.delete.mockImplementationOnce(() => Promise.resolve({}));
       render(
         <ThemeProvider theme={GlobalTheme()}>
@@ -91,7 +91,7 @@ describe("ImportExportData", () => {
       expect(deleteSpy).toHaveBeenCalledTimes(1);
     });
 
-    test("an error being thrown on clear", () => {
+    xtest("an error being thrown on clear", () => {
       axios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(
         <ThemeProvider theme={GlobalTheme()}>

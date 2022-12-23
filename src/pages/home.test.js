@@ -5,7 +5,7 @@ import Home from "./home";
 import { ThemeProvider } from "@mui/material";
 
 describe("Home", () => {
-  test("should render the header", () => {
+  xtest("should render the header", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
         <Home />

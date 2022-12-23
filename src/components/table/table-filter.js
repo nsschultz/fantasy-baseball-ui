@@ -27,9 +27,7 @@ const TableFilter = ({ column, handleFilterChange }) => {
       variant="outlined"
     />
   );
-  const onChange = (event) => {
-    handleFilterChange(column.field, event.target.value);
-  };
+  const onChange = (event) => handleFilterChange(column.field, event.target.value);
 
   return <div>{column.lookup ? buildSelectField() : buildInputBase()}</div>;
 };

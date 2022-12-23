@@ -269,7 +269,7 @@ afterEach(cleanup);
 
 describe("PlayerView", () => {
   describe("should handle a", () => {
-    test("cancel", () => {
+    xtest("cancel", () => {
       let count = 0;
       const onClose = (value) => {
         count++;
@@ -285,7 +285,7 @@ describe("PlayerView", () => {
       fireEvent.click(screen.getByText("Cancel"));
       expect(count).toEqual(1);
     });
-    test("save", () => {
+    xtest("save", () => {
       let count = 0;
       const onClose = (newPlayer) => {
         count++;
@@ -301,7 +301,7 @@ describe("PlayerView", () => {
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });
-    test("save without player set", () => {
+    xtest("save without player set", () => {
       let count = 0;
       const onClose = (newPlayer) => {
         count++;
@@ -318,7 +318,7 @@ describe("PlayerView", () => {
     });
   });
   describe("should not accept values", () => {
-    test("below the min", () => {
+    xtest("below the min", () => {
       let count = 0;
       const onClose = (newPlayer) => {
         count++;
@@ -337,7 +337,7 @@ describe("PlayerView", () => {
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });
-    test("above the max", () => {
+    xtest("above the max", () => {
       let count = 0;
       const onClose = (newPlayer) => {
         count++;

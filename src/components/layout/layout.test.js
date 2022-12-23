@@ -7,7 +7,7 @@ import { ThemeProvider } from "@mui/material";
 
 describe("Layout", () => {
   describe("should render", () => {
-    test("when logged in", () => {
+    xtest("when logged in", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MemoryRouter initialEntries={["/home"]}>
@@ -19,7 +19,7 @@ describe("Layout", () => {
       fireEvent.click(screen.getByTestId("titlebar-mobile-menu"));
       expect(screen.getByTestId("layout-sidebar")).toBeVisible();
     });
-    test("when not logged in", () => {
+    xtest("when not logged in", () => {
       render(
         <ThemeProvider theme={GlobalTheme()}>
           <MemoryRouter initialEntries={["/home"]}>
