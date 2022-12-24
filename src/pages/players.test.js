@@ -565,6 +565,6 @@ describe("Player", () => {
       fireEvent.click(screen.getByRole("button", { name: "Save" }));
       await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
-    });
-  }, 30000);
+    }, 30000);
+  });
 });
