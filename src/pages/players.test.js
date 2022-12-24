@@ -553,7 +553,7 @@ describe("Player", () => {
       await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
     }, 30000);
-    xtest("failed update", async () => {
+    test("failed update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
@@ -566,5 +566,5 @@ describe("Player", () => {
       await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
     });
-  });
+  }, 30000);
 });
