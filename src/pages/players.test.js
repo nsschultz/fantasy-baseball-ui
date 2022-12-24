@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import GlobalTheme from "../components/global-theme";
 import Players from "./players";
@@ -510,15 +510,17 @@ beforeEach(() => {
 });
 beforeEach(() => (putSpy = jest.spyOn(axios, "put")));
 
+const TestWrapper = () => (
+  <ThemeProvider theme={GlobalTheme()}>
+    <Players />
+  </ThemeProvider>
+);
+
 describe("Player", () => {
   describe("should render", () => {
-    xtest("the table with data", async () => {
+    test("the table with data", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <Players />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
@@ -528,13 +530,9 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("row-expand-06"));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4 + 4);
     });
-    xtest("when there is data error", async () => {
+    test("when there is data error", async () => {
       axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <Players />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
@@ -542,38 +540,30 @@ describe("Player", () => {
     });
   });
   describe("should handle a", () => {
-    xtest("successful update", async () => {
+    test("successful update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       axios.put.mockImplementationOnce(() => Promise.resolve({}));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <Players />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
       fireEvent.click(screen.getByTestId("row-edit-01"));
       fireEvent.click(screen.getByRole("button", { name: "Save" }));
-      expect(putSpy).toBeCalled();
+      await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
     });
-    xtest("failed update", async () => {
+    test("failed update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <Players />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
       fireEvent.click(screen.getByTestId("row-edit-01"));
       fireEvent.click(screen.getByRole("button", { name: "Save" }));
-      expect(putSpy).toBeCalled();
+      await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
     });
   });

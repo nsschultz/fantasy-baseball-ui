@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import GlobalTheme from "../components/global-theme";
 import ImportExportData from "./import-export-data";
@@ -7,100 +7,73 @@ import axios from "axios";
 import user from "@testing-library/user-event";
 
 let deleteSpy, getSpy, postSpy;
+
 jest.mock("axios");
 afterEach(() => jest.clearAllMocks());
 beforeEach(() => (deleteSpy = jest.spyOn(axios, "delete")));
 beforeEach(() => (postSpy = jest.spyOn(axios, "post")));
 beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
 
+const TestWrapper = () => (
+  <ThemeProvider theme={GlobalTheme()}>
+    <ImportExportData />
+  </ThemeProvider>
+);
+
 describe("ImportExportData", () => {
-  xtest("should render the buttons", () => {
-    render(
-      <ThemeProvider theme={GlobalTheme()}>
-        <ImportExportData />
-      </ThemeProvider>
-    );
+  test("should render the buttons", () => {
+    render(<TestWrapper />);
     expect(screen.getAllByRole("button")).toHaveLength(4);
     expect(screen.getAllByLabelText("Upload")).toHaveLength(2);
     expect(screen.getByRole("button", { name: "Export" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Clear" })).toBeVisible();
   });
   describe("should handle", () => {
-    xtest("a file download", () => {
+    test("a file download", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
-      expect(getSpy).toBeCalled();
+      await waitFor(() => expect(getSpy).toBeCalled());
     });
-    xtest("errors on file download", () => {
+    test("errors on file download", async () => {
       axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
-      expect(getSpy).toBeCalled();
+      await waitFor(() => expect(getSpy).toBeCalled());
     });
-    xtest("a file upload", () => {
+    test("a file upload", async () => {
       axios.post.mockImplementationOnce(() => Promise.resolve({}));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       const button = screen.getAllByRole("button", { name: "Upload" })[0];
       user.upload(button, new Blob(["file data"]));
-      expect(postSpy).toBeCalled();
+      await waitFor(() => expect(postSpy).toBeCalled());
     });
-    xtest("errors a file upload error", () => {
+    test("errors a file upload error", async () => {
       axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       const button = screen.getAllByRole("button", { name: "Upload" })[1];
       user.upload(button, new Blob(["file data"]));
-      expect(postSpy).toBeCalled();
+      await waitFor(() => expect(postSpy).toBeCalled());
     });
-    xtest("a clear being cancelled", () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+    test("a clear being cancelled", async () => {
+      render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Clear" }));
       fireEvent.click(screen.getByRole("button", { name: "No" }));
-      expect(deleteSpy).toHaveBeenCalledTimes(0);
+      await waitFor(() => expect(deleteSpy).toHaveBeenCalledTimes(0));
     });
-
-    xtest("a clear being approved", () => {
+    test("a clear being approved", async () => {
       axios.delete.mockImplementationOnce(() => Promise.resolve({}));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Clear" }));
       fireEvent.click(screen.getByRole("button", { name: "Yes" }));
-      expect(deleteSpy).toHaveBeenCalledTimes(1);
+      await waitFor(() => expect(deleteSpy).toHaveBeenCalledTimes(1));
     });
-
-    xtest("an error being thrown on clear", () => {
+    test("an error being thrown on clear", async () => {
       axios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <ImportExportData />
-        </ThemeProvider>
-      );
+      render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Clear" }));
       fireEvent.click(screen.getByRole("button", { name: "Yes" }));
-      expect(deleteSpy).toHaveBeenCalledTimes(1);
+      await waitFor(() => expect(deleteSpy).toHaveBeenCalledTimes(1));
     });
   });
 });

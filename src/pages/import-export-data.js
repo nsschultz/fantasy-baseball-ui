@@ -1,7 +1,7 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@mui/material";
 import React, { useState } from "react";
 
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
@@ -28,7 +28,7 @@ const ImportExportData = () => {
   const [disabled, setDisabled] = useState(false);
   const [message, setMessage] = useState("");
   const [open, setOpen] = useState(false);
-  const [severity, setSeverity] = useState("");
+  const [severity, setSeverity] = useState("info");
 
   const exportOnClick = () => {
     setDisabled(true);

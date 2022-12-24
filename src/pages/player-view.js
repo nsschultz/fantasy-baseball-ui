@@ -20,7 +20,7 @@ const samplePlayer = {
   league2: 0,
   positions: [],
   status: 0,
-  team: {},
+  team: undefined,
   type: 0,
 };
 

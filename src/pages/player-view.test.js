@@ -5,6 +5,45 @@ import PlayerView from "./player-view";
 import { ThemeProvider } from "@mui/material";
 import { buildTeamDisplay } from "../funcs/team-helper";
 
+let count, hasExisting, hasNew;
+const existingPositions = [
+  {
+    code: "2B",
+    fullName: "Second Baseman",
+    playerType: 1,
+    sortOrder: 2,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "SS",
+    fullName: "Shortstop",
+    playerType: 1,
+    sortOrder: 4,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+];
+const existingTeam = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
+const existingPlayer = {
+  age: 40,
+  draftedPercentage: 0.36,
+  draftRank: 10,
+  firstName: "Nick",
+  lastName: "Schultz",
+  league1: 2,
+  league2: 3,
+  positions: existingPositions,
+  status: 0,
+  team: existingTeam,
+  type: 1,
+};
 const lookups = {
   leagusStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
   playerStatuses: { 0: "Normal", 1: "Disabled List", 2: "Not Available", 3: "New Entry" },
@@ -184,44 +223,6 @@ const lookups = {
     { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
   ],
 };
-const existingPositions = [
-  {
-    code: "2B",
-    fullName: "Second Baseman",
-    playerType: 1,
-    sortOrder: 2,
-    additionalPositions: [
-      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
-      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
-      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
-    ],
-  },
-  {
-    code: "SS",
-    fullName: "Shortstop",
-    playerType: 1,
-    sortOrder: 4,
-    additionalPositions: [
-      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
-      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
-      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
-    ],
-  },
-];
-const existingTeam = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
-const existingPlayer = {
-  age: 40,
-  draftedPercentage: 0.36,
-  draftRank: 10,
-  firstName: "Nick",
-  lastName: "Schultz",
-  league1: 2,
-  league2: 3,
-  positions: existingPositions,
-  status: 0,
-  team: existingTeam,
-  type: 1,
-};
 const newPosition = [
   {
     code: "SP",
@@ -251,6 +252,12 @@ const mutatePlayer = (player) => {
   mutateDropDown("Position(s)", "​", "Starting Pitcher");
 };
 const mutatePlayerStatus = (label, currentValue, newValue, enums) => mutateDropDown(label, enums[currentValue ?? 0], newValue);
+const onCloseDefault = (newPlayer) => {
+  count++;
+  if (hasExisting) verifyPlayer(existingPlayer, 40, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
+  if (hasNew) verifyPlayer(newPlayer, "35", "0.07", "20", "Annie", "Oppman", 1, 2, newPosition, 1, newTeam, 2);
+  else expect(newPlayer).toEqual(undefined);
+};
 const verifyPlayer = (player, age, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
   expect(player.age).toEqual(age);
   expect(player.draftedPercentage).toEqual(draftedPercentage);
@@ -266,89 +273,61 @@ const verifyPlayer = (player, age, draftedPercentage, draftRank, firstName, last
 };
 
 afterEach(cleanup);
+beforeEach(() => (count = 0));
+beforeEach(() => (hasExisting = true));
+beforeEach(() => (hasNew = true));
+
+const TestWrapper = ({ onClose }) => (
+  <ThemeProvider theme={GlobalTheme()}>
+    <PlayerView lookups={lookups} player={hasExisting ? existingPlayer : undefined} open={true} onClose={onClose} />
+  </ThemeProvider>
+);
 
 describe("PlayerView", () => {
   describe("should handle a", () => {
-    xtest("cancel", () => {
-      let count = 0;
-      const onClose = (value) => {
-        count++;
-        expect(value).toEqual(undefined);
-        verifyPlayer(existingPlayer, 40, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
-      };
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <PlayerView lookups={lookups} player={existingPlayer} open={true} onClose={onClose} />
-        </ThemeProvider>
-      );
+    test("cancel", () => {
+      hasNew = false;
+      render(<TestWrapper onClose={onCloseDefault} />);
       mutatePlayer(existingPlayer);
       fireEvent.click(screen.getByText("Cancel"));
       expect(count).toEqual(1);
     });
-    xtest("save", () => {
-      let count = 0;
-      const onClose = (newPlayer) => {
-        count++;
-        verifyPlayer(existingPlayer, 40, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
-        verifyPlayer(newPlayer, "35", "0.07", "20", "Annie", "Oppman", 1, 2, newPosition, 1, newTeam, 2);
-      };
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <PlayerView lookups={lookups} player={existingPlayer} open={true} onClose={onClose} />
-        </ThemeProvider>
-      );
+    test("save", () => {
+      render(<TestWrapper onClose={onCloseDefault} />);
       mutatePlayer(existingPlayer);
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });
-    xtest("save without player set", () => {
-      let count = 0;
-      const onClose = (newPlayer) => {
-        count++;
-        verifyPlayer(newPlayer, "35", "0.07", "20", "Annie", "Oppman", 1, 2, newPosition, 1, newTeam, 2);
-      };
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <PlayerView lookups={lookups} open={true} onClose={onClose} />
-        </ThemeProvider>
-      );
+    test("save without player set", () => {
+      hasExisting = false;
+      render(<TestWrapper onClose={onCloseDefault} />);
       mutatePlayer({});
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });
   });
   describe("should not accept values", () => {
-    xtest("below the min", () => {
-      let count = 0;
+    test("below the min", () => {
       const onClose = (newPlayer) => {
         count++;
         expect(newPlayer.age).toEqual(0);
         expect(newPlayer.draftedPercentage).toEqual(0);
         expect(newPlayer.draftRank).toEqual(1);
       };
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <PlayerView lookups={lookups} player={existingPlayer} open={true} onClose={onClose} />
-        </ThemeProvider>
-      );
+      render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Age"), { target: { value: -35 } });
       fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: -20 } });
       fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: -0.07 } });
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });
-    xtest("above the max", () => {
-      let count = 0;
+    test("above the max", () => {
       const onClose = (newPlayer) => {
         count++;
         expect(newPlayer.draftedPercentage).toEqual(1);
         expect(newPlayer.draftRank).toEqual(9999);
       };
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <PlayerView lookups={lookups} player={existingPlayer} open={true} onClose={onClose} />
-        </ThemeProvider>
-      );
+      render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 1234567890 } });
       fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 1234567890 } });
       fireEvent.click(screen.getByText("Save"));

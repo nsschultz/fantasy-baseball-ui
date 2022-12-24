@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { buildPositionDisplayMap, matchAnyPosition } from "../funcs/position-helper";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
 
-import Alert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
 import PlayerView from "./player-view";
@@ -110,7 +110,7 @@ const Players = () => {
   const [playerStatuses, setPlayerStatuses] = useState([]);
   const [playerTypes, setPlayerTypes] = useState([]);
   const [positions, setPositions] = useState([]);
-  const [severity, setSeverity] = useState("");
+  const [severity, setSeverity] = useState("success");
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {

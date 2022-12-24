@@ -37,23 +37,24 @@ const handleClose = (editRow) => {
   return rows;
 };
 
-beforeEach(() => {
-  columns = [
-    { title: "Name", field: "name" },
-    { title: "Age", field: "age", type: "numeric" },
-    {
-      title: "Team",
-      field: "team",
-      lookup: { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" },
-      filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
-    },
-    { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
-    { title: "Drafted %", field: "draftedPercentage", type: "numeric", format: (value) => value.toFixed(2) },
-  ];
-  saveCount = 0;
-  editCount = 0;
-  returnRow = false;
-});
+beforeEach(
+  () =>
+    (columns = [
+      { title: "Name", field: "name" },
+      { title: "Age", field: "age", type: "numeric" },
+      {
+        title: "Team",
+        field: "team",
+        lookup: { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" },
+        filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
+      },
+      { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
+      { title: "Drafted %", field: "draftedPercentage", type: "numeric", format: (value) => value.toFixed(2) },
+    ])
+);
+beforeEach(() => (saveCount = 0));
+beforeEach(() => (editCount = 0));
+beforeEach(() => (returnRow = false));
 
 const TestWrapper = ({ childProps, editProps }) => (
   <ThemeProvider theme={GlobalTheme()}>

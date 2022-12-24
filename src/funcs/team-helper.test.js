@@ -35,14 +35,14 @@ const teams = [
 ];
 
 describe("buildTeamDisplay", () => {
-  xtest("should build a team display", () => expect(buildTeamDisplay(teams[16])).toEqual("Milwaukee Brewers"));
-  xtest("should return empty string on null obj", () => expect(buildTeamDisplay()).toEqual(""));
-  xtest("should return empty string on empty obj", () => expect(buildTeamDisplay({})).toEqual(""));
-  xtest("should return just city if nickname is missing", () => expect(buildTeamDisplay({ city: "Jackson" })).toEqual("Jackson"));
-  xtest("should return just nickname if city is missing", () => expect(buildTeamDisplay({ nickname: "Jaguars" })).toEqual("Jaguars"));
+  test("should build a team display", () => expect(buildTeamDisplay(teams[16])).toEqual("Milwaukee Brewers"));
+  test("should return empty string on null obj", () => expect(buildTeamDisplay()).toEqual(""));
+  test("should return empty string on empty obj", () => expect(buildTeamDisplay({})).toEqual(""));
+  test("should return just city if nickname is missing", () => expect(buildTeamDisplay({ city: "Jackson" })).toEqual("Jackson"));
+  test("should return just nickname if city is missing", () => expect(buildTeamDisplay({ nickname: "Jaguars" })).toEqual("Jaguars"));
 });
 describe("buildTeamDisplayMap", () => {
-  xtest("should build a team display map", () =>
+  test("should build a team display map", () =>
     expect(buildTeamDisplayMap(teams)).toEqual({
       "": "Free Agent Free Agent",
       ARZ: "Arizona Diamondbacks",
@@ -78,7 +78,7 @@ describe("buildTeamDisplayMap", () => {
     }));
 });
 describe("buildTeamMap", () => {
-  xtest("should build a team map", () =>
+  test("should build a team map", () =>
     expect(buildTeamMap(teams)).toEqual({
       "": { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },
       ARZ: { code: "ARZ", alternativeCode: "ARI", leagueId: "NL", city: "Arizona", nickname: "Diamondbacks" },
