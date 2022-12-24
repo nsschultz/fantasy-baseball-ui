@@ -540,7 +540,7 @@ describe("Player", () => {
     });
   });
   describe("should handle a", () => {
-    xtest("successful update", async () => {
+    test("successful update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       axios.put.mockImplementationOnce(() => Promise.resolve({}));
       render(<TestWrapper />);
