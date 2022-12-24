@@ -552,7 +552,7 @@ describe("Player", () => {
       fireEvent.click(screen.getByRole("button", { name: "Save" }));
       await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
-    });
+    }, 30000);
     xtest("failed update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       axios.put.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
