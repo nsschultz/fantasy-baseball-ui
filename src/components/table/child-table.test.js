@@ -26,10 +26,10 @@ const rows = [
 const title = "Test Title";
 
 describe("Child Table", () => {
-  xtest("should render", () => {
+  test("should render", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
-        <ChildTable columns={columns} rows={rows} title={title} />
+        <ChildTable columns={columns} rowKeyBuilder={(row) => row.id} rows={rows} title={title} />
       </ThemeProvider>
     );
     expect(screen.getByText(title)).toBeVisible();

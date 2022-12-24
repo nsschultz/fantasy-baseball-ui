@@ -21,7 +21,9 @@ const applyFilters = (columns, rows) => {
   return rows.filter((row) => columnsWithFilter.length === columnsWithFilter.filter((column) => applyFilter(column, row[column.field])).length);
 };
 const buildChildProps = (childProps, row) =>
-  childProps ? { columns: childProps.columnSelector(row), rows: childProps.rowSelector(row), title: childProps.title } : null;
+  childProps
+    ? { columns: childProps.columnSelector(row), rowKeyBuilder: childProps.rowKeyBuilder, rows: childProps.rowSelector(row), title: childProps.title }
+    : null;
 const convertToNumber = (val) => parseInt(val, 10);
 const compare = (a, b, orderBy) => (b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0);
 const getComparator = (order, orderBy) => (a, b) => compare(a, b, orderBy) * (order === "desc" ? 1 : -1);
@@ -38,6 +40,7 @@ const stableSort = (array, comparator) => {
  * Wrapper around the Table objects that can also create filters, child tables, and editors for the table.
  * @param {object} childProps                (Optional) The properties for the child table.
  * @param {func}   childProps.columnSelector (Required) The selector for building the columns of the child table.
+ * @param {func}   childProps.rowKeyBuilder  (Required) The function used for building keys for rows.
  * @param {func}   childProps.rowSelector    (Required) The selector for building the rows of the child table.
  * @param {string} childProps.title          (Required) The title of the child table.
  * @param {object} editProps                 (Optional) The properties for creating an editor for a row.
@@ -142,6 +145,7 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
 ParentTable.propTypes = {
   childProps: PropTypes.exact({
     columnSelector: PropTypes.func.isRequired,
+    rowKeyBuilder: PropTypes.func.isRequired,
     rowSelector: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }),

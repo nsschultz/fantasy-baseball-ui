@@ -160,11 +160,11 @@ const TestWrapper = ({ disableChecker, selectedValues }) => {
 describe("MultiSelectTextField", () => {
   describe("should render with", () => {
     test("a valid label", () => {
-      render(<TestWrapper disableChecker={undefined} selectedValues={undefined} />);
+      render(<TestWrapper />);
       expect(screen.getByLabelText("Position(s)")).toBeVisible();
     });
     test("a valid value", () => {
-      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
+      render(<TestWrapper selectedValues={startValues} />);
       expect(screen.getByText("2B,3B")).toBeVisible();
     });
     test("with disabled values", () => {
@@ -176,7 +176,7 @@ describe("MultiSelectTextField", () => {
       expect(screen.getByRole("option", { name: "Middle Infielder" })).toHaveAttribute("aria-disabled");
     });
     test("without disabled values", () => {
-      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
+      render(<TestWrapper selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       expect(screen.getByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
@@ -186,7 +186,7 @@ describe("MultiSelectTextField", () => {
   });
   describe("should change value", () => {
     test("when selecting a new value", () => {
-      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
+      render(<TestWrapper selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(screen.getByText("Shortstop"));
@@ -194,7 +194,7 @@ describe("MultiSelectTextField", () => {
       expect(screen.getByText("2B,3B,SS")).toBeVisible();
     });
     test("when deselecting an old value", () => {
-      render(<TestWrapper disableChecker={undefined} selectedValues={startValues} />);
+      render(<TestWrapper selectedValues={startValues} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(screen.getByText("Third Baseman"));

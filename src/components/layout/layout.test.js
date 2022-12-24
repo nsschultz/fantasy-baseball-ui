@@ -5,28 +5,24 @@ import Layout from "./layout";
 import { MemoryRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 
+const TestWrapper = ({ isLoggedIn }) => (
+  <ThemeProvider theme={GlobalTheme()}>
+    <MemoryRouter initialEntries={["/home"]}>
+      <Layout isLoggedIn={isLoggedIn} />
+    </MemoryRouter>
+  </ThemeProvider>
+);
+
 describe("Layout", () => {
   describe("should render", () => {
-    xtest("when logged in", () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MemoryRouter initialEntries={["/home"]}>
-            <Layout isLoggedIn={true} />
-          </MemoryRouter>
-        </ThemeProvider>
-      );
+    test("when logged in", () => {
+      render(<TestWrapper isLoggedIn={true} />);
       expect(screen.getByTestId("layout-titlebar")).toBeVisible();
       fireEvent.click(screen.getByTestId("titlebar-mobile-menu"));
       expect(screen.getByTestId("layout-sidebar")).toBeVisible();
     });
-    xtest("when not logged in", () => {
-      render(
-        <ThemeProvider theme={GlobalTheme()}>
-          <MemoryRouter initialEntries={["/home"]}>
-            <Layout isLoggedIn={false} />
-          </MemoryRouter>
-        </ThemeProvider>
-      );
+    test("when not logged in", () => {
+      render(<TestWrapper isLoggedIn={false} />);
       expect(screen.getByTestId("layout-titlebar")).toBeVisible();
       expect(screen.queryByTestId("layout-sidebar")).toBeFalsy();
     });

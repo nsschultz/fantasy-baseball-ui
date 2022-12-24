@@ -27,15 +27,15 @@ const TestWrapper = ({ existingValues, title, width }) => (
 describe("CustomSelectField", () => {
   describe("should render", () => {
     test("with a title", () => {
-      render(<TestWrapper existingValues={undefined} title={title} width={undefined} />);
+      render(<TestWrapper title={title} />);
       expect(screen.getByText(title)).toBeInTheDocument();
     });
     test("without a title", () => {
-      render(<TestWrapper existingValues={[]} title={undefined} width={undefined} />);
+      render(<TestWrapper existingValues={[]} />);
       expect(screen.queryByText(title)).toBeFalsy();
     });
     test("with a list of the items", () => {
-      render(<TestWrapper existingValues={[]} title={title} width={undefined} />);
+      render(<TestWrapper title={title} />);
       const customSelect = screen.getByRole("button");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       expect(screen.getByText("Available")).toBeVisible();
@@ -49,7 +49,7 @@ describe("CustomSelectField", () => {
     });
   });
   test("should handle onChange events", () => {
-    render(<TestWrapper existingValues={[]} title={title} width={undefined} />);
+    render(<TestWrapper existingValues={[]} title={title} />);
     const customSelect = screen.getByRole("button");
     expect(existingValue).toBe("Old");
     fireEvent.keyDown(customSelect, { key: "ArrowDown" });

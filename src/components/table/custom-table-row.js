@@ -17,14 +17,14 @@ const useStyles = makeStyles({
 
 /**
  * Wrapper around the TableRow that adds the ability to add a child table and edit functionality.
- * @param {object} childProps         (Optional) The properties for the child table.
- * @param {array}  childProps.columns (Required) The columns for the child table.
- * @param {array}  childProps.rows    (Required) The rows for the child table.
- * @param {string} childProps.title   (Required) The title of the child table.
- * @param {array}  columns            (Required) The columns from the parent table.
- * @param {func}   handleEditOpen     (Optional) The function that is called when the edit button is clicked.
- *                                               Providing this function determines if the button exists or not.
- * @param {object} values             (Required) The actual values that make up the row.
+ * @param {object} childProps               (Optional) The properties for the child table.
+ * @param {array}  childProps.columns       (Required) The columns for the child table.
+ * @param {func}   childProps.rowKeyBuilder (Required) The function used for building keys for rows.
+ * @param {array}  childProps.rows          (Required) The rows for the child table.
+ * @param {string} childProps.title         (Required) The title of the child table.
+ * @param {array}  columns                  (Required) The columns from the parent table.
+ * @param {func}   handleEditOpen           (Optional) The function that is called when the edit button is clicked. Providing this function determines if the button exists or not.
+ * @param {object} values                   (Required) The actual values that make up the row.
  * @returns A new instance of the CustomTableRow.
  */
 const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
@@ -42,7 +42,7 @@ const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
     <TableRow key={"child-table" + values.id}>
       <TableCell className={classes.collapse} colSpan={columns.length + 1}>
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <ChildTable columns={childProps.columns} rows={childProps.rows} title={childProps.title} />
+          <ChildTable columns={childProps.columns} rowKeyBuilder={childProps.rowKeyBuilder} rows={childProps.rows} title={childProps.title} />
         </Collapse>
       </TableCell>
     </TableRow>
@@ -75,6 +75,7 @@ const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
 CustomTableRow.propTypes = {
   childProps: PropTypes.exact({
     columns: PropTypes.array.isRequired,
+    rowKeyBuilder: PropTypes.func.isRequired,
     rows: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
   }),
