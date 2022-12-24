@@ -518,7 +518,7 @@ const TestWrapper = () => (
 
 describe("Player", () => {
   describe("should render", () => {
-    xtest("the table with data", async () => {
+    test("the table with data", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       render(<TestWrapper />);
       expect(getSpy).toHaveBeenCalledTimes(7);
@@ -530,7 +530,7 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("row-expand-06"));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4 + 4);
     });
-    xtest("when there is data error", async () => {
+    test("when there is data error", async () => {
       axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
       expect(getSpy).toHaveBeenCalledTimes(7);
