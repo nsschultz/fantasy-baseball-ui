@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  ui:
+    build: ../
+    restart: always
+    environment:
+      - PLAYER_API_URL=http://localhost:5545
+      - POSITION_API_URL=http://localhost:5555
+    ports:
+      - "3000:3000"
+  mountebank:
+    build: mountebank/
+    restart: always
+    ports:
+      - "2525:2525"
+      - "5545:5545"
+      - "5555:5555"

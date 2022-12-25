@@ -1,4 +1,3 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme from 'enzyme';
+import "@testing-library/jest-dom";
 
-Enzyme.configure({ adapter: new Adapter() });
+window.env = { PLAYER_API_URL: "player.api.url", POSITION_API_URL: "position.api.url" };

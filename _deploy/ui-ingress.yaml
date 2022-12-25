@@ -7,13 +7,13 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-  - host: baseball.schultz.local
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: ui
-            port:
-              number: 8080
+    - host: baseball.schultz.local
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: ui
+                port:
+                  number: 8080
