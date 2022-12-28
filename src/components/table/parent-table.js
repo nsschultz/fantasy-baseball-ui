@@ -127,16 +127,16 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
               <TableBody>{rows}</TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            component="div"
+            count={rowCount}
+            onPageChange={(event, newPage) => setPage(newPage)}
+            onRowsPerPageChange={(event) => setLimit(event.target.value)}
+            page={page}
+            rowsPerPage={limit}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+          />
         </Paper>
-        <TablePagination
-          component="div"
-          count={rowCount}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          onRowsPerPageChange={(event) => setLimit(event.target.value)}
-          page={page}
-          rowsPerPage={limit}
-          rowsPerPageOptions={[10, 25, 50, 100]}
-        />
       </Box>
       {editProps && editRow ? editProps.buildWindow(handleEditClose, editOpen, editRow) : null}
     </>
@@ -149,11 +149,11 @@ ParentTable.propTypes = {
     rowSelector: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }),
+  columns: PropTypes.array.isRequired,
   editProps: PropTypes.exact({
     buildWindow: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
   }),
-  columns: PropTypes.array.isRequired,
   values: PropTypes.array.isRequired,
 };
 export default ParentTable;
