@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) =>
       ".MuiCard-root": { display: "flex", flexDirection: "column", height: "100%" },
       ".MuiCardHeader-root": { backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary },
       ".MuiTableCell-head": { backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary },
-      ".MuiTableContainer-root": { display: "flex", overflowX: "initial" },
       ".MuiTableRow-root": { backgroundColor: theme.palette.background.paper, color: theme.palette.text.primary },
       "#root": { height: "100%", width: "100%" },
       a: { textDecoration: "none" },

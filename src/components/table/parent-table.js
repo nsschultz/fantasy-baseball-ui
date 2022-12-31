@@ -1,4 +1,4 @@
-import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@mui/material";
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import CustomTableRow from "./custom-table-row";
@@ -98,46 +98,44 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
 
   return (
     <>
-      <Box>
-        <Paper>
-          <TableContainer>
-            <Table stickyHeader size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">
-                    <Tooltip title="Show Column Filters">
-                      <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
-                        <FilterList fontSize="inherit" />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                  {columns.map((column) => (
-                    <TableHeaderCell
-                      column={column}
-                      filterVisible={filterVisible}
-                      handleFilterChange={onHandleFilterChange}
-                      handleSortRequest={(event) => handleRequestSort(event, column.field)}
-                      key={column.field}
-                      order={order}
-                      orderBy={orderBy}
-                    />
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>{rows}</TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            component="div"
-            count={rowCount}
-            onPageChange={(event, newPage) => setPage(newPage)}
-            onRowsPerPageChange={(event) => setLimit(event.target.value)}
-            page={page}
-            rowsPerPage={limit}
-            rowsPerPageOptions={[10, 25, 50, 100]}
-          />
-        </Paper>
-      </Box>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: 418 }}>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">
+                  <Tooltip title="Show Column Filters">
+                    <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
+                      <FilterList fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+                {columns.map((column) => (
+                  <TableHeaderCell
+                    column={column}
+                    filterVisible={filterVisible}
+                    handleFilterChange={onHandleFilterChange}
+                    handleSortRequest={(event) => handleRequestSort(event, column.field)}
+                    key={column.field}
+                    order={order}
+                    orderBy={orderBy}
+                  />
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>{rows}</TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          component="div"
+          count={rowCount}
+          onPageChange={(event, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(event) => setLimit(event.target.value)}
+          page={page}
+          rowsPerPage={limit}
+          rowsPerPageOptions={[10, 25, 50, 100]}
+        />
+      </Paper>
       {editProps && editRow ? editProps.buildWindow(handleEditClose, editOpen, editRow) : null}
     </>
   );
