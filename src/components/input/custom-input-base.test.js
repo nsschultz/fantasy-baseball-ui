@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomInputBase from "./custom-input-base";
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import { ThemeProvider } from "@mui/material";
 
 describe("CustomInputBase", () => {

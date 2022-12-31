@@ -1,24 +1,21 @@
-import { TableCell, TableSortLabel } from "@mui/material";
+import { Box, TableCell, TableSortLabel } from "@mui/material";
 
 import PropTypes from "prop-types";
 import React from "react";
 import TableFilter from "./table-filter";
 import { getAlign } from "./table-funcs";
-import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles({
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1,
-  },
-});
+const hiddenStyle = {
+  border: 0,
+  clip: "rect(0 0 0 0)",
+  height: 1,
+  margin: -1,
+  overflow: "hidden",
+  padding: 0,
+  position: "absolute",
+  top: 20,
+  width: 1,
+};
 
 /**
  * Creates a new header cell for the table with sorting and filtering as options.
@@ -30,20 +27,21 @@ const useStyles = makeStyles({
  * @param {string} orderBy            (Optional) Indicates the column that sort is being applied to.
  * @returns A new instance of the TableHeaderCell.
  */
-const TableHeaderCell = ({ column, filterVisible, handleFilterChange, handleSortRequest, order, orderBy }) => {
-  const classes = useStyles();
-
-  return (
-    <TableCell align={getAlign(column)} key={column.field} sortDirection={orderBy === column.field ? order : false}>
-      <TableSortLabel active={orderBy === column.field} direction={orderBy === column.field ? order : "asc"} onClick={handleSortRequest}>
-        {column.title}
-        {orderBy === column.field ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
-      </TableSortLabel>
-      <br />
-      {filterVisible ? <TableFilter column={column} handleFilterChange={handleFilterChange} /> : null}
-    </TableCell>
-  );
-};
+const TableHeaderCell = ({ column, filterVisible, handleFilterChange, handleSortRequest, order, orderBy }) => (
+  <TableCell
+    align={getAlign(column)}
+    key={column.field}
+    sortDirection={orderBy === column.field ? order : false}
+    sx={{ backgroundColor: "primary.main", color: "text.primary" }}
+  >
+    <TableSortLabel active={orderBy === column.field} direction={orderBy === column.field ? order : "asc"} onClick={handleSortRequest}>
+      {column.title}
+      {orderBy === column.field ? <Box sx={hiddenStyle}>{order === "desc" ? "sorted descending" : "sorted ascending"}</Box> : null}
+    </TableSortLabel>
+    <br />
+    {filterVisible ? <TableFilter column={column} handleFilterChange={handleFilterChange} /> : null}
+  </TableCell>
+);
 TableHeaderCell.propTypes = {
   column: PropTypes.object.isRequired,
   filterVisible: PropTypes.bool,

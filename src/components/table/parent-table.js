@@ -1,9 +1,9 @@
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@mui/material";
-import React, { useEffect, useState } from "react";
 
 import CustomTableRow from "./custom-table-row";
 import { FilterList } from "@mui/icons-material";
 import PropTypes from "prop-types";
+import React from "react";
 import TableHeaderCell from "./table-header-cell";
 
 const applyFilter = (column, field) => {
@@ -51,15 +51,15 @@ const stableSort = (array, comparator) => {
  * @returns A new instance of the ParentTable.
  */
 const ParentTable = ({ childProps, editProps, columns, values }) => {
-  const [editOpen, setEditOpen] = useState(false);
-  const [editRow, setEditRow] = useState(null);
-  const [filterVisible, setFilterVisible] = useState(false);
-  const [limit, setLimit] = useState(10);
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowCount, setRowCount] = useState(0);
-  const [rows, setRows] = useState([]);
+  const [editOpen, setEditOpen] = React.useState(false);
+  const [editRow, setEditRow] = React.useState(null);
+  const [filterVisible, setFilterVisible] = React.useState(false);
+  const [limit, setLimit] = React.useState(10);
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState(null);
+  const [page, setPage] = React.useState(0);
+  const [rowCount, setRowCount] = React.useState(0);
+  const [rows, setRows] = React.useState([]);
 
   const buildRows = (columns, rows) => {
     const filteredRows = applyFilters(columns, rows);
@@ -92,18 +92,18 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
     setRows(buildRows(columns, values));
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     setRows(buildRows(columns, values));
   }, [limit, order, orderBy, page]);
 
   return (
     <>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 418 }}>
+      <Paper sx={{ overflow: "hidden", width: "100%" }}>
+        <TableContainer sx={{ maxHeight: 725 }}>
           <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell align="left">
+                <TableCell align="left" sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
                   <Tooltip title="Show Column Filters">
                     <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
                       <FilterList fontSize="inherit" />

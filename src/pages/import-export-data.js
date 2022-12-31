@@ -1,34 +1,22 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@mui/material";
-import React, { useState } from "react";
 
 import Alert from "@mui/material/Alert";
 import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
+import React from "react";
 import axios from "axios";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-  box: {
-    backgroundColor: "background.default",
-    minHeight: "100%",
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-  },
-}));
 
 /**
  * Creates a new instance of the import/export page.
  * @returns A new instance of ImportExportData.
  */
 const ImportExportData = () => {
-  const classes = useStyles();
-
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [message, setMessage] = useState("");
-  const [open, setOpen] = useState(false);
-  const [severity, setSeverity] = useState("info");
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(false);
+  const [message, setMessage] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [severity, setSeverity] = React.useState("info");
 
   const exportOnClick = () => {
     setDisabled(true);
@@ -95,7 +83,7 @@ const ImportExportData = () => {
       <Helmet>
         <title>Integrations | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box className={classes.box}>
+      <Box sx={{ backgroundColor: "background.default", minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
         <Container maxWidth={false}>
           <Grid container spacing={3}>
             <Grid item key="uploadBatters" lg={6} md={6} xs={12}>

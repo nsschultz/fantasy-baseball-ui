@@ -4,7 +4,6 @@ import React from "react";
 import Sidebar from "./sidebar";
 import Titlebar from "./titlebar";
 import { experimentalStyled } from "@mui/material";
-import { useState } from "react";
 
 const LayoutContainer = experimentalStyled("div")({
   display: "flex",
@@ -37,7 +36,7 @@ const LayoutWrapper = experimentalStyled("div")(({ theme }) => ({
  * @returns A new instance of the Layout.
  */
 const Layout = ({ isLoggedIn }) => {
-  const [isMobileNavigationOpen, setMobileNavigationOpen] = useState(false);
+  const [isMobileNavigationOpen, setMobileNavigationOpen] = React.useState(false);
 
   const buildSidebar = () => (
     <div data-testid="layout-sidebar">

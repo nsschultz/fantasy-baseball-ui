@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomSelectField from "./custom-select-field";
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import { ThemeProvider } from "@mui/material";
 
 const existingField = "TestField";

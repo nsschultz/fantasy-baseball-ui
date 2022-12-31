@@ -5,12 +5,6 @@ import Logo from "./logo";
 import PropTypes from "prop-types";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
-import { useState } from "react";
-
-const useStyles = makeStyles({
-  box: { flexGrow: 1 },
-});
 
 /**
  * The bar that sits at the top of the screen. Displays different options depending on if the user is logged in or not.
@@ -19,9 +13,7 @@ const useStyles = makeStyles({
  * @returns A new instance of the Titlebar.
  */
 const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
-  const classes = useStyles();
-
-  const [notifications] = useState([]);
+  const [notifications] = React.useState([]);
 
   const buildButtons = () => (
     <>
@@ -42,7 +34,7 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
         <RouterLink to="/">
           <Logo />
         </RouterLink>
-        <Box className={classes.box} />
+        <Box sx={{ flexGrow: 1 }} />
         {isLoggedIn ? buildButtons() : null}
         <IconButton
           color="inherit"

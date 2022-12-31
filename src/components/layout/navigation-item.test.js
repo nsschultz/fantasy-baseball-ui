@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import { MemoryRouter } from "react-router-dom";
 import NavigationItem from "./navigation-item";
 import { People } from "@mui/icons-material";

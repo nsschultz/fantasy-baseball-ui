@@ -3,13 +3,6 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import CustomCard from "./custom-card";
 import PropTypes from "prop-types";
 import React from "react";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-  box: { padding: theme.spacing(2) },
-  gridContainer: { justifyContent: "space-between" },
-  gridItem: { alignItems: "center", display: "flex" },
-}));
 
 /**
  * A wrapper over the CustomCard that creates the content for integration purposes.
@@ -19,14 +12,12 @@ const useStyles = makeStyles((theme) => ({
  * @returns A new instance of the IntegrationCard.
  */
 const IntegrationCard = ({ description, integrationButton, title }) => {
-  const classes = useStyles();
-
   const additionalContent = (
     <>
       <Divider />
-      <Box className={classes.box}>
-        <Grid className={classes.gridContainer} container spacing={2}>
-          <Grid className={classes.gridItem} item>
+      <Box sx={{ padding: 2 }}>
+        <Grid container sx={{ justifyContent: "space-between", spacing: 2 }}>
+          <Grid item sx={{ alignItems: "center", display: "flex" }}>
             {integrationButton}
           </Grid>
         </Grid>

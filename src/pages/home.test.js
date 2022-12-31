@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../components/global-theme";
+import GlobalTheme from "../global-theme";
 import Home from "./home";
 import { ThemeProvider } from "@mui/material";
 

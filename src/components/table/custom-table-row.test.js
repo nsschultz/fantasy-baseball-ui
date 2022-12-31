@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomTableRow from "./custom-table-row";
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import { ThemeProvider } from "@mui/material";
 
 const columns = [

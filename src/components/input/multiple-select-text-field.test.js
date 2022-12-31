@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import MultipleSelectTextField from "./multiple-select-text-field";
 import { ThemeProvider } from "@mui/material";
 import { useState } from "react";

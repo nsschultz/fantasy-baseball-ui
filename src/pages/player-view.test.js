@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../components/global-theme";
+import GlobalTheme from "../global-theme";
 import PlayerView from "./player-view";
 import { ThemeProvider } from "@mui/material";
 import { buildTeamDisplay } from "../funcs/team-helper";

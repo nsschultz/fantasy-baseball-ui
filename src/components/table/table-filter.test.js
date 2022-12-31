@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import TableFilter from "./table-filter";
 import { ThemeProvider } from "@mui/material";
 

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import GlobalTheme from "../components/global-theme";
+import GlobalTheme from "../global-theme";
 import ImportExportData from "./import-export-data";
 import { ThemeProvider } from "@mui/material";
 import axios from "axios";

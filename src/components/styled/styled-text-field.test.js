@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import CustomTextField from "./custom-text-field";
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
+import { StyledTextField } from "./styled-text-field";
 import { ThemeProvider } from "@mui/material";
 
-describe("CustomTextField", () => {
+describe("StyledTextField", () => {
   test("should render and act like a TextField", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
-        <CustomTextField />
+        <StyledTextField />
       </ThemeProvider>
     );
     const input = screen.getByRole("textbox");
