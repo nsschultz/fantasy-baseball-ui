@@ -12,69 +12,60 @@ import axios from "axios";
  * @returns A new instance of ImportExportData.
  */
 const ImportExportData = () => {
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [disabled, setDisabled] = React.useState(false);
-  const [message, setMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
-  const [severity, setSeverity] = React.useState("info");
+  const [alertProps, setAlertProps] = React.useState({ message: "", severity: "success" });
+  const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
 
-  const exportOnClick = () => {
-    setDisabled(true);
+  const clearInputFile = (event) => (event.target.value = null);
+  const exportOnClick = () =>
     axios
       .get(`${window.env.PLAYER_API_URL}/api/v2/action/export`, { responseType: "blob" })
-      .then((response) => {
-        FileSaver.saveAs(new Blob([response.data]), "players.csv");
-        setSnackbar("success", "", false, false);
-      })
-      .catch(() => setSnackbar("error", "Failed to export the players.", true, false));
-  };
+      .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
+      .catch(() => setSnackbar("error", "Failed to export the players."));
   const handleDialogClose = (shouldClear) => {
-    setDialogOpen(false);
+    setIsClearDialogOpen(false);
     if (!shouldClear) return;
-    setDisabled(true);
     axios
       .delete(`${window.env.PLAYER_API_URL}/api/v2/player`)
-      .then(() => setSnackbar("success", "Successfully cleared the players.", true, false))
-      .catch(() => setSnackbar("error", "Failed to clear the players.", true, false));
+      .then(() => setSnackbar("success", "Successfully cleared the players."))
+      .catch(() => setSnackbar("error", "Failed to clear the players."));
   };
   const onBatterFileChange = (event) => onFileChange(event.target.files[0], "batters");
   const onFileChange = (file, type) => {
-    setDisabled(true);
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
+    console.log("made it here");
     axios
       .post(`${window.env.PLAYER_API_URL}/api/v2/action/upload/projection/${type}`, formData)
-      .then(() => setSnackbar("success", `Successfully uploaded the ${type} file.`, true, false))
-      .catch(() => setSnackbar("error", `Failed to upload the ${type} file.`, true, false));
+      .then(() => setSnackbar("success", `Successfully uploaded the ${type} file.`))
+      .catch(() => setSnackbar("error", `Failed to upload the ${type} file.`));
   };
   const onPitcherFileChange = (event) => onFileChange(event.target.files[0], "pitchers");
-  const setSnackbar = (sev, msg, op, dis) => {
-    setSeverity(sev);
-    setMessage(msg);
-    setOpen(op);
-    setDisabled(dis);
+  const setSnackbar = (severity, message) => {
+    setAlertProps({ message: message, severity: severity });
+    setIsSnackbarOpen(true);
   };
 
   const clearPlayersButton = (
-    <Button color="primary" disabled={disabled} onClick={() => setDialogOpen(true)} variant="contained">
+    <Button color="primary" onClick={() => setIsClearDialogOpen(true)} variant="contained">
       Clear
     </Button>
   );
   const exportPlayersButton = (
-    <Button color="primary" disabled={disabled} onClick={() => exportOnClick()} variant="contained">
+    <Button color="primary" onClick={() => exportOnClick()} variant="contained">
       Export
     </Button>
   );
   const uploadBattersFileButton = (
-    <Button color="primary" component="label" disabled={disabled} variant="contained">
+    <Button color="primary" component="label" variant="contained">
       Upload
-      <input hidden onChange={onBatterFileChange} type="file" />
+      <input hidden onChange={onBatterFileChange} onClick={clearInputFile} type="file" />
     </Button>
   );
   const uploadPitchersFileButton = (
-    <Button color="primary" component="label" disabled={disabled} variant="contained">
+    <Button color="primary" component="label" variant="contained">
       Upload
-      <input hidden onChange={onPitcherFileChange} type="file" />
+      <input hidden onChange={onPitcherFileChange} onClick={clearInputFile} type="file" />
     </Button>
   );
 
@@ -109,7 +100,7 @@ const ImportExportData = () => {
           </Grid>
         </Container>
       </Box>
-      <Dialog open={dialogOpen} onClose={() => handleDialogClose(false)}>
+      <Dialog open={isClearDialogOpen} onClose={() => handleDialogClose(false)}>
         <DialogContent>
           <DialogContentText>Are you sure you want to clear the players?</DialogContentText>
         </DialogContent>
@@ -122,8 +113,13 @@ const ImportExportData = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar anchorOrigin={{ horizontal: "center", vertical: "bottom" }} autoHideDuration={2000} onClose={() => setOpen(false)} open={open}>
-        <Alert severity={severity}>{message}</Alert>
+      <Snackbar
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+        autoHideDuration={2000}
+        onClose={() => setIsSnackbarOpen(false)}
+        open={isSnackbarOpen}
+      >
+        <Alert severity={alertProps.severity}>{alertProps.message}</Alert>
       </Snackbar>
     </>
   );
