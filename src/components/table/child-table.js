@@ -22,7 +22,7 @@ const ChildTable = ({ columns, rowKeyBuilder, rows, title }) => (
       <TableHead>
         <TableRow>
           {columns.map((column) => (
-            <TableCell align={getAlign(column)} key={column.field}>
+            <TableCell align={getAlign(column)} key={column.field} sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
               {column.title}
             </TableCell>
           ))}

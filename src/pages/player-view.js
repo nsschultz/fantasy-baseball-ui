@@ -193,7 +193,7 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ backgroundColor: "background.default", minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
+          <Box sx={{ minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
             <Container maxWidth={false}>
               <Grid container spacing={3}>
                 {buildGrid("personInfo", "Person Info", personInfoContent)}
