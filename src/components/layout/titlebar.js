@@ -1,7 +1,8 @@
-import { AppBar, Badge, Box, IconButton, Toolbar } from "@mui/material";
-import { Input, Menu, Notifications } from "@mui/icons-material";
+import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
+import { Input, Menu } from "@mui/icons-material";
 
 import Logo from "./logo";
+import Notification from "../notification/notification";
 import PropTypes from "prop-types";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -13,15 +14,9 @@ import { Link as RouterLink } from "react-router-dom";
  * @returns A new instance of the Titlebar.
  */
 const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
-  const [notifications] = React.useState([]);
-
   const buildButtons = () => (
     <>
-      <IconButton color="inherit" data-testid="titlebar-notifcation" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
-        <Badge badgeContent={notifications.length} color="secondary" variant="dot">
-          <Notifications />
-        </Badge>
-      </IconButton>
+      <Notification />
       <IconButton color="inherit" data-testid="titlebar-logout" sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
         <Input />
       </IconButton>

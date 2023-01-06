@@ -5,40 +5,54 @@ import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
 import React from "react";
+import { addNotification } from "../state/slice/notification-slice";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 /**
  * Creates a new instance of the import/export page.
  * @returns A new instance of ImportExportData.
  */
 const ImportExportData = () => {
-  const [alertProps, setAlertProps] = React.useState({ message: "", severity: "success" });
+  const [alertProps, setAlertProps] = React.useState({ message: "", severity: "info" });
   const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
 
+  const dispatch = useDispatch();
+
   const clearInputFile = (event) => (event.target.value = null);
-  const exportOnClick = () =>
+  const createNotification = (message, type) =>
+    dispatch(addNotification({ key: Math.random() * Date.now(), message: message, timestamp: Date.now(), type: type }));
+  const displayErrorMessage = (message) => createNotification(message, "error");
+  const displayInfoMessage = (message) => {
+    createNotification(message, "info");
+    setSnackbar("info", message);
+  };
+  const displaySuccessMessage = (message) => createNotification(message, "success");
+  const exportOnClick = () => {
     axios
       .get(`${window.env.PLAYER_API_URL}/api/v2/action/export`, { responseType: "blob" })
       .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
-      .catch(() => setSnackbar("error", "Failed to export the players."));
+      .catch(() => setSnackbar("error", "Failed to export the players"));
+  };
   const handleDialogClose = (shouldClear) => {
     setIsClearDialogOpen(false);
     if (!shouldClear) return;
     axios
       .delete(`${window.env.PLAYER_API_URL}/api/v2/player`)
-      .then(() => setSnackbar("success", "Successfully cleared the players."))
-      .catch(() => setSnackbar("error", "Failed to clear the players."));
+      .then(() => displaySuccessMessage("Successfully cleared the players."))
+      .catch(() => displayErrorMessage("Failed to clear the players."));
+    displayInfoMessage("Attempting to clear players");
   };
   const onBatterFileChange = (event) => onFileChange(event.target.files[0], "batters");
   const onFileChange = (file, type) => {
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
-    console.log("made it here");
     axios
       .post(`${window.env.PLAYER_API_URL}/api/v2/action/upload/projection/${type}`, formData)
-      .then(() => setSnackbar("success", `Successfully uploaded the ${type} file.`))
-      .catch(() => setSnackbar("error", `Failed to upload the ${type} file.`));
+      .then(() => displaySuccessMessage(`Successfully uploaded the ${type} file.`))
+      .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
+    displayInfoMessage(`Attempting to upload the ${type} file.`);
   };
   const onPitcherFileChange = (event) => onFileChange(event.target.files[0], "pitchers");
   const setSnackbar = (severity, message) => {

@@ -3,14 +3,18 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import GlobalTheme from "../../global-theme";
 import Layout from "./layout";
 import { MemoryRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material";
+import store from "../../state/store";
 
 const TestWrapper = ({ isLoggedIn }) => (
-  <ThemeProvider theme={GlobalTheme()}>
-    <MemoryRouter initialEntries={["/home"]}>
-      <Layout isLoggedIn={isLoggedIn} />
-    </MemoryRouter>
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={GlobalTheme()}>
+      <MemoryRouter initialEntries={["/home"]}>
+        <Layout isLoggedIn={isLoggedIn} />
+      </MemoryRouter>
+    </ThemeProvider>
+  </Provider>
 );
 
 describe("Layout", () => {
