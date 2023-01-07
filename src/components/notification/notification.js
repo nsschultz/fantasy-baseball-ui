@@ -1,5 +1,5 @@
 import { Badge, Box, ClickAwayListener, Divider, IconButton, List, Paper, Popper, Tooltip, Typography } from "@mui/material";
-import { CloseOutlined, Notifications } from "@mui/icons-material";
+import { ClearAll, Notifications } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 
 import NotificationItem from "./notification-item";
@@ -42,7 +42,7 @@ const Notification = () => {
               <Box sx={{ flexGrow: 1 }} />
               <Tooltip title="Clear All Notifications">
                 <IconButton onClick={() => dispatch(clearNotifications())} size="small" sx={{ display: "inline-flex" }}>
-                  <CloseOutlined fontSize="inherit" />
+                  <ClearAll fontSize="inherit" />
                 </IconButton>
               </Tooltip>
             </div>

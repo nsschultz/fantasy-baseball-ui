@@ -61,6 +61,10 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
   const [rowCount, setRowCount] = React.useState(0);
   const [rows, setRows] = React.useState([]);
 
+  React.useEffect(() => {
+    setRows(buildRows(columns, values));
+  }, [columns, limit, order, orderBy, page, values]);
+
   const buildRows = (columns, rows) => {
     const filteredRows = applyFilters(columns, rows);
     setRowCount(filteredRows.length);
@@ -91,10 +95,6 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
     columns.filter((column) => column.field === field).forEach((column) => (column.filterValue = filterValue));
     setRows(buildRows(columns, values));
   };
-
-  React.useEffect(() => {
-    setRows(buildRows(columns, values));
-  }, [limit, order, orderBy, page]);
 
   return (
     <>
