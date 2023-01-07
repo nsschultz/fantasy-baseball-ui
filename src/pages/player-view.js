@@ -1,14 +1,13 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
-import React, { useState } from "react";
 import { buildPositionList, buildPositionMap, isChildPosition } from "../funcs/position-helper";
 import { buildTeamDisplay, buildTeamMap } from "../funcs/team-helper";
 
 import CustomCard from "../components/card/custom-card";
-import CustomTextField from "../components/input/custom-text-field";
 import { Helmet } from "react-helmet";
 import MultipleSelectTextField from "../components/input/multiple-select-text-field";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
+import React from "react";
+import { StyledTextField } from "../components/styled/styled-text-field";
 
 const samplePlayer = {
   age: 0,
@@ -32,7 +31,7 @@ const buildGrid = (key, title, content) => (
   </Grid>
 );
 const buildInputField = (field, label, handleOnChange, defaultValue, type, inputProps) => (
-  <CustomTextField
+  <StyledTextField
     fullWidth
     id={field}
     inputProps={inputProps}
@@ -47,7 +46,7 @@ const buildInputField = (field, label, handleOnChange, defaultValue, type, input
 const buildNumberField = (field, label, handleOnChange, defaultValue, inputProps) =>
   buildInputField(field, label, handleOnChange, defaultValue, "number", inputProps);
 const buildSingleSelectField = (field, label, handleOnChange, defaultValue, lookup, display) => (
-  <CustomTextField
+  <StyledTextField
     fullWidth
     id={field}
     label={label}
@@ -62,7 +61,7 @@ const buildSingleSelectField = (field, label, handleOnChange, defaultValue, look
         {display(lookup, key)}
       </MenuItem>
     ))}
-  </CustomTextField>
+  </StyledTextField>
 );
 const buildTextField = (field, label, handleOnChange, defaultValue) => buildInputField(field, label, handleOnChange, defaultValue, "text");
 const convertToNumber = (val) => parseInt(val, 10);
@@ -73,9 +72,6 @@ const fixPlayer = (player) => {
   player.league2 = convertToNumber(player.league2);
   return player;
 };
-const useStyles = makeStyles((theme) => ({
-  box: { backgroundColor: "background.default", minHeight: "100%", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },
-}));
 
 /**
  * A view used for setting player values on either an existing player or on a new player object.
@@ -91,23 +87,21 @@ const useStyles = makeStyles((theme) => ({
  * @returns A new instance of the PlayerView.
  */
 const PlayerView = ({ lookups, onClose, open, player }) => {
-  const classes = useStyles();
-
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const teamMap = buildTeamMap(lookups.teams);
 
-  const [age, setAge] = useState(newPlayer.age);
-  const [draftedPercentage, setDraftedPercentage] = useState(newPlayer.draftedPercentage);
-  const [draftRank, setDraftRank] = useState(newPlayer.draftRank);
-  const [firstName, setFirstName] = useState(newPlayer.firstName);
-  const [lastName, setLastName] = useState(newPlayer.lastName);
-  const [league1, setLeague1] = useState(newPlayer.league1);
-  const [league2, setLeague2] = useState(newPlayer.league2);
-  const [positions, setPositions] = useState(newPlayer.positions);
-  const [status, setStatus] = useState(newPlayer.status);
-  const [team, setTeam] = useState(newPlayer.team || lookups.teams[0]);
-  const [type, setType] = useState(newPlayer.type);
-  const [positionMap, setPositionMap] = useState(buildPositionMap(lookups.positions, type));
+  const [age, setAge] = React.useState(newPlayer.age);
+  const [draftedPercentage, setDraftedPercentage] = React.useState(newPlayer.draftedPercentage);
+  const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
+  const [firstName, setFirstName] = React.useState(newPlayer.firstName);
+  const [lastName, setLastName] = React.useState(newPlayer.lastName);
+  const [league1, setLeague1] = React.useState(newPlayer.league1);
+  const [league2, setLeague2] = React.useState(newPlayer.league2);
+  const [positions, setPositions] = React.useState(newPlayer.positions);
+  const [status, setStatus] = React.useState(newPlayer.status);
+  const [team, setTeam] = React.useState(newPlayer.team || lookups.teams[0]);
+  const [type, setType] = React.useState(newPlayer.type);
+  const [positionMap, setPositionMap] = React.useState(buildPositionMap(lookups.positions, type));
 
   const baseballInfoContent = (
     <>
@@ -199,7 +193,7 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Box className={classes.box}>
+          <Box sx={{ minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
             <Container maxWidth={false}>
               <Grid container spacing={3}>
                 {buildGrid("personInfo", "Person Info", personInfoContent)}

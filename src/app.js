@@ -1,8 +1,8 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 
-import GlobalStyles from "./components/global-styles";
-import GlobalTheme from "./components/global-theme";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import GlobalTheme from "./global-theme";
 import Home from "./pages/home";
 import ImportExportData from "./pages/import-export-data";
 import Layout from "./components/layout/layout";
@@ -31,22 +31,23 @@ const routes = [
     ],
   },
 ];
-
-const theme = GlobalTheme();
+const styles = {
+  "*": { boxSizing: "border-box", margin: 0, padding: 0 },
+  "#root": { height: "100%", width: "100%" },
+  a: { textDecoration: "none" },
+  body: { height: "100%", width: "100%" },
+  html: { MozOsxFontSmoothing: "grayscale", WebkitFontSmoothing: "antialiased", height: "100%", width: "100%" },
+};
 
 /**
  * The object that ties the entire site together.
  * @returns A new instance of the App.
  */
 export default function App() {
-  const routing = useRoutes(routes);
-
   return (
     <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles theme={theme} />
-        {routing}
-      </ThemeProvider>
+      <GlobalStyles styles={styles} />
+      <ThemeProvider theme={GlobalTheme()}>{useRoutes(routes)}</ThemeProvider>
     </StyledEngineProvider>
   );
 }

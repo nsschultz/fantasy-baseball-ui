@@ -1,19 +1,12 @@
 import { Collapse, IconButton, TableCell, TableRow } from "@mui/material";
 import { Edit, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import React, { useState } from "react";
 
 import ChildTable from "./child-table";
 import PropTypes from "prop-types";
+import React from "react";
 import { getAlign } from "./table-funcs";
-import { makeStyles } from "@mui/styles";
 
 const getDisplayValue = (column, value) => (column.format ? column.format(value) : column.lookup ? column.lookup[value] : value);
-const useStyles = makeStyles({
-  collapse: {
-    paddingBottom: 0,
-    paddingTop: 0,
-  },
-});
 
 /**
  * Wrapper around the TableRow that adds the ability to add a child table and edit functionality.
@@ -28,9 +21,7 @@ const useStyles = makeStyles({
  * @returns A new instance of the CustomTableRow.
  */
 const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
-  const classes = useStyles();
-
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const buildActionCell = (values) => (
     <TableCell>
@@ -39,8 +30,8 @@ const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
     </TableCell>
   );
   const buildChildTable = (values) => (
-    <TableRow key={"child-table" + values.id}>
-      <TableCell className={classes.collapse} colSpan={columns.length + 1}>
+    <TableRow key={"child-table" + values.id} sx={{ backgroundColor: "background.paper", color: "text.primary" }}>
+      <TableCell colSpan={columns.length + 1} sx={{ paddingBottom: 0, paddingTop: 0 }}>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <ChildTable columns={childProps.columns} rowKeyBuilder={childProps.rowKeyBuilder} rows={childProps.rows} title={childProps.title} />
         </Collapse>

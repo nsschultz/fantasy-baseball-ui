@@ -1,8 +1,8 @@
 import { Checkbox, ListItemText, MenuItem } from "@mui/material";
 
-import CustomTextField from "./custom-text-field";
 import PropTypes from "prop-types";
 import React from "react";
+import { StyledTextField } from "../styled/styled-text-field";
 
 /**
  * Wrapper that turns the CustomTextField into a multi-select input.
@@ -18,7 +18,7 @@ import React from "react";
  * @returns A new instance of the MultipleSelectTextField.
  */
 const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItems, selectedValues }) => (
-  <CustomTextField
+  <StyledTextField
     fullWidth
     id={field}
     label={displayProps.label}
@@ -38,7 +38,7 @@ const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItem
         <ListItemText primary={displayProps.listItemBuilder(menuItems, key)} />
       </MenuItem>
     ))}
-  </CustomTextField>
+  </StyledTextField>
 );
 MultipleSelectTextField.propTypes = {
   displayProps: PropTypes.exact({

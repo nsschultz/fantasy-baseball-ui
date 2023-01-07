@@ -1,92 +1,85 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@mui/material";
-import React, { useState } from "react";
 
 import Alert from "@mui/material/Alert";
 import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
+import React from "react";
+import { addNotification } from "../state/slice/notification-slice";
 import axios from "axios";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-  box: {
-    backgroundColor: "background.default",
-    minHeight: "100%",
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-  },
-}));
+import { useDispatch } from "react-redux";
 
 /**
  * Creates a new instance of the import/export page.
  * @returns A new instance of ImportExportData.
  */
 const ImportExportData = () => {
-  const classes = useStyles();
+  const [alertProps, setAlertProps] = React.useState({ message: "", severity: "info" });
+  const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [message, setMessage] = useState("");
-  const [open, setOpen] = useState(false);
-  const [severity, setSeverity] = useState("info");
+  const dispatch = useDispatch();
 
+  const clearInputFile = (event) => (event.target.value = null);
+  const createNotification = (message, type) =>
+    dispatch(addNotification({ key: Math.random() * Date.now(), message: message, timestamp: Date.now(), type: type }));
+  const displayErrorMessage = (message) => createNotification(message, "error");
+  const displayInfoMessage = (message) => {
+    createNotification(message, "info");
+    setSnackbar("info", message);
+  };
+  const displaySuccessMessage = (message) => createNotification(message, "success");
   const exportOnClick = () => {
-    setDisabled(true);
     axios
       .get(`${window.env.PLAYER_API_URL}/api/v2/action/export`, { responseType: "blob" })
-      .then((response) => {
-        FileSaver.saveAs(new Blob([response.data]), "players.csv");
-        setSnackbar("success", "", false, false);
-      })
-      .catch(() => setSnackbar("error", "Failed to export the players.", true, false));
+      .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
+      .catch(() => setSnackbar("error", "Failed to export the players"));
   };
   const handleDialogClose = (shouldClear) => {
-    setDialogOpen(false);
+    setIsClearDialogOpen(false);
     if (!shouldClear) return;
-    setDisabled(true);
     axios
       .delete(`${window.env.PLAYER_API_URL}/api/v2/player`)
-      .then(() => setSnackbar("success", "Successfully cleared the players.", true, false))
-      .catch(() => setSnackbar("error", "Failed to clear the players.", true, false));
+      .then(() => displaySuccessMessage("Successfully cleared the players."))
+      .catch(() => displayErrorMessage("Failed to clear the players."));
+    displayInfoMessage("Attempting to clear players");
   };
   const onBatterFileChange = (event) => onFileChange(event.target.files[0], "batters");
   const onFileChange = (file, type) => {
-    setDisabled(true);
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
       .post(`${window.env.PLAYER_API_URL}/api/v2/action/upload/projection/${type}`, formData)
-      .then(() => setSnackbar("success", `Successfully uploaded the ${type} file.`, true, false))
-      .catch(() => setSnackbar("error", `Failed to upload the ${type} file.`, true, false));
+      .then(() => displaySuccessMessage(`Successfully uploaded the ${type} file.`))
+      .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
+    displayInfoMessage(`Attempting to upload the ${type} file.`);
   };
   const onPitcherFileChange = (event) => onFileChange(event.target.files[0], "pitchers");
-  const setSnackbar = (sev, msg, op, dis) => {
-    setSeverity(sev);
-    setMessage(msg);
-    setOpen(op);
-    setDisabled(dis);
+  const setSnackbar = (severity, message) => {
+    setAlertProps({ message: message, severity: severity });
+    setIsSnackbarOpen(true);
   };
 
   const clearPlayersButton = (
-    <Button color="primary" disabled={disabled} onClick={() => setDialogOpen(true)} variant="contained">
+    <Button color="primary" onClick={() => setIsClearDialogOpen(true)} variant="contained">
       Clear
     </Button>
   );
   const exportPlayersButton = (
-    <Button color="primary" disabled={disabled} onClick={() => exportOnClick()} variant="contained">
+    <Button color="primary" onClick={() => exportOnClick()} variant="contained">
       Export
     </Button>
   );
   const uploadBattersFileButton = (
-    <Button color="primary" component="label" disabled={disabled} variant="contained">
+    <Button color="primary" component="label" variant="contained">
       Upload
-      <input hidden onChange={onBatterFileChange} type="file" />
+      <input hidden onChange={onBatterFileChange} onClick={clearInputFile} type="file" />
     </Button>
   );
   const uploadPitchersFileButton = (
-    <Button color="primary" component="label" disabled={disabled} variant="contained">
+    <Button color="primary" component="label" variant="contained">
       Upload
-      <input hidden onChange={onPitcherFileChange} type="file" />
+      <input hidden onChange={onPitcherFileChange} onClick={clearInputFile} type="file" />
     </Button>
   );
 
@@ -95,7 +88,7 @@ const ImportExportData = () => {
       <Helmet>
         <title>Integrations | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box className={classes.box}>
+      <Box sx={{ backgroundColor: "background.default", minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
         <Container maxWidth={false}>
           <Grid container spacing={3}>
             <Grid item key="uploadBatters" lg={6} md={6} xs={12}>
@@ -121,7 +114,7 @@ const ImportExportData = () => {
           </Grid>
         </Container>
       </Box>
-      <Dialog open={dialogOpen} onClose={() => handleDialogClose(false)}>
+      <Dialog open={isClearDialogOpen} onClose={() => handleDialogClose(false)}>
         <DialogContent>
           <DialogContentText>Are you sure you want to clear the players?</DialogContentText>
         </DialogContent>
@@ -134,8 +127,13 @@ const ImportExportData = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar anchorOrigin={{ horizontal: "center", vertical: "bottom" }} autoHideDuration={2000} onClose={() => setOpen(false)} open={open}>
-        <Alert severity={severity}>{message}</Alert>
+      <Snackbar
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+        autoHideDuration={2000}
+        onClose={() => setIsSnackbarOpen(false)}
+        open={isSnackbarOpen}
+      >
+        <Alert severity={alertProps.severity}>{alertProps.message}</Alert>
       </Snackbar>
     </>
   );

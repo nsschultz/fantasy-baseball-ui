@@ -1,5 +1,4 @@
 import { Box, Container, Snackbar, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
 import { buildPositionDisplayMap, matchAnyPosition } from "../funcs/position-helper";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
 
@@ -7,9 +6,9 @@ import Alert from "@mui/material/Alert";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
 import PlayerView from "./player-view";
+import React from "react";
 import axios from "axios";
 import { buildTeamDisplayMap } from "../funcs/team-helper";
-import { makeStyles } from "@mui/styles";
 
 const columns = [
   { field: "bhqId", title: "BHQ ID", type: "numeric", width: 75 },
@@ -91,29 +90,25 @@ const getChildRows = (player) => (player.type === 1 ? player.battingStats : play
 const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
 const updateLookupOnColumns = (field, lookup, cols) => cols.filter((column) => column.field === field).forEach((column) => (column.lookup = lookup));
 const updateLookup = (field, lookup) => updateLookupOnColumns(field, lookup, columns);
-const useStyles = makeStyles((theme) => ({
-  box: { backgroundColor: "background.default", paddingBottom: theme.spacing(3), paddingTop: theme.spacing(3) },
-}));
 
 /**
  * The player window which is used for admin level function against players.
  * @returns A new instance of Player.
  */
 const Players = () => {
-  const classes = useStyles();
-  const isMountedRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [leagusStatuses, setLeagueStatuses] = useState([]);
-  const [message, setMessage] = useState("");
-  const [open, setOpen] = useState(false);
-  const [players, setPlayers] = useState([]);
-  const [playerStatuses, setPlayerStatuses] = useState([]);
-  const [playerTypes, setPlayerTypes] = useState([]);
-  const [positions, setPositions] = useState([]);
-  const [severity, setSeverity] = useState("success");
-  const [teams, setTeams] = useState([]);
+  const isMountedRef = React.useRef(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [leagusStatuses, setLeagueStatuses] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [players, setPlayers] = React.useState([]);
+  const [playerStatuses, setPlayerStatuses] = React.useState([]);
+  const [playerTypes, setPlayerTypes] = React.useState([]);
+  const [positions, setPositions] = React.useState([]);
+  const [severity, setSeverity] = React.useState("success");
+  const [teams, setTeams] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     isMountedRef.current = true;
     getLeagueStatusEnums((response) => {
       setLeagueStatuses(response);
@@ -198,7 +193,7 @@ const Players = () => {
       <Helmet>
         <title>Players | Fantasy Baseball Analyzer</title>
       </Helmet>
-      <Box className={classes.box}>
+      <Box sx={{ backgroundColor: "background.default", paddingBottom: 3, paddingTop: 3 }}>
         <Container maxWidth={false}>
           {isLoading ? (
             <Typography align="left" color="textPrimary" variant="h4">

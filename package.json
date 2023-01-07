@@ -1,6 +1,6 @@
 {
   "name": "fantasy-baseball-ui",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.1.5",
@@ -9,14 +9,18 @@
     "@mui/lab": "^5.0.0-alpha.110",
     "@mui/material": "^5.10.16",
     "@mui/styles": "^5.10.16",
+    "@reduxjs/toolkit": "^1.9.1",
     "axios": "^0.21.1",
     "file-saver": "^2.0.5",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
+    "timeago.js": "^4.0.2",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import TableHeaderCell from "./table-header-cell";
 import { ThemeProvider } from "@mui/material";
 

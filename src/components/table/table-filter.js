@@ -1,8 +1,7 @@
-import React, { createRef } from "react";
-
 import CustomInuptBase from "../input/custom-input-base";
 import CustomSelectField from "../input/custom-select-field";
 import PropTypes from "prop-types";
+import React from "react";
 
 /**
  * Creates a new filter that will either be a simple input or a select field based on the column.
@@ -11,7 +10,7 @@ import PropTypes from "prop-types";
  * @returns A new instance of the TableFilter.
  */
 const TableFilter = ({ column, handleFilterChange }) => {
-  const input = createRef();
+  const input = React.createRef();
 
   const buildSelectField = () => (
     <CustomSelectField field={column.field} existingValues={column.filterValue} lookup={column.lookup} handleOnChange={onChange} width={column.width} />

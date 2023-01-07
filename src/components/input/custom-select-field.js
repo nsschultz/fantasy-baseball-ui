@@ -1,8 +1,8 @@
 import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
 
 import CustomInuptBase from "./custom-input-base";
 import PropTypes from "prop-types";
+import React from "react";
 
 /**
  * (Deprecated) Wrapper that creates Select with the option to select multiples and shows checkboxes next to the selected values.
@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
  * @returns A new instance of the CustomSelectField.
  */
 const CustomSelectField = ({ existingValues, field, handleOnChange, lookup, title, width }) => {
-  const [values, setValues] = useState(existingValues || []);
+  const [values, setValues] = React.useState(existingValues || []);
 
   const onChange = (event) => {
     setValues(event.target.value);

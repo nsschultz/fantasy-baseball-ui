@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
 import CustomCard from "./custom-card";
-import React from "react";
 
 const title = "Card Title";
 const content = "Card Content";

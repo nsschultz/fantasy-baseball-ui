@@ -1,7 +1,7 @@
 import { Button, ThemeProvider } from "@mui/material";
 import { render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import IntegrationCard from "./integration-card";
 
 describe("IntegrationCard", () => {

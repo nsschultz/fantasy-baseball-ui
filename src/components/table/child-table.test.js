@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
 import ChildTable from "./child-table";
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import { ThemeProvider } from "@mui/material";
 
 const columns = [
