@@ -5,6 +5,7 @@ import { FilterList } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import React from "react";
 import TableHeaderCell from "./table-header-cell";
+import TableToolbar from "./table-toolbar";
 
 const applyFilter = (column, field) => {
   if (column.lookup)
@@ -43,14 +44,16 @@ const stableSort = (array, comparator) => {
  * @param {func}   childProps.rowKeyBuilder  (Required) The function used for building keys for rows.
  * @param {func}   childProps.rowSelector    (Required) The selector for building the rows of the child table.
  * @param {string} childProps.title          (Required) The title of the child table.
+ * @param {array}  columns                   (Required) The columns for the table.
  * @param {object} editProps                 (Optional) The properties for creating an editor for a row.
  * @param {func}   editProps.buildWindow     (Required) Function for building the edit window.
  * @param {func}   editProps.handleClose     (Required) Function for handling a close event for the edit window.
- * @param {array}  columns                   (Required) The columns for the table.
+ * @param {object} toolbarProps              (Optional) The properties for the table's toolbar.
+ * @param {string} toolbarProps.title        (Required) The title for the parent table.
  * @param {object} values                    (Required) The actual values that make up the row.
  * @returns A new instance of the ParentTable.
  */
-const ParentTable = ({ childProps, editProps, columns, values }) => {
+const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) => {
   const [editOpen, setEditOpen] = React.useState(false);
   const [editRow, setEditRow] = React.useState(null);
   const [filterVisible, setFilterVisible] = React.useState(false);
@@ -99,6 +102,7 @@ const ParentTable = ({ childProps, editProps, columns, values }) => {
   return (
     <>
       <Paper sx={{ overflow: "hidden", width: "100%" }}>
+        {toolbarProps ? <TableToolbar title={toolbarProps.title} /> : null}
         <TableContainer sx={{ maxHeight: 725 }}>
           <Table size="small" stickyHeader>
             <TableHead>
@@ -151,6 +155,13 @@ ParentTable.propTypes = {
   editProps: PropTypes.exact({
     buildWindow: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
+  }),
+  toolbarProps: PropTypes.exact({
+    // searchProps: PropTypes.exact({
+    //   handleSearch: PropTypes.func.isRequired,
+    //   placeholder: PropTypes.string.isRequired,
+    // }),
+    title: PropTypes.string.isRequired,
   }),
   values: PropTypes.array.isRequired,
 };

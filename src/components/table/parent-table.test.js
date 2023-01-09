@@ -56,9 +56,9 @@ beforeEach(() => (saveCount = 0));
 beforeEach(() => (editCount = 0));
 beforeEach(() => (returnRow = false));
 
-const TestWrapper = ({ childProps, editProps }) => (
+const TestWrapper = ({ childProps, editProps, toolbarProps }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <ParentTable childProps={childProps} columns={columns} editProps={editProps} values={rows} />
+    <ParentTable childProps={childProps} columns={columns} editProps={editProps} toolbarProps={toolbarProps} values={rows} />
   </ThemeProvider>
 );
 
@@ -68,6 +68,10 @@ describe("ParentTable", () => {
       render(<TestWrapper />);
       expect(screen.getAllByRole("columnheader")).toHaveLength(columns.length + 1);
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
+    });
+    test("with the toolbar visible", () => {
+      render(<TestWrapper toolbarProps={{ title: "MyTitle" }} />);
+      expect(screen.getByText("MyTitle")).toBeVisible();
     });
     test("and handle moving to the next page and back", () => {
       render(<TestWrapper />);

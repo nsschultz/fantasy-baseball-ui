@@ -204,6 +204,7 @@ const Players = () => {
               childProps={{ columnSelector: statsSelection, rowKeyBuilder: (row) => row.statsType, rowSelector: getChildRows, title: "Season Stats" }}
               columns={columns}
               editProps={{ buildWindow: buildEdit, handleClose: onRowUpdate }}
+              toolbarProps={{ title: "Players" }}
               values={players}
             />
           )}

@@ -524,6 +524,7 @@ describe("Player", () => {
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getByText("Players")).toBeVisible();
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
       fireEvent.click(screen.getByTestId("row-expand-01"));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4);
