@@ -36,7 +36,7 @@ describe("TableFilter", () => {
     });
   });
   test("should handle a change event", () => {
-    render(<TestWrapper column={{ field: field, width: 125 }} />);
+    render(<TestWrapper column={{ field: field }} />);
     expect(existingValue).toEqual("Old");
     fireEvent.change(screen.getByRole("searchbox"), { target: { value: "New" } });
     expect(existingValue).toEqual("New");

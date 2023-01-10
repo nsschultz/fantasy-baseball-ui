@@ -11,10 +11,10 @@ import axios from "axios";
 import { buildTeamDisplayMap } from "../funcs/team-helper";
 
 const columns = [
-  { field: "bhqId", title: "BHQ ID", type: "numeric", width: 75 },
+  { field: "bhqId", title: "BHQ ID", type: "numeric" },
   { field: "firstName", title: "First Name" },
   { field: "lastName", title: "Last Name" },
-  { field: "age", title: "Age", type: "numeric", width: 75 },
+  { field: "age", title: "Age", type: "numeric" },
   { field: "type", lookup: [], title: "Type" },
   {
     field: "positions",
@@ -29,7 +29,6 @@ const columns = [
     format: (value) => value.code,
     lookup: [],
     title: "Team",
-    width: 75,
   },
   { field: "status", lookup: [], title: "Status" },
   { field: "league1", lookup: [], title: "League #1 Status" },

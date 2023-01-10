@@ -13,7 +13,7 @@ const TableFilter = ({ column, handleFilterChange }) => {
   const input = React.createRef();
 
   const buildSelectField = () => (
-    <CustomSelectField field={column.field} existingValues={column.filterValue} lookup={column.lookup} handleOnChange={onChange} width={column.width} />
+    <CustomSelectField field={column.field} existingValues={column.filterValue} lookup={column.lookup} handleOnChange={onChange} />
   );
   const buildInputBase = () => (
     <CustomInuptBase
@@ -21,7 +21,6 @@ const TableFilter = ({ column, handleFilterChange }) => {
       onChange={onChange}
       ref={input}
       size="small"
-      style={{ width: column.width ? column.width : 100 }}
       type={column.type === "numeric" ? "number" : "search"}
       variant="outlined"
     />
