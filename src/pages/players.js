@@ -1,5 +1,4 @@
 import { Box, Container, Snackbar, Typography } from "@mui/material";
-import { buildPositionDisplayMap, matchAnyPosition } from "../funcs/position-helper";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
 
 import Alert from "@mui/material/Alert";
@@ -8,7 +7,11 @@ import ParentTable from "../components/table/parent-table";
 import PlayerView from "./player-view";
 import React from "react";
 import axios from "axios";
+import { buildPositionDisplayMap } from "../funcs/position-helper";
 import { buildTeamDisplayMap } from "../funcs/team-helper";
+
+//    pos = filterMatcher: (filterValue, field) => filterValue.some((v) => matchAnyPosition(field, v, true)),
+//   team = filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
 
 const columns = [
   { align: "right", field: "bhqId", title: "BHQ ID" },
@@ -16,20 +19,8 @@ const columns = [
   { field: "lastName", title: "Last Name" },
   { align: "right", field: "age", title: "Age" },
   { field: "type", lookup: [], title: "Type" },
-  {
-    field: "positions",
-    filterMatcher: (filterValue, field) => filterValue.some((v) => matchAnyPosition(field, v, true)),
-    format: (value) => value.map((p) => p.code).join(),
-    lookup: [],
-    title: "Position(s)",
-  },
-  {
-    field: "team",
-    filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
-    format: (value) => value.code,
-    lookup: [],
-    title: "Team",
-  },
+  { field: "positions", format: (value) => value.map((p) => p.code).join(), lookup: [], title: "Position(s)" },
+  { field: "team", format: (value) => value.code, lookup: [], title: "Team" },
   { field: "status", lookup: [], title: "Status" },
   { field: "league1", lookup: [], title: "League #1 Status" },
   { field: "league2", lookup: [], title: "League #2 Status" },

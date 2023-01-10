@@ -1,31 +1,30 @@
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from "@mui/material";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 
 import CustomTableRow from "./custom-table-row";
-import { FilterList } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import React from "react";
 import TableHeaderCell from "./table-header-cell";
 import TableToolbar from "./table-toolbar";
 
-const applyFilter = (column, field) => {
-  if (column.lookup)
-    return (
-      column.filterValue.length === 0 ||
-      (column.filterMatcher ? column.filterMatcher(column.filterValue, field) : column.filterValue.some((v) => convertToNumber(v) === field))
-    );
-  if (column.align === "right") return field === convertToNumber(column.filterValue);
-  return field && field.toLowerCase().includes(column.filterValue.toLowerCase());
-};
-const applyFilters = (columns, rows) => {
-  var columnsWithFilter = columns.filter((column) => column.filterValue);
-  if (columnsWithFilter.length === 0) return rows;
-  return rows.filter((row) => columnsWithFilter.length === columnsWithFilter.filter((column) => applyFilter(column, row[column.field])).length);
-};
+// const applyFilter = (column, field) => {
+//   if (column.lookup)
+//     return (
+//       column.filterValue.length === 0 ||
+//       (column.filterMatcher ? column.filterMatcher(column.filterValue, field) : column.filterValue.some((v) => convertToNumber(v) === field))
+//     );
+//   if (column.align === "right") return field === convertToNumber(column.filterValue);
+//   return field && field.toLowerCase().includes(column.filterValue.toLowerCase());
+// };
+// const applyFilters = (columns, rows) => {
+//   var columnsWithFilter = columns.filter((column) => column.filterValue);
+//   if (columnsWithFilter.length === 0) return rows;
+//   return rows.filter((row) => columnsWithFilter.length === columnsWithFilter.filter((column) => applyFilter(column, row[column.field])).length);
+// };
 const buildChildProps = (childProps, row) =>
   childProps
     ? { columns: childProps.columnSelector(row), rowKeyBuilder: childProps.rowKeyBuilder, rows: childProps.rowSelector(row), title: childProps.title }
     : null;
-const convertToNumber = (val) => parseInt(val, 10);
+//const convertToNumber = (val) => parseInt(val, 10);
 const compare = (a, b, orderBy) => (b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0);
 const getComparator = (order, orderBy) => (a, b) => compare(a, b, orderBy) * (order === "desc" ? 1 : -1);
 const stableSort = (array, comparator) => {
@@ -57,7 +56,6 @@ const stableSort = (array, comparator) => {
 const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) => {
   const [editOpen, setEditOpen] = React.useState(false);
   const [editRow, setEditRow] = React.useState(null);
-  const [filterVisible, setFilterVisible] = React.useState(false);
   const [limit, setLimit] = React.useState(10);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
@@ -70,9 +68,9 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
   }, [columns, limit, order, orderBy, page, values]);
 
   const buildRows = (columns, rows) => {
-    const filteredRows = applyFilters(columns, rows);
-    setRowCount(filteredRows.length);
-    return stableSort(filteredRows, getComparator(order, orderBy))
+    //const filteredRows = applyFilters(columns, rows);
+    setRowCount(rows.length);
+    return stableSort(rows, getComparator(order, orderBy))
       .slice(page * limit, (page + 1) * limit)
       .map((row) => (
         <CustomTableRow childProps={buildChildProps(childProps, row)} columns={columns} handleEditOpen={(r) => handleEditOpen(r)} key={row.id} values={row} />
@@ -90,15 +88,15 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
     setEditRow(row);
     setEditOpen(true);
   };
-  const handleFilterVisible = () => setFilterVisible(!filterVisible);
+  // const handleFilterVisible = () => setFilterVisible(!filterVisible);
   const handleRequestSort = (event, property) => {
     setOrder(orderBy === property && order === "asc" ? "desc" : "asc");
     setOrderBy(property);
   };
-  const onHandleFilterChange = (field, filterValue) => {
-    columns.filter((column) => column.field === field).forEach((column) => (column.filterValue = filterValue));
-    setRows(buildRows(columns, values));
-  };
+  // const onHandleFilterChange = (field, filterValue) => {
+  //   columns.filter((column) => column.field === field).forEach((column) => (column.filterValue = filterValue));
+  //   setRows(buildRows(columns, values));
+  // };
 
   return (
     <>
@@ -109,17 +107,11 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
             <TableHead>
               <TableRow>
                 <TableCell align="left" sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
-                  <Tooltip title="Show Column Filters">
-                    <IconButton data-testid="table-show-filters" onClick={handleFilterVisible} size="small" sx={{ display: "inline-flex", padding: "3px" }}>
-                      <FilterList fontSize="inherit" />
-                    </IconButton>
-                  </Tooltip>
+                  Actions
                 </TableCell>
                 {columns.map((column) => (
                   <TableHeaderCell
                     column={column}
-                    filterVisible={filterVisible}
-                    handleFilterChange={onHandleFilterChange}
                     handleSortRequest={(event) => handleRequestSort(event, column.field)}
                     key={column.field}
                     order={order}
