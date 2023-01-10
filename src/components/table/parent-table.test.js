@@ -40,16 +40,16 @@ const handleClose = (editRow) => {
 beforeEach(
   () =>
     (columns = [
-      { title: "Name", field: "name" },
-      { title: "Age", field: "age", type: "numeric" },
+      { field: "name", title: "Name" },
+      { align: "right", field: "age", title: "Age" },
       {
-        title: "Team",
         field: "team",
-        lookup: { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" },
         filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
+        lookup: { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" },
+        title: "Team",
       },
-      { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
-      { title: "Drafted %", field: "draftedPercentage", type: "numeric", format: (value) => value.toFixed(2) },
+      { field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" }, title: "Type" },
+      { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
     ])
 );
 beforeEach(() => (saveCount = 0));

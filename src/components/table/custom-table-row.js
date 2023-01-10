@@ -4,7 +4,6 @@ import { Edit, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import ChildTable from "./child-table";
 import PropTypes from "prop-types";
 import React from "react";
-import { getAlign } from "./table-funcs";
 
 const getDisplayValue = (column, value) => (column.format ? column.format(value) : column.lookup ? column.lookup[value] : value);
 
@@ -54,7 +53,7 @@ const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
       <TableRow hover key={values.id} sx={{ "& > *": { borderBottom: "none" } }}>
         {childProps || handleEditOpen ? buildActionCell(values) : null}
         {columns.map((column) => (
-          <TableCell key={column.field} align={getAlign(column)}>
+          <TableCell align={column.align} key={column.field}>
             {getDisplayValue(column, values[column.field])}
           </TableCell>
         ))}

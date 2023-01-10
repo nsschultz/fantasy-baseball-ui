@@ -21,7 +21,7 @@ const TestWrapper = ({ align, direction, open, sortField }) => (
       <thead>
         <tr>
           <TableHeaderCell
-            column={{ field: field, title: title, type: "right" === align ? "numeric" : "string" }}
+            column={{ align: align, field: field, title: title }}
             filterVisible={open}
             handleFilterChange={() => console.log("filter changed")}
             handleSortRequest={() => () => "asc"}

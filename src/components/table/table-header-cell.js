@@ -3,7 +3,6 @@ import { Box, TableCell, TableSortLabel } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
 import TableFilter from "./table-filter";
-import { getAlign } from "./table-funcs";
 
 const hiddenStyle = {
   border: 0,
@@ -29,7 +28,7 @@ const hiddenStyle = {
  */
 const TableHeaderCell = ({ column, filterVisible, handleFilterChange, handleSortRequest, order, orderBy }) => (
   <TableCell
-    align={getAlign(column)}
+    align={column.align}
     key={column.field}
     sortDirection={orderBy === column.field ? order : false}
     sx={{ backgroundColor: "primary.main", color: "text.primary" }}

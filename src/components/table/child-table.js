@@ -3,7 +3,6 @@ import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } fro
 import CustomTableRow from "./custom-table-row";
 import PropTypes from "prop-types";
 import React from "react";
-import { getAlign } from "./table-funcs";
 
 /**
  * Wrapper around a Table with a title that doesn't have complex options.
@@ -22,7 +21,7 @@ const ChildTable = ({ columns, rowKeyBuilder, rows, title }) => (
       <TableHead>
         <TableRow>
           {columns.map((column) => (
-            <TableCell align={getAlign(column)} key={column.field} sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
+            <TableCell align={column.align} key={column.field} sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
               {column.title}
             </TableCell>
           ))}

@@ -13,7 +13,7 @@ const applyFilter = (column, field) => {
       column.filterValue.length === 0 ||
       (column.filterMatcher ? column.filterMatcher(column.filterValue, field) : column.filterValue.some((v) => convertToNumber(v) === field))
     );
-  if (column.type === "numeric") return field === convertToNumber(column.filterValue);
+  if (column.align === "right") return field === convertToNumber(column.filterValue);
   return field && field.toLowerCase().includes(column.filterValue.toLowerCase());
 };
 const applyFilters = (columns, rows) => {
@@ -44,7 +44,8 @@ const stableSort = (array, comparator) => {
  * @param {func}   childProps.rowKeyBuilder  (Required) The function used for building keys for rows.
  * @param {func}   childProps.rowSelector    (Required) The selector for building the rows of the child table.
  * @param {string} childProps.title          (Required) The title of the child table.
- * @param {array}  columns                   (Required) The columns for the table.
+ * @param {array}  columns                   (Required) The columns for the table. There are 3 fields (align, field, title).
+ *                                                      Field and title are required, but align is not (will default to 'left').
  * @param {object} editProps                 (Optional) The properties for creating an editor for a row.
  * @param {func}   editProps.buildWindow     (Required) Function for building the edit window.
  * @param {func}   editProps.handleClose     (Required) Function for handling a close event for the edit window.

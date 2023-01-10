@@ -27,7 +27,7 @@ describe("TableFilter", () => {
       expect(screen.getByRole("button")).toBeVisible();
     });
     test("as a text field with a numeric value", () => {
-      render(<TestWrapper column={{ field: field, filterValue: "1", type: "numeric" }} />);
+      render(<TestWrapper column={{ align: "right", field: field, filterValue: "1" }} />);
       expect(screen.getByDisplayValue("1")).toBeVisible();
     });
     test("as a text field with a text value", () => {

@@ -17,11 +17,11 @@ const TableFilter = ({ column, handleFilterChange }) => {
   );
   const buildInputBase = () => (
     <CustomInuptBase
-      defaultValue={column.filterValue ? (column.type === "numeric" ? parseInt(column.filterValue, 10) : column.filterValue) : null}
+      defaultValue={column.filterValue ? (column.align === "right" ? parseInt(column.filterValue, 10) : column.filterValue) : null}
       onChange={onChange}
       ref={input}
       size="small"
-      type={column.type === "numeric" ? "number" : "search"}
+      type={column.align === "right" ? "number" : "search"}
       variant="outlined"
     />
   );
