@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material";
 let columns;
 let editCount = 0;
 const defaultRowDisplay = 10;
+const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
 let returnRow = false;
 const rows = [
   { id: 10, name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
@@ -22,6 +23,7 @@ const rows = [
   { id: 20, name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
 ];
 let saveCount = 0;
+const teams = { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" };
 
 const buildEdit = (handleEditClose, editOpen, editRow) => {
   editCount++;
@@ -42,8 +44,8 @@ beforeEach(
     (columns = [
       { field: "name", title: "Name" },
       { align: "right", field: "age", title: "Age" },
-      { field: "team", lookup: { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" }, title: "Team" },
-      { field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" }, title: "Type" },
+      { field: "team", format: (value) => teams[value], title: "Team" },
+      { field: "type", format: (value) => playerTypes[value], title: "Type" },
       { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
     ])
 );

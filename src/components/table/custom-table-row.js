@@ -5,18 +5,20 @@ import ChildTable from "./child-table";
 import PropTypes from "prop-types";
 import React from "react";
 
-const getDisplayValue = (column, value) => (column.format ? column.format(value) : column.lookup ? column.lookup[value] : value);
+const getDisplayValue = (column, value) => (column.format ? column.format(value) : value);
 
 /**
  * Wrapper around the TableRow that adds the ability to add a child table and edit functionality.
- * @param {object} childProps               (Optional) The properties for the child table.
- * @param {array}  childProps.columns       (Required) The columns for the child table.
- * @param {func}   childProps.rowKeyBuilder (Required) The function used for building keys for rows.
- * @param {array}  childProps.rows          (Required) The rows for the child table.
- * @param {string} childProps.title         (Required) The title of the child table.
- * @param {array}  columns                  (Required) The columns from the parent table.
- * @param {func}   handleEditOpen           (Optional) The function that is called when the edit button is clicked. Providing this function determines if the button exists or not.
- * @param {object} values                   (Required) The actual values that make up the row.
+ * @param {string} childProps.columns[].align  The alignment of the column.
+ * @param {string} childProps.columns[].field  The field within the data to display (also used as the key).
+ * @param {func}   childProps.columns[].format Func for formatting the given value.
+ * @param {string} childProps.columns[].title  The title for the column header cell.
+ * @param {func}   childProps.rowKeyBuilder    The function used for building keys for rows.
+ * @param {array}  childProps.rows             The rows for the child table.
+ * @param {string} childProps.title            The title of the child table.
+ * @param {array}  columns                     The columns from the parent table.
+ * @param {func}   handleEditOpen              The function that is called when the edit button is clicked. Providing this function determines if the button exists or not.
+ * @param {object} values                      The actual values that make up the row.
  * @returns A new instance of the CustomTableRow.
  */
 const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
@@ -64,7 +66,9 @@ const CustomTableRow = ({ childProps, columns, handleEditOpen, values }) => {
 };
 CustomTableRow.propTypes = {
   childProps: PropTypes.exact({
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.arrayOf(
+      PropTypes.shape({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
+    ).isRequired,
     rowKeyBuilder: PropTypes.func.isRequired,
     rows: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,

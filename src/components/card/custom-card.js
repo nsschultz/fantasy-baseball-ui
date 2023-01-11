@@ -5,9 +5,9 @@ import React from "react";
 
 /**
  * Wrapper the creates a card with a header and content within a box.
- * @param {object} additionalContent (Optional) Any additional content to be displayed on the card.
- * @param {object} content           (Required) The main content to display on the card.
- * @param {string} title             (Required) The title of the card.
+ * @param {*}      additionalContent Any additional content to be displayed on the card.
+ * @param {*}      content           The main content to display on the card.
+ * @param {string} title             The title of the card.
  * @returns A new instance of the CustomCard.
  */
 const CustomCard = ({ additionalContent, content, title }) => (
@@ -24,9 +24,5 @@ const CustomCard = ({ additionalContent, content, title }) => (
     </Card>
   </Box>
 );
-CustomCard.propTypes = {
-  additionalContent: PropTypes.object,
-  content: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-};
+CustomCard.propTypes = { additionalContent: PropTypes.any, content: PropTypes.any.isRequired, title: PropTypes.string.isRequired };
 export default CustomCard;

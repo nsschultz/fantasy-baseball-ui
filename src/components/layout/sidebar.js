@@ -24,8 +24,8 @@ const content = (
 
 /**
  * The information that shows up on the side screen.
- * @param {func} onMobileClose (Required) The function that is called when on mobile and the sidebar is closed.
- * @param {bool} openMobile    (Required) Boolean that indicates if the sidebar should be open (only used on mobile).
+ * @param {func} onMobileClose The function that is called when on mobile and the sidebar is closed.
+ * @param {bool} openMobile    Boolean that indicates if the sidebar should be open (only used on mobile).
  * @returns A new instance of the Sidebar.
  */
 const Sidebar = ({ onMobileClose, openMobile }) => (
@@ -53,8 +53,5 @@ const Sidebar = ({ onMobileClose, openMobile }) => (
     </Drawer>
   </>
 );
-Sidebar.propTypes = {
-  onMobileClose: PropTypes.func.isRequired,
-  openMobile: PropTypes.bool.isRequired,
-};
+Sidebar.propTypes = { onMobileClose: PropTypes.func.isRequired, openMobile: PropTypes.bool.isRequired };
 export default Sidebar;

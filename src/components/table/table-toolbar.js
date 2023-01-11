@@ -5,7 +5,7 @@ import React from "react";
 
 /**
  * Wrapper around the Toolbar that supports filtering and adding rows.
- * @param {string} title (Required) The title for the parent table.
+ * @param {string} title The title for the parent table.
  * @returns A new instance of the TableToolbar.
  */
 const TableToolbar = ({ title }) => {

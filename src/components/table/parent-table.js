@@ -38,19 +38,18 @@ const stableSort = (array, comparator) => {
 
 /**
  * Wrapper around the Table objects that can also create filters, child tables, and editors for the table.
- * @param {object} childProps                (Optional) The properties for the child table.
- * @param {func}   childProps.columnSelector (Required) The selector for building the columns of the child table.
- * @param {func}   childProps.rowKeyBuilder  (Required) The function used for building keys for rows.
- * @param {func}   childProps.rowSelector    (Required) The selector for building the rows of the child table.
- * @param {string} childProps.title          (Required) The title of the child table.
- * @param {array}  columns                   (Required) The columns for the table. There are 3 fields (align, field, title).
- *                                                      Field and title are required, but align is not (will default to 'left').
- * @param {object} editProps                 (Optional) The properties for creating an editor for a row.
- * @param {func}   editProps.buildWindow     (Required) Function for building the edit window.
- * @param {func}   editProps.handleClose     (Required) Function for handling a close event for the edit window.
- * @param {object} toolbarProps              (Optional) The properties for the table's toolbar.
- * @param {string} toolbarProps.title        (Required) The title for the parent table.
- * @param {object} values                    (Required) The actual values that make up the row.
+ * @param {func}   childProps.columnSelector The selector for building the columns of the child table.
+ * @param {func}   childProps.rowKeyBuilder  The function used for building keys for rows.
+ * @param {func}   childProps.rowSelector    The selector for building the rows of the child table.
+ * @param {string} childProps.title          The title of the child table.
+ * @param {string} columns[].align           The alignment of the column.
+ * @param {string} columns[].field           The field within the data to display (also used as the key).
+ * @param {func}   columns[].format          Func for formatting the given value.
+ * @param {string} columns[].title           The title for the column header cell.
+ * @param {func}   editProps.buildWindow     Function for building the edit window.
+ * @param {func}   editProps.handleClose     Function for handling a close event for the edit window.
+ * @param {string} toolbarProps.title        The title for the parent table.
+ * @param {object} values                    The actual values that make up the row.
  * @returns A new instance of the ParentTable.
  */
 const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) => {
@@ -138,18 +137,17 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
   );
 };
 ParentTable.propTypes = {
-  childProps: PropTypes.exact({
+  childProps: PropTypes.shape({
     columnSelector: PropTypes.func.isRequired,
     rowKeyBuilder: PropTypes.func.isRequired,
     rowSelector: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
   }),
-  columns: PropTypes.array.isRequired,
-  editProps: PropTypes.exact({
-    buildWindow: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-  }),
-  toolbarProps: PropTypes.exact({
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
+  ).isRequired,
+  editProps: PropTypes.shape({ buildWindow: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
+  toolbarProps: PropTypes.shape({
     // searchProps: PropTypes.exact({
     //   handleSearch: PropTypes.func.isRequired,
     //   placeholder: PropTypes.string.isRequired,

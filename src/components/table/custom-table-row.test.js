@@ -6,8 +6,6 @@ import { ThemeProvider } from "@mui/material";
 
 const columns = [
   { field: "name", title: "Name" },
-  { align: "right", field: "age", title: "Age" },
-  { field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" }, title: "Type" },
   { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
 ];
 const values = { id: 10, name: "Schultz, Nick", age: 40, type: 1, draftedPercentage: 0 };

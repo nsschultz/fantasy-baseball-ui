@@ -2,7 +2,7 @@ import { makeMap } from "./map-maker";
 
 /**
  * Builds a map from the given positions that maps the position code to the display value.
- * @param {array} positions (Required) A list of position objects to turn into a map.
+ * @param {array} positions A list of position objects to turn into a map.
  * @returns A simple object where the keys are positions codes and the values are the display strings.
  */
 export const buildPositionDisplayMap = (positions) =>

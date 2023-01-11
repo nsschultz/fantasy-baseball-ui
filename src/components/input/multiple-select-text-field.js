@@ -6,15 +6,14 @@ import { StyledTextField } from "../styled/styled-text-field";
 
 /**
  * Wrapper that turns the CustomTextField into a multi-select input.
- * @param {object} displayProps                  (Required) An object that contains all of the properties needed to render the text field.
- * @param {func}   displayProps.disableChecker   (Optional) Function that is used to determine if certain options should be disabled.
- * @param {string} displayProps.label            (Optional) The value to use as the label.
- * @param {func}   displayProps.listItemBuilder  (Required) Function that determines how the text shows up in the list items.
- * @param {func}   displayProps.textValueBuilder (Required) Function that determines how the text shows up in the text box.
- * @param {string} field                         (Required) The field that backs the input (used as an id).
- * @param {func}   handleOnChange                (Required) The function that is called when the value changes.
- * @param {object} menuItems                     (Required) The collection of lookup values (key value pair based on the object provided).
- * @param {array}  selectedValues                (Optional) An array of values that have alrady been selected (the array contains the keys).
+ * @param {func}   displayProps.disableChecker   Function that is used to determine if certain options should be disabled.
+ * @param {string} displayProps.label            The value to use as the label.
+ * @param {func}   displayProps.listItemBuilder  Function that determines how the text shows up in the list items.
+ * @param {func}   displayProps.textValueBuilder Function that determines how the text shows up in the text box.
+ * @param {string} field                         The field that backs the input (used as an id).
+ * @param {func}   handleOnChange                The function that is called when the value changes.
+ * @param {object} menuItems                     The collection of lookup values (key value pair based on the object provided).
+ * @param {array}  selectedValues                An array of values that have alrady been selected (the array contains the keys).
  * @returns A new instance of the MultipleSelectTextField.
  */
 const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItems, selectedValues }) => (
@@ -41,7 +40,7 @@ const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItem
   </StyledTextField>
 );
 MultipleSelectTextField.propTypes = {
-  displayProps: PropTypes.exact({
+  displayProps: PropTypes.shape({
     disableChecker: PropTypes.func,
     label: PropTypes.string,
     listItemBuilder: PropTypes.func.isRequired,

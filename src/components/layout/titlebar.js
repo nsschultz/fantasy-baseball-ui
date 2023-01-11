@@ -9,8 +9,8 @@ import { Link as RouterLink } from "react-router-dom";
 
 /**
  * The bar that sits at the top of the screen. Displays different options depending on if the user is logged in or not.
- * @param {bool} isLoggedIn             (Required) Boolean that indicates if the user is logged in.
- * @param {func} onOpenMobileNavigation (Required) Function that is called on mobile devices to open the menu.
+ * @param {bool} isLoggedIn             Boolean that indicates if the user is logged in.
+ * @param {func} onOpenMobileNavigation Function that is called on mobile devices to open the menu.
  * @returns A new instance of the Titlebar.
  */
 const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
@@ -43,8 +43,5 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => {
     </AppBar>
   );
 };
-Titlebar.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  onOpenMobileNavigation: PropTypes.func.isRequired,
-};
+Titlebar.propTypes = { isLoggedIn: PropTypes.bool.isRequired, onOpenMobileNavigation: PropTypes.func.isRequired };
 export default Titlebar;

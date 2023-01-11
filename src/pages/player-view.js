@@ -75,15 +75,14 @@ const fixPlayer = (player) => {
 
 /**
  * A view used for setting player values on either an existing player or on a new player object.
- * @param {object} lookups                (Required) Object that contains all of the various lookups.
- * @param {object} lookups.leagusStatuses (Required) Object that maps the league status to it's code value.
- * @param {object} lookups.playerStatuses (Required) Object that maps the player status to it's code value.
- * @param {object} lookups.playerTypes    (Required) Object that maps the player type to it's code value.
- * @param {array}  lookups.positions      (Required) Array of position objects.
- * @param {array}  lookups.team           (Required) Array of team objects.
- * @param {func}   onClose                (Required) The action to call when the view is closed.
- * @param {bool}   open                   (Required) Bool indicating if the window is currently visible.
- * @param {object} player                 (Optional) The data for the player being edited (does not need to be provided for adds).
+ * @param {object} lookups.leagusStatuses Object that maps the league status to it's code value.
+ * @param {object} lookups.playerStatuses Object that maps the player status to it's code value.
+ * @param {object} lookups.playerTypes    Object that maps the player type to it's code value.
+ * @param {array}  lookups.positions      Array of position objects.
+ * @param {array}  lookups.team           Array of team objects.
+ * @param {func}   onClose                The action to call when the view is closed.
+ * @param {bool}   open                   Bool indicating if the window is currently visible.
+ * @param {object} player                 The data for the player being edited (does not need to be provided for adds).
  * @returns A new instance of the PlayerView.
  */
 const PlayerView = ({ lookups, onClose, open, player }) => {
