@@ -101,40 +101,6 @@ describe("ParentTable", () => {
       expect(screen.getAllByRole("row")[10]).toHaveTextContent("Braun, Ryan");
     });
   });
-  // test("should only display the filters on click", () => {
-  //   render(<TestWrapper />);
-  //   expect(screen.queryByRole("searchbox")).toBeFalsy();
-  //   expect(screen.queryByRole("spinbutton:")).toBeFalsy();
-  //   fireEvent.click(screen.getByTestId("table-show-filters"));
-  //   expect(screen.getAllByRole("searchbox")).toHaveLength(1);
-  //   expect(screen.getAllByRole("spinbutton")).toHaveLength(2);
-  // });
-  // describe("should handle filtering of", () => {
-  //   test("text field", () => {
-  //     render(<TestWrapper />);
-  //     expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-  //     fireEvent.click(screen.getByTestId("table-show-filters"));
-  //     fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Samantha" } });
-  //     expect(screen.getAllByRole("row")).toHaveLength(2);
-  //   });
-  //   test("numeric field", () => {
-  //     render(<TestWrapper />);
-  //     expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-  //     fireEvent.click(screen.getByTestId("table-show-filters"));
-  //     fireEvent.change(screen.getAllByRole("spinbutton")[0], { target: { value: "10" } });
-  //     expect(screen.getAllByRole("row")).toHaveLength(2);
-  //   });
-  //   test("select field", () => {
-  //     columns[3].filterValue = ["0"];
-  //     render(<TestWrapper />);
-  //     expect(screen.getAllByRole("row")).toHaveLength(3);
-  //   });
-  //   test("complex field", () => {
-  //     columns[2].filterValue = ["MIL"];
-  //     render(<TestWrapper />);
-  //     expect(screen.getAllByRole("row")).toHaveLength(10);
-  //   });
-  // });
   describe("should handle editing", () => {
     test("and cancelling the changes", () => {
       render(<TestWrapper editProps={{ buildWindow: buildEdit, handleClose: handleClose }} />);

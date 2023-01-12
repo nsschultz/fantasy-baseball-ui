@@ -567,5 +567,51 @@ describe("Player", () => {
       await waitFor(() => expect(putSpy).toBeCalled());
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
     }, 30000);
+    test("seaching by player name", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.change(screen.getByRole("textbox"), { target: { value: "an" } });
+      expect(screen.getAllByRole("row")).toHaveLength(7);
+      fireEvent.change(screen.getByRole("textbox"), { target: { value: "" } });
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+    }, 30000);
   });
 });
+// test("should only display the filters on click", () => {
+//   render(<TestWrapper />);
+//   expect(screen.queryByRole("searchbox")).toBeFalsy();
+//   expect(screen.queryByRole("spinbutton:")).toBeFalsy();
+//   fireEvent.click(screen.getByTestId("table-show-filters"));
+//   expect(screen.getAllByRole("searchbox")).toHaveLength(1);
+//   expect(screen.getAllByRole("spinbutton")).toHaveLength(2);
+// });
+// describe("should handle filtering of", () => {
+//   test("text field", () => {
+//     render(<TestWrapper />);
+//     expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
+//     fireEvent.click(screen.getByTestId("table-show-filters"));
+//     fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Samantha" } });
+//     expect(screen.getAllByRole("row")).toHaveLength(2);
+//   });
+//   test("numeric field", () => {
+//     render(<TestWrapper />);
+//     expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
+//     fireEvent.click(screen.getByTestId("table-show-filters"));
+//     fireEvent.change(screen.getAllByRole("spinbutton")[0], { target: { value: "10" } });
+//     expect(screen.getAllByRole("row")).toHaveLength(2);
+//   });
+//   test("select field", () => {
+//     columns[3].filterValue = ["0"];
+//     render(<TestWrapper />);
+//     expect(screen.getAllByRole("row")).toHaveLength(3);
+//   });
+//   test("complex field", () => {
+//     columns[2].filterValue = ["MIL"];
+//     render(<TestWrapper />);
+//     expect(screen.getAllByRole("row")).toHaveLength(10);
+//   });
+// });

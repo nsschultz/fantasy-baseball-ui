@@ -10,7 +10,6 @@ import axios from "axios";
 
 //import { buildPositionDisplayMap } from "../funcs/position-helper";
 //import { buildTeamDisplayMap } from "../funcs/team-helper";
-
 //    pos = filterMatcher: (filterValue, field) => filterValue.some((v) => matchAnyPosition(field, v, true)),
 //   team = filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
 
@@ -20,6 +19,7 @@ import axios from "axios";
  */
 const Players = () => {
   const isMountedRef = React.useRef(null);
+  const [filteredPlayers, setFilteredPlayers] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [leagusStatuses, setLeagueStatuses] = React.useState([]);
   const [message, setMessage] = React.useState("");
@@ -105,6 +105,7 @@ const Players = () => {
     { align: "right", field: "groundBallToFlyBallRate", format: (value) => value.toFixed(2), title: "GB/FB" },
     { align: "right", field: "basePerformanceValue", format: (value) => value.toFixed(0), title: "BPV" },
   ];
+  const filterMap = {};
 
   const buildEdit = (handleEditClose, editOpen, editRow) => {
     const lookups = {
@@ -124,6 +125,7 @@ const Players = () => {
         if (isMountedRef.current) {
           response.data.forEach((p) => (p.name = `${p.firstName} ${p.lastName}`));
           setPlayers(response.data);
+          setFilteredPlayers(response.data);
           setIsLoading(false);
         }
       })
@@ -134,12 +136,21 @@ const Players = () => {
         setIsLoading(false);
       });
   };
+  const onHandleFilterChange = () => {
+    const filters = Object.values(filterMap);
+    setFilteredPlayers(filters.length === 0 ? players : players.filter((player) => filters.length === filters.filter((filter) => filter(player)).length));
+  };
   const onRowUpdate = (newData) => {
     if (!newData) return;
     updatePlayer(newData.id, newData);
     const dataUpdate = players.map((p) => (p.id === newData.id ? newData : p));
     setPlayers([...dataUpdate]);
     return dataUpdate;
+  };
+  const searchbarChangeHandler = (event) => {
+    if (event.target.value) filterMap.name = (player) => player.name.toLowerCase().includes(event.target.value.toLowerCase());
+    else delete filterMap.player;
+    onHandleFilterChange();
   };
   const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
   const updatePlayer = (id, player) => {
@@ -173,8 +184,8 @@ const Players = () => {
               childProps={{ columnSelector: statsSelection, rowKeyBuilder: (row) => row.statsType, rowSelector: getChildRows, title: "Season Stats" }}
               columns={columns}
               editProps={{ buildWindow: buildEdit, handleClose: onRowUpdate }}
-              toolbarProps={{ /*searchProps: { placeholder: "Search Player by Name" },*/ title: "Players" }}
-              values={players}
+              toolbarProps={{ searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" }, title: "Players" }}
+              values={filteredPlayers}
             />
           )}
         </Container>

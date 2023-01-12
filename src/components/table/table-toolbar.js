@@ -1,4 +1,4 @@
-import { Toolbar, Typography } from "@mui/material";
+import { Input, Toolbar, Typography } from "@mui/material";
 
 import PropTypes from "prop-types";
 import React from "react";
@@ -8,7 +8,7 @@ import React from "react";
  * @param {string} title The title for the parent table.
  * @returns A new instance of the TableToolbar.
  */
-const TableToolbar = ({ title }) => {
+const TableToolbar = ({ searchProps, title }) => {
   //const [filterVisible, setFilterVisible] = useState(false);
   //const handleFilterVisible = () => setFilterVisible(!filterVisible);
   return (
@@ -16,8 +16,8 @@ const TableToolbar = ({ title }) => {
       <Typography component="div" sx={{ flex: "1 1 100%" }} variant="h3">
         {title}
       </Typography>
-      {/* {searchProps ? <Input fullWidth onChange={searchProps.handleSearch} placeholder={searchProps.placeholder} /> : null}
-      <Tooltip title="Add New Player">
+      {searchProps ? <Input fullWidth onChange={searchProps.handleSearch} placeholder={searchProps.placeholder} /> : null}
+      {/*<Tooltip title="Add New Player">
         <IconButton>
           <AddCircleOutline />
         </IconButton>
@@ -31,10 +31,7 @@ const TableToolbar = ({ title }) => {
   );
 };
 TableToolbar.propTypes = {
-  // searchProps: PropTypes.exact({
-  //   handleSearch: PropTypes.func.isRequired,
-  //   placeholder: PropTypes.string.isRequired,
-  // }),
+  searchProps: PropTypes.shape({ handleSearch: PropTypes.func.isRequired, placeholder: PropTypes.string.isRequired }),
   title: PropTypes.string.isRequired,
 };
 export default TableToolbar;

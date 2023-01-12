@@ -6,25 +6,10 @@ import React from "react";
 import TableHeaderCell from "./table-header-cell";
 import TableToolbar from "./table-toolbar";
 
-// const applyFilter = (column, field) => {
-//   if (column.lookup)
-//     return (
-//       column.filterValue.length === 0 ||
-//       (column.filterMatcher ? column.filterMatcher(column.filterValue, field) : column.filterValue.some((v) => convertToNumber(v) === field))
-//     );
-//   if (column.align === "right") return field === convertToNumber(column.filterValue);
-//   return field && field.toLowerCase().includes(column.filterValue.toLowerCase());
-// };
-// const applyFilters = (columns, rows) => {
-//   var columnsWithFilter = columns.filter((column) => column.filterValue);
-//   if (columnsWithFilter.length === 0) return rows;
-//   return rows.filter((row) => columnsWithFilter.length === columnsWithFilter.filter((column) => applyFilter(column, row[column.field])).length);
-// };
 const buildChildProps = (childProps, row) =>
   childProps
     ? { columns: childProps.columnSelector(row), rowKeyBuilder: childProps.rowKeyBuilder, rows: childProps.rowSelector(row), title: childProps.title }
     : null;
-//const convertToNumber = (val) => parseInt(val, 10);
 const compare = (a, b, orderBy) => (b[orderBy] < a[orderBy] ? -1 : b[orderBy] > a[orderBy] ? 1 : 0);
 const getComparator = (order, orderBy) => (a, b) => compare(a, b, orderBy) * (order === "desc" ? 1 : -1);
 const stableSort = (array, comparator) => {
@@ -67,7 +52,6 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
   }, [columns, limit, order, orderBy, page, values]);
 
   const buildRows = (columns, rows) => {
-    //const filteredRows = applyFilters(columns, rows);
     setRowCount(rows.length);
     return stableSort(rows, getComparator(order, orderBy))
       .slice(page * limit, (page + 1) * limit)
@@ -87,20 +71,15 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
     setEditRow(row);
     setEditOpen(true);
   };
-  // const handleFilterVisible = () => setFilterVisible(!filterVisible);
   const handleRequestSort = (event, property) => {
     setOrder(orderBy === property && order === "asc" ? "desc" : "asc");
     setOrderBy(property);
   };
-  // const onHandleFilterChange = (field, filterValue) => {
-  //   columns.filter((column) => column.field === field).forEach((column) => (column.filterValue = filterValue));
-  //   setRows(buildRows(columns, values));
-  // };
 
   return (
     <>
       <Paper sx={{ overflow: "hidden", width: "100%" }}>
-        {toolbarProps ? <TableToolbar title={toolbarProps.title} /> : null}
+        {toolbarProps ? <TableToolbar searchProps={toolbarProps.searchProps} title={toolbarProps.title} /> : null}
         <TableContainer sx={{ maxHeight: 725 }}>
           <Table size="small" stickyHeader>
             <TableHead>
@@ -148,10 +127,7 @@ ParentTable.propTypes = {
   ).isRequired,
   editProps: PropTypes.shape({ buildWindow: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
   toolbarProps: PropTypes.shape({
-    // searchProps: PropTypes.exact({
-    //   handleSearch: PropTypes.func.isRequired,
-    //   placeholder: PropTypes.string.isRequired,
-    // }),
+    searchProps: PropTypes.shape({ handleSearch: PropTypes.func.isRequired, placeholder: PropTypes.string.isRequired }),
     title: PropTypes.string.isRequired,
   }),
   values: PropTypes.array.isRequired,
