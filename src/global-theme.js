@@ -10,8 +10,8 @@ const GlobalTheme = () =>
       action: { active: "#ffffff", disabled: "#4d4d4d", disabledBackground: "#1f1f1f", hover: "#141414", selected: "#292929" },
       background: { default: "#222222", paper: "#333333" },
       divider: "#444444",
-      primary: { main: "#2c387e", secondary: "#1c54b2" },
-      secondary: { main: "#c80000", secondary: "#b81c33" },
+      primary: { main: "#2c387e", secondary: "#4a5ed3" },
+      secondary: { main: "#7e2c38", secondary: "#d34a5e" },
       text: { disabled: "#808080", primary: "#ffffff", secondary: "#b3b3b3" },
     },
     shadows: [
