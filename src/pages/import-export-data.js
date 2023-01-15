@@ -17,6 +17,28 @@ const ImportExportData = () => {
   const [alertProps, setAlertProps] = React.useState({ message: "", severity: "info" });
   const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
+  const clearPlayersButton = (
+    <Button color="primary" onClick={() => setIsClearDialogOpen(true)} variant="contained">
+      Clear
+    </Button>
+  );
+  const exportPlayersButton = (
+    <Button color="primary" onClick={() => exportOnClick()} variant="contained">
+      Export
+    </Button>
+  );
+  const uploadBattersFileButton = (
+    <Button color="primary" component="label" variant="contained">
+      Upload
+      <input hidden onChange={onBatterFileChange} onClick={clearInputFile} type="file" />
+    </Button>
+  );
+  const uploadPitchersFileButton = (
+    <Button color="primary" component="label" variant="contained">
+      Upload
+      <input hidden onChange={onPitcherFileChange} onClick={clearInputFile} type="file" />
+    </Button>
+  );
 
   const clearInputFile = (event) => (event.target.value = null);
   const createNotification = (message, type) =>
@@ -58,29 +80,6 @@ const ImportExportData = () => {
     setAlertProps({ message: message, severity: severity });
     setIsSnackbarOpen(true);
   };
-
-  const clearPlayersButton = (
-    <Button color="primary" onClick={() => setIsClearDialogOpen(true)} variant="contained">
-      Clear
-    </Button>
-  );
-  const exportPlayersButton = (
-    <Button color="primary" onClick={() => exportOnClick()} variant="contained">
-      Export
-    </Button>
-  );
-  const uploadBattersFileButton = (
-    <Button color="primary" component="label" variant="contained">
-      Upload
-      <input hidden onChange={onBatterFileChange} onClick={clearInputFile} type="file" />
-    </Button>
-  );
-  const uploadPitchersFileButton = (
-    <Button color="primary" component="label" variant="contained">
-      Upload
-      <input hidden onChange={onPitcherFileChange} onClick={clearInputFile} type="file" />
-    </Button>
-  );
 
   return (
     <>

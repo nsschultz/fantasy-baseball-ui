@@ -15,10 +15,9 @@ const paperSx = { boxShadow: 24, maxWidth: 350, minWidth: 250, width: "100%" };
 const Notification = () => {
   const anchor = React.useRef(null);
   const [isOpen, setIsOpen] = React.useState(false);
-
-  const dispatch = useDispatch();
   const notifications = useSelector((state) => state.notification.value);
 
+  const dispatch = useDispatch();
   const handleClickAway = (event) => {
     if (anchor.current && anchor.current.contains(event.target)) return;
     setIsOpen(false);

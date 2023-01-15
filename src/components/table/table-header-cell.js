@@ -40,7 +40,7 @@ const TableHeaderCell = ({ column, handleSortRequest, order, orderBy }) => (
   </TableCell>
 );
 TableHeaderCell.propTypes = {
-  column: PropTypes.exact({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
+  column: PropTypes.shape({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
     .isRequired,
   handleSortRequest: PropTypes.func.isRequired,
   order: PropTypes.string,
