@@ -103,14 +103,14 @@ describe("ParentTable", () => {
   });
   describe("should handle editing", () => {
     test("and cancelling the changes", () => {
-      render(<TestWrapper editProps={{ buildWindow: buildEdit, handleClose: handleClose }} />);
+      render(<TestWrapper editProps={{ buildDialog: buildEdit, handleClose: handleClose }} />);
       fireEvent.click(screen.getByTestId("row-edit-10"));
       expect(saveCount).toEqual(0);
       expect(editCount).toEqual(1);
     });
     test("and saving the changes", () => {
       returnRow = true;
-      render(<TestWrapper editProps={{ buildWindow: buildEdit, handleClose: handleClose }} />);
+      render(<TestWrapper editProps={{ buildDialog: buildEdit, handleClose: handleClose }} />);
       fireEvent.click(screen.getByTestId("row-edit-10"));
       expect(saveCount).toEqual(1);
       expect(editCount).toEqual(1);

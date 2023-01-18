@@ -1,9 +1,12 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
 import GlobalTheme from "../global-theme";
 import Players from "./players";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material";
 import axios from "axios";
+import { modifyFilter } from "../state/slice/player-filter-slice";
+import store from "../state/store";
 
 class BattingStats {
   constructor(type) {
@@ -268,8 +271,6 @@ const players = [
         additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
       },
     ],
-    9,
-    0.11,
     2,
     0
   ),
@@ -497,8 +498,23 @@ const teams = [
   { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
 ];
 
+const mutateDropDown = (id, newValue) => {
+  const div = screen.getByTestId(id);
+  fireEvent.mouseDown(within(div).getByRole("button"));
+  fireEvent.click(screen.getByRole("option", { name: newValue }));
+  fireEvent.click(screen.getByText("Close", { hidden: true }));
+};
+
 jest.mock("axios");
 afterEach(() => jest.clearAllMocks());
+afterEach(() => {
+  store.dispatch(modifyFilter({ key: "l1statuses", value: [] }));
+  store.dispatch(modifyFilter({ key: "l2statuses", value: [] }));
+  store.dispatch(modifyFilter({ key: "positions", value: [] }));
+  store.dispatch(modifyFilter({ key: "statuses", value: [] }));
+  store.dispatch(modifyFilter({ key: "teams", value: [] }));
+  store.dispatch(modifyFilter({ key: "types", value: [] }));
+});
 beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
 beforeEach(() => {
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" } }));
@@ -511,9 +527,11 @@ beforeEach(() => {
 beforeEach(() => (putSpy = jest.spyOn(axios, "put")));
 
 const TestWrapper = () => (
-  <ThemeProvider theme={GlobalTheme()}>
-    <Players />
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={GlobalTheme()}>
+      <Players />
+    </ThemeProvider>
+  </Provider>
 );
 
 describe("Player", () => {
@@ -538,6 +556,17 @@ describe("Player", () => {
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       expect(screen.queryByText("Loading Players...")).toBeFalsy();
+    });
+    test("the filter screen only when clicked", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getByText("Players")).toBeVisible();
+      expect(screen.queryByText("Filter Players")).toBeFalsy();
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      expect(screen.getByText("Filter Players")).toBeVisible();
     });
   });
   describe("should handle a", () => {
@@ -580,38 +609,72 @@ describe("Player", () => {
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
     }, 30000);
   });
+  describe("should handle filtering by", () => {
+    test("player type", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("types", "Pitcher");
+      expect(screen.getAllByRole("row")).toHaveLength(2 * 2 + 1);
+    }, 30000);
+    test("positions", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("positions", "Infielder");
+      expect(screen.getAllByRole("row")).toHaveLength(4 * 2 + 1);
+    }, 30000);
+    test("team", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("teams", "Milwaukee Brewers");
+      expect(screen.getAllByRole("row")).toHaveLength(1 * 2 + 1);
+    }, 30000);
+    test("player status", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("statuses", "Disabled List");
+      expect(screen.getAllByRole("row")).toHaveLength(1 * 2 + 1);
+    }, 30000);
+    test("league 1 status", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("l1statuses", "Rostered");
+      expect(screen.getAllByRole("row")).toHaveLength(4 * 2 + 1);
+    }, 30000);
+    test("league 2 status", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("l2statuses", "Available");
+      expect(screen.getAllByRole("row")).toHaveLength(3 * 2 + 1);
+    }, 30000);
+  });
 });
-// test("should only display the filters on click", () => {
-//   render(<TestWrapper />);
-//   expect(screen.queryByRole("searchbox")).toBeFalsy();
-//   expect(screen.queryByRole("spinbutton:")).toBeFalsy();
-//   fireEvent.click(screen.getByTestId("table-show-filters"));
-//   expect(screen.getAllByRole("searchbox")).toHaveLength(1);
-//   expect(screen.getAllByRole("spinbutton")).toHaveLength(2);
-// });
-// describe("should handle filtering of", () => {
-//   test("text field", () => {
-//     render(<TestWrapper />);
-//     expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-//     fireEvent.click(screen.getByTestId("table-show-filters"));
-//     fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Samantha" } });
-//     expect(screen.getAllByRole("row")).toHaveLength(2);
-//   });
-//   test("numeric field", () => {
-//     render(<TestWrapper />);
-//     expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-//     fireEvent.click(screen.getByTestId("table-show-filters"));
-//     fireEvent.change(screen.getAllByRole("spinbutton")[0], { target: { value: "10" } });
-//     expect(screen.getAllByRole("row")).toHaveLength(2);
-//   });
-//   test("select field", () => {
-//     columns[3].filterValue = ["0"];
-//     render(<TestWrapper />);
-//     expect(screen.getAllByRole("row")).toHaveLength(3);
-//   });
-//   test("complex field", () => {
-//     columns[2].filterValue = ["MIL"];
-//     render(<TestWrapper />);
-//     expect(screen.getAllByRole("row")).toHaveLength(10);
-//   });
-// });

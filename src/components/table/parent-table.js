@@ -23,18 +23,22 @@ const stableSort = (array, comparator) => {
 
 /**
  * Wrapper around the Table objects that can also create filters, child tables, and editors for the table.
- * @param {func}   childProps.columnSelector The selector for building the columns of the child table.
- * @param {func}   childProps.rowKeyBuilder  The function used for building keys for rows.
- * @param {func}   childProps.rowSelector    The selector for building the rows of the child table.
- * @param {string} childProps.title          The title of the child table.
- * @param {string} columns[].align           The alignment of the column.
- * @param {string} columns[].field           The field within the data to display (also used as the key).
- * @param {func}   columns[].format          Func for formatting the given value.
- * @param {string} columns[].title           The title for the column header cell.
- * @param {func}   editProps.buildWindow     Function for building the edit window.
- * @param {func}   editProps.handleClose     Function for handling a close event for the edit window.
- * @param {string} toolbarProps.title        The title for the parent table.
- * @param {object} values                    The actual values that make up the row.
+ * @param {func}   childProps.columnSelector             The selector for building the columns of the child table.
+ * @param {func}   childProps.rowKeyBuilder              The function used for building keys for rows.
+ * @param {func}   childProps.rowSelector                The selector for building the rows of the child table.
+ * @param {string} childProps.title                      The title of the child table.
+ * @param {string} columns[].align                       The alignment of the column.
+ * @param {string} columns[].field                       The field within the data to display (also used as the key).
+ * @param {func}   columns[].format                      Func for formatting the given value.
+ * @param {string} columns[].title                       The title for the column header cell.
+ * @param {func}   editProps.buildWindow                 Function for building the edit window.
+ * @param {func}   editProps.handleClose                 Function for handling a close event for the edit window.
+ * @param {func}   toolbarProps.filterProps.buildWindow  Function for building the filter window.
+ * @param {func}   toolbarProps.filterProps.handleClose  Function for handling a close event for the filter window.
+ * @param {func}   toolbarProps.searchProps.handleSearch Function that is kicked off anytime the value of the searchbox is modified.
+ * @param {string} toolbarProps.searchProps.placeholder  The text that will show in the searchbox until a search string is entered.
+ * @param {string} toolbarProps.title                    The title for the parent table.
+ * @param {object} values                                The actual values that make up the row.
  * @returns A new instance of the ParentTable.
  */
 const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) => {
@@ -79,7 +83,7 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
   return (
     <>
       <Paper sx={{ overflow: "hidden", width: "100%" }}>
-        {toolbarProps ? <TableToolbar searchProps={toolbarProps.searchProps} title={toolbarProps.title} /> : null}
+        {toolbarProps ? <TableToolbar filterProps={toolbarProps.filterProps} searchProps={toolbarProps.searchProps} title={toolbarProps.title} /> : null}
         <TableContainer sx={{ maxHeight: 725 }}>
           <Table size="small" stickyHeader>
             <TableHead>
@@ -111,7 +115,7 @@ const ParentTable = ({ childProps, editProps, columns, toolbarProps, values }) =
           rowsPerPageOptions={[10, 25, 50, 100]}
         />
       </Paper>
-      {editProps && editRow ? editProps.buildWindow(handleEditClose, editOpen, editRow) : null}
+      {editProps && editRow ? editProps.buildDialog(handleEditClose, editOpen, editRow) : null}
     </>
   );
 };
@@ -125,8 +129,9 @@ ParentTable.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
   ).isRequired,
-  editProps: PropTypes.shape({ buildWindow: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
+  editProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
   toolbarProps: PropTypes.shape({
+    filterProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
     searchProps: PropTypes.shape({ handleSearch: PropTypes.func.isRequired, placeholder: PropTypes.string.isRequired }),
     title: PropTypes.string.isRequired,
   }),

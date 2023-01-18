@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../global-theme";
-import PlayerView from "./player-view";
+import PlayerEditor from "./player-editor";
 import { ThemeProvider } from "@mui/material";
 import { buildTeamDisplay } from "../funcs/team-helper";
 
@@ -279,11 +279,11 @@ beforeEach(() => (hasNew = true));
 
 const TestWrapper = ({ onClose }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <PlayerView lookups={lookups} player={hasExisting ? existingPlayer : undefined} open={true} onClose={onClose} />
+    <PlayerEditor lookups={lookups} player={hasExisting ? existingPlayer : undefined} open={true} onClose={onClose} />
   </ThemeProvider>
 );
 
-describe("PlayerView", () => {
+describe("PlayerEditor", () => {
   describe("should handle a", () => {
     test("cancel", () => {
       hasNew = false;

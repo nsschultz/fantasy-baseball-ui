@@ -1,4 +1,4 @@
-import { buildPositionDisplayMap, buildPositionList, buildPositionMap, isChildPosition, matchAnyPosition } from "./position-helper";
+import { buildPositionList, buildPositionMap, isChildPosition, matchAnyPosition } from "./position-helper";
 
 const positions = [
   {
@@ -291,29 +291,6 @@ const selectedPositions = [
   },
 ];
 
-describe("buildPositionDisplayMap", () => {
-  test("should build a position display map", () =>
-    expect(buildPositionDisplayMap(positions)).toEqual({
-      C: "Catcher",
-      "1B": "First Baseman",
-      "2B": "Second Baseman",
-      "3B": "Third Baseman",
-      SS: "Shortstop",
-      CIF: "Corner Infielder",
-      MIF: "Middle Infielder",
-      IF: "Infielder",
-      LF: "Left Fielder",
-      CF: "Center Feilder",
-      RF: "Right Fielder",
-      OF: "Outfielder",
-      DH: "Designated Hitter",
-      UTIL: "Utility",
-      SP: "Starting Pitcher",
-      RP: "Relief Pitcher",
-      P: "Pitcher",
-      "": "Unknown",
-    }));
-});
 describe("buildPositionList", () => {
   describe("should return an empty array if", () => {
     test("the codes aren't provided", () => expect(buildPositionList(null, positionMap)).toEqual([]));
@@ -325,7 +302,10 @@ describe("buildPositionList", () => {
   });
 });
 describe("buildPositionMap", () => {
-  test("should build a position map", () => expect(buildPositionMap(positions, 1)).toEqual(positionMap));
+  describe("should buy a position with", () => {
+    test("for all positions", () => expect(Object.values(buildPositionMap(positions))).toEqual(positions));
+    test("for a specific type", () => expect(buildPositionMap(positions, 1)).toEqual(positionMap));
+  });
 });
 describe("isChildPosition", () => {
   describe("returns false if", () => {

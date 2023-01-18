@@ -1,17 +1,18 @@
 import { Box, Container, Snackbar, Typography } from "@mui/material";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
+import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "@mui/material/Alert";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
-import PlayerView from "./player-view";
+import PlayerEditor from "../dialogs/player-editor";
+import PlayerFilter from "../dialogs/player-filter";
 import React from "react";
 import axios from "axios";
+import { matchAnyPosition } from "../funcs/position-helper";
+import { modifyFilter } from "../state/slice/player-filter-slice";
 
-//import { buildPositionDisplayMap } from "../funcs/position-helper";
-//import { buildTeamDisplayMap } from "../funcs/team-helper";
-//    pos = filterMatcher: (filterValue, field) => filterValue.some((v) => matchAnyPosition(field, v, true)),
-//   team = filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
+const convertToNumber = (val) => parseInt(val, 10);
 
 /**
  * The player window which is used for admin level function against players.
@@ -19,6 +20,7 @@ import axios from "axios";
  */
 const Players = () => {
   const isMountedRef = React.useRef(null);
+  const filters = useSelector((state) => state.playerFilter.value);
   const [filteredPlayers, setFilteredPlayers] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [leagusStatuses, setLeagueStatuses] = React.useState([]);
@@ -31,19 +33,6 @@ const Players = () => {
   const [statsType, setStatsType] = React.useState([]);
   const [severity, setSeverity] = React.useState("success");
   const [teams, setTeams] = React.useState([]);
-
-  React.useEffect(() => {
-    isMountedRef.current = true;
-    getLeagueStatusEnums((response) => setLeagueStatuses(response));
-    getPlayerStatusEnums((response) => setPlayerStatuses(response));
-    getPlayerTypeEnums((response) => setPlayerTypes(response));
-    getPositions((response) => setPositions(response));
-    getStatsTypeEnums((response) => setStatsType(response));
-    getTeams((response) => setTeams(response));
-    getPlayers();
-    return () => (isMountedRef.current = false);
-  }, []);
-
   const columns = [
     { align: "right", field: "bhqId", title: "BHQ ID" },
     { field: "name", title: "Name" },
@@ -105,18 +94,36 @@ const Players = () => {
     { align: "right", field: "groundBallToFlyBallRate", format: (value) => value.toFixed(2), title: "GB/FB" },
     { align: "right", field: "basePerformanceValue", format: (value) => value.toFixed(0), title: "BPV" },
   ];
-  const filterMap = {};
 
-  const buildEdit = (handleEditClose, editOpen, editRow) => {
-    const lookups = {
+  React.useEffect(() => {
+    isMountedRef.current = true;
+    getLeagueStatusEnums((response) => setLeagueStatuses(response));
+    getPlayerStatusEnums((response) => setPlayerStatuses(response));
+    getPlayerTypeEnums((response) => setPlayerTypes(response));
+    getPositions((response) => setPositions(response));
+    getStatsTypeEnums((response) => setStatsType(response));
+    getTeams((response) => setTeams(response));
+    getPlayers();
+    return () => (isMountedRef.current = false);
+  }, []);
+  React.useEffect(() => {
+    onHandleFilterChange();
+  }, [filters]);
+
+  const buildEdit = (handleEditClose, editOpen, editRow) => (
+    <PlayerEditor lookups={buildLookups()} onClose={handleEditClose} open={editOpen} player={editRow} />
+  );
+  const buildFilter = (handleFilterClose, filterOpen) => <PlayerFilter lookups={buildLookups()} onClose={handleFilterClose} open={filterOpen} />;
+  const buildLookups = () => {
+    return {
       leagusStatuses: leagusStatuses,
       playerStatuses: playerStatuses,
       playerTypes: playerTypes,
       positions: positions,
       teams: teams,
     };
-    return <PlayerView lookups={lookups} onClose={handleEditClose} open={editOpen} player={editRow} />;
   };
+  const dispatch = useDispatch();
   const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
   const getPlayers = () => {
     axios
@@ -137,8 +144,15 @@ const Players = () => {
       });
   };
   const onHandleFilterChange = () => {
-    const filters = Object.values(filterMap);
-    setFilteredPlayers(filters.length === 0 ? players : players.filter((player) => filters.length === filters.filter((filter) => filter(player)).length));
+    const actions = [];
+    if (filters.name) actions.push((player) => player.name.toLowerCase().includes(filters.name.toLowerCase()));
+    if (filters.positions.length > 0) actions.push((player) => filters.positions.map((p) => p.code).some((v) => matchAnyPosition(player.positions, v, true)));
+    if (filters.l1statuses.length > 0) actions.push((player) => filters.l1statuses.some((v) => convertToNumber(v) === player.league1));
+    if (filters.l2statuses.length > 0) actions.push((player) => filters.l2statuses.some((v) => convertToNumber(v) === player.league2));
+    if (filters.statuses.length > 0) actions.push((player) => filters.statuses.some((v) => convertToNumber(v) === player.status));
+    if (filters.teams.length > 0) actions.push((player) => filters.teams.some((v) => v.code === player.team.code));
+    if (filters.types.length > 0) actions.push((player) => filters.types.some((v) => convertToNumber(v) === player.type));
+    setFilteredPlayers(actions.length === 0 ? players : players.filter((player) => actions.length === actions.filter((filter) => filter(player)).length));
   };
   const onRowUpdate = (newData) => {
     if (!newData) return;
@@ -147,11 +161,7 @@ const Players = () => {
     setPlayers([...dataUpdate]);
     return dataUpdate;
   };
-  const searchbarChangeHandler = (event) => {
-    if (event.target.value) filterMap.name = (player) => player.name.toLowerCase().includes(event.target.value.toLowerCase());
-    else delete filterMap.player;
-    onHandleFilterChange();
-  };
+  const searchbarChangeHandler = (event) => dispatch(modifyFilter({ key: "name", value: event.target.value || "" }));
   const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
   const updatePlayer = (id, player) => {
     axios
@@ -183,8 +193,12 @@ const Players = () => {
             <ParentTable
               childProps={{ columnSelector: statsSelection, rowKeyBuilder: (row) => row.statsType, rowSelector: getChildRows, title: "Season Stats" }}
               columns={columns}
-              editProps={{ buildWindow: buildEdit, handleClose: onRowUpdate }}
-              toolbarProps={{ searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" }, title: "Players" }}
+              editProps={{ buildDialog: buildEdit, handleClose: onRowUpdate }}
+              toolbarProps={{
+                filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange },
+                searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" },
+                title: "Players",
+              }}
               values={filteredPlayers}
             />
           )}

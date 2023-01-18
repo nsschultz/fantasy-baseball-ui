@@ -85,10 +85,8 @@ const fixPlayer = (player) => {
  * @param {object} player                 The data for the player being edited (does not need to be provided for adds).
  * @returns A new instance of the PlayerView.
  */
-const PlayerView = ({ lookups, onClose, open, player }) => {
+const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
-  const teamMap = buildTeamMap(lookups.teams);
-
   const [age, setAge] = React.useState(newPlayer.age);
   const [draftedPercentage, setDraftedPercentage] = React.useState(newPlayer.draftedPercentage);
   const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
@@ -99,9 +97,9 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
   const [positions, setPositions] = React.useState(newPlayer.positions);
   const [status, setStatus] = React.useState(newPlayer.status);
   const [team, setTeam] = React.useState(newPlayer.team || lookups.teams[0]);
+  const teamMap = buildTeamMap(lookups.teams);
   const [type, setType] = React.useState(newPlayer.type);
   const [positionMap, setPositionMap] = React.useState(buildPositionMap(lookups.positions, type));
-
   const baseballInfoContent = (
     <>
       {buildDefaultSelectField(
@@ -183,7 +181,7 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
   return (
     <>
       <Helmet>
-        <title>Player View | Fantasy Baseball Analyzer</title>
+        <title>Player Editor | Fantasy Baseball Analyzer</title>
       </Helmet>
       <Dialog fullWidth={true} maxWidth="lg" open={open}>
         <DialogTitle>
@@ -192,7 +190,7 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
+          <Box sx={{ minHeight: "100%" }}>
             <Container maxWidth={false}>
               <Grid container spacing={3}>
                 {buildGrid("personInfo", "Person Info", personInfoContent)}
@@ -215,7 +213,7 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
     </>
   );
 };
-PlayerView.propTypes = {
+PlayerEditor.propTypes = {
   lookups: PropTypes.exact({
     leagusStatuses: PropTypes.object.isRequired,
     playerStatuses: PropTypes.object.isRequired,
@@ -227,4 +225,4 @@ PlayerView.propTypes = {
   open: PropTypes.bool.isRequired,
   player: PropTypes.object,
 };
-export default PlayerView;
+export default PlayerEditor;

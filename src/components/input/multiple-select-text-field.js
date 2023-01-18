@@ -18,6 +18,7 @@ import { StyledTextField } from "../styled/styled-text-field";
  */
 const MultipleSelectTextField = ({ displayProps, field, handleOnChange, menuItems, selectedValues }) => (
   <StyledTextField
+    data-testid={field}
     fullWidth
     id={field}
     label={displayProps.label}
