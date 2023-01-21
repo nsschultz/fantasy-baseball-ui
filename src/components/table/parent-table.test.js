@@ -1,3 +1,4 @@
+import { defaultObjectComparator, playerNameComparator } from "../../funcs/sort-comparators";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
@@ -10,17 +11,17 @@ const defaultRowDisplay = 10;
 const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
 let returnRow = false;
 const rows = [
-  { id: 10, name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
-  { id: 11, name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, draftedPercentage: 0.5 },
-  { id: 12, name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, draftedPercentage: 1 },
-  { id: 13, name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, draftedPercentage: 0.99 },
-  { id: 14, name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, draftedPercentage: 0.08 },
-  { id: 15, name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, draftedPercentage: 0.19 },
-  { id: 16, name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, draftedPercentage: 0.04 },
-  { id: 17, name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, draftedPercentage: 0.34 },
-  { id: 18, name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, draftedPercentage: 0.44 },
-  { id: 19, name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, draftedPercentage: 0.15 },
-  { id: 20, name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
+  { id: 10, firstName: "Nick", lastName: "Schultz", name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
+  { id: 11, firstName: "Annie", lastName: "Schultz", name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, draftedPercentage: 0 },
+  { id: 12, firstName: "James", lastName: "Schultz", name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, draftedPercentage: 1 },
+  { id: 13, firstName: "Samantha", lastName: "Schultz", name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, draftedPercentage: 0.99 },
+  { id: 14, firstName: "Ryan", lastName: "Braun", name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, draftedPercentage: 0.08 },
+  { id: 15, firstName: "Robin", lastName: "Yount", name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, draftedPercentage: 0.19 },
+  { id: 16, firstName: "Paul", lastName: "Molitor", name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, draftedPercentage: 0.04 },
+  { id: 17, firstName: "Rollie", lastName: "Fingers", name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, draftedPercentage: 0.34 },
+  { id: 18, firstName: "Hank", lastName: "Aaron", name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, draftedPercentage: 0.44 },
+  { id: 19, firstName: "Ben", lastName: "Sheets", name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, draftedPercentage: 0.15 },
+  { id: 20, firstName: "Bob", lastName: "Wickman", name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
 ];
 let saveCount = 0;
 const teams = { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" };
@@ -42,7 +43,7 @@ const handleClose = (editRow) => {
 beforeEach(
   () =>
     (columns = [
-      { field: "name", title: "Name" },
+      { field: "name", sortComparator: playerNameComparator, title: "Name" },
       { align: "right", field: "age", title: "Age" },
       { field: "team", format: (value) => teams[value], title: "Team" },
       { field: "type", format: (value) => playerTypes[value], title: "Type" },
@@ -55,7 +56,14 @@ beforeEach(() => (returnRow = false));
 
 const TestWrapper = ({ childProps, editProps, toolbarProps }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <ParentTable childProps={childProps} columns={columns} editProps={editProps} toolbarProps={toolbarProps} values={rows} />
+    <ParentTable
+      childProps={childProps}
+      columns={columns}
+      editProps={editProps}
+      sortComparator={(obj1, obj2) => defaultObjectComparator(obj1, obj2, "id")}
+      toolbarProps={toolbarProps}
+      values={rows}
+    />
   </ThemeProvider>
 );
 
@@ -99,6 +107,19 @@ describe("ParentTable", () => {
       fireEvent.click(screen.getByText("Name"));
       expect(screen.getAllByRole("row")[1]).toHaveTextContent("Yount, Robin");
       expect(screen.getAllByRole("row")[10]).toHaveTextContent("Braun, Ryan");
+    });
+    test("sort where there is a match", () => {
+      render(<TestWrapper />);
+      fireEvent.click(screen.getByText("Drafted %"));
+      expect(screen.getAllByRole("row")[1]).toHaveTextContent("Schultz, Nick");
+      expect(screen.getAllByRole("row")[10]).toHaveTextContent("Schultz, Samantha");
+    });
+    test("sort by default", () => {
+      render(<TestWrapper />);
+      fireEvent.click(screen.getByText("Action"));
+      fireEvent.click(screen.getByText("Action"));
+      expect(screen.getAllByRole("row")[1]).toHaveTextContent("Wickman, Bob");
+      expect(screen.getAllByRole("row")[10]).toHaveTextContent("Schultz, Annie");
     });
   });
   describe("should handle editing", () => {

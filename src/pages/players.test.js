@@ -546,7 +546,7 @@ describe("Player", () => {
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
       fireEvent.click(screen.getByTestId("row-expand-01"));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4);
-      fireEvent.click(screen.getByTestId("row-expand-06"));
+      fireEvent.click(screen.getByTestId("row-expand-07"));
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1 + 4 + 4);
     });
     test("when there is data error", async () => {

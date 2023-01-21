@@ -1,5 +1,6 @@
 import { Box, Container, Snackbar, Typography } from "@mui/material";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
+import { playerDefaultComparator, playerNameComparator, playerPositionsComparator, playerTeamComparator } from "../funcs/sort-comparators";
 import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "@mui/material/Alert";
@@ -35,11 +36,11 @@ const Players = () => {
   const [teams, setTeams] = React.useState([]);
   const columns = [
     { align: "right", field: "bhqId", title: "BHQ ID" },
-    { field: "name", title: "Name" },
+    { field: "name", sortComparator: playerNameComparator, title: "Name" },
     { align: "right", field: "age", title: "Age" },
     { field: "type", format: (value) => playerTypes[value], title: "Type" },
-    { field: "positions", format: (value) => value.map((p) => p.code).join(), title: "Position(s)" },
-    { field: "team", format: (value) => value.code, title: "Team" },
+    { field: "positions", format: (value) => value.map((p) => p.code).join(), sortComparator: playerPositionsComparator, title: "Position(s)" },
+    { field: "team", format: (value) => value.code, sortComparator: playerTeamComparator, title: "Team" },
     { field: "status", format: (value) => playerStatuses[value], title: "Status" },
     { field: "league1", format: (value) => leagusStatuses[value], title: "League #1 Status" },
     { field: "league2", format: (value) => leagusStatuses[value], title: "League #2 Status" },
@@ -194,6 +195,7 @@ const Players = () => {
               childProps={{ columnSelector: statsSelection, rowKeyBuilder: (row) => row.statsType, rowSelector: getChildRows, title: "Season Stats" }}
               columns={columns}
               editProps={{ buildDialog: buildEdit, handleClose: onRowUpdate }}
+              sortComparator={playerDefaultComparator}
               toolbarProps={{
                 filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange },
                 searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" },

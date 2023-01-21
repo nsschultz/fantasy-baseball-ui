@@ -148,7 +148,7 @@ const PlayerFilter = ({ lookups, onClose, open }) => {
   );
 };
 PlayerFilter.propTypes = {
-  lookups: PropTypes.exact({
+  lookups: PropTypes.shape({
     leagusStatuses: PropTypes.object.isRequired,
     playerStatuses: PropTypes.object.isRequired,
     playerTypes: PropTypes.object.isRequired,
