@@ -13,6 +13,7 @@ const buildChildProps = (childProps, row) =>
   childProps
     ? { columns: childProps.columnSelector(row), rowKeyBuilder: childProps.rowKeyBuilder, rows: childProps.rowSelector(row), title: childProps.title }
     : null;
+const getComparator = (column, defaultComparator) => (column ? (column.sortComparator ? column.sortComparator : defaultObjectComparator) : defaultComparator);
 const stableSort = (array, comparator, order, orderBy) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -52,23 +53,20 @@ const ParentTable = ({ childProps, editProps, columns, sortComparator, toolbarPr
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(null);
   const [page, setPage] = React.useState(0);
-  const [rowCount, setRowCount] = React.useState(0);
+  const rowCount = React.useMemo(() => values.length, [values]);
   const [rows, setRows] = React.useState([]);
+  const sortColumn = React.useMemo(() => columns.filter((c) => c.field === orderBy)[0], [columns, orderBy]);
+  const sortedValues = React.useMemo(() => stableSort(values, getComparator(sortColumn, sortComparator), order, orderBy), [order, orderBy, values]);
 
-  React.useEffect(() => {
-    setRows(buildRows(columns, values));
-  }, [columns, limit, order, orderBy, page, values]);
+  React.useEffect(() => setPage(0), [values]);
+  React.useEffect(() => setRows(buildRows(columns, sortedValues)), [columns, limit, page, sortedValues]);
 
-  const buildRows = (columns, rows) => {
-    setRowCount(rows.length);
-    const column = columns.filter((c) => c.field === orderBy)[0];
-    return stableSort(rows, getComparator(column), order, orderBy)
+  const buildRows = (columns, rows) =>
+    rows
       .slice(page * limit, (page + 1) * limit)
       .map((row) => (
         <CustomTableRow childProps={buildChildProps(childProps, row)} columns={columns} handleEditOpen={(r) => handleEditOpen(r)} key={row.id} values={row} />
       ));
-  };
-  const getComparator = (column) => (column ? (column.sortComparator ? column.sortComparator : defaultObjectComparator) : sortComparator);
   const handleEditClose = (editedObject) => {
     setEditRow(null);
     setEditOpen(false);
