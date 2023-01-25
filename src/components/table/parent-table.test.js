@@ -6,10 +6,10 @@ import ParentTable from "./parent-table";
 import { ThemeProvider } from "@mui/material";
 
 let columns;
+let deleteCount = 0;
 let editCount = 0;
 const defaultRowDisplay = 10;
 const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
-let returnRow = false;
 const rows = [
   { id: 10, firstName: "Nick", lastName: "Schultz", name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
   { id: 11, firstName: "Annie", lastName: "Schultz", name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, draftedPercentage: 0 },
@@ -23,22 +23,20 @@ const rows = [
   { id: 19, firstName: "Ben", lastName: "Sheets", name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, draftedPercentage: 0.15 },
   { id: 20, firstName: "Bob", lastName: "Wickman", name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
 ];
-let saveCount = 0;
 const teams = { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" };
 
+const buildDelete = (handleDeleteClose, deleteOpen, deleteRow) => {
+  deleteCount++;
+  expect(deleteOpen).toEqual(true);
+  handleDeleteClose(deleteRow);
+};
 const buildEdit = (handleEditClose, editOpen, editRow) => {
   editCount++;
   expect(editOpen).toEqual(true);
-  expect(editRow).toEqual(rows[0]);
-  handleEditClose(returnRow ? editRow : undefined);
+  handleEditClose(editRow);
 };
-const handleClose = (editRow) => {
-  if (editRow) {
-    expect(editRow).toEqual(rows[0]);
-    saveCount++;
-  }
-  return rows;
-};
+const handleDeleteClose = (editRow) => expect(editRow).toEqual(rows[1]);
+const handleEditClose = (editRow) => expect(editRow).toEqual(rows[0]);
 
 beforeEach(
   () =>
@@ -50,15 +48,16 @@ beforeEach(
       { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
     ])
 );
-beforeEach(() => (saveCount = 0));
+beforeEach(() => (deleteCount = 0));
 beforeEach(() => (editCount = 0));
-beforeEach(() => (returnRow = false));
 
-const TestWrapper = ({ childProps, editProps, toolbarProps }) => (
+const TestWrapper = ({ childProps, deleteProps, editProps, toolbarProps }) => (
   <ThemeProvider theme={GlobalTheme()}>
     <ParentTable
       childProps={childProps}
       columns={columns}
+      deleteProps={deleteProps}
+      description="MyDataDescription"
       editProps={editProps}
       sortComparator={(obj1, obj2) => defaultObjectComparator(obj1, obj2, "id")}
       toolbarProps={toolbarProps}
@@ -116,29 +115,36 @@ describe("ParentTable", () => {
     });
     test("sort by default", () => {
       render(<TestWrapper />);
-      fireEvent.click(screen.getByText("Action"));
-      fireEvent.click(screen.getByText("Action"));
+      fireEvent.click(screen.getByText("Actions"));
+      fireEvent.click(screen.getByText("Actions"));
       expect(screen.getAllByRole("row")[1]).toHaveTextContent("Wickman, Bob");
       expect(screen.getAllByRole("row")[10]).toHaveTextContent("Schultz, Annie");
     });
   });
-  describe("should handle editing", () => {
-    test("and cancelling the changes", () => {
-      render(<TestWrapper editProps={{ buildDialog: buildEdit, handleClose: handleClose }} />);
-      fireEvent.click(screen.getByTestId("row-edit-10"));
-      expect(saveCount).toEqual(0);
-      expect(editCount).toEqual(1);
-    });
-    test("and saving the changes", () => {
-      returnRow = true;
-      render(<TestWrapper editProps={{ buildDialog: buildEdit, handleClose: handleClose }} />);
-      fireEvent.click(screen.getByTestId("row-edit-10"));
-      expect(saveCount).toEqual(1);
-      expect(editCount).toEqual(1);
-    });
+  test("should handle deleting", () => {
+    render(<TestWrapper deleteProps={{ buildDialog: buildDelete, handleClose: handleDeleteClose }} />);
+    fireEvent.click(screen.getByTestId("row-delete-11"));
+    expect(deleteCount).toEqual(1);
+    expect(editCount).toEqual(0);
+  });
+  test("should handle editing", () => {
+    render(<TestWrapper editProps={{ buildDialog: buildEdit, handleClose: handleEditClose }} />);
+    fireEvent.click(screen.getByTestId("row-edit-10"));
+    expect(deleteCount).toEqual(0);
+    expect(editCount).toEqual(1);
   });
   test("should handle displaying a child table", () => {
-    render(<TestWrapper childProps={{ columnSelector: () => columns, rowKeyBuilder: (row) => row.id, rowSelector: () => rows, title: "Child Title" }} />);
+    render(
+      <TestWrapper
+        childProps={{
+          columnSelector: () => columns,
+          description: "MyDescription",
+          rowKeyBuilder: (row) => row.id,
+          rowSelector: () => rows,
+          title: "Child Title",
+        }}
+      />
+    );
     expect(screen.queryByText("Child Title")).toBeFalsy();
     fireEvent.click(screen.getByTestId("row-expand-10"));
     expect(screen.getByText("Child Title")).toBeVisible();

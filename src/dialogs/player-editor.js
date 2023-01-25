@@ -167,6 +167,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
     newPlayer.age = age;
     newPlayer.draftedPercentage = draftedPercentage;
     newPlayer.draftRank = draftRank;
+    newPlayer.name = `${firstName} ${lastName}`;
     newPlayer.firstName = firstName;
     newPlayer.lastName = lastName;
     newPlayer.league1 = league1;

@@ -7,11 +7,17 @@ import TableHeaderCell from "./table-header-cell";
 import TableToolbar from "./table-toolbar";
 import { defaultObjectComparator } from "../../funcs/sort-comparators";
 
-const actionColumn = { align: "left", field: "action", title: "Action" };
+const actionColumn = { align: "center", field: "actions", title: "Actions" };
 
 const buildChildProps = (childProps, row) =>
   childProps
-    ? { columns: childProps.columnSelector(row), rowKeyBuilder: childProps.rowKeyBuilder, rows: childProps.rowSelector(row), title: childProps.title }
+    ? {
+        columns: childProps.columnSelector(row),
+        description: childProps.description,
+        rowKeyBuilder: childProps.rowKeyBuilder,
+        rows: childProps.rowSelector(row),
+        title: childProps.title,
+      }
     : null;
 const getComparator = (column, defaultComparator) => (column ? (column.sortComparator ? column.sortComparator : defaultObjectComparator) : defaultComparator);
 const stableSort = (array, comparator, order, orderBy) => {
@@ -27,6 +33,7 @@ const stableSort = (array, comparator, order, orderBy) => {
 /**
  * Wrapper around the Table objects that can also create filters, child tables, and editors for the table.
  * @param {func}   childProps.columnSelector             The selector for building the columns of the child table.
+ * @param {string} childProps.description                Description used for the tooltip on the child table display button.
  * @param {func}   childProps.rowKeyBuilder              The function used for building keys for rows.
  * @param {func}   childProps.rowSelector                The selector for building the rows of the child table.
  * @param {string} childProps.title                      The title of the child table.
@@ -35,6 +42,7 @@ const stableSort = (array, comparator, order, orderBy) => {
  * @param {func}   columns[].format                      Func for formatting the given value.
  * @param {func}   columns[].sortComparator              Function for any special handling sorting logic.
  * @param {string} columns[].title                       The title for the column header cell.
+ * @param {string} description                           Description used on the delete and edit button's tooltip.
  * @param {func}   editProps.buildWindow                 Function for building the edit window.
  * @param {func}   editProps.handleClose                 Function for handling a close event for the edit window.
  * @param {func}   sortComparator                        Function for the default sorting of the table.
@@ -46,7 +54,9 @@ const stableSort = (array, comparator, order, orderBy) => {
  * @param {object} values                                The actual values that make up the row.
  * @returns A new instance of the ParentTable.
  */
-const ParentTable = ({ childProps, editProps, columns, sortComparator, toolbarProps, values }) => {
+const ParentTable = ({ childProps, deleteProps, description, editProps, columns, sortComparator, toolbarProps, values }) => {
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [deleteRow, setDeleteRow] = React.useState(null);
   const [editOpen, setEditOpen] = React.useState(false);
   const [editRow, setEditRow] = React.useState(null);
   const [limit, setLimit] = React.useState(10);
@@ -59,21 +69,35 @@ const ParentTable = ({ childProps, editProps, columns, sortComparator, toolbarPr
   const sortedValues = React.useMemo(() => stableSort(values, getComparator(sortColumn, sortComparator), order, orderBy), [order, orderBy, values]);
 
   React.useEffect(() => setPage(0), [values]);
-  React.useEffect(() => setRows(buildRows(columns, sortedValues)), [columns, limit, page, sortedValues]);
+  React.useEffect(() => setRows(buildRows(columns, sortedValues, description)), [columns, limit, page, sortedValues]);
 
-  const buildRows = (columns, rows) =>
+  const buildRows = (columns, rows, description) =>
     rows
       .slice(page * limit, (page + 1) * limit)
       .map((row) => (
-        <CustomTableRow childProps={buildChildProps(childProps, row)} columns={columns} handleEditOpen={(r) => handleEditOpen(r)} key={row.id} values={row} />
+        <CustomTableRow
+          childProps={buildChildProps(childProps, row)}
+          columns={columns}
+          description={description}
+          handleDeleteOpen={(r) => handleDeleteOpen(r)}
+          handleEditOpen={(r) => handleEditOpen(r)}
+          key={row.id}
+          values={row}
+        />
       ));
+  const handleDeleteClose = (deletedObject) => {
+    setDeleteRow(null);
+    setDeleteOpen(false);
+    deleteProps.handleClose(deletedObject);
+  };
+  const handleDeleteOpen = (row) => {
+    setDeleteRow(row);
+    setDeleteOpen(true);
+  };
   const handleEditClose = (editedObject) => {
     setEditRow(null);
     setEditOpen(false);
-    if (editProps && editedObject) {
-      const newValues = editProps.handleClose(editedObject);
-      setRows(buildRows(columns, newValues));
-    }
+    editProps.handleClose(editedObject);
   };
   const handleEditOpen = (row) => {
     setEditRow(row);
@@ -123,6 +147,7 @@ const ParentTable = ({ childProps, editProps, columns, sortComparator, toolbarPr
           rowsPerPageOptions={[10, 25, 50, 100]}
         />
       </Paper>
+      {deleteProps && deleteRow ? deleteProps.buildDialog(handleDeleteClose, deleteOpen, deleteRow) : null}
       {editProps && editRow ? editProps.buildDialog(handleEditClose, editOpen, editRow) : null}
     </>
   );
@@ -130,6 +155,7 @@ const ParentTable = ({ childProps, editProps, columns, sortComparator, toolbarPr
 ParentTable.propTypes = {
   childProps: PropTypes.shape({
     columnSelector: PropTypes.func.isRequired,
+    description: PropTypes.string.isRequired,
     rowKeyBuilder: PropTypes.func.isRequired,
     rowSelector: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
@@ -143,6 +169,8 @@ ParentTable.propTypes = {
       title: PropTypes.string.isRequired,
     })
   ).isRequired,
+  deleteProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
+  description: PropTypes.string.isRequired,
   editProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
   sortComparator: PropTypes.func.isRequired,
   toolbarProps: PropTypes.shape({

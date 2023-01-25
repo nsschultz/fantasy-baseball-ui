@@ -113,7 +113,7 @@ const ImportExportData = () => {
           </Grid>
         </Container>
       </Box>
-      <Dialog open={isClearDialogOpen} onClose={() => handleDialogClose(false)}>
+      <Dialog open={isClearDialogOpen}>
         <DialogContent>
           <DialogContentText>Are you sure you want to clear the players?</DialogContentText>
         </DialogContent>

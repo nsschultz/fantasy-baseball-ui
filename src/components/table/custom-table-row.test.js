@@ -10,11 +10,11 @@ const columns = [
 ];
 const values = { id: 10, name: "Schultz, Nick", age: 40, type: 1, draftedPercentage: 0 };
 
-const TestWrapper = ({ childProps, handleEditOpen }) => (
+const TestWrapper = ({ childProps, handleDeleteOpen, handleEditOpen }) => (
   <ThemeProvider theme={GlobalTheme()}>
     <table>
       <tbody>
-        <CustomTableRow childProps={childProps} columns={columns} handleEditOpen={handleEditOpen} values={values} />
+        <CustomTableRow childProps={childProps} columns={columns} handleDeleteOpen={handleDeleteOpen} handleEditOpen={handleEditOpen} values={values} />
       </tbody>
     </table>
   </ThemeProvider>
@@ -26,6 +26,14 @@ describe("CustomTableRow", () => {
       render(<TestWrapper />);
       expect(screen.getAllByRole("cell")).toHaveLength(columns.length);
     });
+    test("with delete button", () => {
+      let deleteData = {};
+      expect(deleteData).toEqual({});
+      render(<TestWrapper handleDeleteOpen={(v) => (deleteData = v)} />);
+      expect(screen.getAllByRole("cell")).toHaveLength(columns.length + 1);
+      fireEvent.click(screen.getByRole("button"));
+      expect(deleteData).toEqual(values);
+    });
     test("with edit button", () => {
       let editData = {};
       expect(editData).toEqual({});
@@ -35,7 +43,9 @@ describe("CustomTableRow", () => {
       expect(editData).toEqual(values);
     });
     test("with child table", () => {
-      render(<TestWrapper childProps={{ columns: columns, rowKeyBuilder: (row) => row.id, rows: [values], title: "Child Title" }} />);
+      render(
+        <TestWrapper childProps={{ columns: columns, description: "MyDescription", rowKeyBuilder: (row) => row.id, rows: [values], title: "Child Title" }} />
+      );
       expect(screen.queryByText("Child Title")).toBeFalsy();
       fireEvent.click(screen.getByRole("button"));
       expect(screen.getByText("Child Title")).toBeVisible();

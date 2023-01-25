@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
+import PlayerDeleter from "../dialogs/player-deleter";
 import PlayerEditor from "../dialogs/player-editor";
 import PlayerFilter from "../dialogs/player-filter";
 import React from "react";
@@ -109,8 +110,9 @@ const Players = () => {
   }, []);
   React.useEffect(() => {
     onHandleFilterChange();
-  }, [filters]);
+  }, [filters, players]);
 
+  const buildDelete = (handleDeleteClose, deleteOpen, deleteRow) => <PlayerDeleter onClose={handleDeleteClose} open={deleteOpen} player={deleteRow} />;
   const buildEdit = (handleEditClose, editOpen, editRow) => (
     <PlayerEditor lookups={buildLookups()} onClose={handleEditClose} open={editOpen} player={editRow} />
   );
@@ -123,6 +125,22 @@ const Players = () => {
       positions: positions,
       teams: teams,
     };
+  };
+  const deletePlayer = (player) => {
+    axios
+      .delete(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`)
+      .then(() => {
+        const dataUpdate = players.filter((p) => p.id !== player.id);
+        setPlayers([...dataUpdate]);
+        setSeverity("success");
+        setMessage(`Successfully deleted ${player.name}`);
+        setOpen(true);
+      })
+      .catch(() => {
+        setSeverity("error");
+        setMessage(`Unable to delete ${player.name}`);
+        setOpen(true);
+      });
   };
   const dispatch = useDispatch();
   const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
@@ -155,26 +173,27 @@ const Players = () => {
     if (filters.types.length > 0) actions.push((player) => filters.types.some((v) => convertToNumber(v) === player.type));
     setFilteredPlayers(actions.length === 0 ? players : players.filter((player) => actions.length === actions.filter((filter) => filter(player)).length));
   };
-  const onRowUpdate = (newData) => {
-    if (!newData) return;
-    updatePlayer(newData.id, newData);
-    const dataUpdate = players.map((p) => (p.id === newData.id ? newData : p));
-    setPlayers([...dataUpdate]);
-    return dataUpdate;
+  const onRowDelete = (player) => {
+    if (player) deletePlayer(player);
+  };
+  const onRowUpdate = (player) => {
+    if (player) updatePlayer(player);
   };
   const searchbarChangeHandler = (event) => dispatch(modifyFilter({ key: "name", value: event.target.value || "" }));
   const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
-  const updatePlayer = (id, player) => {
+  const updatePlayer = (player) => {
     axios
-      .put(`${window.env.PLAYER_API_URL}/api/v2/player/${id}`, player)
+      .put(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`, player)
       .then(() => {
+        const dataUpdate = players.map((p) => (p.id === player.id ? player : p));
+        setPlayers([...dataUpdate]);
         setSeverity("success");
-        setMessage("Successfully updated player");
+        setMessage(`Successfully updated ${player.name}`);
         setOpen(true);
       })
       .catch(() => {
         setSeverity("error");
-        setMessage("Unable to update player");
+        setMessage(`Unable to update ${player.name}`);
         setOpen(true);
       });
   };
@@ -192,8 +211,16 @@ const Players = () => {
             </Typography>
           ) : (
             <ParentTable
-              childProps={{ columnSelector: statsSelection, rowKeyBuilder: (row) => row.statsType, rowSelector: getChildRows, title: "Season Stats" }}
+              childProps={{
+                columnSelector: statsSelection,
+                description: "Player's Stats",
+                rowKeyBuilder: (row) => row.statsType,
+                rowSelector: getChildRows,
+                title: "Season Stats",
+              }}
               columns={columns}
+              deleteProps={{ buildDialog: buildDelete, handleClose: onRowDelete }}
+              description="Player"
               editProps={{ buildDialog: buildEdit, handleClose: onRowUpdate }}
               sortComparator={playerDefaultComparator}
               toolbarProps={{

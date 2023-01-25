@@ -82,7 +82,7 @@ class Player {
   }
 }
 
-let getSpy, putSpy;
+let deleteSpy, getSpy, putSpy;
 
 const defaultRowDisplay = 10;
 const players = [
@@ -515,6 +515,7 @@ afterEach(() => {
   store.dispatch(modifyFilter({ key: "teams", value: [] }));
   store.dispatch(modifyFilter({ key: "types", value: [] }));
 });
+beforeEach(() => (deleteSpy = jest.spyOn(axios, "delete")));
 beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
 beforeEach(() => {
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" } }));
@@ -570,6 +571,44 @@ describe("Player", () => {
     });
   });
   describe("should handle a", () => {
+    test("successful delete", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      axios.delete.mockImplementationOnce(() => Promise.resolve({}));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
+      fireEvent.click(screen.getByTestId("row-delete-01"));
+      fireEvent.click(screen.getByRole("button", { name: "Yes" }));
+      await waitFor(() => expect(deleteSpy).toBeCalled());
+      expect(screen.queryByText("Fernando Tatis Jr.")).toBeFalsy();
+    }, 30000);
+    test("cancelled delete", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
+      fireEvent.click(screen.getByTestId("row-delete-01"));
+      fireEvent.click(screen.getByRole("button", { name: "No" }));
+      await waitFor(() => expect(deleteSpy).not.toBeCalled());
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
+    }, 30000);
+    test("failed delete", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      axios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
+      fireEvent.click(screen.getByTestId("row-delete-01"));
+      fireEvent.click(screen.getByRole("button", { name: "Yes" }));
+      await waitFor(() => expect(deleteSpy).toBeCalled());
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
+    }, 30000);
     test("successful update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
       axios.put.mockImplementationOnce(() => Promise.resolve({}));
@@ -577,11 +616,25 @@ describe("Player", () => {
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
-      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
       fireEvent.click(screen.getByTestId("row-edit-01"));
+      fireEvent.change(screen.getByLabelText("First Name"), { target: { value: "James" } });
       fireEvent.click(screen.getByRole("button", { name: "Save" }));
       await waitFor(() => expect(putSpy).toBeCalled());
-      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      expect(screen.getByText("James Tatis Jr.")).toBeVisible();
+    }, 30000);
+    test("cancelled update", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
+      fireEvent.click(screen.getByTestId("row-edit-01"));
+      fireEvent.change(screen.getByLabelText("First Name"), { target: { value: "James" } });
+      fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+      await waitFor(() => expect(putSpy).not.toBeCalled());
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
     }, 30000);
     test("failed update", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
@@ -590,11 +643,12 @@ describe("Player", () => {
       expect(getSpy).toHaveBeenCalledTimes(7);
       expect(screen.getByText("Loading Players...")).toBeVisible();
       await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
-      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
       fireEvent.click(screen.getByTestId("row-edit-01"));
+      fireEvent.change(screen.getByLabelText("First Name"), { target: { value: "James" } });
       fireEvent.click(screen.getByRole("button", { name: "Save" }));
       await waitFor(() => expect(putSpy).toBeCalled());
-      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      expect(screen.getByText("Fernando Tatis Jr.")).toBeVisible();
     }, 30000);
     test("seaching by player name", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));

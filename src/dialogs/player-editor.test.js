@@ -37,6 +37,7 @@ const existingPlayer = {
   draftRank: 10,
   firstName: "Nick",
   lastName: "Schultz",
+  name: "Nick Schultz",
   league1: 2,
   league2: 3,
   positions: existingPositions,
@@ -264,6 +265,7 @@ const verifyPlayer = (player, age, draftedPercentage, draftRank, firstName, last
   expect(player.draftRank).toEqual(draftRank);
   expect(player.firstName).toEqual(firstName);
   expect(player.lastName).toEqual(lastName);
+  expect(player.name).toEqual(`${firstName} ${lastName}`);
   expect(player.league1).toEqual(league1);
   expect(player.league2).toEqual(league2);
   expect(player.positions).toEqual(positions);
