@@ -1,4 +1,4 @@
-import { FilterList, Search } from "@mui/icons-material";
+import { AddCircleOutline, FilterList, Search } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField, Toolbar, Tooltip, Typography } from "@mui/material";
 
 import PropTypes from "prop-types";
@@ -21,11 +21,13 @@ const searchbarInputProps = {
  * @param {string} title                    The title for the parent table.
  * @returns A new instance of the TableToolbar.
  */
-const TableToolbar = ({ filterProps, searchProps, title }) => {
-  const [filterOpen, setFilterOpen] = React.useState(false);
+const TableToolbar = ({ addProps, description, filterProps, searchProps, title }) => {
+  const [isAddOpen, setIsAddOpen] = React.useState(false);
+  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 
+  const handleAddClose = (newObject) => addProps.handleClose(newObject, () => setIsAddOpen(false));
   const handleFilterClose = () => {
-    setFilterOpen(false);
+    setIsFilterOpen(false);
     filterProps.handleClose();
   };
 
@@ -38,24 +40,29 @@ const TableToolbar = ({ filterProps, searchProps, title }) => {
         {searchProps ? (
           <TextField fullWidth InputProps={searchbarInputProps} onChange={searchProps.handleSearch} placeholder={searchProps.placeholder} variant="standard" />
         ) : null}
-        {/*<Tooltip title="Add New Player">
-        <IconButton>
-          <AddCircleOutline />
-        </IconButton>
-      </Tooltip>*/}
         {filterProps ? (
           <Tooltip title="Show Advanced Filters">
-            <IconButton data-testid="titlebar-filter" onClick={() => setFilterOpen(true)}>
+            <IconButton data-testid="titlebar-filter" onClick={() => setIsFilterOpen(true)}>
               <FilterList />
+            </IconButton>
+          </Tooltip>
+        ) : null}{" "}
+        {addProps ? (
+          <Tooltip title={`Add New ${description}`}>
+            <IconButton data-testid="titlebar-add" onClick={() => setIsAddOpen(true)}>
+              <AddCircleOutline />
             </IconButton>
           </Tooltip>
         ) : null}
       </Toolbar>
-      {filterProps && filterOpen ? filterProps.buildDialog(handleFilterClose, filterOpen) : null}
+      {addProps && isAddOpen ? addProps.buildDialog(handleAddClose, isAddOpen) : null}
+      {filterProps && isFilterOpen ? filterProps.buildDialog(handleFilterClose, isFilterOpen) : null}
     </>
   );
 };
 TableToolbar.propTypes = {
+  addProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
+  description: PropTypes.string.isRequired,
   filterProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
   searchProps: PropTypes.shape({ handleSearch: PropTypes.func.isRequired, placeholder: PropTypes.string.isRequired }),
   title: PropTypes.string.isRequired,

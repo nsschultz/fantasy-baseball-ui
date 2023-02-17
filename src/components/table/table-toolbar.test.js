@@ -2,17 +2,20 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import TableToolbar from "./table-toolbar";
 
-const TestWrapper = ({ filterProps, searchProps, title }) => <TableToolbar filterProps={filterProps} searchProps={searchProps} title={title} />;
+const TestWrapper = ({ addProps, filterProps, searchProps, title }) => (
+  <TableToolbar addProps={addProps} description="MyDescription" filterProps={filterProps} searchProps={searchProps} title={title} />
+);
 
 describe("TableToolbar", () => {
   describe("should render", () => {
     test("with all extras", () => {
+      const addProps = { buildDialog: (e) => e, handleClose: () => {} };
       const filterProps = { buildDialog: (e) => e, handleClose: () => {} };
       const searchProps = { handleSearch: (e) => e, placeholder: "MyPlaceHolder" };
-      render(<TestWrapper filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
+      render(<TestWrapper addProps={addProps} filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
       expect(screen.getByText("MyTitle")).toBeVisible();
       expect(screen.getByRole("textbox")).toBeVisible();
-      expect(screen.getByRole("button")).toBeVisible();
+      expect(screen.getAllByRole("button").length).toEqual(2);
     });
     test("without any extras", () => {
       render(<TestWrapper title="MyTitle" />);
@@ -20,6 +23,18 @@ describe("TableToolbar", () => {
       expect(screen.queryByRole("textbox")).toBeFalsy();
       expect(screen.queryByRole("button")).toBeFalsy();
     });
+  });
+  test("should handle adding", () => {
+    let value = "";
+    const addProps = {
+      buildDialog: (handleAddClose, addOpen) => {
+        if (addOpen) handleAddClose();
+      },
+      handleClose: () => (value = "add closed"),
+    };
+    render(<TestWrapper addProps={addProps} title="MyTitle" />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(value).toEqual("add closed");
   });
   test("should handle filtering", () => {
     let value = "";

@@ -112,6 +112,34 @@ const Players = () => {
     onHandleFilterChange();
   }, [filters, players]);
 
+  const addPlayer = (player, onClose) => {
+    axios
+      .post(`${window.env.PLAYER_API_URL}/api/v2/player`, player)
+      .then((response) => {
+        onClose();
+        axios
+          .get(`${window.env.PLAYER_API_URL}/api/v2/player/${response.data}`)
+          .then((response) => {
+            response.data.name = `${response.data.firstName} ${response.data.lastName}`;
+            players.push(response.data);
+            setPlayers([...players]);
+            setSeverity("success");
+            setMessage(`Successfully added ${player.name}`);
+            setOpen(true);
+          })
+          .catch(() => {
+            setSeverity("error");
+            setMessage(`Successfully added but unable to retrieve ${player.name}`);
+            setOpen(true);
+            setIsLoading(false);
+          });
+      })
+      .catch(() => {
+        setSeverity("error");
+        setMessage(`Unable to add ${player.name}`);
+        setOpen(true);
+      });
+  };
   const buildDelete = (handleDeleteClose, deleteOpen, deleteRow) => <PlayerDeleter onClose={handleDeleteClose} open={deleteOpen} player={deleteRow} />;
   const buildEdit = (handleEditClose, editOpen, editRow) => (
     <PlayerEditor lookups={buildLookups()} onClose={handleEditClose} open={editOpen} player={editRow} />
@@ -173,15 +201,20 @@ const Players = () => {
     if (filters.types.length > 0) actions.push((player) => filters.types.some((v) => convertToNumber(v) === player.type));
     setFilteredPlayers(actions.length === 0 ? players : players.filter((player) => actions.length === actions.filter((filter) => filter(player)).length));
   };
+  const onRowAdd = (player, onClose) => {
+    if (player) addPlayer(player, onClose);
+    else onClose();
+  };
   const onRowDelete = (player) => {
     if (player) deletePlayer(player);
   };
-  const onRowUpdate = (player) => {
-    if (player) updatePlayer(player);
+  const onRowUpdate = (player, onClose) => {
+    if (player) updatePlayer(player, onClose);
+    else onClose();
   };
   const searchbarChangeHandler = (event) => dispatch(modifyFilter({ key: "name", value: event.target.value || "" }));
   const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
-  const updatePlayer = (player) => {
+  const updatePlayer = (player, onClose) => {
     axios
       .put(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`, player)
       .then(() => {
@@ -190,6 +223,7 @@ const Players = () => {
         setSeverity("success");
         setMessage(`Successfully updated ${player.name}`);
         setOpen(true);
+        onClose();
       })
       .catch(() => {
         setSeverity("error");
@@ -224,6 +258,7 @@ const Players = () => {
               editProps={{ buildDialog: buildEdit, handleClose: onRowUpdate }}
               sortComparator={playerDefaultComparator}
               toolbarProps={{
+                addProps: { buildDialog: buildEdit, handleClose: onRowAdd },
                 filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange },
                 searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" },
                 title: "Players",

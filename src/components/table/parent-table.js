@@ -85,6 +85,10 @@ const ParentTable = ({ childProps, deleteProps, description, editProps, columns,
           values={row}
         />
       ));
+  const closeEdit = () => {
+    setEditRow(null);
+    setEditOpen(false);
+  };
   const handleDeleteClose = (deletedObject) => {
     setDeleteRow(null);
     setDeleteOpen(false);
@@ -94,11 +98,7 @@ const ParentTable = ({ childProps, deleteProps, description, editProps, columns,
     setDeleteRow(row);
     setDeleteOpen(true);
   };
-  const handleEditClose = (editedObject) => {
-    setEditRow(null);
-    setEditOpen(false);
-    editProps.handleClose(editedObject);
-  };
+  const handleEditClose = (editedObject) => editProps.handleClose(editedObject, () => closeEdit());
   const handleEditOpen = (row) => {
     setEditRow(row);
     setEditOpen(true);
@@ -111,7 +111,15 @@ const ParentTable = ({ childProps, deleteProps, description, editProps, columns,
   return (
     <>
       <Paper sx={{ overflow: "hidden", width: "100%" }}>
-        {toolbarProps ? <TableToolbar filterProps={toolbarProps.filterProps} searchProps={toolbarProps.searchProps} title={toolbarProps.title} /> : null}
+        {toolbarProps ? (
+          <TableToolbar
+            addProps={toolbarProps.addProps}
+            description={description}
+            filterProps={toolbarProps.filterProps}
+            searchProps={toolbarProps.searchProps}
+            title={toolbarProps.title}
+          />
+        ) : null}
         <TableContainer sx={{ maxHeight: 725 }}>
           <Table size="small" stickyHeader>
             <TableHead>
@@ -174,6 +182,7 @@ ParentTable.propTypes = {
   editProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
   sortComparator: PropTypes.func.isRequired,
   toolbarProps: PropTypes.shape({
+    addProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
     filterProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
     searchProps: PropTypes.shape({ handleSearch: PropTypes.func.isRequired, placeholder: PropTypes.string.isRequired }),
     title: PropTypes.string.isRequired,
