@@ -11,6 +11,7 @@ import { StyledTextField } from "../components/styled/styled-text-field";
 
 const samplePlayer = {
   age: 0,
+  bhqId: 0,
   draftedPercentage: 0,
   draftRank: 9999,
   firstName: "",
@@ -23,15 +24,16 @@ const samplePlayer = {
   type: 0,
 };
 
-const buildDefaultSelectField = (field, label, handleOnChange, defaultValue, lookup) =>
-  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (lookup, key) => lookup[key]);
+const buildDefaultSelectField = (field, label, handleOnChange, defaultValue, lookup, disabled) =>
+  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (lookup, key) => lookup[key], disabled);
 const buildGrid = (key, title, content) => (
   <Grid item key={key} lg={3} md={6} xs={12}>
     <CustomCard title={title} content={content} />
   </Grid>
 );
-const buildInputField = (field, label, handleOnChange, defaultValue, type, inputProps) => (
+const buildInputField = (field, label, handleOnChange, defaultValue, type, inputProps, disabled) => (
   <StyledTextField
+    disabled={disabled}
     fullWidth
     id={field}
     inputProps={inputProps}
@@ -43,10 +45,11 @@ const buildInputField = (field, label, handleOnChange, defaultValue, type, input
     variant="filled"
   />
 );
-const buildNumberField = (field, label, handleOnChange, defaultValue, inputProps) =>
-  buildInputField(field, label, handleOnChange, defaultValue, "number", inputProps);
-const buildSingleSelectField = (field, label, handleOnChange, defaultValue, lookup, display) => (
+const buildNumberField = (field, label, handleOnChange, defaultValue, inputProps, disabled) =>
+  buildInputField(field, label, handleOnChange, defaultValue, "number", inputProps, disabled);
+const buildSingleSelectField = (field, label, handleOnChange, defaultValue, lookup, display, disabled) => (
   <StyledTextField
+    disabled={disabled}
     fullWidth
     id={field}
     label={label}
@@ -66,6 +69,7 @@ const buildSingleSelectField = (field, label, handleOnChange, defaultValue, look
 const buildTextField = (field, label, handleOnChange, defaultValue) => buildInputField(field, label, handleOnChange, defaultValue, "text");
 const convertToNumber = (val) => parseInt(val, 10);
 const fixPlayer = (player) => {
+  player.bhqId = convertToNumber(player.bhqId);
   player.type = convertToNumber(player.type);
   player.status = convertToNumber(player.status);
   player.league1 = convertToNumber(player.league1);
@@ -75,34 +79,33 @@ const fixPlayer = (player) => {
 
 /**
  * A view used for setting player values on either an existing player or on a new player object.
- * @param {object} lookups                (Required) Object that contains all of the various lookups.
- * @param {object} lookups.leagusStatuses (Required) Object that maps the league status to it's code value.
- * @param {object} lookups.playerStatuses (Required) Object that maps the player status to it's code value.
- * @param {object} lookups.playerTypes    (Required) Object that maps the player type to it's code value.
- * @param {array}  lookups.positions      (Required) Array of position objects.
- * @param {array}  lookups.team           (Required) Array of team objects.
- * @param {func}   onClose                (Required) The action to call when the view is closed.
- * @param {bool}   open                   (Required) Bool indicating if the window is currently visible.
- * @param {object} player                 (Optional) The data for the player being edited (does not need to be provided for adds).
+ * @param {object} lookups.leagusStatuses Object that maps the league status to it's code value.
+ * @param {object} lookups.playerStatuses Object that maps the player status to it's code value.
+ * @param {object} lookups.playerTypes    Object that maps the player type to it's code value.
+ * @param {array}  lookups.positions      Array of position objects.
+ * @param {array}  lookups.team           Array of team objects.
+ * @param {func}   onClose                The action to call when the view is closed.
+ * @param {bool}   open                   Bool indicating if the window is currently visible.
+ * @param {object} player                 The data for the player being edited (does not need to be provided for adds).
  * @returns A new instance of the PlayerView.
  */
-const PlayerView = ({ lookups, onClose, open, player }) => {
+const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
-  const teamMap = buildTeamMap(lookups.teams);
-
   const [age, setAge] = React.useState(newPlayer.age);
+  const [bhqId, setBhqId] = React.useState(newPlayer.bhqId);
   const [draftedPercentage, setDraftedPercentage] = React.useState(newPlayer.draftedPercentage);
   const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
+  const isEdit = newPlayer.id !== undefined;
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
   const [league1, setLeague1] = React.useState(newPlayer.league1);
   const [league2, setLeague2] = React.useState(newPlayer.league2);
   const [positions, setPositions] = React.useState(newPlayer.positions);
   const [status, setStatus] = React.useState(newPlayer.status);
   const [team, setTeam] = React.useState(newPlayer.team || lookups.teams[0]);
+  const teamMap = buildTeamMap(lookups.teams);
   const [type, setType] = React.useState(newPlayer.type);
   const [positionMap, setPositionMap] = React.useState(buildPositionMap(lookups.positions, type));
-
   const baseballInfoContent = (
     <>
       {buildDefaultSelectField(
@@ -114,7 +117,8 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
           setPositionMap(buildPositionMap(lookups.positions, value));
         },
         type,
-        lookups.playerTypes
+        lookups.playerTypes,
+        isEdit
       )}
       {
         <MultipleSelectTextField
@@ -151,8 +155,9 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
       })}
     </>
   );
-  const leagueInfoContent = (
+  const fantasyInfoContent = (
     <>
+      {buildNumberField("bhqId", "BHQ ID", (value) => setBhqId(value < 0 ? 0 : value), bhqId, { min: 0 }, isEdit)}
       {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(value), league1, lookups.leagusStatuses)}
       {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(value), league2, lookups.leagusStatuses)}
     </>
@@ -168,8 +173,10 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
   const handleCancel = () => onClose();
   const handleSave = () => {
     newPlayer.age = age;
+    newPlayer.bhqId = bhqId;
     newPlayer.draftedPercentage = draftedPercentage;
     newPlayer.draftRank = draftRank;
+    newPlayer.name = `${firstName} ${lastName}`;
     newPlayer.firstName = firstName;
     newPlayer.lastName = lastName;
     newPlayer.league1 = league1;
@@ -184,21 +191,21 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
   return (
     <>
       <Helmet>
-        <title>Player View | Fantasy Baseball Analyzer</title>
+        <title>Player Editor | Fantasy Baseball Analyzer</title>
       </Helmet>
       <Dialog fullWidth={true} maxWidth="lg" open={open}>
         <DialogTitle>
           <Typography color="textPrimary" component="span" variant="h4">
-            Edit Player
+            {`${isEdit ? "Edit" : "Add"} Player`}
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
+          <Box sx={{ minHeight: "100%" }}>
             <Container maxWidth={false}>
               <Grid container spacing={3}>
                 {buildGrid("personInfo", "Person Info", personInfoContent)}
                 {buildGrid("baseballInfo", "Baseball Info", baseballInfoContent)}
-                {buildGrid("leagueInfo", "League Info", leagueInfoContent)}
+                {buildGrid("fantasyInfo", "Fantasy Info", fantasyInfoContent)}
                 {buildGrid("draftInfo", "Draft Info", draftInfoContent)}
               </Grid>
             </Container>
@@ -216,8 +223,8 @@ const PlayerView = ({ lookups, onClose, open, player }) => {
     </>
   );
 };
-PlayerView.propTypes = {
-  lookups: PropTypes.exact({
+PlayerEditor.propTypes = {
+  lookups: PropTypes.shape({
     leagusStatuses: PropTypes.object.isRequired,
     playerStatuses: PropTypes.object.isRequired,
     playerTypes: PropTypes.object.isRequired,
@@ -228,4 +235,4 @@ PlayerView.propTypes = {
   open: PropTypes.bool.isRequired,
   player: PropTypes.object,
 };
-export default PlayerView;
+export default PlayerEditor;

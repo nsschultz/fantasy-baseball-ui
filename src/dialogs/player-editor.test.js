@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../global-theme";
-import PlayerView from "./player-view";
+import PlayerEditor from "./player-editor";
 import { ThemeProvider } from "@mui/material";
 import { buildTeamDisplay } from "../funcs/team-helper";
 
@@ -32,11 +32,14 @@ const existingPositions = [
 ];
 const existingTeam = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
 const existingPlayer = {
+  bhqId: 9999,
+  id: 1,
   age: 40,
   draftedPercentage: 0.36,
   draftRank: 10,
   firstName: "Nick",
   lastName: "Schultz",
+  name: "Nick Schultz",
   league1: 2,
   league2: 3,
   positions: existingPositions,
@@ -223,13 +226,44 @@ const lookups = {
     { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
   ],
 };
-const newPosition = [
+const newPositionAdd = [
   {
     code: "SP",
     fullName: "Starting Pitcher",
     playerType: 2,
     sortOrder: 100,
     additionalPositions: [{ code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] }],
+  },
+];
+const newPositionEdit = [
+  {
+    code: "2B",
+    fullName: "Second Baseman",
+    playerType: 1,
+    sortOrder: 2,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "SS",
+    fullName: "Shortstop",
+    playerType: 1,
+    sortOrder: 4,
+    additionalPositions: [
+      { code: "IF", fullName: "Infielder", playerType: 1, sortOrder: 7, additionalPositions: [] },
+      { code: "MIF", fullName: "Middle Infielder", playerType: 1, sortOrder: 6, additionalPositions: [] },
+      { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
+    ],
+  },
+  {
+    code: "OF",
+    fullName: "Outfielder",
+    playerType: 1,
+    sortOrder: 11,
+    additionalPositions: [{ code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] }],
   },
 ];
 const newTeam = { code: "SF", alternativeCode: null, leagueId: "NL", city: "San Francisco", nickname: "Giants" };
@@ -242,28 +276,39 @@ const mutatePlayer = (player) => {
   fireEvent.change(screen.getByLabelText("First Name"), { target: { value: "Annie" } });
   fireEvent.change(screen.getByLabelText("Last Name"), { target: { value: "Oppman" } });
   fireEvent.change(screen.getByLabelText("Age"), { target: { value: 35 } });
-  mutatePlayerStatus("Type", player.type, "Pitcher", lookups.playerTypes);
   mutateDropDown("Team", buildTeamDisplay(player.team) || "​", "San Francisco Giants");
   mutatePlayerStatus("Status", player.status, "Disabled List", lookups.playerStatuses);
   mutatePlayerStatus("League #1 Status", player.league1, "Rostered", lookups.leagusStatuses);
   mutatePlayerStatus("League #2 Status", player.league2, "Unavailable", lookups.leagusStatuses);
   fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 20 } });
   fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 0.07 } });
-  mutateDropDown("Position(s)", "​", "Starting Pitcher");
+  if (player.id) {
+    expect(screen.getByLabelText("Type")).toHaveAttribute("aria-disabled");
+    expect(screen.getByLabelText("BHQ ID")).toBeDisabled();
+    mutateDropDown("Position(s)", "2B,SS", "Outfielder");
+  } else {
+    mutatePlayerStatus("Type", player.type, "Pitcher", lookups.playerTypes);
+    fireEvent.change(screen.getByLabelText("BHQ ID"), { target: { value: 1234 } });
+    mutateDropDown("Position(s)", "​", "Starting Pitcher");
+  }
 };
 const mutatePlayerStatus = (label, currentValue, newValue, enums) => mutateDropDown(label, enums[currentValue ?? 0], newValue);
 const onCloseDefault = (newPlayer) => {
   count++;
-  if (hasExisting) verifyPlayer(existingPlayer, 40, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
-  if (hasNew) verifyPlayer(newPlayer, "35", "0.07", "20", "Annie", "Oppman", 1, 2, newPosition, 1, newTeam, 2);
+  if (hasExisting) verifyPlayer(existingPlayer, 40, 9999, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
+  if (hasNew)
+    if (hasExisting) verifyPlayer(newPlayer, "35", 9999, "0.07", "20", "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
+    else verifyPlayer(newPlayer, "35", 1234, "0.07", "20", "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
   else expect(newPlayer).toEqual(undefined);
 };
-const verifyPlayer = (player, age, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
+const verifyPlayer = (player, age, bhqId, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
   expect(player.age).toEqual(age);
+  expect(player.bhqId).toEqual(bhqId);
   expect(player.draftedPercentage).toEqual(draftedPercentage);
   expect(player.draftRank).toEqual(draftRank);
   expect(player.firstName).toEqual(firstName);
   expect(player.lastName).toEqual(lastName);
+  expect(player.name).toEqual(`${firstName} ${lastName}`);
   expect(player.league1).toEqual(league1);
   expect(player.league2).toEqual(league2);
   expect(player.positions).toEqual(positions);
@@ -279,11 +324,11 @@ beforeEach(() => (hasNew = true));
 
 const TestWrapper = ({ onClose }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <PlayerView lookups={lookups} player={hasExisting ? existingPlayer : undefined} open={true} onClose={onClose} />
+    <PlayerEditor lookups={lookups} player={hasExisting ? existingPlayer : undefined} open={true} onClose={onClose} />
   </ThemeProvider>
 );
 
-describe("PlayerView", () => {
+describe("PlayerEditor", () => {
   describe("should handle a", () => {
     test("cancel", () => {
       hasNew = false;
@@ -311,11 +356,13 @@ describe("PlayerView", () => {
       const onClose = (newPlayer) => {
         count++;
         expect(newPlayer.age).toEqual(0);
+        expect(newPlayer.bhqId).toEqual(0);
         expect(newPlayer.draftedPercentage).toEqual(0);
         expect(newPlayer.draftRank).toEqual(1);
       };
       render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Age"), { target: { value: -35 } });
+      fireEvent.change(screen.getByLabelText("BHQ ID"), { target: { value: -1234 } });
       fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: -20 } });
       fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: -0.07 } });
       fireEvent.click(screen.getByText("Save"));

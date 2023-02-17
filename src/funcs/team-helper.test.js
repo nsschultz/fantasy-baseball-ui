@@ -1,4 +1,4 @@
-import { buildTeamDisplay, buildTeamDisplayMap, buildTeamMap } from "./team-helper";
+import { buildTeamDisplay, buildTeamMap } from "./team-helper";
 
 const teams = [
   { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },
@@ -40,42 +40,6 @@ describe("buildTeamDisplay", () => {
   test("should return empty string on empty obj", () => expect(buildTeamDisplay({})).toEqual(""));
   test("should return just city if nickname is missing", () => expect(buildTeamDisplay({ city: "Jackson" })).toEqual("Jackson"));
   test("should return just nickname if city is missing", () => expect(buildTeamDisplay({ nickname: "Jaguars" })).toEqual("Jaguars"));
-});
-describe("buildTeamDisplayMap", () => {
-  test("should build a team display map", () =>
-    expect(buildTeamDisplayMap(teams)).toEqual({
-      "": "Free Agent Free Agent",
-      ARZ: "Arizona Diamondbacks",
-      ATL: "Atlanta Braves",
-      BAL: "Baltimore Orioles",
-      BOS: "Boston Red Sox",
-      CHC: "Chicago Cubs",
-      CIN: "Cincinnati Reds",
-      CLE: "Cleveland Guardians",
-      COL: "Colorado Rockies",
-      CWS: "Chicago White Sox",
-      DET: "Detriot Tigers",
-      HOU: "Houston Astros",
-      KC: "Kansas City Royals",
-      LAA: "Los Angeles Angels",
-      LAD: "Los Angeles Dodgers",
-      MIA: "Miami Marlins",
-      MIL: "Milwaukee Brewers",
-      MIN: "Minnesota Twins",
-      NYM: "New York Mets",
-      NYY: "New York Yankees",
-      OAK: "Oakland Athletics",
-      PHI: "Philadelphia Phillies",
-      PIT: "Pittsburgh Pirates",
-      SD: "San Diego Padres",
-      SEA: "Seattle Mariners",
-      SF: "San Francisco Giants",
-      STL: "St. Louis Cardinals",
-      TB: "Tampa Bay Rays",
-      TEX: "Texas Rangers",
-      TOR: "Toronto Blue Jays",
-      WAS: "Washington Nationals",
-    }));
 });
 describe("buildTeamMap", () => {
   test("should build a team map", () =>

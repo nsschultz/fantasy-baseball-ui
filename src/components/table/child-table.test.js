@@ -4,11 +4,12 @@ import ChildTable from "./child-table";
 import GlobalTheme from "../../global-theme";
 import { ThemeProvider } from "@mui/material";
 
+const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
 const columns = [
-  { title: "Name", field: "name" },
-  { title: "Age", field: "age", type: "numeric" },
-  { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
-  { title: "Drafted %", field: "draftedPercentage", type: "numeric", format: (value) => value.toFixed(2) },
+  { field: "name", title: "Name" },
+  { align: "right", field: "age", title: "Age" },
+  { field: "type", format: (value) => playerTypes[value], title: "Type" },
+  { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
 ];
 const rows = [
   { id: 10, name: "Schultz, Nick", age: 40, type: 1, draftedPercentage: 0 },

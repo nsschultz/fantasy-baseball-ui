@@ -18,11 +18,10 @@ const ImportExportData = () => {
   const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
 
-  const dispatch = useDispatch();
-
   const clearInputFile = (event) => (event.target.value = null);
   const createNotification = (message, type) =>
     dispatch(addNotification({ key: Math.random() * Date.now(), message: message, timestamp: Date.now(), type: type }));
+  const dispatch = useDispatch();
   const displayErrorMessage = (message) => createNotification(message, "error");
   const displayInfoMessage = (message) => {
     createNotification(message, "info");
@@ -114,7 +113,7 @@ const ImportExportData = () => {
           </Grid>
         </Container>
       </Box>
-      <Dialog open={isClearDialogOpen} onClose={() => handleDialogClose(false)}>
+      <Dialog open={isClearDialogOpen}>
         <DialogContent>
           <DialogContentText>Are you sure you want to clear the players?</DialogContentText>
         </DialogContent>

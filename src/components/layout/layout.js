@@ -32,7 +32,7 @@ const LayoutWrapper = styled("div")(({ theme }) => ({
 
 /**
  * The base layout for the website with a Titlebar and Sidebar. Changes based on whether the user is logged in or not.
- * @param {bool} isLoggedIn (Required) Boolean that indicates if the user is logged in or not.
+ * @param {bool} isLoggedIn Boolean that indicates if the user is logged in or not.
  * @returns A new instance of the Layout.
  */
 const Layout = ({ isLoggedIn }) => {
@@ -60,7 +60,5 @@ const Layout = ({ isLoggedIn }) => {
     </LayoutRoot>
   );
 };
-Layout.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-};
+Layout.propTypes = { isLoggedIn: PropTypes.bool.isRequired };
 export default Layout;

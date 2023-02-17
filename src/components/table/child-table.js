@@ -3,14 +3,16 @@ import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } fro
 import CustomTableRow from "./custom-table-row";
 import PropTypes from "prop-types";
 import React from "react";
-import { getAlign } from "./table-funcs";
 
 /**
  * Wrapper around a Table with a title that doesn't have complex options.
- * @param {array}  columns       (Required) The columns for the child table.
- * @param {func}   rowKeyBuilder (Required) The function used for building keys for rows.
- * @param {array}  rows          (Required) The rows for the child table.
- * @param {string} title         (Required) The title of the child table.
+ * @param {string} columns[].align  The alignment of the column.
+ * @param {string} columns[].field  The field within the data to display (also used as the key).
+ * @param {func}   columns[].format Func for formatting the given value.
+ * @param {string} columns[].title  The title for the column header cell.
+ * @param {func}   rowKeyBuilder    The function used for building keys for rows.
+ * @param {array}  rows             The rows for the child table.
+ * @param {string} title            The title of the child table.
  * @returns A new instance of the ChildTable.
  */
 const ChildTable = ({ columns, rowKeyBuilder, rows, title }) => (
@@ -22,7 +24,7 @@ const ChildTable = ({ columns, rowKeyBuilder, rows, title }) => (
       <TableHead>
         <TableRow>
           {columns.map((column) => (
-            <TableCell align={getAlign(column)} key={column.field} sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
+            <TableCell align={column.align} key={column.field} sx={{ backgroundColor: "primary.main", color: "text.primary" }}>
               {column.title}
             </TableCell>
           ))}
@@ -37,7 +39,9 @@ const ChildTable = ({ columns, rowKeyBuilder, rows, title }) => (
   </Box>
 );
 ChildTable.propTypes = {
-  columns: PropTypes.array.isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
+  ).isRequired,
   rowKeyBuilder: PropTypes.func.isRequired,
   rows: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,

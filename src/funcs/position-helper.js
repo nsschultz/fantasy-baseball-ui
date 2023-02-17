@@ -1,18 +1,6 @@
 import { makeMap } from "./map-maker";
 
 /**
- * Builds a map from the given positions that maps the position code to the display value.
- * @param {array} positions (Required) A list of position objects to turn into a map.
- * @returns A simple object where the keys are positions codes and the values are the display strings.
- */
-export const buildPositionDisplayMap = (positions) =>
-  makeMap(
-    positions,
-    (position) => position.code,
-    (position) => position.fullName
-  );
-
-/**
  * Creates a new array of positions from the given codes. Removes any position that would alreay be implied based on another position's additional positions.
  * @param {array} selecteds    (Required) An array of the codes to convert into a array of objects.
  * @param {object} positionMap (Required) A map of the positions. The key is the position code and the value is the position object.
@@ -32,7 +20,7 @@ export const buildPositionList = (selecteds, positionMap) => {
  */
 export const buildPositionMap = (positions, type) =>
   makeMap(
-    positions.filter((p) => p.playerType === parseInt(type, 10)),
+    positions.filter((p) => !type || p.playerType === parseInt(type, 10)),
     (position) => position.code,
     (position) => position
   );

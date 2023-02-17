@@ -9,18 +9,6 @@ export const buildTeamDisplay = (team) =>
   team ? (team.city && team.nickname ? `${team.city} ${team.nickname}` : team.city || team.nickname ? team.city || team.nickname : "") : "";
 
 /**
- * Builds a map from the given teams that maps the team code to the display value.
- * @param {array} teams A list of team objects to turn into a map.
- * @returns A simple object where the keys are team codes and the values are the display strings.
- */
-export const buildTeamDisplayMap = (teams) =>
-  makeMap(
-    teams,
-    (team) => team.code,
-    (team) => buildTeamDisplay(team)
-  );
-
-/**
  * Builds a map from the given teams that maps the team code to team object.
  * @param {array} teams A list of team objects to turn into a map.
  * @returns A simple object where the keys are team codes and the values are the team object.

@@ -1,3 +1,4 @@
+import { defaultObjectComparator, playerNameComparator } from "../../funcs/sort-comparators";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
@@ -5,60 +6,63 @@ import ParentTable from "./parent-table";
 import { ThemeProvider } from "@mui/material";
 
 let columns;
+let deleteCount = 0;
 let editCount = 0;
 const defaultRowDisplay = 10;
-let returnRow = false;
+const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
 const rows = [
-  { id: 10, name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
-  { id: 11, name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, draftedPercentage: 0.5 },
-  { id: 12, name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, draftedPercentage: 1 },
-  { id: 13, name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, draftedPercentage: 0.99 },
-  { id: 14, name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, draftedPercentage: 0.08 },
-  { id: 15, name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, draftedPercentage: 0.19 },
-  { id: 16, name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, draftedPercentage: 0.04 },
-  { id: 17, name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, draftedPercentage: 0.34 },
-  { id: 18, name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, draftedPercentage: 0.44 },
-  { id: 19, name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, draftedPercentage: 0.15 },
-  { id: 20, name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
+  { id: 10, firstName: "Nick", lastName: "Schultz", name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
+  { id: 11, firstName: "Annie", lastName: "Schultz", name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, draftedPercentage: 0 },
+  { id: 12, firstName: "James", lastName: "Schultz", name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, draftedPercentage: 1 },
+  { id: 13, firstName: "Samantha", lastName: "Schultz", name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, draftedPercentage: 0.99 },
+  { id: 14, firstName: "Ryan", lastName: "Braun", name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, draftedPercentage: 0.08 },
+  { id: 15, firstName: "Robin", lastName: "Yount", name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, draftedPercentage: 0.19 },
+  { id: 16, firstName: "Paul", lastName: "Molitor", name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, draftedPercentage: 0.04 },
+  { id: 17, firstName: "Rollie", lastName: "Fingers", name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, draftedPercentage: 0.34 },
+  { id: 18, firstName: "Hank", lastName: "Aaron", name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, draftedPercentage: 0.44 },
+  { id: 19, firstName: "Ben", lastName: "Sheets", name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, draftedPercentage: 0.15 },
+  { id: 20, firstName: "Bob", lastName: "Wickman", name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
 ];
-let saveCount = 0;
+const teams = { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" };
 
+const buildDelete = (handleDeleteClose, deleteOpen, deleteRow) => {
+  deleteCount++;
+  expect(deleteOpen).toEqual(true);
+  handleDeleteClose(deleteRow);
+};
 const buildEdit = (handleEditClose, editOpen, editRow) => {
   editCount++;
   expect(editOpen).toEqual(true);
-  expect(editRow).toEqual(rows[0]);
-  handleEditClose(returnRow ? editRow : undefined);
+  handleEditClose(editRow);
 };
-const handleClose = (editRow) => {
-  if (editRow) {
-    expect(editRow).toEqual(rows[0]);
-    saveCount++;
-  }
-  return rows;
-};
+const handleDeleteClose = (editRow) => expect(editRow).toEqual(rows[1]);
+const handleEditClose = (editRow) => expect(editRow).toEqual(rows[0]);
 
 beforeEach(
   () =>
     (columns = [
-      { title: "Name", field: "name" },
-      { title: "Age", field: "age", type: "numeric" },
-      {
-        title: "Team",
-        field: "team",
-        lookup: { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" },
-        filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
-      },
-      { title: "Type", field: "type", lookup: { 0: "", 1: "Batter", 2: "Pitcher" } },
-      { title: "Drafted %", field: "draftedPercentage", type: "numeric", format: (value) => value.toFixed(2) },
+      { field: "name", sortComparator: playerNameComparator, title: "Name" },
+      { align: "right", field: "age", title: "Age" },
+      { field: "team", format: (value) => teams[value], title: "Team" },
+      { field: "type", format: (value) => playerTypes[value], title: "Type" },
+      { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
     ])
 );
-beforeEach(() => (saveCount = 0));
+beforeEach(() => (deleteCount = 0));
 beforeEach(() => (editCount = 0));
-beforeEach(() => (returnRow = false));
 
-const TestWrapper = ({ childProps, editProps }) => (
+const TestWrapper = ({ childProps, deleteProps, editProps, toolbarProps }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <ParentTable childProps={childProps} columns={columns} editProps={editProps} values={rows} />
+    <ParentTable
+      childProps={childProps}
+      columns={columns}
+      deleteProps={deleteProps}
+      description="MyDataDescription"
+      editProps={editProps}
+      sortComparator={(obj1, obj2) => defaultObjectComparator(obj1, obj2, "id")}
+      toolbarProps={toolbarProps}
+      values={rows}
+    />
   </ThemeProvider>
 );
 
@@ -68,6 +72,10 @@ describe("ParentTable", () => {
       render(<TestWrapper />);
       expect(screen.getAllByRole("columnheader")).toHaveLength(columns.length + 1);
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
+    });
+    test("with the toolbar visible", () => {
+      render(<TestWrapper toolbarProps={{ title: "MyTitle" }} />);
+      expect(screen.getByText("MyTitle")).toBeVisible();
     });
     test("and handle moving to the next page and back", () => {
       render(<TestWrapper />);
@@ -99,58 +107,44 @@ describe("ParentTable", () => {
       expect(screen.getAllByRole("row")[1]).toHaveTextContent("Yount, Robin");
       expect(screen.getAllByRole("row")[10]).toHaveTextContent("Braun, Ryan");
     });
-  });
-  test("should only display the filters on click", () => {
-    render(<TestWrapper />);
-    expect(screen.queryByRole("searchbox")).toBeFalsy();
-    expect(screen.queryByRole("spinbutton:")).toBeFalsy();
-    fireEvent.click(screen.getByTestId("table-show-filters"));
-    expect(screen.getAllByRole("searchbox")).toHaveLength(1);
-    expect(screen.getAllByRole("spinbutton")).toHaveLength(2);
-  });
-  describe("should handle filtering of", () => {
-    test("text field", () => {
+    test("sort where there is a match", () => {
       render(<TestWrapper />);
-      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-      fireEvent.click(screen.getByTestId("table-show-filters"));
-      fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Samantha" } });
-      expect(screen.getAllByRole("row")).toHaveLength(2);
+      fireEvent.click(screen.getByText("Drafted %"));
+      expect(screen.getAllByRole("row")[1]).toHaveTextContent("Schultz, Nick");
+      expect(screen.getAllByRole("row")[10]).toHaveTextContent("Schultz, Samantha");
     });
-    test("numeric field", () => {
+    test("sort by default", () => {
       render(<TestWrapper />);
-      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-      fireEvent.click(screen.getByTestId("table-show-filters"));
-      fireEvent.change(screen.getAllByRole("spinbutton")[0], { target: { value: "10" } });
-      expect(screen.getAllByRole("row")).toHaveLength(2);
-    });
-    test("select field", () => {
-      columns[3].filterValue = ["0"];
-      render(<TestWrapper />);
-      expect(screen.getAllByRole("row")).toHaveLength(3);
-    });
-    test("complex field", () => {
-      columns[2].filterValue = ["MIL"];
-      render(<TestWrapper />);
-      expect(screen.getAllByRole("row")).toHaveLength(10);
+      fireEvent.click(screen.getByText("Actions"));
+      fireEvent.click(screen.getByText("Actions"));
+      expect(screen.getAllByRole("row")[1]).toHaveTextContent("Wickman, Bob");
+      expect(screen.getAllByRole("row")[10]).toHaveTextContent("Schultz, Annie");
     });
   });
-  describe("should handle editing", () => {
-    test("and cancelling the changes", () => {
-      render(<TestWrapper editProps={{ buildWindow: buildEdit, handleClose: handleClose }} />);
-      fireEvent.click(screen.getByTestId("row-edit-10"));
-      expect(saveCount).toEqual(0);
-      expect(editCount).toEqual(1);
-    });
-    test("and saving the changes", () => {
-      returnRow = true;
-      render(<TestWrapper editProps={{ buildWindow: buildEdit, handleClose: handleClose }} />);
-      fireEvent.click(screen.getByTestId("row-edit-10"));
-      expect(saveCount).toEqual(1);
-      expect(editCount).toEqual(1);
-    });
+  test("should handle deleting", () => {
+    render(<TestWrapper deleteProps={{ buildDialog: buildDelete, handleClose: handleDeleteClose }} />);
+    fireEvent.click(screen.getByTestId("row-delete-11"));
+    expect(deleteCount).toEqual(1);
+    expect(editCount).toEqual(0);
+  });
+  test("should handle editing", () => {
+    render(<TestWrapper editProps={{ buildDialog: buildEdit, handleClose: handleEditClose }} />);
+    fireEvent.click(screen.getByTestId("row-edit-10"));
+    expect(deleteCount).toEqual(0);
+    expect(editCount).toEqual(1);
   });
   test("should handle displaying a child table", () => {
-    render(<TestWrapper childProps={{ columnSelector: () => columns, rowKeyBuilder: (row) => row.id, rowSelector: () => rows, title: "Child Title" }} />);
+    render(
+      <TestWrapper
+        childProps={{
+          columnSelector: () => columns,
+          description: "MyDescription",
+          rowKeyBuilder: (row) => row.id,
+          rowSelector: () => rows,
+          title: "Child Title",
+        }}
+      />
+    );
     expect(screen.queryByText("Child Title")).toBeFalsy();
     fireEvent.click(screen.getByTestId("row-expand-10"));
     expect(screen.getByText("Child Title")).toBeVisible();

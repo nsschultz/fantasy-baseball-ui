@@ -1,95 +1,20 @@
 import { Box, Container, Snackbar, Typography } from "@mui/material";
-import { buildPositionDisplayMap, matchAnyPosition } from "../funcs/position-helper";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "../funcs/get-lookups";
+import { playerDefaultComparator, playerNameComparator, playerPositionsComparator, playerTeamComparator } from "../funcs/sort-comparators";
+import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "@mui/material/Alert";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
-import PlayerView from "./player-view";
+import PlayerDeleter from "../dialogs/player-deleter";
+import PlayerEditor from "../dialogs/player-editor";
+import PlayerFilter from "../dialogs/player-filter";
 import React from "react";
 import axios from "axios";
-import { buildTeamDisplayMap } from "../funcs/team-helper";
+import { matchAnyPosition } from "../funcs/position-helper";
+import { modifyFilter } from "../state/slice/player-filter-slice";
 
-const columns = [
-  { field: "bhqId", title: "BHQ ID", type: "numeric", width: 75 },
-  { field: "firstName", title: "First Name" },
-  { field: "lastName", title: "Last Name" },
-  { field: "age", title: "Age", type: "numeric", width: 75 },
-  { field: "type", lookup: [], title: "Type" },
-  {
-    field: "positions",
-    filterMatcher: (filterValue, field) => filterValue.some((v) => matchAnyPosition(field, v, true)),
-    format: (value) => value.map((p) => p.code).join(),
-    lookup: [],
-    title: "Position(s)",
-  },
-  {
-    field: "team",
-    filterMatcher: (filterValue, field) => filterValue.some((v) => v === field.code),
-    format: (value) => value.code,
-    lookup: [],
-    title: "Team",
-    width: 75,
-  },
-  { field: "status", lookup: [], title: "Status" },
-  { field: "league1", lookup: [], title: "League #1 Status" },
-  { field: "league2", lookup: [], title: "League #2 Status" },
-  { field: "draftRank", title: "Draft Rank", type: "numeric" },
-  { field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %", type: "numeric" },
-];
-const columnsBattingStats = [
-  { title: "", field: "statsType" },
-  { title: "AB", field: "atBats", type: "numeric" },
-  { title: "R", field: "runs", type: "numeric" },
-  { title: "H", field: "hits", type: "numeric" },
-  { title: "2B", field: "doubles", type: "numeric" },
-  { title: "3B", field: "triples", type: "numeric" },
-  { title: "HR", field: "homeRuns", type: "numeric" },
-  { title: "RBI", field: "runsBattedIn", type: "numeric" },
-  { title: "BB", field: "baseOnBalls", type: "numeric" },
-  { title: "K", field: "strikeOuts", type: "numeric" },
-  { title: "SB", field: "stolenBases", type: "numeric" },
-  { title: "CS", field: "caughtStealing", type: "numeric" },
-  { title: "TB", field: "totalBases", type: "numeric" },
-  { title: "BA", field: "battingAverage", type: "numeric", format: (value) => value.toFixed(3) },
-  { title: "OB", field: "onBasePercentage", type: "numeric", format: (value) => value.toFixed(3) },
-  { title: "SLG", field: "sluggingPercentage", type: "numeric", format: (value) => value.toFixed(3) },
-  { title: "OPS", field: "onBasePlusSlugging", type: "numeric", format: (value) => value.toFixed(3) },
-  { title: "CT%", field: "contractRate", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "PX", field: "power", type: "numeric", format: (value) => value.toFixed(0) },
-  { title: "BB%", field: "walkRate", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "SPD", field: "speed", type: "numeric", format: (value) => value.toFixed(0) },
-  { title: "BPV", field: "basePerformanceValue", type: "numeric", format: (value) => value.toFixed(0) },
-];
-const columnsPitchingStats = [
-  { title: "", field: "statsType" },
-  { title: "W", field: "wins", type: "numeric" },
-  { title: "L", field: "losses", type: "numeric" },
-  { title: "QS", field: "qualityStarts", type: "numeric" },
-  { title: "SV", field: "saves", type: "numeric" },
-  { title: "BS", field: "blownSaves", type: "numeric" },
-  { title: "HLD", field: "holds", type: "numeric" },
-  { title: "IP", field: "inningsPitched", type: "numeric", format: (value) => value.toFixed(1) },
-  { title: "HA", field: "hitsAllowed", type: "numeric" },
-  { title: "ER", field: "earnedRuns", type: "numeric" },
-  { title: "HRA", field: "homeRunsAllowed", type: "numeric" },
-  { title: "BBA", field: "baseOnBallsAllowed", type: "numeric" },
-  { title: "K", field: "strikeOuts", type: "numeric" },
-  { title: "ERA", field: "earnedRunAverage", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "WHIP", field: "walksAndHitsPerInningPitched", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "BABIP", field: "battingAverageOnBallsInPlay", type: "numeric", format: (value) => value.toFixed(3) },
-  { title: "SR", field: "strandRate", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "CMD", field: "command", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "DOM", field: "dominance", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "CON", field: "control", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "GB/FB", field: "groundBallToFlyBallRate", type: "numeric", format: (value) => value.toFixed(2) },
-  { title: "BPV", field: "basePerformanceValue", type: "numeric", format: (value) => value.toFixed(0) },
-];
-
-const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
-const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
-const updateLookupOnColumns = (field, lookup, cols) => cols.filter((column) => column.field === field).forEach((column) => (column.lookup = lookup));
-const updateLookup = (field, lookup) => updateLookupOnColumns(field, lookup, columns);
+const convertToNumber = (val) => parseInt(val, 10);
 
 /**
  * The player window which is used for admin level function against players.
@@ -97,6 +22,8 @@ const updateLookup = (field, lookup) => updateLookupOnColumns(field, lookup, col
  */
 const Players = () => {
   const isMountedRef = React.useRef(null);
+  const filters = useSelector((state) => state.playerFilter.value);
+  const [filteredPlayers, setFilteredPlayers] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [leagusStatuses, setLeagueStatuses] = React.useState([]);
   const [message, setMessage] = React.useState("");
@@ -105,57 +32,154 @@ const Players = () => {
   const [playerStatuses, setPlayerStatuses] = React.useState([]);
   const [playerTypes, setPlayerTypes] = React.useState([]);
   const [positions, setPositions] = React.useState([]);
+  const [statsType, setStatsType] = React.useState([]);
   const [severity, setSeverity] = React.useState("success");
   const [teams, setTeams] = React.useState([]);
+  const columns = [
+    { align: "right", field: "bhqId", title: "BHQ ID" },
+    { field: "name", sortComparator: playerNameComparator, title: "Name" },
+    { align: "right", field: "age", title: "Age" },
+    { field: "type", format: (value) => playerTypes[value], title: "Type" },
+    { field: "positions", format: (value) => value.map((p) => p.code).join(), sortComparator: playerPositionsComparator, title: "Position(s)" },
+    { field: "team", format: (value) => value.code, sortComparator: playerTeamComparator, title: "Team" },
+    { field: "status", format: (value) => playerStatuses[value], title: "Status" },
+    { field: "league1", format: (value) => leagusStatuses[value], title: "League #1 Status" },
+    { field: "league2", format: (value) => leagusStatuses[value], title: "League #2 Status" },
+    { align: "right", field: "draftRank", title: "Draft Rank" },
+    { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
+  ];
+  const columnsBattingStats = [
+    { field: "statsType", format: (value) => statsType[value], title: "" },
+    { align: "right", field: "atBats", title: "AB" },
+    { align: "right", field: "runs", title: "R" },
+    { align: "right", field: "hits", title: "H" },
+    { align: "right", field: "doubles", title: "2B" },
+    { align: "right", field: "triples", title: "3B" },
+    { align: "right", field: "homeRuns", title: "HR" },
+    { align: "right", field: "runsBattedIn", title: "RBI" },
+    { align: "right", field: "baseOnBalls", title: "BB" },
+    { align: "right", field: "strikeOuts", title: "K" },
+    { align: "right", field: "stolenBases", title: "SB" },
+    { align: "right", field: "caughtStealing", title: "CS" },
+    { align: "right", field: "totalBases", title: "TB" },
+    { align: "right", field: "battingAverage", format: (value) => value.toFixed(3), title: "BA" },
+    { align: "right", field: "onBasePercentage", format: (value) => value.toFixed(3), title: "OB" },
+    { align: "right", field: "sluggingPercentage", format: (value) => value.toFixed(3), title: "SLG" },
+    { align: "right", field: "onBasePlusSlugging", format: (value) => value.toFixed(3), title: "OPS" },
+    { align: "right", field: "contractRate", format: (value) => value.toFixed(2), title: "CT%" },
+    { align: "right", field: "power", format: (value) => value.toFixed(0), title: "PX" },
+    { align: "right", field: "walkRate", format: (value) => value.toFixed(2), title: "BB%" },
+    { align: "right", field: "speed", format: (value) => value.toFixed(0), title: "SPD" },
+    { align: "right", field: "basePerformanceValue", format: (value) => value.toFixed(0), title: "BPV" },
+  ];
+  const columnsPitchingStats = [
+    { field: "statsType", format: (value) => statsType[value], title: "" },
+    { align: "right", field: "wins", title: "W" },
+    { align: "right", field: "losses", title: "L" },
+    { align: "right", field: "qualityStarts", title: "QS" },
+    { align: "right", field: "saves", title: "SV" },
+    { align: "right", field: "blownSaves", title: "BS" },
+    { align: "right", field: "holds", title: "HLD" },
+    { align: "right", field: "inningsPitched", format: (value) => value.toFixed(1), title: "IP" },
+    { align: "right", field: "hitsAllowed", title: "HA" },
+    { align: "right", field: "earnedRuns", title: "ER" },
+    { align: "right", field: "homeRunsAllowed", title: "HRA" },
+    { align: "right", field: "baseOnBallsAllowed", title: "BBA" },
+    { align: "right", field: "strikeOuts", title: "K" },
+    { align: "right", field: "earnedRunAverage", format: (value) => value.toFixed(2), title: "ERA" },
+    { align: "right", field: "walksAndHitsPerInningPitched", format: (value) => value.toFixed(2), title: "WHIP" },
+    { align: "right", field: "battingAverageOnBallsInPlay", format: (value) => value.toFixed(3), title: "BABIP" },
+    { align: "right", field: "strandRate", format: (value) => value.toFixed(2), title: "SR" },
+    { align: "right", field: "command", format: (value) => value.toFixed(2), title: "CMD" },
+    { align: "right", field: "dominance", format: (value) => value.toFixed(2), title: "DOM" },
+    { align: "right", field: "control", format: (value) => value.toFixed(2), title: "CON" },
+    { align: "right", field: "groundBallToFlyBallRate", format: (value) => value.toFixed(2), title: "GB/FB" },
+    { align: "right", field: "basePerformanceValue", format: (value) => value.toFixed(0), title: "BPV" },
+  ];
 
   React.useEffect(() => {
     isMountedRef.current = true;
-    getLeagueStatusEnums((response) => {
-      setLeagueStatuses(response);
-      updateLookup("league1", response);
-      updateLookup("league2", response);
-    });
-    getPlayerStatusEnums((response) => {
-      setPlayerStatuses(response);
-      updateLookup("status", response);
-    });
-    getPlayerTypeEnums((response) => {
-      setPlayerTypes(response);
-      updateLookup("type", response);
-    });
-    getPositions((response) => {
-      setPositions(response);
-      const positionMap = buildPositionDisplayMap(response);
-      updateLookup("positions", positionMap);
-    });
-    getStatsTypeEnums((response) => {
-      updateLookupOnColumns("statsType", response, columnsBattingStats);
-      updateLookupOnColumns("statsType", response, columnsPitchingStats);
-    });
-    getTeams((response) => {
-      setTeams(response);
-      updateLookup("team", buildTeamDisplayMap(response));
-    });
+    getLeagueStatusEnums((response) => setLeagueStatuses(response));
+    getPlayerStatusEnums((response) => setPlayerStatuses(response));
+    getPlayerTypeEnums((response) => setPlayerTypes(response));
+    getPositions((response) => setPositions(response));
+    getStatsTypeEnums((response) => setStatsType(response));
+    getTeams((response) => setTeams(response));
     getPlayers();
     return () => (isMountedRef.current = false);
   }, []);
+  React.useEffect(() => {
+    onHandleFilterChange();
+  }, [filters, players]);
 
-  const buildEdit = (handleEditClose, editOpen, editRow) => {
-    const lookups = {
+  const addPlayer = (player, onClose) => {
+    axios
+      .post(`${window.env.PLAYER_API_URL}/api/v2/player`, player)
+      .then((response) => {
+        onClose();
+        axios
+          .get(`${window.env.PLAYER_API_URL}/api/v2/player/${response.data}`)
+          .then((response) => {
+            response.data.name = `${response.data.firstName} ${response.data.lastName}`;
+            players.push(response.data);
+            setPlayers([...players]);
+            setSeverity("success");
+            setMessage(`Successfully added ${player.name}`);
+            setOpen(true);
+          })
+          .catch(() => {
+            setSeverity("error");
+            setMessage(`Successfully added but unable to retrieve ${player.name}`);
+            setOpen(true);
+            setIsLoading(false);
+          });
+      })
+      .catch(() => {
+        setSeverity("error");
+        setMessage(`Unable to add ${player.name}`);
+        setOpen(true);
+      });
+  };
+  const buildDelete = (handleDeleteClose, deleteOpen, deleteRow) => <PlayerDeleter onClose={handleDeleteClose} open={deleteOpen} player={deleteRow} />;
+  const buildEdit = (handleEditClose, editOpen, editRow) => (
+    <PlayerEditor lookups={buildLookups()} onClose={handleEditClose} open={editOpen} player={editRow} />
+  );
+  const buildFilter = (handleFilterClose, filterOpen) => <PlayerFilter lookups={buildLookups()} onClose={handleFilterClose} open={filterOpen} />;
+  const buildLookups = () => {
+    return {
       leagusStatuses: leagusStatuses,
       playerStatuses: playerStatuses,
       playerTypes: playerTypes,
       positions: positions,
       teams: teams,
     };
-    return <PlayerView lookups={lookups} onClose={handleEditClose} open={editOpen} player={editRow} />;
   };
+  const deletePlayer = (player) => {
+    axios
+      .delete(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`)
+      .then(() => {
+        const dataUpdate = players.filter((p) => p.id !== player.id);
+        setPlayers([...dataUpdate]);
+        setSeverity("success");
+        setMessage(`Successfully deleted ${player.name}`);
+        setOpen(true);
+      })
+      .catch(() => {
+        setSeverity("error");
+        setMessage(`Unable to delete ${player.name}`);
+        setOpen(true);
+      });
+  };
+  const dispatch = useDispatch();
+  const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
   const getPlayers = () => {
     axios
       .get(`${window.env.PLAYER_API_URL}/api/v2/player`)
       .then((response) => {
         if (isMountedRef.current) {
+          response.data.forEach((p) => (p.name = `${p.firstName} ${p.lastName}`));
           setPlayers(response.data);
+          setFilteredPlayers(response.data);
           setIsLoading(false);
         }
       })
@@ -166,24 +190,44 @@ const Players = () => {
         setIsLoading(false);
       });
   };
-  const onRowUpdate = (newData) => {
-    if (!newData) return;
-    updatePlayer(newData.id, newData);
-    const dataUpdate = players.map((p) => (p.id === newData.id ? newData : p));
-    setPlayers([...dataUpdate]);
-    return dataUpdate;
+  const onHandleFilterChange = () => {
+    const actions = [];
+    if (filters.name) actions.push((player) => player.name.toLowerCase().includes(filters.name.toLowerCase()));
+    if (filters.positions.length > 0) actions.push((player) => filters.positions.map((p) => p.code).some((v) => matchAnyPosition(player.positions, v, true)));
+    if (filters.l1statuses.length > 0) actions.push((player) => filters.l1statuses.some((v) => convertToNumber(v) === player.league1));
+    if (filters.l2statuses.length > 0) actions.push((player) => filters.l2statuses.some((v) => convertToNumber(v) === player.league2));
+    if (filters.statuses.length > 0) actions.push((player) => filters.statuses.some((v) => convertToNumber(v) === player.status));
+    if (filters.teams.length > 0) actions.push((player) => filters.teams.some((v) => v.code === player.team.code));
+    if (filters.types.length > 0) actions.push((player) => filters.types.some((v) => convertToNumber(v) === player.type));
+    setFilteredPlayers(actions.length === 0 ? players : players.filter((player) => actions.length === actions.filter((filter) => filter(player)).length));
   };
-  const updatePlayer = (id, player) => {
+  const onRowAdd = (player, onClose) => {
+    if (player) addPlayer(player, onClose);
+    else onClose();
+  };
+  const onRowDelete = (player) => {
+    if (player) deletePlayer(player);
+  };
+  const onRowUpdate = (player, onClose) => {
+    if (player) updatePlayer(player, onClose);
+    else onClose();
+  };
+  const searchbarChangeHandler = (event) => dispatch(modifyFilter({ key: "name", value: event.target.value || "" }));
+  const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
+  const updatePlayer = (player, onClose) => {
     axios
-      .put(`${window.env.PLAYER_API_URL}/api/v2/player/${id}`, player)
+      .put(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`, player)
       .then(() => {
+        const dataUpdate = players.map((p) => (p.id === player.id ? player : p));
+        setPlayers([...dataUpdate]);
         setSeverity("success");
-        setMessage("Successfully updated player");
+        setMessage(`Successfully updated ${player.name}`);
         setOpen(true);
+        onClose();
       })
       .catch(() => {
         setSeverity("error");
-        setMessage("Unable to update player");
+        setMessage(`Unable to update ${player.name}`);
         setOpen(true);
       });
   };
@@ -201,10 +245,25 @@ const Players = () => {
             </Typography>
           ) : (
             <ParentTable
-              childProps={{ columnSelector: statsSelection, rowKeyBuilder: (row) => row.statsType, rowSelector: getChildRows, title: "Season Stats" }}
+              childProps={{
+                columnSelector: statsSelection,
+                description: "Player's Stats",
+                rowKeyBuilder: (row) => row.statsType,
+                rowSelector: getChildRows,
+                title: "Season Stats",
+              }}
               columns={columns}
-              editProps={{ buildWindow: buildEdit, handleClose: onRowUpdate }}
-              values={players}
+              deleteProps={{ buildDialog: buildDelete, handleClose: onRowDelete }}
+              description="Player"
+              editProps={{ buildDialog: buildEdit, handleClose: onRowUpdate }}
+              sortComparator={playerDefaultComparator}
+              toolbarProps={{
+                addProps: { buildDialog: buildEdit, handleClose: onRowAdd },
+                filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange },
+                searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" },
+                title: "Players",
+              }}
+              values={filteredPlayers}
             />
           )}
         </Container>

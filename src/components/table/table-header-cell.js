@@ -2,8 +2,6 @@ import { Box, TableCell, TableSortLabel } from "@mui/material";
 
 import PropTypes from "prop-types";
 import React from "react";
-import TableFilter from "./table-filter";
-import { getAlign } from "./table-funcs";
 
 const hiddenStyle = {
   border: 0,
@@ -19,17 +17,18 @@ const hiddenStyle = {
 
 /**
  * Creates a new header cell for the table with sorting and filtering as options.
- * @param {object} column             (Required) Object containing all of the information about the column.
- * @param {func}   filterVisible      (Optional) Indicates if the filter should be visible or not.
- * @param {func}   handleFilterChange (Required) Handles events that occur when the filter is changed.
- * @param {func}   handleSortRequest  (Required) Handles sort requests events.
- * @param {string} order              (Optional) The order (asc or desc) that the table is being sorted by.
- * @param {string} orderBy            (Optional) Indicates the column that sort is being applied to.
+ * @param {string} column.align      The alignment of the column.
+ * @param {string} column.field      The field within the data to display (also used as the key).
+ * @param {func}   column.format     Func for formatting the given value.
+ * @param {string} column.title      The title for the column header cell.
+ * @param {func}   handleSortRequest Handles sort requests events.
+ * @param {string} order             The order (asc or desc) that the table is being sorted by.
+ * @param {string} orderBy           Indicates the column that sort is being applied to.
  * @returns A new instance of the TableHeaderCell.
  */
-const TableHeaderCell = ({ column, filterVisible, handleFilterChange, handleSortRequest, order, orderBy }) => (
+const TableHeaderCell = ({ column, handleSortRequest, order, orderBy }) => (
   <TableCell
-    align={getAlign(column)}
+    align={column.align}
     key={column.field}
     sortDirection={orderBy === column.field ? order : false}
     sx={{ backgroundColor: "primary.main", color: "text.primary" }}
@@ -38,14 +37,11 @@ const TableHeaderCell = ({ column, filterVisible, handleFilterChange, handleSort
       {column.title}
       {orderBy === column.field ? <Box sx={hiddenStyle}>{order === "desc" ? "sorted descending" : "sorted ascending"}</Box> : null}
     </TableSortLabel>
-    <br />
-    {filterVisible ? <TableFilter column={column} handleFilterChange={handleFilterChange} /> : null}
   </TableCell>
 );
 TableHeaderCell.propTypes = {
-  column: PropTypes.object.isRequired,
-  filterVisible: PropTypes.bool,
-  handleFilterChange: PropTypes.func.isRequired,
+  column: PropTypes.shape({ align: PropTypes.string, field: PropTypes.string.isRequired, format: PropTypes.func, title: PropTypes.string.isRequired })
+    .isRequired,
   handleSortRequest: PropTypes.func.isRequired,
   order: PropTypes.string,
   orderBy: PropTypes.string,

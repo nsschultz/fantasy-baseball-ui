@@ -6,9 +6,9 @@ import React from "react";
 
 /**
  * A wrapper over the CustomCard that creates the content for integration purposes.
- * @param {object} description       (Required) The description of the integration.
- * @param {object} integrationButton (Required) The button that kicks off the integration.
- * @param {string} title             (Required) The title of the card.
+ * @param {string} description       The description of the integration.
+ * @param {*}      integrationButton The button that kicks off the integration.
+ * @param {string} title             The title of the card.
  * @returns A new instance of the IntegrationCard.
  */
 const IntegrationCard = ({ description, integrationButton, title }) => {
@@ -34,7 +34,7 @@ const IntegrationCard = ({ description, integrationButton, title }) => {
 };
 IntegrationCard.propTypes = {
   description: PropTypes.string.isRequired,
-  integrationButton: PropTypes.object.isRequired,
+  integrationButton: PropTypes.any.isRequired,
   title: PropTypes.string.isRequired,
 };
 export default IntegrationCard;
