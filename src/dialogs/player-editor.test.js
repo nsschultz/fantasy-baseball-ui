@@ -297,8 +297,8 @@ const onCloseDefault = (newPlayer) => {
   count++;
   if (hasExisting) verifyPlayer(existingPlayer, 40, 9999, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
   if (hasNew)
-    if (hasExisting) verifyPlayer(newPlayer, "35", 9999, "0.07", "20", "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
-    else verifyPlayer(newPlayer, "35", 1234, "0.07", "20", "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
+    if (hasExisting) verifyPlayer(newPlayer, 35, 9999, 0.07, 20, "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
+    else verifyPlayer(newPlayer, 35, 1234, 0.07, 20, "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
   else expect(newPlayer).toEqual(undefined);
 };
 const verifyPlayer = (player, age, bhqId, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
