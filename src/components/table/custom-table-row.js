@@ -17,8 +17,13 @@ const getDisplayValue = (column, value) => (column.format ? column.format(value)
  * @param {func}   childProps.rowKeyBuilder    The function used for building keys for rows.
  * @param {array}  childProps.rows             The rows for the child table.
  * @param {string} childProps.title            The title of the child table.
- * @param {array}  columns                     The columns from the parent table.
+ * @param {string} columns[].align             The alignment of the column.
+ * @param {string} columns[].field             The field within the data to display (also used as the key).
+ * @param {func}   columns[].format            Func for formatting the given value.
+ * @param {func}   columns[].sortComparator    Function for any special handling sorting logic.
+ * @param {string} columns[].title             The title for the column header cell.
  * @param {string} description                 Description used on the delete and edit button's tooltip.
+ * @param {func}   handleDeleteOpen            The function that is called when the delete button is clicked. Providing this function determines if the button exists or not.
  * @param {func}   handleEditOpen              The function that is called when the edit button is clicked. Providing this function determines if the button exists or not.
  * @param {object} values                      The actual values that make up the row.
  * @returns A new instance of the CustomTableRow.
@@ -88,7 +93,15 @@ CustomTableRow.propTypes = {
     rows: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
   }),
-  columns: PropTypes.array.isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      align: PropTypes.string,
+      field: PropTypes.string.isRequired,
+      format: PropTypes.func,
+      sortComparator: PropTypes.func,
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   description: PropTypes.string,
   handleDeleteOpen: PropTypes.func,
   handleEditOpen: PropTypes.func,

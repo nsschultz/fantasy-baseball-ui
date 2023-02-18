@@ -46,6 +46,8 @@ const stableSort = (array, comparator, order, orderBy) => {
  * @param {func}   editProps.buildWindow                 Function for building the edit window.
  * @param {func}   editProps.handleClose                 Function for handling a close event for the edit window.
  * @param {func}   sortComparator                        Function for the default sorting of the table.
+ * @param {func}   toolbarProps.addProps.buildWindow     Function for building the add window.
+ * @param {func}   toolbarProps.addProps.handleClose     Function for handling a close event for the add window.
  * @param {func}   toolbarProps.filterProps.buildWindow  Function for building the filter window.
  * @param {func}   toolbarProps.filterProps.handleClose  Function for handling a close event for the filter window.
  * @param {func}   toolbarProps.searchProps.handleSearch Function that is kicked off anytime the value of the searchbox is modified.
