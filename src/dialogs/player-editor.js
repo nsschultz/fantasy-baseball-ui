@@ -69,11 +69,14 @@ const buildSingleSelectField = (field, label, handleOnChange, defaultValue, look
 const buildTextField = (field, label, handleOnChange, defaultValue) => buildInputField(field, label, handleOnChange, defaultValue, "text");
 const convertToNumber = (val) => parseInt(val, 10);
 const fixPlayer = (player) => {
+  player.age = convertToNumber(player.age);
   player.bhqId = convertToNumber(player.bhqId);
-  player.type = convertToNumber(player.type);
-  player.status = convertToNumber(player.status);
+  player.draftedPercentage = parseFloat(player.draftedPercentage);
+  player.draftRank = convertToNumber(player.draftRank);
   player.league1 = convertToNumber(player.league1);
   player.league2 = convertToNumber(player.league2);
+  player.status = convertToNumber(player.status);
+  player.type = convertToNumber(player.type);
   return player;
 };
 

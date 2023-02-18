@@ -14,6 +14,9 @@ const searchbarInputProps = {
 
 /**
  * Wrapper around the Toolbar that supports filtering and adding rows.
+ * @param {func}   addProps.buildWindow     Function for building the add window.
+ * @param {func}   addProps.handleClose     Function for handling a close event for the add window.
+ * @param {string} description              Description used for the tooltip on the add button.
  * @param {func}   filterProps.buildWindow  Function for building the filter window.
  * @param {func}   filterProps.handleClose  Function for handling a close event for the filter window.
  * @param {func}   searchProps.handleSearch Function that is kicked off anytime the value of the searchbox is modified.

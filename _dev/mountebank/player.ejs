@@ -90,11 +90,29 @@
         "is": { 
           "statusCode": 204, 
           "headers": { 
-            "Access-Control-Allow-Methods": "DELETE, GET, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Methods": "DELETE, GET, OPTIONS, POST",
             "Access-Control-Allow-Origin": "http://localhost:3000"
           }
         }
       }]
+    },
+    {
+      "predicates": [{ "equals": { "method": "POST", "path": "/api/v2/player" } }],
+      "responses": [{ 
+        "is": { 
+          "statusCode": 200, 
+          "body": "c73f6a3d-af89-4012-b524-6b86d5e7e8e3",
+          "headers": { 
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Content-Type": "application/json; charset=utf-8"
+          }
+        } 
+      }]
+    },
+    {
+      "predicates": [{ "startsWith": { "method": "DELETE", "path": "/api/v2/player/" } }],
+      "responses": [{ "is": { "statusCode": 200, "body": {}, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
     },
     {
       "predicates": [{ "startsWith": { "method": "OPTIONS", "path": "/api/v2/player/" } }],
@@ -103,7 +121,7 @@
           "statusCode": 204, 
           "headers": { 
             "Access-Control-Allow-Headers": "Content-Type",
-            "Access-Control-Allow-Methods": "OPTIONS, PUT",
+            "Access-Control-Allow-Methods": "DELETE, GET, OPTIONS, PUT",
             "Access-Control-Allow-Origin": "http://localhost:3000"
           }
         }
@@ -112,6 +130,19 @@
     {
       "predicates": [{ "startsWith": { "method": "PUT", "path": "/api/v2/player/" } }],
       "responses": [{ "is": { "statusCode": 200, "body": {}, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
+    },
+    {
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/player/c73f6a3d-af89-4012-b524-6b86d5e7e8e3" } }],
+      "responses": [{ 
+        "is": { 
+          "statusCode": 200, 
+          "body": "<%- stringify(filename, './responses/new-player.json') %>",
+          "headers": { 
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Content-Type": "application/json; charset=utf-8"
+          }
+        } 
+      }]
     },
     {
       "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/team" } }],
