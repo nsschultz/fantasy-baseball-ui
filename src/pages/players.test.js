@@ -762,6 +762,8 @@ describe("Player", () => {
       expect(screen.getAllByRole("row")).toHaveLength(7);
       fireEvent.change(screen.getByRole("textbox"), { target: { value: "" } });
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      expect(screen.getByTestId("FilterAltOutlinedIcon")).toBeVisible();
+      expect(screen.queryByTestId("FilterAltIcon")).toBeFalsy();
     }, 30000);
   });
   describe("should handle filtering by", () => {
@@ -775,6 +777,8 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("titlebar-filter"));
       mutateDropDown("types", "Pitcher");
       expect(screen.getAllByRole("row")).toHaveLength(2 * 2 + 1);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     }, 30000);
     test("positions", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
@@ -786,6 +790,8 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("titlebar-filter"));
       mutateDropDown("positions", "Infielder");
       expect(screen.getAllByRole("row")).toHaveLength(4 * 2 + 1);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     }, 30000);
     test("team", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
@@ -808,6 +814,8 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("titlebar-filter"));
       mutateDropDown("statuses", "Disabled List");
       expect(screen.getAllByRole("row")).toHaveLength(1 * 2 + 1);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     }, 30000);
     test("league 1 status", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
@@ -819,6 +827,8 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("titlebar-filter"));
       mutateDropDown("l1statuses", "Rostered");
       expect(screen.getAllByRole("row")).toHaveLength(4 * 2 + 1);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     }, 30000);
     test("league 2 status", async () => {
       axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
@@ -830,6 +840,23 @@ describe("Player", () => {
       fireEvent.click(screen.getByTestId("titlebar-filter"));
       mutateDropDown("l2statuses", "Available");
       expect(screen.getAllByRole("row")).toHaveLength(3 * 2 + 1);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
+    }, 30000);
+    test("multiple filters", async () => {
+      axios.get.mockImplementationOnce(() => Promise.resolve({ data: players }));
+      render(<TestWrapper />);
+      expect(getSpy).toHaveBeenCalledTimes(7);
+      expect(screen.getByText("Loading Players...")).toBeVisible();
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
+      expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay * 2 + 1);
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("l1statuses", "Rostered");
+      fireEvent.click(screen.getByTestId("titlebar-filter"));
+      mutateDropDown("l2statuses", "Available");
+      expect(screen.getAllByRole("row")).toHaveLength(1 * 2 + 1);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     }, 30000);
   });
 });

@@ -50,6 +50,7 @@ const stableSort = (array, comparator, order, orderBy) => {
  * @param {func}   toolbarProps.addProps.handleClose     Function for handling a close event for the add window.
  * @param {func}   toolbarProps.filterProps.buildWindow  Function for building the filter window.
  * @param {func}   toolbarProps.filterProps.handleClose  Function for handling a close event for the filter window.
+ * @param {bool}   toolbarProps.filterProps.isFiltered   Bool that indicates if there are already filters in place (changes icon).
  * @param {func}   toolbarProps.searchProps.handleSearch Function that is kicked off anytime the value of the searchbox is modified.
  * @param {string} toolbarProps.searchProps.placeholder  The text that will show in the searchbox until a search string is entered.
  * @param {string} toolbarProps.title                    The title for the parent table.
@@ -185,7 +186,7 @@ ParentTable.propTypes = {
   sortComparator: PropTypes.func.isRequired,
   toolbarProps: PropTypes.shape({
     addProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
-    filterProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired }),
+    filterProps: PropTypes.shape({ buildDialog: PropTypes.func.isRequired, handleClose: PropTypes.func.isRequired, isFiltered: PropTypes.bool }),
     searchProps: PropTypes.shape({ handleSearch: PropTypes.func.isRequired, placeholder: PropTypes.string.isRequired }),
     title: PropTypes.string.isRequired,
   }),
