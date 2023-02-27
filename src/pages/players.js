@@ -262,7 +262,7 @@ const Players = () => {
               toolbarProps={{
                 addProps: { buildDialog: buildEdit, handleClose: onRowAdd },
                 filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange, isFiltered: isFiltered },
-                searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" },
+                searchProps: { handleSearch: searchbarChangeHandler, initialValue: filters.name, placeholder: "Search Player by Name" },
                 title: "Players",
               }}
               values={filteredPlayers}
