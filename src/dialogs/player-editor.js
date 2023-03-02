@@ -97,7 +97,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const [age, setAge] = React.useState(newPlayer.age);
   const [bhqId, setBhqId] = React.useState(newPlayer.bhqId);
-  const [draftedPercentage, setDraftedPercentage] = React.useState(newPlayer.draftedPercentage);
+  const [draftedPercentage, setDraftedPercentage] = React.useState((newPlayer.draftedPercentage * 100).toFixed(0));
   const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
   const isEdit = newPlayer.id !== undefined;
@@ -152,17 +152,11 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const draftInfoContent = (
     <>
       {buildNumberField("draftRank", "Draft Rank", (value) => setDraftRank(value < 1 ? 1 : value > 9999 ? 9999 : value), draftRank, { min: 1, max: 9999 })}
-      {buildNumberField(
-        "draftedPercentage",
-        "Drafted %",
-        (value) => setDraftedPercentage(value < 0 ? 0 : value > 100 ? 100 : value),
-        (draftedPercentage * 100).toFixed(0),
-        {
-          endadornment: <InputAdornment position="end">%</InputAdornment>,
-          min: 0,
-          max: 100,
-        }
-      )}
+      {buildNumberField("draftedPercentage", "Drafted %", (value) => setDraftedPercentage(value < 0 ? 0 : value > 100 ? 100 : value), draftedPercentage, {
+        endadornment: <InputAdornment position="end">%</InputAdornment>,
+        min: 0,
+        max: 100,
+      })}
     </>
   );
   const fantasyInfoContent = (

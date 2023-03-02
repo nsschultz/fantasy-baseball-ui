@@ -15,7 +15,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 FROM dev as code
 COPY ["package.json", "package-lock.json", "./"]
-RUN npm ci
+RUN --mount=type=cache,target=/app/node_modules npm ci
 COPY . .
 
 FROM code as ci
