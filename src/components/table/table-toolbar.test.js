@@ -16,6 +16,19 @@ describe("TableToolbar", () => {
       expect(screen.getByText("MyTitle")).toBeVisible();
       expect(screen.getByRole("textbox")).toBeVisible();
       expect(screen.getAllByRole("button").length).toEqual(2);
+      expect(screen.getByTestId("FilterAltOutlinedIcon")).toBeVisible();
+      expect(screen.queryByTestId("FilterAltIcon")).toBeFalsy();
+    });
+    test("with filter already applied", () => {
+      const addProps = { buildDialog: (e) => e, handleClose: () => {} };
+      const filterProps = { buildDialog: (e) => e, handleClose: () => {}, isFiltered: true };
+      const searchProps = { handleSearch: (e) => e, placeholder: "MyPlaceHolder" };
+      render(<TestWrapper addProps={addProps} filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
+      expect(screen.getByText("MyTitle")).toBeVisible();
+      expect(screen.getByRole("textbox")).toBeVisible();
+      expect(screen.getAllByRole("button").length).toEqual(2);
+      expect(screen.queryByTestId("FilterAltOutlinedIcon")).toBeFalsy();
+      expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     });
     test("without any extras", () => {
       render(<TestWrapper title="MyTitle" />);

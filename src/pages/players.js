@@ -24,6 +24,7 @@ const Players = () => {
   const isMountedRef = React.useRef(null);
   const filters = useSelector((state) => state.playerFilter.value);
   const [filteredPlayers, setFilteredPlayers] = React.useState([]);
+  const [isFiltered, setIsFiltered] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const [leagusStatuses, setLeagueStatuses] = React.useState([]);
   const [message, setMessage] = React.useState("");
@@ -46,7 +47,7 @@ const Players = () => {
     { field: "league1", format: (value) => leagusStatuses[value], title: "League #1 Status" },
     { field: "league2", format: (value) => leagusStatuses[value], title: "League #2 Status" },
     { align: "right", field: "draftRank", title: "Draft Rank" },
-    { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
+    { align: "right", field: "draftedPercentage", format: (value) => `${(value * 100).toFixed(0)}%`, title: "Drafted %" },
   ];
   const columnsBattingStats = [
     { field: "statsType", format: (value) => statsType[value], title: "" },
@@ -199,6 +200,7 @@ const Players = () => {
     if (filters.statuses.length > 0) actions.push((player) => filters.statuses.some((v) => convertToNumber(v) === player.status));
     if (filters.teams.length > 0) actions.push((player) => filters.teams.some((v) => v.code === player.team.code));
     if (filters.types.length > 0) actions.push((player) => filters.types.some((v) => convertToNumber(v) === player.type));
+    setIsFiltered(actions.length > 1 || (actions.length === 1 && !filters.name));
     setFilteredPlayers(actions.length === 0 ? players : players.filter((player) => actions.length === actions.filter((filter) => filter(player)).length));
   };
   const onRowAdd = (player, onClose) => {
@@ -259,8 +261,8 @@ const Players = () => {
               sortComparator={playerDefaultComparator}
               toolbarProps={{
                 addProps: { buildDialog: buildEdit, handleClose: onRowAdd },
-                filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange },
-                searchProps: { handleSearch: searchbarChangeHandler, placeholder: "Search Player by Name" },
+                filterProps: { buildDialog: buildFilter, handleClose: onHandleFilterChange, isFiltered: isFiltered },
+                searchProps: { handleSearch: searchbarChangeHandler, initialValue: filters.name, placeholder: "Search Player by Name" },
                 title: "Players",
               }}
               values={filteredPlayers}

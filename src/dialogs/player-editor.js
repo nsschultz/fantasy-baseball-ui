@@ -1,4 +1,4 @@
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, MenuItem, Typography } from "@mui/material";
 import { buildPositionList, buildPositionMap, isChildPosition } from "../funcs/position-helper";
 import { buildTeamDisplay, buildTeamMap } from "../funcs/team-helper";
 
@@ -36,6 +36,7 @@ const buildInputField = (field, label, handleOnChange, defaultValue, type, input
     disabled={disabled}
     fullWidth
     id={field}
+    InputProps={inputProps}
     inputProps={inputProps}
     label={label}
     onChange={(event) => handleOnChange(event.target.value)}
@@ -71,7 +72,7 @@ const convertToNumber = (val) => parseInt(val, 10);
 const fixPlayer = (player) => {
   player.age = convertToNumber(player.age);
   player.bhqId = convertToNumber(player.bhqId);
-  player.draftedPercentage = parseFloat(player.draftedPercentage);
+  player.draftedPercentage = convertToNumber(player.draftedPercentage) / 100;
   player.draftRank = convertToNumber(player.draftRank);
   player.league1 = convertToNumber(player.league1);
   player.league2 = convertToNumber(player.league2);
@@ -151,11 +152,17 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const draftInfoContent = (
     <>
       {buildNumberField("draftRank", "Draft Rank", (value) => setDraftRank(value < 1 ? 1 : value > 9999 ? 9999 : value), draftRank, { min: 1, max: 9999 })}
-      {buildNumberField("draftedPercentage", "Drafted %", (value) => setDraftedPercentage(value < 0 ? 0 : value > 1 ? 1 : value), draftedPercentage, {
-        min: 0,
-        max: 1,
-        step: 0.01,
-      })}
+      {buildNumberField(
+        "draftedPercentage",
+        "Drafted %",
+        (value) => setDraftedPercentage(value < 0 ? 0 : value > 100 ? 100 : value),
+        (draftedPercentage * 100).toFixed(0),
+        {
+          endadornment: <InputAdornment position="end">%</InputAdornment>,
+          min: 0,
+          max: 100,
+        }
+      )}
     </>
   );
   const fantasyInfoContent = (

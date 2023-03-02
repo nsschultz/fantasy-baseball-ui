@@ -14,10 +14,10 @@ const PlayerDeleter = ({ onClose, open, player }) => (
         <DialogContentText>{`Are you sure you want to delete player: ${player.name}?`}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" onClick={() => onClose(player)} variant="contained">
+        <Button color="secondary" onClick={() => onClose(player)} variant="contained">
           Yes
         </Button>
-        <Button color="secondary" onClick={() => onClose()} variant="contained">
+        <Button color="primary" onClick={() => onClose()} variant="contained">
           No
         </Button>
       </DialogActions>

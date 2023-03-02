@@ -11,7 +11,7 @@ const items = [
   { href: "/app/import-export-data", icon: IntegrationIcon, title: "Integrations" },
 ];
 const content = (
-  <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+  <Box sx={{ display: "flex", flexDirection: "column" }}>
     <Box sx={{ padding: 2 }}>
       <List>
         {items.map((item) => (
@@ -45,7 +45,7 @@ const Sidebar = ({ onMobileClose, openMobile }) => (
       anchor="left"
       data-testid="sidebar-desktop-drawer"
       open
-      PaperProps={{ sx: { height: "calc(100% - 64px)", top: 64, width: 192 } }}
+      PaperProps={{ sx: { height: "calc(100% - 69px)", top: 69, width: 192 } }}
       sx={{ display: { lg: "block", xs: "none" } }}
       variant="persistent"
     >
