@@ -19,10 +19,10 @@ RUN --mount=type=cache,target=/app/node_modules npm ci
 COPY . .
 
 FROM code as ci
-RUN npm run ci
+RUN --mount=type=cache,target=/app/node_modules npm run ci
 
 FROM code as build
-RUN npm run build
+RUN --mount=type=cache,target=/app/node_modules npm run build
 
 FROM nginx:1.23.2
 WORKDIR /usr/share/nginx/html/
