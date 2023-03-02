@@ -281,7 +281,7 @@ const mutatePlayer = (player) => {
   mutatePlayerStatus("League #1 Status", player.league1, "Rostered", lookups.leagusStatuses);
   mutatePlayerStatus("League #2 Status", player.league2, "Unavailable", lookups.leagusStatuses);
   fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 20 } });
-  fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 0.07 } });
+  fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 7 } });
   if (player.id) {
     expect(screen.getByLabelText("Type")).toHaveAttribute("aria-disabled");
     expect(screen.getByLabelText("BHQ ID")).toBeDisabled();

@@ -47,7 +47,7 @@ const Players = () => {
     { field: "league1", format: (value) => leagusStatuses[value], title: "League #1 Status" },
     { field: "league2", format: (value) => leagusStatuses[value], title: "League #2 Status" },
     { align: "right", field: "draftRank", title: "Draft Rank" },
-    { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
+    { align: "right", field: "draftedPercentage", format: (value) => `${(value * 100).toFixed(0)}%`, title: "Drafted %" },
   ];
   const columnsBattingStats = [
     { field: "statsType", format: (value) => statsType[value], title: "" },
