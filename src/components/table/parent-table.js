@@ -114,7 +114,7 @@ const ParentTable = ({ childProps, deleteProps, description, editProps, columns,
 
   return (
     <>
-      <Paper sx={{ overflow: "hidden", width: "100%" }}>
+      <Paper elevation={5} sx={{ overflow: "hidden", width: "100%" }}>
         {toolbarProps ? (
           <TableToolbar
             addProps={toolbarProps.addProps}
