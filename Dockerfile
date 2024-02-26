@@ -1,18 +1,17 @@
-# syntax=docker/dockerfile:1
 FROM node:19.1.0 as dev
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 FROM dev as code
 COPY ["package.json", "package-lock.json", "./"]
-RUN --mount=type=cache,target=/app/node_modules npm ci
+RUN npm ci
 COPY . .
 
 FROM code as ci
-RUN --mount=type=cache,target=/app/node_modules npm run ci
+RUN npm run ci
 
 FROM code as build
-RUN --mount=type=cache,target=/app/node_modules npm run build
+RUN npm run build
 
 FROM nginx:1.23.2
 WORKDIR /usr/share/nginx/html/
