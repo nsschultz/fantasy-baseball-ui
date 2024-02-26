@@ -77,7 +77,7 @@ const PlayerFilter = ({ lookups, onClose, open }) => {
       {buildMultipleSelectField(
         {
           label: "Status(es)",
-          listItemBuilder: (lookup, key) => lookup[key],
+          listItemBuilder: (lookup, key) => (lookup[key] ? lookup[key] : "[default]"),
           textValueBuilder: () => filters.statuses.map((t) => lookups.playerStatuses[t]).join(),
         },
         "statuses",

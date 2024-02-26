@@ -1,9 +1,0 @@
-{
-  "recommendations": [
-    "amatiasq.sort-imports",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "christian-kohler.npm-intellisense",
-    "planbcoding.vscode-react-refactor"
-  ]
-}
