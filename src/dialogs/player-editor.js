@@ -25,7 +25,7 @@ const samplePlayer = {
 };
 
 const buildDefaultSelectField = (field, label, handleOnChange, defaultValue, lookup, disabled) =>
-  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (lookup, key) => lookup[key], disabled);
+  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (lookup, key) => (lookup[key] ? lookup[key] : "[default]"), disabled);
 const buildGrid = (key, title, content) => (
   <Grid item key={key} lg={3} md={6} xs={12}>
     <CustomCard title={title} content={content} />

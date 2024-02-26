@@ -1,41 +1,9 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {
-      "label": "build",
-      "command": "npm",
-      "type": "process",
-      "args": ["run", "build"],
-      "problemMatcher": "$msCompile"
-    },
-
-    {
-      "label": "restore",
-      "command": "npm",
-      "type": "process",
-      "args": ["ci"],
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "run",
-      "command": "npm",
-      "type": "process",
-      "args": ["run", "start"],
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "test",
-      "command": "npm",
-      "type": "process",
-      "args": ["run", "test"],
-      "problemMatcher": "$msCompile"
-    },
-    {
-      "label": "test-and-scan",
-      "command": "npm",
-      "type": "process",
-      "args": ["run", "ci"],
-      "problemMatcher": "$msCompile"
-    }
+    { "label": "build", "command": "npm", "type": "process", "args": ["run", "build"], "problemMatcher": "$msCompile" },
+    { "label": "restore", "command": "npm", "type": "process", "args": ["ci"], "problemMatcher": "$msCompile" },
+    { "label": "run", "command": "npm", "type": "process", "args": ["run", "start"], "problemMatcher": "$msCompile" },
+    { "label": "test", "command": "npm", "type": "process", "args": ["run", "test"], "problemMatcher": "$msCompile" }
   ]
 }

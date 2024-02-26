@@ -1,0 +1,20 @@
+{
+  "name": "node-ui",
+  "dockerComposeFile": "../.docker-compose/docker-compose-dev.yaml",
+  "service": "ui",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "amatiasq.sort-imports",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "christian-kohler.npm-intellisense",
+        "planbcoding.vscode-react-refactor",
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install -g npm-check-updates@16.14.15"
+}

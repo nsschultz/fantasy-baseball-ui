@@ -1,9 +1,13 @@
 # build files
+
 build/
 node_modules/
+
 # files not needed for build
-_deploy/
-_dev/
+
+.deploy/
+.devcontainer/
+.docker-compose/
 .git/
 .vscode/
 .dockerignore
@@ -12,7 +16,9 @@ Dockerfile
 Jenkinsfile
 LICENSE
 README.md
+
 # scanning data
+
 .scannerwork/
 coverage/
 reports/
