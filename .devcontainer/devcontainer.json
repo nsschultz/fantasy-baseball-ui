@@ -12,7 +12,9 @@
         "christian-kohler.npm-intellisense",
         "planbcoding.vscode-react-refactor",
         "ms-azuretools.vscode-docker",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
       ]
     }
   },
