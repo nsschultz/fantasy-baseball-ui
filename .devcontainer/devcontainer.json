@@ -18,5 +18,5 @@
       ]
     }
   },
-  "postCreateCommand": "npm install -g npm-check-updates@16.14.15"
+  "postCreateCommand": "npm install -g npm-check-updates@16.14.15 && npm ci"
 }
