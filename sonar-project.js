@@ -6,6 +6,7 @@ scanner(
     token: "<<SONAR_TOKEN>>",
     options: {
       "sonar.projectKey": "nsschultz_fantasy-baseball-ui",
+      "sonar.organization": "nsschultz",
       "sonar.sources": "./src",
       "sonar.exclusions": "**/*.test.js, **/index.js, **/reportWebVitals.js, **/setupTests.js",
       "sonar.tests": "./src",
