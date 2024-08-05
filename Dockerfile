@@ -15,9 +15,6 @@ COPY ["package.json", "package-lock.json", "./"]
 RUN npm ci
 COPY . .
 
-FROM code as ci
-RUN npm run ci
-
 FROM code as build
 RUN npm run build
 
