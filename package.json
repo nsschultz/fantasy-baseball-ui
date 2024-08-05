@@ -32,16 +32,18 @@
     "eslint-plugin-jest": "^27.1.7",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-sonarjs": "^1.0.4",
     "eslint-plugin-testing-library": "^5.9.1",
     "jest": "^29.3.1",
     "prettier": "2.8.1"
   },
   "scripts": {
     "build": "react-scripts build",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test && npm run sonar",
     "lint": "eslint src",
+    "sonar": "node sonar-project.js",
     "start": "chmod +x ./env.sh && ./env.sh && cp env-config.js public/ && react-scripts start",
-    "test": "CI=true react-scripts test --coverage --detectOpenHandles"
+    "test": "CI=true react-scripts test --coverage --testResultsProcessor jest-sonar-reporter --detectOpenHandles"
   },
   "eslintConfig": {
     "extends": [
@@ -63,5 +65,10 @@
   },
   "jest": {
     "clearMocks": true
+  },
+  "jestSonar": {
+    "reportPath": "reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
   }
 }
