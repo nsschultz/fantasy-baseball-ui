@@ -12,9 +12,11 @@
         "christian-kohler.npm-intellisense",
         "planbcoding.vscode-react-refactor",
         "ms-azuretools.vscode-docker",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
       ]
     }
   },
-  "postCreateCommand": "npm install -g npm-check-updates@16.14.15"
+  "postCreateCommand": "npm install -g npm-check-updates@16.14.15 && npm ci"
 }
