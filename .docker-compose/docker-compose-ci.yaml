@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       target: dev
     restart: always
-    command: npm ci && npm run ci
+    command: npm run ci
     environment:
       - PLAYER_API_URL=http://localhost:5545
       - POSITION_API_URL=http://localhost:5555

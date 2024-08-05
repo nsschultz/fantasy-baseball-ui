@@ -10,10 +10,15 @@ RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribu
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
-FROM dev as build
+FROM dev as code
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm ci
 COPY . .
+
+FROM code as ci
+RUN npm run ci
+
+FROM code as build
 RUN npm run build
 
 FROM nginx:1.23.2
