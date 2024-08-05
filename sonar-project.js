@@ -2,7 +2,8 @@ const scanner = require("sonarqube-scanner");
 
 scanner(
   {
-    serverUrl: "http://sonarqube.schultz.local/",
+    serverUrl: "https://sonarcloud.io/",
+    token: "<<SONAR_TOKEN>>",
     options: {
       "sonar.projectKey": "fantasy-baseball-ui",
       "sonar.sources": "./src",

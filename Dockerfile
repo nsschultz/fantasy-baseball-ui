@@ -1,4 +1,5 @@
 FROM node:19.1.0 as dev
+RUN npm install -g sonarqube-scanner@4.0.1
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
