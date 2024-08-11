@@ -11,7 +11,7 @@ import { StyledTextField } from "../components/styled/styled-text-field";
 
 const samplePlayer = {
   age: 0,
-  bhqId: 0,
+  mlbAmId: 0,
   draftedPercentage: 0,
   draftRank: 9999,
   firstName: "",
@@ -71,7 +71,7 @@ const buildTextField = (field, label, handleOnChange, defaultValue) => buildInpu
 const convertToNumber = (val) => parseInt(val, 10);
 const fixPlayer = (player) => {
   player.age = convertToNumber(player.age);
-  player.bhqId = convertToNumber(player.bhqId);
+  player.mlbAmId = convertToNumber(player.mlbAmId);
   player.draftedPercentage = convertToNumber(player.draftedPercentage) / 100;
   player.draftRank = convertToNumber(player.draftRank);
   player.league1 = convertToNumber(player.league1);
@@ -96,13 +96,13 @@ const fixPlayer = (player) => {
 const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const [age, setAge] = React.useState(newPlayer.age);
-  const [bhqId, setBhqId] = React.useState(newPlayer.bhqId);
   const [draftedPercentage, setDraftedPercentage] = React.useState((newPlayer.draftedPercentage * 100).toFixed(0));
   const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
   const isEdit = newPlayer.id !== undefined;
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
   const [league1, setLeague1] = React.useState(newPlayer.league1);
+  const [mlbAmId, setMlbAmId] = React.useState(newPlayer.mlbAmId);
   const [league2, setLeague2] = React.useState(newPlayer.league2);
   const [positions, setPositions] = React.useState(newPlayer.positions);
   const [status, setStatus] = React.useState(newPlayer.status);
@@ -161,7 +161,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   );
   const fantasyInfoContent = (
     <>
-      {buildNumberField("bhqId", "BHQ ID", (value) => setBhqId(value < 0 ? 0 : value), bhqId, { min: 0 }, isEdit)}
+      {buildNumberField("mlbAmId", "BHQ ID", (value) => setMlbAmId(value < 0 ? 0 : value), mlbAmId, { min: 0 }, isEdit)}
       {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(value), league1, lookups.leagusStatuses)}
       {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(value), league2, lookups.leagusStatuses)}
     </>
@@ -177,7 +177,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const handleCancel = () => onClose();
   const handleSave = () => {
     newPlayer.age = age;
-    newPlayer.bhqId = bhqId;
+    newPlayer.mlbAmId = mlbAmId;
     newPlayer.draftedPercentage = draftedPercentage;
     newPlayer.draftRank = draftRank;
     newPlayer.name = `${firstName} ${lastName}`;

@@ -65,7 +65,7 @@ class PitchingStats {
 class Player {
   constructor(id, type, fName, lName, age, team, status, pos, l1, l2) {
     this.id = id;
-    this.bhqId = 100 + parseInt(id, 10);
+    this.mlbAmId = 100 + parseInt(id, 10);
     this.type = type;
     this.firstName = fName;
     this.lastName = lName;

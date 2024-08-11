@@ -32,7 +32,7 @@ const existingPositions = [
 ];
 const existingTeam = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
 const existingPlayer = {
-  bhqId: 9999,
+  mlbAmId: 9999,
   id: 1,
   age: 40,
   draftedPercentage: 0.36,
@@ -301,9 +301,9 @@ const onCloseDefault = (newPlayer) => {
     else verifyPlayer(newPlayer, 35, 1234, 0.07, 20, "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
   else expect(newPlayer).toEqual(undefined);
 };
-const verifyPlayer = (player, age, bhqId, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
+const verifyPlayer = (player, age, mlbAmId, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
   expect(player.age).toEqual(age);
-  expect(player.bhqId).toEqual(bhqId);
+  expect(player.mlbAmId).toEqual(mlbAmId);
   expect(player.draftedPercentage).toEqual(draftedPercentage);
   expect(player.draftRank).toEqual(draftRank);
   expect(player.firstName).toEqual(firstName);
@@ -356,7 +356,7 @@ describe("PlayerEditor", () => {
       const onClose = (newPlayer) => {
         count++;
         expect(newPlayer.age).toEqual(0);
-        expect(newPlayer.bhqId).toEqual(0);
+        expect(newPlayer.mlbAmId).toEqual(0);
         expect(newPlayer.draftedPercentage).toEqual(0);
         expect(newPlayer.draftRank).toEqual(1);
       };

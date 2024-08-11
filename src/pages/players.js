@@ -37,7 +37,7 @@ const Players = () => {
   const [severity, setSeverity] = React.useState("success");
   const [teams, setTeams] = React.useState([]);
   const columns = [
-    { align: "right", field: "bhqId", title: "BHQ ID" },
+    { align: "right", field: "mlbAmId", title: "BHQ ID" },
     { field: "name", sortComparator: playerNameComparator, title: "Name" },
     { align: "right", field: "age", title: "Age" },
     { field: "type", format: (value) => playerTypes[value], title: "Type" },
