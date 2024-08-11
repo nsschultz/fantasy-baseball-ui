@@ -161,7 +161,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   );
   const fantasyInfoContent = (
     <>
-      {buildNumberField("mlbAmId", "BHQ ID", (value) => setMlbAmId(value < 0 ? 0 : value), mlbAmId, { min: 0 }, isEdit)}
+      {buildNumberField("mlbAmId", "MLBAMID", (value) => setMlbAmId(value < 0 ? 0 : value), mlbAmId, { min: 0 }, isEdit)}
       {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(value), league1, lookups.leagusStatuses)}
       {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(value), league2, lookups.leagusStatuses)}
     </>

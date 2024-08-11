@@ -284,11 +284,11 @@ const mutatePlayer = (player) => {
   fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 7 } });
   if (player.id) {
     expect(screen.getByLabelText("Type")).toHaveAttribute("aria-disabled");
-    expect(screen.getByLabelText("BHQ ID")).toBeDisabled();
+    expect(screen.getByLabelText("MLBAMID")).toBeDisabled();
     mutateDropDown("Position(s)", "2B,SS", "Outfielder");
   } else {
     mutatePlayerStatus("Type", player.type, "Pitcher", lookups.playerTypes);
-    fireEvent.change(screen.getByLabelText("BHQ ID"), { target: { value: 1234 } });
+    fireEvent.change(screen.getByLabelText("MLBAMID"), { target: { value: 1234 } });
     mutateDropDown("Position(s)", "​", "Starting Pitcher");
   }
 };
@@ -362,7 +362,7 @@ describe("PlayerEditor", () => {
       };
       render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Age"), { target: { value: -35 } });
-      fireEvent.change(screen.getByLabelText("BHQ ID"), { target: { value: -1234 } });
+      fireEvent.change(screen.getByLabelText("MLBAMID"), { target: { value: -1234 } });
       fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: -20 } });
       fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: -0.07 } });
       fireEvent.click(screen.getByText("Save"));
