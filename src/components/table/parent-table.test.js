@@ -11,17 +11,17 @@ let editCount = 0;
 const defaultRowDisplay = 10;
 const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
 const rows = [
-  { id: 10, firstName: "Nick", lastName: "Schultz", name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, draftedPercentage: 0 },
-  { id: 11, firstName: "Annie", lastName: "Schultz", name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, draftedPercentage: 0 },
-  { id: 12, firstName: "James", lastName: "Schultz", name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, draftedPercentage: 1 },
-  { id: 13, firstName: "Samantha", lastName: "Schultz", name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, draftedPercentage: 0.99 },
-  { id: 14, firstName: "Ryan", lastName: "Braun", name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, draftedPercentage: 0.08 },
-  { id: 15, firstName: "Robin", lastName: "Yount", name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, draftedPercentage: 0.19 },
-  { id: 16, firstName: "Paul", lastName: "Molitor", name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, draftedPercentage: 0.04 },
-  { id: 17, firstName: "Rollie", lastName: "Fingers", name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, draftedPercentage: 0.34 },
-  { id: 18, firstName: "Hank", lastName: "Aaron", name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, draftedPercentage: 0.44 },
-  { id: 19, firstName: "Ben", lastName: "Sheets", name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, draftedPercentage: 0.15 },
-  { id: 20, firstName: "Bob", lastName: "Wickman", name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, draftedPercentage: 0.27 },
+  { id: 10, firstName: "Nick", lastName: "Schultz", name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, averageDraftPick: 0 },
+  { id: 11, firstName: "Annie", lastName: "Schultz", name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, averageDraftPick: 0 },
+  { id: 12, firstName: "James", lastName: "Schultz", name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, averageDraftPick: 1 },
+  { id: 13, firstName: "Samantha", lastName: "Schultz", name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, averageDraftPick: 0.99 },
+  { id: 14, firstName: "Ryan", lastName: "Braun", name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, averageDraftPick: 0.08 },
+  { id: 15, firstName: "Robin", lastName: "Yount", name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, averageDraftPick: 0.19 },
+  { id: 16, firstName: "Paul", lastName: "Molitor", name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, averageDraftPick: 0.04 },
+  { id: 17, firstName: "Rollie", lastName: "Fingers", name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, averageDraftPick: 0.34 },
+  { id: 18, firstName: "Hank", lastName: "Aaron", name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, averageDraftPick: 0.44 },
+  { id: 19, firstName: "Ben", lastName: "Sheets", name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, averageDraftPick: 0.15 },
+  { id: 20, firstName: "Bob", lastName: "Wickman", name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, averageDraftPick: 0.27 },
 ];
 const teams = { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" };
 
@@ -45,7 +45,7 @@ beforeEach(
       { align: "right", field: "age", title: "Age" },
       { field: "team", format: (value) => teams[value], title: "Team" },
       { field: "type", format: (value) => playerTypes[value], title: "Type" },
-      { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
+      { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
     ])
 );
 beforeEach(() => (deleteCount = 0));
@@ -109,7 +109,7 @@ describe("ParentTable", () => {
     });
     test("sort where there is a match", () => {
       render(<TestWrapper />);
-      fireEvent.click(screen.getByText("Drafted %"));
+      fireEvent.click(screen.getByText("ADP"));
       expect(screen.getAllByRole("row")[1]).toHaveTextContent("Schultz, Nick");
       expect(screen.getAllByRole("row")[10]).toHaveTextContent("Schultz, Samantha");
     });

@@ -35,7 +35,7 @@ const existingPlayer = {
   mlbAmId: 9999,
   id: 1,
   age: 40,
-  draftedPercentage: 0.36,
+  averageDraftPick: 0.36,
   draftRank: 10,
   firstName: "Nick",
   lastName: "Schultz",
@@ -281,7 +281,7 @@ const mutatePlayer = (player) => {
   mutatePlayerStatus("League #1 Status", player.league1, "Rostered", lookups.leagusStatuses);
   mutatePlayerStatus("League #2 Status", player.league2, "Unavailable", lookups.leagusStatuses);
   fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 20 } });
-  fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 7 } });
+  fireEvent.change(screen.getByLabelText("ADP"), { target: { value: 7 } });
   if (player.id) {
     expect(screen.getByLabelText("Type")).toHaveAttribute("aria-disabled");
     expect(screen.getByLabelText("MLBAMID")).toBeDisabled();
@@ -297,14 +297,14 @@ const onCloseDefault = (newPlayer) => {
   count++;
   if (hasExisting) verifyPlayer(existingPlayer, 40, 9999, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
   if (hasNew)
-    if (hasExisting) verifyPlayer(newPlayer, 35, 9999, 0.07, 20, "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
-    else verifyPlayer(newPlayer, 35, 1234, 0.07, 20, "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
+    if (hasExisting) verifyPlayer(newPlayer, 35, 9999, 7, 20, "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
+    else verifyPlayer(newPlayer, 35, 1234, 7, 20, "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
   else expect(newPlayer).toEqual(undefined);
 };
-const verifyPlayer = (player, age, mlbAmId, draftedPercentage, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
+const verifyPlayer = (player, age, mlbAmId, averageDraftPick, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
   expect(player.age).toEqual(age);
   expect(player.mlbAmId).toEqual(mlbAmId);
-  expect(player.draftedPercentage).toEqual(draftedPercentage);
+  expect(player.averageDraftPick).toEqual(averageDraftPick);
   expect(player.draftRank).toEqual(draftRank);
   expect(player.firstName).toEqual(firstName);
   expect(player.lastName).toEqual(lastName);
@@ -357,26 +357,26 @@ describe("PlayerEditor", () => {
         count++;
         expect(newPlayer.age).toEqual(0);
         expect(newPlayer.mlbAmId).toEqual(0);
-        expect(newPlayer.draftedPercentage).toEqual(0);
+        expect(newPlayer.averageDraftPick).toEqual(1);
         expect(newPlayer.draftRank).toEqual(1);
       };
       render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Age"), { target: { value: -35 } });
       fireEvent.change(screen.getByLabelText("MLBAMID"), { target: { value: -1234 } });
       fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: -20 } });
-      fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: -0.07 } });
+      fireEvent.change(screen.getByLabelText("ADP"), { target: { value: -0.07 } });
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });
     test("above the max", () => {
       const onClose = (newPlayer) => {
         count++;
-        expect(newPlayer.draftedPercentage).toEqual(1);
+        expect(newPlayer.averageDraftPick).toEqual(9999);
         expect(newPlayer.draftRank).toEqual(9999);
       };
       render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 1234567890 } });
-      fireEvent.change(screen.getByLabelText("Drafted %"), { target: { value: 1234567890 } });
+      fireEvent.change(screen.getByLabelText("ADP"), { target: { value: 1234567890 } });
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
     });

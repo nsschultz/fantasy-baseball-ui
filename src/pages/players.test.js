@@ -74,7 +74,7 @@ class Player {
     this.status = status;
     this.positions = pos;
     this.draftRank = id;
-    this.draftedPercentage = 1 - parseInt(id, 10) / 100;
+    this.averageDraftPick = 1 - parseInt(id, 10) / 100;
     this.league1 = l1;
     this.league2 = l2;
     this.battingStats = [new BattingStats(1), new BattingStats(2), new BattingStats(3)];
