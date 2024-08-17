@@ -46,7 +46,6 @@ const Players = () => {
     { field: "status", format: (value) => playerStatuses[value], title: "Status" },
     { field: "league1", format: (value) => leagusStatuses[value], title: "League #1 Status" },
     { field: "league2", format: (value) => leagusStatuses[value], title: "League #2 Status" },
-    { align: "right", field: "draftRank", title: "Draft Rank" },
     { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
   ];
   const columnsBattingStats = [

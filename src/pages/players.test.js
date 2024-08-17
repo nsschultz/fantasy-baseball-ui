@@ -73,7 +73,6 @@ class Player {
     this.team = team;
     this.status = status;
     this.positions = pos;
-    this.draftRank = id;
     this.averageDraftPick = 1 - parseInt(id, 10) / 100;
     this.league1 = l1;
     this.league2 = l2;
