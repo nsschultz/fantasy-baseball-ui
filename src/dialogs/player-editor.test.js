@@ -36,7 +36,6 @@ const existingPlayer = {
   id: 1,
   age: 40,
   averageDraftPick: 0.36,
-  draftRank: 10,
   firstName: "Nick",
   lastName: "Schultz",
   name: "Nick Schultz",
@@ -280,7 +279,6 @@ const mutatePlayer = (player) => {
   mutatePlayerStatus("Status", player.status, "Disabled List", lookups.playerStatuses);
   mutatePlayerStatus("League #1 Status", player.league1, "Rostered", lookups.leagusStatuses);
   mutatePlayerStatus("League #2 Status", player.league2, "Unavailable", lookups.leagusStatuses);
-  fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 20 } });
   fireEvent.change(screen.getByLabelText("ADP"), { target: { value: 7 } });
   if (player.id) {
     expect(screen.getByLabelText("Type")).toHaveAttribute("aria-disabled");
@@ -295,17 +293,16 @@ const mutatePlayer = (player) => {
 const mutatePlayerStatus = (label, currentValue, newValue, enums) => mutateDropDown(label, enums[currentValue ?? 0], newValue);
 const onCloseDefault = (newPlayer) => {
   count++;
-  if (hasExisting) verifyPlayer(existingPlayer, 40, 9999, 0.36, 10, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
+  if (hasExisting) verifyPlayer(existingPlayer, 40, 9999, 0.36, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
   if (hasNew)
-    if (hasExisting) verifyPlayer(newPlayer, 35, 9999, 7, 20, "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
-    else verifyPlayer(newPlayer, 35, 1234, 7, 20, "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
+    if (hasExisting) verifyPlayer(newPlayer, 35, 9999, 7, "Annie", "Oppman", 1, 2, newPositionEdit, 1, newTeam, 1);
+    else verifyPlayer(newPlayer, 35, 1234, 7, "Annie", "Oppman", 1, 2, newPositionAdd, 1, newTeam, 2);
   else expect(newPlayer).toEqual(undefined);
 };
-const verifyPlayer = (player, age, mlbAmId, averageDraftPick, draftRank, firstName, lastName, league1, league2, positions, status, team, type) => {
+const verifyPlayer = (player, age, mlbAmId, averageDraftPick, firstName, lastName, league1, league2, positions, status, team, type) => {
   expect(player.age).toEqual(age);
   expect(player.mlbAmId).toEqual(mlbAmId);
   expect(player.averageDraftPick).toEqual(averageDraftPick);
-  expect(player.draftRank).toEqual(draftRank);
   expect(player.firstName).toEqual(firstName);
   expect(player.lastName).toEqual(lastName);
   expect(player.name).toEqual(`${firstName} ${lastName}`);
@@ -358,12 +355,10 @@ describe("PlayerEditor", () => {
         expect(newPlayer.age).toEqual(0);
         expect(newPlayer.mlbAmId).toEqual(0);
         expect(newPlayer.averageDraftPick).toEqual(1);
-        expect(newPlayer.draftRank).toEqual(1);
       };
       render(<TestWrapper onClose={onClose} />);
       fireEvent.change(screen.getByLabelText("Age"), { target: { value: -35 } });
       fireEvent.change(screen.getByLabelText("MLBAMID"), { target: { value: -1234 } });
-      fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: -20 } });
       fireEvent.change(screen.getByLabelText("ADP"), { target: { value: -0.07 } });
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);
@@ -372,10 +367,8 @@ describe("PlayerEditor", () => {
       const onClose = (newPlayer) => {
         count++;
         expect(newPlayer.averageDraftPick).toEqual(9999);
-        expect(newPlayer.draftRank).toEqual(9999);
       };
       render(<TestWrapper onClose={onClose} />);
-      fireEvent.change(screen.getByLabelText("Draft Rank"), { target: { value: 1234567890 } });
       fireEvent.change(screen.getByLabelText("ADP"), { target: { value: 1234567890 } });
       fireEvent.click(screen.getByText("Save"));
       expect(count).toEqual(1);

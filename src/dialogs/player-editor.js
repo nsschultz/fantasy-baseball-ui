@@ -12,8 +12,7 @@ import { StyledTextField } from "../components/styled/styled-text-field";
 const samplePlayer = {
   age: 0,
   mlbAmId: 0,
-  averageDraftPick: 0,
-  draftRank: 9999,
+  averageDraftPick: 9999,
   firstName: "",
   lastName: "",
   league1: 0,
@@ -73,7 +72,6 @@ const fixPlayer = (player) => {
   player.age = convertToNumber(player.age);
   player.mlbAmId = convertToNumber(player.mlbAmId);
   player.averageDraftPick = convertToNumber(player.averageDraftPick);
-  player.draftRank = convertToNumber(player.draftRank);
   player.league1 = convertToNumber(player.league1);
   player.league2 = convertToNumber(player.league2);
   player.status = convertToNumber(player.status);
@@ -97,7 +95,6 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const [age, setAge] = React.useState(newPlayer.age);
   const [averageDraftPick, setAverageDraftPick] = React.useState(newPlayer.averageDraftPick.toFixed(2));
-  const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
   const isEdit = newPlayer.id !== undefined;
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
@@ -150,10 +147,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
     </>
   );
   const draftInfoContent = (
-    <>
-      {buildNumberField("draftRank", "Draft Rank", (value) => setDraftRank(value < 1 ? 1 : value > 9999 ? 9999 : value), draftRank, { min: 1, max: 9999 })}
-      {buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPick)}
-    </>
+    <>{buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPick)}</>
   );
   const fantasyInfoContent = (
     <>
@@ -175,7 +169,6 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
     newPlayer.age = age;
     newPlayer.mlbAmId = mlbAmId;
     newPlayer.averageDraftPick = averageDraftPick;
-    newPlayer.draftRank = draftRank;
     newPlayer.name = `${firstName} ${lastName}`;
     newPlayer.firstName = firstName;
     newPlayer.lastName = lastName;
