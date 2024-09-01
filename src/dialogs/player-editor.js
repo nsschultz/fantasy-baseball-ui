@@ -71,7 +71,9 @@ const convertToNumber = (val) => parseInt(val, 10);
 const fixPlayer = (player) => {
   player.age = convertToNumber(player.age);
   player.mlbAmId = convertToNumber(player.mlbAmId);
-  player.averageDraftPick = convertToNumber(player.averageDraftPick);
+  player.averageDraftPick = convertToNumber(player.averageDraftPick * 100) / 100;
+  player.averageDraftPickMin = convertToNumber(player.averageDraftPickMin);
+  player.averageDraftPickMax = convertToNumber(player.averageDraftPickMax);
   player.league1 = convertToNumber(player.league1);
   player.league2 = convertToNumber(player.league2);
   player.status = convertToNumber(player.status);
@@ -95,6 +97,8 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const [age, setAge] = React.useState(newPlayer.age);
   const [averageDraftPick, setAverageDraftPick] = React.useState(newPlayer.averageDraftPick.toFixed(2));
+  const [averageDraftPickMin, setAverageDraftPickMin] = React.useState(newPlayer.averageDraftPickMin);
+  const [averageDraftPickMax, setAverageDraftPickMax] = React.useState(newPlayer.averageDraftPickMax);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
   const isEdit = newPlayer.id !== undefined;
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
@@ -147,7 +151,11 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
     </>
   );
   const draftInfoContent = (
-    <>{buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPick)}</>
+    <>
+      {buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPick)}
+      {buildNumberField("averageDraftPickMin", "ADP Min", (value) => setAverageDraftPickMin(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPickMin)}
+      {buildNumberField("averageDraftPickMax", "ADP Max", (value) => setAverageDraftPickMax(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPickMax)}
+    </>
   );
   const fantasyInfoContent = (
     <>
@@ -169,6 +177,8 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
     newPlayer.age = age;
     newPlayer.mlbAmId = mlbAmId;
     newPlayer.averageDraftPick = averageDraftPick;
+    newPlayer.averageDraftPickMin = averageDraftPickMin;
+    newPlayer.averageDraftPickMax = averageDraftPickMax;
     newPlayer.name = `${firstName} ${lastName}`;
     newPlayer.firstName = firstName;
     newPlayer.lastName = lastName;
