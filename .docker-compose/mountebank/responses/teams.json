@@ -4,7 +4,7 @@
   { "code": "ATL", "alternativeCode": null, "leagueId": "NL", "city": "Atlanta", "nickname": "Braves" },
   { "code": "BAL", "alternativeCode": null, "leagueId": "AL", "city": "Baltimore", "nickname": "Orioles" },
   { "code": "BOS", "alternativeCode": null, "leagueId": "AL", "city": "Boston", "nickname": "Red Sox" },
-  { "code": "CHC", "alternativeCode": null, "leagueId": "NL", "city": "Chicago", "nickname": "Cubs" },
+  { "code": "CHC", "alternativeCode": "CHI", "leagueId": "NL", "city": "Chicago", "nickname": "Cubs" },
   { "code": "CIN", "alternativeCode": null, "leagueId": "NL", "city": "Cincinnati", "nickname": "Reds" },
   { "code": "CLE", "alternativeCode": null, "leagueId": "AL", "city": "Cleveland", "nickname": "Guardians" },
   { "code": "COL", "alternativeCode": null, "leagueId": "NL", "city": "Colorado", "nickname": "Rockies" },
@@ -29,5 +29,5 @@
   { "code": "TB", "alternativeCode": "TAM", "leagueId": "AL", "city": "Tampa Bay", "nickname": "Rays" },
   { "code": "TEX", "alternativeCode": null, "leagueId": "AL", "city": "Texas", "nickname": "Rangers" },
   { "code": "TOR", "alternativeCode": null, "leagueId": "AL", "city": "Toronto", "nickname": "Blue Jays" },
-  { "code": "WAS", "alternativeCode": null, "leagueId": "NL", "city": "Washington", "nickname": "Nationals" }
+  { "code": "WAS", "alternativeCode": "WSH", "leagueId": "NL", "city": "Washington", "nickname": "Nationals" }
 ]

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, MenuItem, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
 import { buildPositionList, buildPositionMap, isChildPosition } from "../funcs/position-helper";
 import { buildTeamDisplay, buildTeamMap } from "../funcs/team-helper";
 
@@ -11,9 +11,8 @@ import { StyledTextField } from "../components/styled/styled-text-field";
 
 const samplePlayer = {
   age: 0,
-  bhqId: 0,
-  draftedPercentage: 0,
-  draftRank: 9999,
+  mlbAmId: 0,
+  averageDraftPick: 9999,
   firstName: "",
   lastName: "",
   league1: 0,
@@ -71,9 +70,10 @@ const buildTextField = (field, label, handleOnChange, defaultValue) => buildInpu
 const convertToNumber = (val) => parseInt(val, 10);
 const fixPlayer = (player) => {
   player.age = convertToNumber(player.age);
-  player.bhqId = convertToNumber(player.bhqId);
-  player.draftedPercentage = convertToNumber(player.draftedPercentage) / 100;
-  player.draftRank = convertToNumber(player.draftRank);
+  player.mlbAmId = convertToNumber(player.mlbAmId);
+  player.averageDraftPick = convertToNumber(player.averageDraftPick * 100) / 100;
+  player.averageDraftPickMin = convertToNumber(player.averageDraftPickMin);
+  player.averageDraftPickMax = convertToNumber(player.averageDraftPickMax);
   player.league1 = convertToNumber(player.league1);
   player.league2 = convertToNumber(player.league2);
   player.status = convertToNumber(player.status);
@@ -96,13 +96,14 @@ const fixPlayer = (player) => {
 const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const [age, setAge] = React.useState(newPlayer.age);
-  const [bhqId, setBhqId] = React.useState(newPlayer.bhqId);
-  const [draftedPercentage, setDraftedPercentage] = React.useState((newPlayer.draftedPercentage * 100).toFixed(0));
-  const [draftRank, setDraftRank] = React.useState(newPlayer.draftRank);
+  const [averageDraftPick, setAverageDraftPick] = React.useState(newPlayer.averageDraftPick.toFixed(2));
+  const [averageDraftPickMin, setAverageDraftPickMin] = React.useState(newPlayer.averageDraftPickMin);
+  const [averageDraftPickMax, setAverageDraftPickMax] = React.useState(newPlayer.averageDraftPickMax);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
   const isEdit = newPlayer.id !== undefined;
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
   const [league1, setLeague1] = React.useState(newPlayer.league1);
+  const [mlbAmId, setMlbAmId] = React.useState(newPlayer.mlbAmId);
   const [league2, setLeague2] = React.useState(newPlayer.league2);
   const [positions, setPositions] = React.useState(newPlayer.positions);
   const [status, setStatus] = React.useState(newPlayer.status);
@@ -151,17 +152,14 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   );
   const draftInfoContent = (
     <>
-      {buildNumberField("draftRank", "Draft Rank", (value) => setDraftRank(value < 1 ? 1 : value > 9999 ? 9999 : value), draftRank, { min: 1, max: 9999 })}
-      {buildNumberField("draftedPercentage", "Drafted %", (value) => setDraftedPercentage(value < 0 ? 0 : value > 100 ? 100 : value), draftedPercentage, {
-        endadornment: <InputAdornment position="end">%</InputAdornment>,
-        min: 0,
-        max: 100,
-      })}
+      {buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPick)}
+      {buildNumberField("averageDraftPickMin", "ADP Min", (value) => setAverageDraftPickMin(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPickMin)}
+      {buildNumberField("averageDraftPickMax", "ADP Max", (value) => setAverageDraftPickMax(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPickMax)}
     </>
   );
   const fantasyInfoContent = (
     <>
-      {buildNumberField("bhqId", "BHQ ID", (value) => setBhqId(value < 0 ? 0 : value), bhqId, { min: 0 }, isEdit)}
+      {buildNumberField("mlbAmId", "MLBAMID", (value) => setMlbAmId(value < 0 ? 0 : value), mlbAmId, { min: 0 }, isEdit)}
       {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(value), league1, lookups.leagusStatuses)}
       {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(value), league2, lookups.leagusStatuses)}
     </>
@@ -177,9 +175,10 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const handleCancel = () => onClose();
   const handleSave = () => {
     newPlayer.age = age;
-    newPlayer.bhqId = bhqId;
-    newPlayer.draftedPercentage = draftedPercentage;
-    newPlayer.draftRank = draftRank;
+    newPlayer.mlbAmId = mlbAmId;
+    newPlayer.averageDraftPick = averageDraftPick;
+    newPlayer.averageDraftPickMin = averageDraftPickMin;
+    newPlayer.averageDraftPickMax = averageDraftPickMax;
     newPlayer.name = `${firstName} ${lastName}`;
     newPlayer.firstName = firstName;
     newPlayer.lastName = lastName;

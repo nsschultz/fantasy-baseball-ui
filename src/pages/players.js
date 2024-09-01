@@ -37,7 +37,7 @@ const Players = () => {
   const [severity, setSeverity] = React.useState("success");
   const [teams, setTeams] = React.useState([]);
   const columns = [
-    { align: "right", field: "bhqId", title: "BHQ ID" },
+    { align: "right", field: "mlbAmId", title: "MLBAMID" },
     { field: "name", sortComparator: playerNameComparator, title: "Name" },
     { align: "right", field: "age", title: "Age" },
     { field: "type", format: (value) => playerTypes[value], title: "Type" },
@@ -46,8 +46,7 @@ const Players = () => {
     { field: "status", format: (value) => playerStatuses[value], title: "Status" },
     { field: "league1", format: (value) => leagusStatuses[value], title: "League #1 Status" },
     { field: "league2", format: (value) => leagusStatuses[value], title: "League #2 Status" },
-    { align: "right", field: "draftRank", title: "Draft Rank" },
-    { align: "right", field: "draftedPercentage", format: (value) => `${(value * 100).toFixed(0)}%`, title: "Drafted %" },
+    { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
   ];
   const columnsBattingStats = [
     { field: "statsType", format: (value) => statsType[value], title: "" },

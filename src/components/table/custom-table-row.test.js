@@ -6,9 +6,9 @@ import { ThemeProvider } from "@mui/material";
 
 const columns = [
   { field: "name", title: "Name" },
-  { align: "right", field: "draftedPercentage", format: (value) => value.toFixed(2), title: "Drafted %" },
+  { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
 ];
-const values = { id: 10, name: "Schultz, Nick", age: 40, type: 1, draftedPercentage: 0 };
+const values = { id: 10, name: "Schultz, Nick", age: 40, type: 1, averageDraftPick: 0 };
 
 const TestWrapper = ({ childProps, handleDeleteOpen, handleEditOpen }) => (
   <ThemeProvider theme={GlobalTheme()}>

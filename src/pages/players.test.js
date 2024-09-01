@@ -65,7 +65,7 @@ class PitchingStats {
 class Player {
   constructor(id, type, fName, lName, age, team, status, pos, l1, l2) {
     this.id = id;
-    this.bhqId = 100 + parseInt(id, 10);
+    this.mlbAmId = 100 + parseInt(id, 10);
     this.type = type;
     this.firstName = fName;
     this.lastName = lName;
@@ -73,8 +73,7 @@ class Player {
     this.team = team;
     this.status = status;
     this.positions = pos;
-    this.draftRank = id;
-    this.draftedPercentage = 1 - parseInt(id, 10) / 100;
+    this.averageDraftPick = 1 - parseInt(id, 10) / 100;
     this.league1 = l1;
     this.league2 = l2;
     this.battingStats = [new BattingStats(1), new BattingStats(2), new BattingStats(3)];
