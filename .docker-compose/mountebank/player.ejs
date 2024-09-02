@@ -5,7 +5,7 @@
       "responses": [{ "is": { "statusCode": 200, "body": "Healthy" } }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/action/export" } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/action/export" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -21,14 +21,16 @@
     {
       "predicates": [{
         "or": [
-          { "equals": { "method": "POST", "path": "/api/v2/action/upload/projection/batters" } },
-          { "equals": { "method": "POST", "path": "/api/v2/action/upload/projection/pitchers" } }
+          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=1&stats=1" } },
+          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=1&stats=2" } },
+          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=2&stats=1" } },
+          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=2&stats=2" } }
         ]
       }],
       "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "LeagueStatus" } } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/enum-map", "query": { "enumType": "LeagueStatus" } } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -38,7 +40,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "PlayerStatus" } } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/enum-map", "query": { "enumType": "PlayerStatus" } } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -48,7 +50,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "PlayerType" } } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/enum-map", "query": { "enumType": "PlayerType" } } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -58,7 +60,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/enum-map", "query": { "enumType": "StatsType" } } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/enum-map", "query": { "enumType": "StatsType" } } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -68,11 +70,11 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "DELETE", "path": "/api/v2/player" } }],
+      "predicates": [{ "equals": { "method": "DELETE", "path": "/api/v3/player" } }],
       "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/player" } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/player" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -85,7 +87,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "OPTIONS", "path": "/api/v2/player" } }],
+      "predicates": [{ "equals": { "method": "OPTIONS", "path": "/api/v3/player" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 204, 
@@ -98,7 +100,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "POST", "path": "/api/v2/player" } }],
+      "predicates": [{ "equals": { "method": "POST", "path": "/api/v3/player" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -111,11 +113,11 @@
       }]
     },
     {
-      "predicates": [{ "startsWith": { "method": "DELETE", "path": "/api/v2/player/" } }],
+      "predicates": [{ "startsWith": { "method": "DELETE", "path": "/api/v3/player/" } }],
       "responses": [{ "is": { "statusCode": 200, "body": {}, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
     },
     {
-      "predicates": [{ "startsWith": { "method": "OPTIONS", "path": "/api/v2/player/" } }],
+      "predicates": [{ "startsWith": { "method": "OPTIONS", "path": "/api/v3/player/" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 204, 
@@ -128,11 +130,11 @@
       }]
     },
     {
-      "predicates": [{ "startsWith": { "method": "PUT", "path": "/api/v2/player/" } }],
+      "predicates": [{ "startsWith": { "method": "PUT", "path": "/api/v3/player/" } }],
       "responses": [{ "is": { "statusCode": 200, "body": {}, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } }}]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/player/c73f6a3d-af89-4012-b524-6b86d5e7e8e3" } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/player/c73f6a3d-af89-4012-b524-6b86d5e7e8e3" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
@@ -145,7 +147,7 @@
       }]
     },
     {
-      "predicates": [{ "equals": { "method": "GET", "path": "/api/v2/team" } }],
+      "predicates": [{ "equals": { "method": "GET", "path": "/api/v3/team" } }],
       "responses": [{ 
         "is": { 
           "statusCode": 200, 
