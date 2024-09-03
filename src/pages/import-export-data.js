@@ -30,7 +30,7 @@ const ImportExportData = () => {
   const displaySuccessMessage = (message) => createNotification(message, "success");
   const exportOnClick = () => {
     axios
-      .get(`${window.env.PLAYER_API_URL}/api/v2/action/export`, { responseType: "blob" })
+      .get(`${window.env.PLAYER_API_URL}/api/v3/action/export`, { responseType: "blob" })
       .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
       .catch(() => setSnackbar("error", "Failed to export the players"));
   };
@@ -38,7 +38,7 @@ const ImportExportData = () => {
     setIsClearDialogOpen(false);
     if (!shouldClear) return;
     axios
-      .delete(`${window.env.PLAYER_API_URL}/api/v2/player`)
+      .delete(`${window.env.PLAYER_API_URL}/api/v3/player`)
       .then(() => displaySuccessMessage("Successfully cleared the players."))
       .catch(() => displayErrorMessage("Failed to clear the players."));
     displayInfoMessage("Attempting to clear players");
@@ -48,7 +48,7 @@ const ImportExportData = () => {
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
-      .post(`${window.env.PLAYER_API_URL}/api/v2/action/upload/projection/${type}`, formData)
+      .post(`${window.env.PLAYER_API_URL}/api/v3/action/upload/projection/${type}`, formData)
       .then(() => displaySuccessMessage(`Successfully uploaded the ${type} file.`))
       .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
     displayInfoMessage(`Attempting to upload the ${type} file.`);
