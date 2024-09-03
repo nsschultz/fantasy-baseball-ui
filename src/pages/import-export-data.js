@@ -43,17 +43,17 @@ const ImportExportData = () => {
       .catch(() => displayErrorMessage("Failed to clear the players."));
     displayInfoMessage("Attempting to clear players");
   };
-  const onBatterFileChange = (event) => onFileChange(event.target.files[0], "batters");
+  const onBatterFileChange = (event) => onFileChange(event.target.files[0], 1);
   const onFileChange = (file, type) => {
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
-      .post(`${window.env.PLAYER_API_URL}/api/v3/action/upload/projection/${type}`, formData)
+      .post(`${window.env.PLAYER_API_URL}/api/v3/action/upload/stats?player=${type}&stats=2`, formData)
       .then(() => displaySuccessMessage(`Successfully uploaded the ${type} file.`))
       .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
     displayInfoMessage(`Attempting to upload the ${type} file.`);
   };
-  const onPitcherFileChange = (event) => onFileChange(event.target.files[0], "pitchers");
+  const onPitcherFileChange = (event) => onFileChange(event.target.files[0], 2);
   const setSnackbar = (severity, message) => {
     setAlertProps({ message: message, severity: severity });
     setIsSnackbarOpen(true);

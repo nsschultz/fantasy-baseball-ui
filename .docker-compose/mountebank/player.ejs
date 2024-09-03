@@ -20,12 +20,25 @@
     },
     {
       "predicates": [{
-        "or": [
-          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=1&stats=1" } },
-          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=1&stats=2" } },
-          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=2&stats=1" } },
-          { "equals": { "method": "POST", "path": "/api/v3/action/upload/stats?player=2&stats=2" } }
-        ]
+        "equals": { "method": "POST", "path": "/api/v3/action/upload/stats", "query": { "player": "1", "stats": "1" } }
+      }],
+      "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
+    },
+    {
+      "predicates": [{
+        "equals": { "method": "POST", "path": "/api/v3/action/upload/stats", "query": { "player": "1", "stats": "2" } }
+      }],
+      "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
+    },
+    {
+      "predicates": [{
+        "equals": { "method": "POST", "path": "/api/v3/action/upload/stats", "query": { "player": "2", "stats": "1" } }
+      }],
+      "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
+    },
+    {
+      "predicates": [{
+        "equals": { "method": "POST", "path": "/api/v3/action/upload/stats", "query": { "player": "2", "stats": "2" } }
       }],
       "responses": [{ "is": { "statusCode": 200, "headers": { "Access-Control-Allow-Origin": "http://localhost:3000" } } }]
     },
