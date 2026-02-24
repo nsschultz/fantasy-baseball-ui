@@ -114,11 +114,11 @@ const Players = () => {
 
   const addPlayer = (player, onClose) => {
     axios
-      .post(`${window.env.PLAYER_API_URL}/api/v2/player`, player)
+      .post(`${window.env.PLAYER_API_URL}/api/v3/player`, player)
       .then((response) => {
         onClose();
         axios
-          .get(`${window.env.PLAYER_API_URL}/api/v2/player/${response.data}`)
+          .get(`${window.env.PLAYER_API_URL}/api/v3/player/${response.data}`)
           .then((response) => {
             response.data.name = `${response.data.firstName} ${response.data.lastName}`;
             players.push(response.data);
@@ -156,7 +156,7 @@ const Players = () => {
   };
   const deletePlayer = (player) => {
     axios
-      .delete(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`)
+      .delete(`${window.env.PLAYER_API_URL}/api/v3/player/${player.id}`)
       .then(() => {
         const dataUpdate = players.filter((p) => p.id !== player.id);
         setPlayers([...dataUpdate]);
@@ -174,7 +174,7 @@ const Players = () => {
   const getChildRows = (player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
   const getPlayers = () => {
     axios
-      .get(`${window.env.PLAYER_API_URL}/api/v2/player`)
+      .get(`${window.env.PLAYER_API_URL}/api/v3/player`)
       .then((response) => {
         if (isMountedRef.current) {
           response.data.forEach((p) => (p.name = `${p.firstName} ${p.lastName}`));
@@ -217,7 +217,7 @@ const Players = () => {
   const statsSelection = (player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
   const updatePlayer = (player, onClose) => {
     axios
-      .put(`${window.env.PLAYER_API_URL}/api/v2/player/${player.id}`, player)
+      .put(`${window.env.PLAYER_API_URL}/api/v3/player/${player.id}`, player)
       .then(() => {
         const dataUpdate = players.map((p) => (p.id === player.id ? player : p));
         setPlayers([...dataUpdate]);
