@@ -3,5 +3,9 @@
   "[html]": { "editor.defaultFormatter": null },
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "nsschultz",
+    "projectKey": "nsschultz_fantasy-baseball-ui"
+  }
 }
