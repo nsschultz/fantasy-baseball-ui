@@ -1,4 +1,4 @@
-FROM node:19.1.0 as dev
+FROM node:25.7.0 AS dev
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 ENV JAVA_HOME=/usr/lib/jvm/default-java \
     SONAR_VERSION=6.1.0.4477
@@ -10,15 +10,15 @@ RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribu
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
-FROM dev as code
+FROM dev AS code
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm ci
 COPY . .
 
-FROM code as ci
+FROM code AS ci
 RUN npm run ci
 
-FROM code as build
+FROM code AS build
 RUN npm run build
 
 FROM nginx:1.23.2
