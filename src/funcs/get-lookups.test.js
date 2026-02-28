@@ -182,7 +182,7 @@ const validateError = (func) => {
   axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
   return func((response) => expect(response).toEqual([]));
 };
-const validateMissing = (func, url, data) => {
+const validateMissing = (func, url) => {
   func();
   expect(getSpy).not.toHaveBeenCalledWith(url);
 };
@@ -202,7 +202,7 @@ describe("getLeagueStatusEnums", () => {
   const func = getLeagueStatusEnums;
   const url = "player.api.url/api/v3/enum-map?enumType=LeagueStatus";
   test("should get values", () => validateValid(func, url, data));
-  test("should handle missing handler", () => validateMissing(func, url, data));
+  test("should handle missing handler", () => validateMissing(func, url));
   test("should handle errors", () => validateError(func));
 });
 describe("getPlayerStatusEnums", () => {
@@ -210,7 +210,7 @@ describe("getPlayerStatusEnums", () => {
   const func = getPlayerStatusEnums;
   const url = "player.api.url/api/v3/enum-map?enumType=PlayerStatus";
   test("should get values", () => validateValid(func, url, data));
-  test("should handle missing handler", () => validateMissing(func, url, data));
+  test("should handle missing handler", () => validateMissing(func, url));
   test("should handle errors", () => validateError(func));
 });
 describe("getPlayerTypeEnums", () => {
@@ -218,14 +218,14 @@ describe("getPlayerTypeEnums", () => {
   const func = getPlayerTypeEnums;
   const url = "player.api.url/api/v3/enum-map?enumType=PlayerType";
   test("should get values", () => validateValid(func, url, data));
-  test("should handle missing handler", () => validateMissing(func, url, data));
+  test("should handle missing handler", () => validateMissing(func, url));
   test("should handle errors", () => validateError(func));
 });
 describe("getPositions", () => {
   const func = getPositions;
   const url = "position.api.url/api/v1/position";
   test("should get values", () => validateValid(func, url, positions));
-  test("should handle missing handler", () => validateMissing(func, url, positions));
+  test("should handle missing handler", () => validateMissing(func, url));
   test("should handle errors", () => validateError(func));
 });
 describe("getStatsTypeEnums", () => {
@@ -233,13 +233,13 @@ describe("getStatsTypeEnums", () => {
   const func = getStatsTypeEnums;
   const url = "player.api.url/api/v3/enum-map?enumType=StatsType";
   test("should get values", () => validateValid(func, url, data));
-  test("should handle missing handler", () => validateMissing(func, url, data));
+  test("should handle missing handler", () => validateMissing(func, url));
   test("should handle errors", () => validateError(func));
 });
 describe("getTeams", () => {
   const func = getTeams;
   const url = "player.api.url/api/v3/team";
   test("should get values", () => validateValid(func, url, teams));
-  test("should handle missing handler", () => validateMissing(func, url, teams));
+  test("should handle missing handler", () => validateMissing(func, url));
   test("should handle errors", () => validateError(func));
 });
