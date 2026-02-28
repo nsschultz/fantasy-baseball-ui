@@ -180,17 +180,17 @@ const teams = [
 
 const validateError = (func) => {
   axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
-  func((response) => expect(response).toEqual([]));
+  return func((response) => expect(response).toEqual([]));
 };
 const validateMissing = (func, url, data) => {
-  axios.get.mockImplementationOnce(() => Promise.resolve({ data: data }));
   func();
   expect(getSpy).not.toHaveBeenCalledWith(url);
 };
 const validateValid = (func, url, data) => {
   axios.get.mockImplementationOnce(() => Promise.resolve({ data: data }));
-  func((response) => expect(response).toEqual(data));
+  const p = func((response) => expect(response).toEqual(data));
   expect(getSpy).toHaveBeenCalledWith(url);
+  return p;
 };
 
 jest.mock("axios");

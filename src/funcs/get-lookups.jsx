@@ -2,10 +2,12 @@ import axios from "axios";
 
 const getLookupValues = (url, handleResponse) => {
   if (!handleResponse) return;
-  axios
+  // Call axios and handle response; return the promise for easier testing.
+  const p = axios
     .get(url)
     .then((response) => handleResponse(response.data))
     .catch(() => handleResponse([]));
+  return p;
 };
 const getPlayersEnumMap = (enumType, handleResponse) => getLookupValues(`${window.env.PLAYER_API_URL}/api/v3/enum-map?enumType=${enumType}`, handleResponse);
 
