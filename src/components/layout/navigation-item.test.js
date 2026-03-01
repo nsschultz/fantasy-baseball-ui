@@ -4,6 +4,7 @@ import GlobalTheme from "../../global-theme";
 import { MemoryRouter } from "react-router-dom";
 import NavigationItem from "./navigation-item";
 import { People } from "@mui/icons-material";
+import PropTypes from "prop-types";
 import { ThemeProvider } from "@mui/material";
 
 const TestWrapper = ({ href }) => (
@@ -13,6 +14,10 @@ const TestWrapper = ({ href }) => (
     </MemoryRouter>
   </ThemeProvider>
 );
+
+TestWrapper.propTypes = {
+  href: PropTypes.string.isRequired,
+};
 
 describe("NavigationItem", () => {
   describe("should render", () => {

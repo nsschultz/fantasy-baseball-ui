@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import { MemoryRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 import Sidebar from "./sidebar";
 import { ThemeProvider } from "@mui/material";
 
@@ -12,6 +13,10 @@ const TestWrapper = ({ openMobile }) => (
     </MemoryRouter>
   </ThemeProvider>
 );
+
+TestWrapper.propTypes = {
+  openMobile: PropTypes.bool,
+};
 
 describe("Sidebar", () => {
   describe("should render", () => {
