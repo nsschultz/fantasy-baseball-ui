@@ -3,9 +3,13 @@ import { Input, Menu } from "@mui/icons-material";
 
 import Logo from "./logo";
 import Notification from "../notification/notification";
-import PropTypes from "prop-types";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+
+interface TitlebarProps {
+  isLoggedIn: boolean;
+  onOpenMobileNavigation: () => void;
+}
 
 const buildButtons = () => (
   <>
@@ -16,13 +20,7 @@ const buildButtons = () => (
   </>
 );
 
-/**
- * The bar that sits at the top of the screen. Displays different options depending on if the user is logged in or not.
- * @param {bool} isLoggedIn             Boolean that indicates if the user is logged in.
- * @param {func} onOpenMobileNavigation Function that is called on mobile devices to open the menu.
- * @returns A new instance of the Titlebar.
- */
-const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => (
+const Titlebar: React.FC<TitlebarProps> = ({ isLoggedIn, onOpenMobileNavigation }) => (
   <AppBar color="primary" elevation={5}>
     <Toolbar>
       <RouterLink to="/">
@@ -41,5 +39,5 @@ const Titlebar = ({ isLoggedIn, onOpenMobileNavigation }) => (
     </Toolbar>
   </AppBar>
 );
-Titlebar.propTypes = { isLoggedIn: PropTypes.bool.isRequired, onOpenMobileNavigation: PropTypes.func.isRequired };
+
 export default Titlebar;
