@@ -212,7 +212,7 @@ const validateFilters = (l1status, l2status, position, status, team, type) => {
 const TestWrapper = () => (
   <Provider store={store}>
     <ThemeProvider theme={GlobalTheme()}>
-      <PlayerFilter lookups={lookups} onClose={() => {}} open={true} />
+      <PlayerFilter lookups={lookups} onClose={() => undefined} open={true} />
     </ThemeProvider>
   </Provider>
 );

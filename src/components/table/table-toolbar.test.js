@@ -9,8 +9,8 @@ const TestWrapper = ({ addProps, filterProps, searchProps, title }) => (
 describe("TableToolbar", () => {
   describe("should render", () => {
     test("with all extras", () => {
-      const addProps = { buildDialog: (e) => e, handleClose: () => {} };
-      const filterProps = { buildDialog: (e) => e, handleClose: () => {} };
+      const addProps = { buildDialog: (e) => e, handleClose: () => undefined };
+      const filterProps = { buildDialog: (e) => e, handleClose: () => undefined };
       const searchProps = { handleSearch: (e) => e, placeholder: "MyPlaceHolder" };
       render(<TestWrapper addProps={addProps} filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
       expect(screen.getByText("MyTitle")).toBeVisible();
@@ -20,8 +20,8 @@ describe("TableToolbar", () => {
       expect(screen.queryByTestId("FilterAltIcon")).toBeFalsy();
     });
     test("with filter already applied", () => {
-      const addProps = { buildDialog: (e) => e, handleClose: () => {} };
-      const filterProps = { buildDialog: (e) => e, handleClose: () => {}, isFiltered: true };
+      const addProps = { buildDialog: (e) => e, handleClose: () => undefined };
+      const filterProps = { buildDialog: (e) => e, handleClose: () => undefined, isFiltered: true };
       const searchProps = { handleSearch: (e) => e, placeholder: "MyPlaceHolder" };
       render(<TestWrapper addProps={addProps} filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
       expect(screen.getByText("MyTitle")).toBeVisible();
