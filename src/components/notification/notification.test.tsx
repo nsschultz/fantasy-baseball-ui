@@ -1,3 +1,4 @@
+import React from "react";
 import { addNotification, clearNotifications } from "../../state/slice/notification-slice";
 import { fireEvent, render, screen } from "@testing-library/react";
 
@@ -13,7 +14,7 @@ const notifcations = [
   { key: 3, message: "message3", timestamp: Date.now(), type: "error" },
 ];
 
-const TestWrapper = () => (
+const TestWrapper: React.FC = () => (
   <Provider store={store}>
     <ThemeProvider theme={GlobalTheme()}>
       <Notification />

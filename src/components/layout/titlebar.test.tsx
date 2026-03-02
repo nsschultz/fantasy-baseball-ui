@@ -22,13 +22,13 @@ describe("Titlebar", () => {
   describe("should render", () => {
     test("when logged in", () => {
       render(<TestWrapper isLoggedIn={true} />);
-      expect(screen.getByTestId("notifcation")).toBeVisible();
+      expect(screen.getByTestId("notification")).toBeVisible();
       expect(screen.getByTestId("titlebar-logout")).toBeVisible();
       expect(screen.getByTestId("titlebar-mobile-menu")).toBeVisible();
     });
     test("when not logged in", () => {
       render(<TestWrapper isLoggedIn={false} />);
-      expect(screen.queryByTestId("notifcation")).toBeFalsy();
+      expect(screen.queryByTestId("notification")).toBeFalsy();
       expect(screen.queryByTestId("titlebar-logout")).toBeFalsy();
       expect(screen.queryByTestId("titlebar-mobile-menu")).toBeVisible();
     });

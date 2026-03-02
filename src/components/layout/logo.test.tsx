@@ -5,6 +5,7 @@ import Logo from "./logo";
 describe("Logo", () => {
   test("should render", () => {
     render(<Logo />);
-    expect(screen.getByAltText("logo").src).toContain("/static/logo-056.png");
+    const logo: HTMLImageElement = screen.getByAltText("logo");
+    expect(logo.src).toContain("/static/logo-056.png");
   });
 });

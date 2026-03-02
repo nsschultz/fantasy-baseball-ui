@@ -18,7 +18,7 @@ export const notificationSlice = createSlice({
       state.value = [];
     },
     removeNotification: (state, action) => {
-      const index = state.value.map((v) => v.key).indexOf(action.payload.key);
+      const index = state.value.map((v) => v.notificationKey).indexOf(action.payload.notificationKey);
       if (index > -1) state.value.splice(index, 1);
     },
   },

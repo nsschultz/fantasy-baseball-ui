@@ -3,36 +3,40 @@ import { ClearAll, Notifications } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 
 import NotificationItem from "./notification-item";
+import { NotificationType } from "../../types/types";
 import React from "react";
 import { clearNotifications } from "../../state/slice/notification-slice";
 
 const paperSx = { boxShadow: 24, maxWidth: 350, minWidth: 250, width: "100%" };
 
-/**
- * Creates a new instance notification display along with the button that is used to toggle the display.
- * @returns A new instance of Notification.
- */
-const Notification = () => {
-  const anchor = React.useRef(null);
+export default function Notification() {
+  const anchor = React.useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = React.useState(false);
-  const notifications = useSelector((state) => state.notification.value);
+  const notifications: NotificationType[] = useSelector((state: { notification: { value: NotificationType[] } }) => state.notification.value);
 
   const dispatch = useDispatch();
-  const handleClickAway = (event) => {
-    if (anchor.current && anchor.current.contains(event.target)) return;
+  const handleClickAway = (event: MouseEvent | TouchEvent) => {
+    const target = event.target as Node | null;
+    if (anchor.current && target && anchor.current.contains(target)) return;
     setIsOpen(false);
   };
   const openPopper = () => setIsOpen(!isOpen);
 
   return (
     <>
-      <IconButton color="inherit" data-testid="notifcation" onClick={openPopper} ref={anchor} sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}>
+      <IconButton
+        color="inherit"
+        data-testid="notification"
+        onClick={openPopper}
+        ref={anchor}
+        sx={{ display: { xs: "none", lg: "inline-flex" }, padding: 1.5 }}
+      >
         <Badge badgeContent={notifications.length} color="secondary" max={99}>
           <Notifications />
         </Badge>
       </IconButton>
       <ClickAwayListener onClickAway={handleClickAway}>
-        <Popper anchorEl={anchor.current} disablePortal open={isOpen} placement="bottom-end">
+        <Popper anchorEl={anchor.current as Element | null} disablePortal open={isOpen} placement="bottom-end" onResize={undefined} onResizeCapture={undefined}>
           <Paper sx={paperSx} variant="outlined">
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               <Typography color="textPrimary" sx={{ paddingLeft: 1, paddingTop: 1 }} variant="h4">
@@ -51,7 +55,7 @@ const Notification = () => {
                   .slice()
                   .reverse()
                   .map((n) => (
-                    <NotificationItem key={n.key} notification={n} />
+                    <NotificationItem key={n.notificationKey} {...n} />
                   ))}
               </List>
             ) : (
@@ -67,5 +71,4 @@ const Notification = () => {
       </ClickAwayListener>
     </>
   );
-};
-export default Notification;
+}
