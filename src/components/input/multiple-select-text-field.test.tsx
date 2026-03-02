@@ -1,11 +1,27 @@
+import React, { useState } from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import MultipleSelectTextField from "./multiple-select-text-field";
 import { ThemeProvider } from "@mui/material";
-import { useState } from "react";
 
-const positionMap = {
+type AdditionalPosition = {
+  code: string;
+  fullName: string;
+  playerType: number;
+  sortOrder: number;
+  additionalPositions: AdditionalPosition[];
+};
+
+type Position = {
+  code: string;
+  fullName: string;
+  playerType: number;
+  sortOrder: number;
+  additionalPositions: AdditionalPosition[];
+};
+
+const positionMap: Record<string, Position> = {
   C: {
     code: "C",
     fullName: "Catcher",
@@ -130,23 +146,24 @@ const positionMap = {
   },
   UTIL: { code: "UTIL", fullName: "Utility", playerType: 1, sortOrder: 13, additionalPositions: [] },
 };
-let startValues = ["2B", "3B"];
+let startValues: string[] = ["2B", "3B"];
 
-const disableChecker = (menuItems, selectedValues, key) => selectedValues.some((v) => menuItems[v].additionalPositions.some((ap) => ap.code === key));
-const lineItemBuilder = (lookup, key) => lookup[key].fullName;
+const disableChecker = (menuItems: Record<string, Position>, selectedValues: string[], key: string) =>
+  selectedValues.some((v) => menuItems[v].additionalPositions.some((ap) => ap.code === key));
+const lineItemBuilder = (lookup: Record<string, Position>, key: string) => lookup[key].fullName;
 const textValueBuilder = () => startValues.map((selected) => positionMap[selected].code).join();
 
 afterEach(cleanup);
 afterEach(() => (startValues = ["2B", "3B"]));
 
-const TestWrapper = ({ disableChecker, selectedValues }) => {
-  const [stateValues, setStateValues] = useState(selectedValues);
+const TestWrapper: React.FC<{ disableChecker?: typeof disableChecker; selectedValues?: string[] }> = ({ disableChecker, selectedValues }) => {
+  const [stateValues, setStateValues] = useState<string[] | undefined>(selectedValues);
   return (
     <ThemeProvider theme={GlobalTheme()}>
       <MultipleSelectTextField
         displayProps={{ disableChecker: disableChecker, label: "Position(s)", listItemBuilder: lineItemBuilder, textValueBuilder: textValueBuilder }}
         field="positions"
-        handleOnChange={(values) => {
+        handleOnChange={(values: string[]) => {
           setStateValues(values);
           startValues = values;
         }}

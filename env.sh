@@ -18,4 +18,4 @@ do
   [[ -z $value ]] && value=${varvalue}
   echo "  $varname: \"$value\"," >> env-config.js
 done < .env
-echo "}" >> env-config.js
+echo "};" >> env-config.js

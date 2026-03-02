@@ -4,12 +4,12 @@ import { NavLink as RouterLink, matchPath, useLocation } from "react-router-dom"
 import React from "react";
 
 interface NavigationItemProps {
-  href: string;
-  icon: React.ElementType;
-  title: string;
+  readonly href: string;
+  readonly icon: React.ElementType;
+  readonly title: string;
 }
 
-const NavigationItem: React.FC<NavigationItemProps> = ({ href, icon: Icon, title }) => {
+export default function NavigationItem({ href, icon: Icon, title }: Readonly<NavigationItemProps>) {
   const location = useLocation();
   const active = !!matchPath({ path: href, end: false }, location.pathname);
   const buttonStyle = {
@@ -32,6 +32,4 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ href, icon: Icon, title
       </Button>
     </ListItem>
   );
-};
-
-export default NavigationItem;
+}

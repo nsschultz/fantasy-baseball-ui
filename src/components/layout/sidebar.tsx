@@ -2,7 +2,6 @@ import { Box, Drawer, List } from "@mui/material";
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "./sidebar-icon";
 
 import NavigationItem from "./navigation-item";
-import React from "react";
 
 const items = [
   { href: "/app/home", icon: HomeIcon, title: "Home" },
@@ -22,34 +21,34 @@ const content = (
 );
 
 interface SidebarProps {
-  onMobileClose: () => void;
-  openMobile: boolean;
+  readonly onMobileClose: () => void;
+  readonly openMobile: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onMobileClose, openMobile }) => (
-  <>
-    <Drawer
-      anchor="left"
-      data-testid="sidebar-mobile-drawer"
-      onClose={onMobileClose}
-      open={openMobile}
-      PaperProps={{ sx: { width: 192 } }}
-      sx={{ display: { lg: "none", xs: "block" } }}
-      variant="temporary"
-    >
-      {content}
-    </Drawer>
-    <Drawer
-      anchor="left"
-      data-testid="sidebar-desktop-drawer"
-      open
-      PaperProps={{ sx: { height: "calc(100% - 69px)", top: 69, width: 192 } }}
-      sx={{ display: { lg: "block", xs: "none" } }}
-      variant="persistent"
-    >
-      {content}
-    </Drawer>
-  </>
-);
-
-export default Sidebar;
+export default function Sidebar({ onMobileClose, openMobile }: Readonly<SidebarProps>) {
+  return (
+    <>
+      <Drawer
+        anchor="left"
+        data-testid="sidebar-mobile-drawer"
+        onClose={onMobileClose}
+        open={openMobile}
+        PaperProps={{ sx: { width: 192 } }}
+        sx={{ display: { lg: "none", xs: "block" } }}
+        variant="temporary"
+      >
+        {content}
+      </Drawer>
+      <Drawer
+        anchor="left"
+        data-testid="sidebar-desktop-drawer"
+        open
+        PaperProps={{ sx: { height: "calc(100% - 69px)", top: 69, width: 192 } }}
+        sx={{ display: { lg: "block", xs: "none" } }}
+        variant="persistent"
+      >
+        {content}
+      </Drawer>
+    </>
+  );
+}

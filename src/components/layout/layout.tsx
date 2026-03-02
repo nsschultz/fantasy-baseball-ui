@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
 import Titlebar from "./titlebar";
 import { styled } from "@mui/system";
+import { useState } from "react";
 
 const LayoutContainer = styled("div")({
   display: "flex",
@@ -31,10 +30,10 @@ const LayoutWrapper = styled("div")(({ theme }) => ({
 }));
 
 interface LayoutProps {
-  isLoggedIn: boolean;
+  readonly isLoggedIn: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ isLoggedIn }) => {
+export default function Layout({ isLoggedIn }: Readonly<LayoutProps>) {
   const [isMobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 
   const buildSidebar = () => (
@@ -58,6 +57,4 @@ const Layout: React.FC<LayoutProps> = ({ isLoggedIn }) => {
       </LayoutWrapper>
     </LayoutRoot>
   );
-};
-
-export default Layout;
+}
