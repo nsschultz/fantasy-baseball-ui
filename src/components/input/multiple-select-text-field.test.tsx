@@ -5,20 +5,12 @@ import GlobalTheme from "../../global-theme";
 import MultipleSelectTextField from "./multiple-select-text-field";
 import { ThemeProvider } from "@mui/material";
 
-type AdditionalPosition = {
-  code: string;
-  fullName: string;
-  playerType: number;
-  sortOrder: number;
-  additionalPositions: AdditionalPosition[];
-};
-
 type Position = {
   code: string;
   fullName: string;
   playerType: number;
   sortOrder: number;
-  additionalPositions: AdditionalPosition[];
+  additionalPositions: Position[];
 };
 
 const positionMap: Record<string, Position> = {

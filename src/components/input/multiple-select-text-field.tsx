@@ -4,42 +4,42 @@ import React from "react";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { StyledTextField } from "../styled/styled-text-field";
 
-interface DisplayProps {
-  disableChecker?: (menuItems: Record<string, unknown>, selectedValues?: string[], key?: string) => boolean;
-  label?: string;
-  listItemBuilder: (menuItems: Record<string, unknown>, key: string) => React.ReactNode;
-  textValueBuilder: () => React.ReactNode;
+interface DisplayProps<T> {
+  readonly disableChecker?: (menuItems: Record<string, T>, selectedValues?: string[], key?: string) => boolean;
+  readonly label?: string;
+  readonly listItemBuilder: (menuItems: Record<string, T>, key: string) => React.ReactNode;
+  readonly textValueBuilder: () => React.ReactNode;
 }
 
-interface MultipleSelectTextFieldProps {
-  displayProps: DisplayProps;
-  field: string;
-  handleOnChange: (value: string[] | string) => void;
-  menuItems: Record<string, unknown>;
-  selectedValues?: string[];
+interface MultipleSelectTextFieldProps<T> {
+  readonly displayProps: DisplayProps<T>;
+  readonly field: string;
+  readonly handleOnChange: (value: string[] | string) => void;
+  readonly menuItems: Record<string, T>;
+  readonly selectedValues?: string[];
 }
 
-export default function MultipleSelectTextField({ displayProps, field, handleOnChange, menuItems, selectedValues }: MultipleSelectTextFieldProps) {
+export default function MultipleSelectTextField<T>(props: Readonly<MultipleSelectTextFieldProps<T>>) {
   return (
     <StyledTextField
-      data-testid={field}
+      data-testid={props.field}
       fullWidth
-      id={field}
-      label={displayProps.label}
+      id={props.field}
+      label={props.displayProps.label}
       select
       SelectProps={{
         multiple: true,
-        onChange: (event: SelectChangeEvent<string[]>) => handleOnChange(event.target.value as unknown as string[]),
-        renderValue: () => displayProps.textValueBuilder(),
-        value: selectedValues || [],
+        onChange: (event: SelectChangeEvent<string[]>) => props.handleOnChange(event.target.value as string[]),
+        renderValue: () => props.displayProps.textValueBuilder(),
+        value: props.selectedValues || [],
       }}
       size="small"
       variant="filled"
     >
-      {Object.keys(menuItems).map((key) => (
-        <MenuItem disabled={displayProps.disableChecker && displayProps.disableChecker(menuItems, selectedValues, key)} key={key} value={key}>
-          <Checkbox checked={(selectedValues || []).indexOf(key.toString()) > -1} color="secondary" />
-          <ListItemText primary={displayProps.listItemBuilder(menuItems, key)} />
+      {Object.keys(props.menuItems).map((key) => (
+        <MenuItem disabled={props.displayProps.disableChecker?.(props.menuItems, props.selectedValues, key)} key={key} value={key}>
+          <Checkbox checked={(props.selectedValues || []).includes(key.toString())} color="secondary" />
+          <ListItemText primary={props.displayProps.listItemBuilder(props.menuItems, key)} />
         </MenuItem>
       ))}
     </StyledTextField>
