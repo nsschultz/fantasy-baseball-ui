@@ -11,7 +11,7 @@ describe("StyledTextField", () => {
         <StyledTextField />
       </ThemeProvider>
     );
-    const input = screen.getByRole("textbox");
+    const input: HTMLInputElement = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "Text Change" } });
     expect(input.value).toBe("Text Change");
   });
