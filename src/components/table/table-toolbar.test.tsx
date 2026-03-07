@@ -1,18 +1,37 @@
+import { DialogProps, FilterProps, RowValue, SearchProps, TableToolbarProps } from "../../types/table-types";
 import { fireEvent, render, screen } from "@testing-library/react";
 
+import React from "react";
 import TableToolbar from "./table-toolbar";
 
-const TestWrapper = ({ addProps, filterProps, searchProps, title }: { addProps?: any; filterProps?: any; searchProps?: any; title: string }) => (
-  <TableToolbar addProps={addProps} description="MyDescription" filterProps={filterProps} searchProps={searchProps} title={title} />
+const addProps = (onClose: () => void): DialogProps<RowValue> => ({
+  buildDialog: (handleAddClose: (object: RowValue) => void, addOpen: boolean, row: RowValue) => {
+    if (addOpen) handleAddClose(row);
+    return null;
+  },
+  handleClose: onClose,
+});
+
+const filterProps = (onClose: () => void, isFiltered: boolean): FilterProps => ({
+  buildDialog: (handleFilterClose: () => void, filterOpen: boolean) => {
+    if (filterOpen) handleFilterClose();
+    return null;
+  },
+  handleClose: onClose,
+  isFiltered: isFiltered,
+});
+
+const TestWrapper = ({ addProps, filterProps, description, searchProps, title }: Readonly<TableToolbarProps<RowValue>>) => (
+  <TableToolbar addProps={addProps} description={description} filterProps={filterProps} searchProps={searchProps} title={title} />
 );
 
 describe("TableToolbar", () => {
   describe("should render", () => {
     test("with all extras", () => {
-      const addProps = { buildDialog: (e) => e, handleClose: () => undefined };
-      const filterProps = { buildDialog: (e) => e, handleClose: () => undefined };
-      const searchProps = { handleSearch: (e) => e, placeholder: "MyPlaceHolder" };
-      render(<TestWrapper addProps={addProps} filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
+      const aProps = addProps(() => undefined);
+      const fProps = filterProps(() => undefined, false);
+      const sProps: SearchProps = { handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => e, placeholder: "MyPlaceHolder" };
+      render(<TestWrapper addProps={aProps} description={"MyDescription"} filterProps={fProps} searchProps={sProps} title="MyTitle" />);
       expect(screen.getByText("MyTitle")).toBeVisible();
       expect(screen.getByRole("textbox")).toBeVisible();
       expect(screen.getAllByRole("button").length).toEqual(2);
@@ -20,10 +39,10 @@ describe("TableToolbar", () => {
       expect(screen.queryByTestId("FilterAltIcon")).toBeFalsy();
     });
     test("with filter already applied", () => {
-      const addProps = { buildDialog: (e) => e, handleClose: () => undefined };
-      const filterProps = { buildDialog: (e) => e, handleClose: () => undefined, isFiltered: true };
-      const searchProps = { handleSearch: (e) => e, placeholder: "MyPlaceHolder" };
-      render(<TestWrapper addProps={addProps} filterProps={filterProps} searchProps={searchProps} title="MyTitle" />);
+      const aProps = addProps(() => undefined);
+      const fProps = filterProps(() => undefined, true);
+      const sProps: SearchProps = { handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => e, placeholder: "MyPlaceHolder" };
+      render(<TestWrapper addProps={aProps} description={"MyDescription"} filterProps={fProps} searchProps={sProps} title="MyTitle" />);
       expect(screen.getByText("MyTitle")).toBeVisible();
       expect(screen.getByRole("textbox")).toBeVisible();
       expect(screen.getAllByRole("button").length).toEqual(2);
@@ -31,7 +50,7 @@ describe("TableToolbar", () => {
       expect(screen.getByTestId("FilterAltIcon")).toBeVisible();
     });
     test("without any extras", () => {
-      render(<TestWrapper title="MyTitle" />);
+      render(<TestWrapper addProps={undefined} description={"MyDescription"} filterProps={undefined} searchProps={undefined} title="MyTitle" />);
       expect(screen.getByText("MyTitle")).toBeVisible();
       expect(screen.queryByRole("textbox")).toBeFalsy();
       expect(screen.queryByRole("button")).toBeFalsy();
@@ -39,32 +58,25 @@ describe("TableToolbar", () => {
   });
   test("should handle adding", () => {
     let value = "";
-    const addProps = {
-      buildDialog: (handleAddClose, addOpen) => {
-        if (addOpen) handleAddClose();
-      },
-      handleClose: () => (value = "add closed"),
-    };
-    render(<TestWrapper addProps={addProps} title="MyTitle" />);
+    const props = addProps(() => (value = "add closed"));
+    render(<TestWrapper addProps={props} description={"MyDescription"} filterProps={undefined} searchProps={undefined} title="MyTitle" />);
     fireEvent.click(screen.getByRole("button"));
     expect(value).toEqual("add closed");
   });
   test("should handle filtering", () => {
     let value = "";
-    const filterProps = {
-      buildDialog: (handleFilterClose, filterOpen) => {
-        if (filterOpen) handleFilterClose();
-      },
-      handleClose: () => (value = "filter closed"),
-    };
-    render(<TestWrapper filterProps={filterProps} title="MyTitle" />);
+    const props = filterProps(() => (value = "filter closed"), false);
+    render(<TestWrapper addProps={undefined} description={"MyDescription"} filterProps={props} searchProps={undefined} title="MyTitle" />);
     fireEvent.click(screen.getByRole("button"));
     expect(value).toEqual("filter closed");
   });
   test("should handle searching", () => {
     const searchText = "searching";
-    const searchProps = { handleSearch: (e) => expect(e.target.value).toEqual(searchText), placeholder: "MyPlaceHolder" };
-    render(<TestWrapper searchProps={searchProps} title="MyTitle" />);
+    const searchProps: SearchProps = {
+      handleSearch: (e: { target: { value: string } }) => expect(e.target.value).toEqual(searchText),
+      placeholder: "MyPlaceHolder",
+    };
+    render(<TestWrapper addProps={undefined} description={"MyDescription"} filterProps={undefined} searchProps={searchProps} title="MyTitle" />);
     fireEvent.change(screen.getByRole("textbox"), { target: { value: searchText } });
   });
 });

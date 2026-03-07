@@ -18,3 +18,11 @@ export interface SearchProps {
   readonly initialValue?: string;
   readonly placeholder: string;
 }
+
+export interface TableToolbarProps<T extends RowValue> {
+  readonly addProps?: DialogProps<T>;
+  readonly description: string;
+  readonly filterProps?: FilterProps;
+  readonly searchProps?: SearchProps;
+  readonly title: string;
+}

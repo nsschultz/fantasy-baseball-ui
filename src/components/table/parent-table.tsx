@@ -1,4 +1,4 @@
-import { DialogProps, FilterProps, RowValue, SearchProps, SortOrder } from "../../types/table-types";
+import { DialogProps, RowValue, SortOrder, TableToolbarProps } from "../../types/table-types";
 import { Paper, Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 
 import CustomTableRow from "./custom-table-row";
@@ -16,13 +16,6 @@ interface ChildProps<T extends RowValue> {
   readonly title: string;
 }
 
-interface ToolbarProps<T extends RowValue> {
-  readonly addProps?: DialogProps<T>;
-  readonly filterProps?: FilterProps;
-  readonly searchProps?: SearchProps;
-  readonly title: string;
-}
-
 interface ParentTableProps<T extends RowValue> {
   readonly childProps?: ChildProps<T>;
   readonly columns: ReadonlyArray<TableColumn<T>>;
@@ -30,7 +23,7 @@ interface ParentTableProps<T extends RowValue> {
   readonly description: string;
   readonly editProps?: DialogProps<T>;
   readonly sortComparator: (obj1: T, obj2: T, key: string | null) => number;
-  readonly toolbarProps?: ToolbarProps<T>;
+  readonly toolbarProps?: TableToolbarProps<T>;
   readonly values: ReadonlyArray<T>;
 }
 
