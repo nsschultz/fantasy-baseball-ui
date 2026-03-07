@@ -1,17 +1,18 @@
-import React from "react";
 import { addNotification, clearNotifications } from "../../state/slice/notification-slice";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import Notification from "./notification";
+import { NotificationMessage } from "../../types/notification-type";
 import { Provider } from "react-redux";
+import React from "react";
 import { ThemeProvider } from "@mui/material";
 import store from "../../state/store";
 
-const notifcations = [
-  { key: 1, message: "message1", timestamp: Date.now(), type: "success" },
-  { key: 2, message: "message2", timestamp: Date.now(), type: "info" },
-  { key: 3, message: "message3", timestamp: Date.now(), type: "error" },
+const notifications: NotificationMessage[] = [
+  { message: "message1", notificationKey: 1, timestamp: Date.now(), type: "success" },
+  { message: "message2", notificationKey: 2, timestamp: Date.now(), type: "info" },
+  { message: "message3", notificationKey: 3, timestamp: Date.now(), type: "error" },
 ];
 
 const TestWrapper: React.FC = () => (
@@ -27,7 +28,7 @@ afterEach(() => store.dispatch(clearNotifications()));
 describe("Notification", () => {
   describe("should render", () => {
     test("with notifications", () => {
-      notifcations.forEach((n) => store.dispatch(addNotification(n)));
+      notifications.forEach((n) => store.dispatch(addNotification(n)));
       render(<TestWrapper />);
       expect(screen.getAllByRole("button")).toHaveLength(1);
       fireEvent.click(screen.getByRole("button"));
@@ -42,7 +43,7 @@ describe("Notification", () => {
   });
   describe("should handle", () => {
     test("clearing all of the notifications", () => {
-      notifcations.forEach((n) => store.dispatch(addNotification(n)));
+      notifications.forEach((n) => store.dispatch(addNotification(n)));
       render(<TestWrapper />);
       expect(screen.getAllByRole("button")).toHaveLength(1);
       fireEvent.click(screen.getByRole("button"));

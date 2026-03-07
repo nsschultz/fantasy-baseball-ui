@@ -2,14 +2,14 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import NotificationItem from "./notification-item";
-import { NotificationType } from "../../types/types";
+import { NotificationMessage } from "../../types/notification-type";
 import { Provider } from "react-redux";
 import React from "react";
 import { ThemeProvider } from "@mui/material";
 import { addNotification } from "../../state/slice/notification-slice";
 import store from "../../state/store";
 
-const TestWrapper: React.FC<{ notification: Readonly<NotificationType> }> = ({ notification }) => (
+const TestWrapper: React.FC<{ notification: Readonly<NotificationMessage> }> = ({ notification }) => (
   <Provider store={store}>
     <ThemeProvider theme={GlobalTheme()}>
       <NotificationItem {...notification} />
@@ -36,7 +36,7 @@ describe("NotificationItem", () => {
     });
   });
   describe("should fire a clear command on click", () => {
-    const notifcation: NotificationType = { notificationKey: 1, message: "this message should get cleared", timestamp: Date.now(), type: "error" };
+    const notifcation: NotificationMessage = { notificationKey: 1, message: "this message should get cleared", timestamp: Date.now(), type: "error" };
     store.dispatch(addNotification(notifcation));
     expect(store.getState().notification.value).toHaveLength(1);
     render(<TestWrapper notification={notifcation} />);

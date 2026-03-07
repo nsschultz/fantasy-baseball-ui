@@ -3,7 +3,7 @@ import { ClearAll, Notifications } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 
 import NotificationItem from "./notification-item";
-import { NotificationType } from "../../types/types";
+import { NotificationMessage } from "../../types/notification-type";
 import React from "react";
 import { clearNotifications } from "../../state/slice/notification-slice";
 
@@ -12,7 +12,7 @@ const paperSx = { boxShadow: 24, maxWidth: 350, minWidth: 250, width: "100%" };
 export default function Notification() {
   const anchor = React.useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = React.useState(false);
-  const notifications: NotificationType[] = useSelector((state: { notification: { value: NotificationType[] } }) => state.notification.value);
+  const notifications: NotificationMessage[] = useSelector((state: { notification: { value: NotificationMessage[] } }) => state.notification.value);
 
   const dispatch = useDispatch();
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
