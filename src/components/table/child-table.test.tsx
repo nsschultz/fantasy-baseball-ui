@@ -1,17 +1,25 @@
+import ChildTable, { TableColumn } from "./child-table";
 import { render, screen } from "@testing-library/react";
 
-import ChildTable from "./child-table";
 import GlobalTheme from "../../global-theme";
 import { ThemeProvider } from "@mui/material";
 
+type ChildRow = {
+  id: number;
+  name: string;
+  age: number;
+  type: number;
+  averageDraftPick: number;
+};
+
 const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
-const columns = [
+const columns: TableColumn<ChildRow>[] = [
   { field: "name", title: "Name" },
   { align: "right", field: "age", title: "Age" },
-  { field: "type", format: (value) => playerTypes[value], title: "Type" },
-  { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
+  { field: "type", format: (value) => playerTypes[value as keyof typeof playerTypes], title: "Type" },
+  { align: "right", field: "averageDraftPick", format: (value) => (value as number).toFixed(2), title: "ADP" },
 ];
-const rows = [
+const rows: ChildRow[] = [
   { id: 10, name: "Schultz, Nick", age: 40, type: 1, averageDraftPick: 0 },
   { id: 11, name: "Schultz, Annie", age: 36, type: 0, averageDraftPick: 0.5 },
   { id: 12, name: "Schultz, James", age: 10, type: 2, averageDraftPick: 1 },

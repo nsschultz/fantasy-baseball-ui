@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import TableToolbar from "./table-toolbar";
 
-const TestWrapper = ({ addProps, filterProps, searchProps, title }) => (
+const TestWrapper = ({ addProps, filterProps, searchProps, title }: { addProps?: any; filterProps?: any; searchProps?: any; title: string }) => (
   <TableToolbar addProps={addProps} description="MyDescription" filterProps={filterProps} searchProps={searchProps} title={title} />
 );
 

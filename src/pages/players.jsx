@@ -154,7 +154,7 @@ const Players = () => {
       teams: teams,
     };
   };
-  const deletePlayer = (player) => {
+  const deletePlayer = (player, onClose) => {
     axios
       .delete(`${window.env.PLAYER_API_URL}/api/v3/player/${player.id}`)
       .then(() => {
@@ -163,6 +163,7 @@ const Players = () => {
         setSeverity("success");
         setMessage(`Successfully deleted ${player.name}`);
         setOpen(true);
+        onClose();
       })
       .catch(() => {
         setSeverity("error");

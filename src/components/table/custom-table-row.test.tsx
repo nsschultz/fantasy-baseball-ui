@@ -2,15 +2,34 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomTableRow from "./custom-table-row";
 import GlobalTheme from "../../global-theme";
+import { TableColumn } from "./child-table";
 import { ThemeProvider } from "@mui/material";
 
-const columns = [
-  { field: "name", title: "Name" },
-  { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
-];
-const values = { id: 10, name: "Schultz, Nick", age: 40, type: 1, averageDraftPick: 0 };
+type RowData = { id: number; name: string; age: number; type: number; averageDraftPick: number };
 
-const TestWrapper = ({ childProps, handleDeleteOpen, handleEditOpen }) => (
+type ChildProps = {
+  columns: TableColumn<RowData>[];
+  description: string;
+  rowKeyBuilder: (row: RowData) => number;
+  rows: RowData[];
+  title: string;
+};
+
+const columns: TableColumn<RowData>[] = [
+  { field: "name", title: "Name" },
+  { align: "right", field: "averageDraftPick", format: (value) => (value as number).toFixed(2), title: "ADP" },
+];
+const values: RowData = { id: 10, name: "Schultz, Nick", age: 40, type: 1, averageDraftPick: 0 };
+
+const TestWrapper = ({
+  childProps,
+  handleDeleteOpen,
+  handleEditOpen,
+}: {
+  childProps?: ChildProps;
+  handleDeleteOpen?: (v: RowData) => void;
+  handleEditOpen?: (v: RowData) => void;
+}) => (
   <ThemeProvider theme={GlobalTheme()}>
     <table>
       <tbody>

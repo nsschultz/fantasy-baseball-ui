@@ -51,7 +51,7 @@ beforeEach(
 beforeEach(() => (deleteCount = 0));
 beforeEach(() => (editCount = 0));
 
-const TestWrapper = ({ childProps, deleteProps, editProps, toolbarProps }) => (
+const TestWrapper = ({ childProps, deleteProps, editProps, toolbarProps }: { childProps?: any; deleteProps?: any; editProps?: any; toolbarProps?: any }) => (
   <ThemeProvider theme={GlobalTheme()}>
     <ParentTable
       childProps={childProps}
