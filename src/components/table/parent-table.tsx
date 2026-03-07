@@ -1,5 +1,5 @@
-import { DialogProps, RowValue, SortOrder, TableToolbarProps } from "../../types/table-types";
-import { Paper, Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
+import { DialogProps, RowValue, TableToolbarProps } from "../../types/table-types";
+import { Paper, SortDirection, Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 
 import CustomTableRow from "./custom-table-row";
 import React from "react";
@@ -49,7 +49,7 @@ const getComparator = <T extends RowValue>(column: TableColumn<T> | undefined, d
 const stableSort = <T extends RowValue>(
   array: ReadonlyArray<T>,
   comparator: (obj1: T, obj2: T, key: string | null) => number,
-  order: SortOrder,
+  order: SortDirection,
   orderBy: string | null
 ) => {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
@@ -76,7 +76,7 @@ export default function ParentTable<T extends RowValue>({
   const [editOpen, setEditOpen] = React.useState(false);
   const [editRow, setEditRow] = React.useState<T | null>(null);
   const [limit, setLimit] = React.useState(10);
-  const [order, setOrder] = React.useState<SortOrder>("asc");
+  const [order, setOrder] = React.useState<SortDirection>("asc");
   const [orderBy, setOrderBy] = React.useState<string | null>(null);
   const [page, setPage] = React.useState(0);
   const rowCount = React.useMemo(() => values.length, [values]);

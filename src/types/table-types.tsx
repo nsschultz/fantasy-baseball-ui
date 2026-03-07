@@ -1,6 +1,5 @@
 export type RowValue = { id: React.Key } & Record<string, unknown>;
 export type RowValueType = number | string;
-export type SortOrder = "asc" | "desc";
 
 export interface DialogProps<T> {
   readonly buildDialog: (handleClose: (object: T) => void, isOpen: boolean, row?: T) => React.ReactNode;

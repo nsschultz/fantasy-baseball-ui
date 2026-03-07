@@ -1,4 +1,4 @@
-import { Box, TableCell, TableSortLabel } from "@mui/material";
+import { Box, SortDirection, TableCell, TableSortLabel } from "@mui/material";
 
 import React from "react";
 import { RowValue } from "../../types/table-types";
@@ -7,8 +7,8 @@ import { TableColumn } from "./child-table";
 interface TableHeaderCellProps<T extends RowValue> {
   readonly column: TableColumn<T>;
   readonly handleSortRequest: (event: React.MouseEvent<unknown>) => void;
-  readonly order?: "asc" | "desc";
-  readonly orderBy?: string | null;
+  readonly order?: SortDirection;
+  readonly orderBy?: string;
 }
 
 const hiddenStyle = {
