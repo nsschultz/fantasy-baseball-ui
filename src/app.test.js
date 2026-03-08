@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 describe("App", () => {
   test("should render", () => {
     render(
-      <MemoryRouter initialEntries={["/home"]}>
+      <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }} initialEntries={["/home"]}>
         <App />
       </MemoryRouter>
     );

@@ -11,7 +11,7 @@ import store from "../../state/store";
 const TestWrapper = ({ isLoggedIn }) => (
   <Provider store={store}>
     <ThemeProvider theme={GlobalTheme()}>
-      <MemoryRouter initialEntries={["/home"]}>
+      <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }} initialEntries={["/home"]}>
         <Layout isLoggedIn={isLoggedIn} />
       </MemoryRouter>
     </ThemeProvider>

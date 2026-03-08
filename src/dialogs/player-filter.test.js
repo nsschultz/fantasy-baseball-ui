@@ -188,7 +188,7 @@ const lookups = {
 
 const mutateDropDown = (id, newValue) => {
   const div = screen.getByTestId(id);
-  fireEvent.mouseDown(within(div).getByRole("button", { hidden: true }));
+  fireEvent.mouseDown(within(div).getByRole("combobox", { hidden: true }));
   fireEvent.click(screen.getByRole("option", { name: newValue }));
 };
 const updateFilters = () => {

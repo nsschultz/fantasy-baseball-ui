@@ -8,7 +8,7 @@ import { ThemeProvider } from "@mui/material";
 
 const TestWrapper = ({ openMobile }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <MemoryRouter initialEntries={["/home"]}>
+    <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }} initialEntries={["/home"]}>
       <Sidebar onMobileClose={() => undefined} openMobile={openMobile} />
     </MemoryRouter>
   </ThemeProvider>

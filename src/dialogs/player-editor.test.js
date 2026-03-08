@@ -270,7 +270,7 @@ const newPositionEdit = [
 const newTeam = { code: "SF", alternativeCode: null, leagueId: "NL", city: "San Francisco", nickname: "Giants" };
 
 const mutateDropDown = (label, currentValueString, newValue) => {
-  fireEvent.mouseDown(screen.getByRole("button", { name: `${label} ${currentValueString}` }));
+  fireEvent.mouseDown(screen.getByRole("combobox", { name: label }));
   fireEvent.click(screen.getByRole("option", { name: newValue }));
 };
 const mutatePlayer = (player) => {

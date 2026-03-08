@@ -286,7 +286,7 @@ const teams = [
 
 const mutateDropDown = (id, newValue) => {
   const div = screen.getByTestId(id);
-  fireEvent.mouseDown(within(div).getByRole("button"));
+  fireEvent.mouseDown(within(div).getByRole("combobox"));
   fireEvent.click(screen.getByRole("option", { name: newValue }));
   fireEvent.click(screen.getByText("Close", { hidden: true }));
 };

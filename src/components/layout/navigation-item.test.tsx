@@ -9,7 +9,7 @@ import { ThemeProvider } from "@mui/material";
 
 const TestWrapper = ({ href }) => (
   <ThemeProvider theme={GlobalTheme()}>
-    <MemoryRouter initialEntries={["/home"]}>
+    <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }} initialEntries={["/home"]}>
       <NavigationItem href={href} title="Test Title" icon={People} />
     </MemoryRouter>
   </ThemeProvider>

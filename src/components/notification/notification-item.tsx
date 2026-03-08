@@ -15,7 +15,6 @@ const getNotificationIcon = (type: NotificationMessage["type"]) => {
 export default function NotificationItem(notification: Readonly<NotificationMessage>) {
   const dispatch = useDispatch();
 
-  console.log(notification);
   return (
     <>
       <Divider />

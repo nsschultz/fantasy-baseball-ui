@@ -8,7 +8,7 @@ import store from "../../state/store";
 
 const TestWrapper = ({ isLoggedIn }) => (
   <Provider store={store}>
-    <MemoryRouter initialEntries={["/home"]}>
+    <MemoryRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }} initialEntries={["/home"]}>
       <Titlebar isLoggedIn={isLoggedIn} onOpenMobileNavigation={() => console.log("Mobile Opened")} />
     </MemoryRouter>
   </Provider>

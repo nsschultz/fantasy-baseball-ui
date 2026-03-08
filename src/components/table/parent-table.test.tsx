@@ -88,7 +88,7 @@ describe("ParentTable", () => {
     test("and handle changing the page size", () => {
       render(<TestWrapper />);
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
-      fireEvent.mouseDown(screen.getByRole("button", { name: "Rows per page: 10" }));
+      fireEvent.mouseDown(screen.getByRole("combobox", { name: /Rows per page/i }));
       fireEvent.click(screen.getByText("25"));
       expect(screen.getAllByRole("row")).toHaveLength(rows.length + 1);
     });

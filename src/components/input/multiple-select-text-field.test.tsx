@@ -178,7 +178,7 @@ describe("MultiSelectTextField", () => {
     });
     test("with disabled values", () => {
       render(<TestWrapper disableChecker={disableChecker} selectedValues={startValues} />);
-      const customSelect = screen.getByRole("button");
+      const customSelect = screen.getByRole("combobox");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       expect(screen.getByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
       expect(screen.getByRole("option", { name: "Shortstop" })).not.toHaveAttribute("aria-disabled");
@@ -186,7 +186,7 @@ describe("MultiSelectTextField", () => {
     });
     test("without disabled values", () => {
       render(<TestWrapper selectedValues={startValues} />);
-      const customSelect = screen.getByRole("button");
+      const customSelect = screen.getByRole("combobox");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       expect(screen.getByRole("option", { name: "Second Baseman" })).not.toHaveAttribute("aria-disabled");
       expect(screen.getByRole("option", { name: "Shortstop" })).not.toHaveAttribute("aria-disabled");
@@ -196,7 +196,7 @@ describe("MultiSelectTextField", () => {
   describe("should change value", () => {
     test("when selecting a new value", () => {
       render(<TestWrapper selectedValues={startValues} />);
-      const customSelect = screen.getByRole("button");
+      const customSelect = screen.getByRole("combobox");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(screen.getByText("Shortstop"));
       expect(startValues).toEqual(["2B", "3B", "SS"]);
@@ -204,7 +204,7 @@ describe("MultiSelectTextField", () => {
     });
     test("when deselecting an old value", () => {
       render(<TestWrapper selectedValues={startValues} />);
-      const customSelect = screen.getByRole("button");
+      const customSelect = screen.getByRole("combobox");
       fireEvent.keyDown(customSelect, { key: "ArrowDown" });
       fireEvent.click(screen.getByText("Third Baseman"));
       expect(startValues).toEqual(["2B"]);

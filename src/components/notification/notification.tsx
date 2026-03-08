@@ -36,7 +36,7 @@ export default function Notification() {
         </Badge>
       </IconButton>
       <ClickAwayListener onClickAway={handleClickAway}>
-        <Popper anchorEl={anchor.current as Element | null} disablePortal open={isOpen} placement="bottom-end" onResize={undefined} onResizeCapture={undefined}>
+        <Popper anchorEl={anchor.current as Element | null} disablePortal open={isOpen} placement="bottom-end">
           <Paper sx={paperSx} variant="outlined">
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               <Typography color="textPrimary" sx={{ paddingLeft: 1, paddingTop: 1 }} variant="h4">
