@@ -21,9 +21,7 @@ const filterProps = (onClose: () => void, isFiltered: boolean): FilterProps => (
   isFiltered: isFiltered,
 });
 
-const TestWrapper = ({ addProps, filterProps, description, searchProps, title }: Readonly<TableToolbarProps<RowValue>>) => (
-  <TableToolbar addProps={addProps} description={description} filterProps={filterProps} searchProps={searchProps} title={title} />
-);
+const TestWrapper = (props: Readonly<TableToolbarProps<RowValue>>) => <TableToolbar {...props} />;
 
 describe("TableToolbar", () => {
   describe("should render", () => {

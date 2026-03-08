@@ -1,3 +1,4 @@
+import { LayoutProps } from "../../types/layout-types";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
 import Titlebar from "./titlebar";
@@ -29,11 +30,8 @@ const LayoutWrapper = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { paddingLeft: 192 },
 }));
 
-interface LayoutProps {
-  readonly isLoggedIn: boolean;
-}
-
-export default function Layout({ isLoggedIn }: Readonly<LayoutProps>) {
+export default function Layout(props: Readonly<LayoutProps>) {
+  const { isLoggedIn } = props;
   const [isMobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 
   const buildSidebar = () => (

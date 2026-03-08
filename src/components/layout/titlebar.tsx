@@ -4,6 +4,7 @@ import { Input, Menu } from "@mui/icons-material";
 import Logo from "./logo";
 import Notification from "../notification/notification";
 import { Link as RouterLink } from "react-router-dom";
+import { TitlebarProps } from "../../types/layout-types";
 
 const buildButtons = () => (
   <>
@@ -14,12 +15,9 @@ const buildButtons = () => (
   </>
 );
 
-interface TitlebarProps {
-  readonly isLoggedIn: boolean;
-  readonly onOpenMobileNavigation: () => void;
-}
+export default function Titlebar(props: Readonly<TitlebarProps>) {
+  const { isLoggedIn, onOpenMobileNavigation } = props;
 
-export default function Titlebar({ isLoggedIn, onOpenMobileNavigation }: Readonly<TitlebarProps>) {
   return (
     <AppBar color="primary" elevation={5}>
       <Toolbar>

@@ -1,37 +1,15 @@
-import ChildTable, { TableColumn } from "./child-table";
 import { Collapse, IconButton, TableCell, TableRow, Tooltip } from "@mui/material";
+import { CustomTableRowProps, RowValue, RowValueType, TableColumnProps } from "../../types/table-types";
 import { Edit, KeyboardArrowDown, KeyboardArrowUp, RemoveCircleOutline } from "@mui/icons-material";
 
+import ChildTable from "./child-table";
 import React from "react";
-import { RowValue } from "../../types/table-types";
 
-interface ChildProps<T extends RowValue> {
-  readonly columns: ReadonlyArray<TableColumn<T>>;
-  readonly description: string;
-  readonly rowKeyBuilder: (row: T) => React.Key;
-  readonly rows: ReadonlyArray<T>;
-  readonly title: string;
-}
+const getDisplayValue = <T extends RowValue>(column: TableColumnProps<T>, value: RowValueType) =>
+  column.format ? column.format(value) : (value as React.ReactNode);
 
-interface CustomTableRowProps<T extends RowValue> {
-  readonly childProps?: ChildProps<T>;
-  readonly columns: ReadonlyArray<TableColumn<T>>;
-  readonly description?: string;
-  readonly handleDeleteOpen?: (values: T) => void;
-  readonly handleEditOpen?: (values: T) => void;
-  readonly values: T;
-}
-
-const getDisplayValue = <T extends RowValue>(column: TableColumn<T>, value: unknown) => (column.format ? column.format(value) : (value as React.ReactNode));
-
-export default function CustomTableRow<T extends RowValue>({
-  childProps,
-  columns,
-  description,
-  handleDeleteOpen,
-  handleEditOpen,
-  values,
-}: Readonly<CustomTableRowProps<T>>) {
+export default function CustomTableRow<T extends RowValue>(props: Readonly<CustomTableRowProps<T>>) {
+  const { childProps, columns, description, handleDeleteOpen, handleEditOpen, values } = props;
   const [open, setOpen] = React.useState(false);
 
   const buildActionCell = (rowValues: T) => (
@@ -48,7 +26,7 @@ export default function CustomTableRow<T extends RowValue>({
       <TableRow key={"child-table" + rowValues.id} sx={{ backgroundColor: "background.paper", color: "text.primary" }}>
         <TableCell colSpan={columns.length + 1} sx={{ paddingBottom: 0, paddingTop: 0 }}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <ChildTable columns={childProps.columns} rowKeyBuilder={childProps.rowKeyBuilder} rows={childProps.rows} title={childProps.title} />
+            <ChildTable {...childProps} />
           </Collapse>
         </TableCell>
       </TableRow>

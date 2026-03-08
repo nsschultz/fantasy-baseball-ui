@@ -1,15 +1,10 @@
 import { Button, ListItem } from "@mui/material";
 import { NavLink as RouterLink, matchPath, useLocation } from "react-router-dom";
 
-import React from "react";
+import { NavigationItemProps } from "../../types/layout-types";
 
-interface NavigationItemProps {
-  readonly href: string;
-  readonly icon: React.ElementType;
-  readonly title: string;
-}
-
-export default function NavigationItem({ href, icon: Icon, title }: Readonly<NavigationItemProps>) {
+export default function NavigationItem(props: Readonly<NavigationItemProps>) {
+  const { href, icon: Icon, title } = props;
   const location = useLocation();
   const active = !!matchPath({ path: href, end: false }, location.pathname);
   const buttonStyle = {

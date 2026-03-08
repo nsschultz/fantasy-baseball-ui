@@ -8,7 +8,7 @@ describe("IntegrationCard", () => {
   test("should render", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
-        <IntegrationCard title="Card Title" description="Card Description" integrationButton={<Button>Button Text</Button>} />
+        <IntegrationCard description="Card Description" integrationButton={<Button>Button Text</Button>} title="Card Title" />
       </ThemeProvider>
     );
     expect(screen.getByText("Card Title")).toBeTruthy();

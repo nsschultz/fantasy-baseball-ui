@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import Notification from "./notification";
-import { NotificationMessage } from "../../types/notification-type";
+import { NotificationMessage } from "../../types/notification-types";
 import { Provider } from "react-redux";
 import React from "react";
 import { ThemeProvider } from "@mui/material";

@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import GlobalTheme from "../../global-theme";
 import Layout from "./layout";
 import { MemoryRouter } from "react-router-dom";
-import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material";
 import store from "../../state/store";
@@ -17,10 +16,6 @@ const TestWrapper = ({ isLoggedIn }) => (
     </ThemeProvider>
   </Provider>
 );
-
-TestWrapper.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-};
 
 describe("Layout", () => {
   describe("should render", () => {

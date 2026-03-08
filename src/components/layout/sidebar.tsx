@@ -2,6 +2,7 @@ import { Box, Drawer, List } from "@mui/material";
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "./sidebar-icon";
 
 import NavigationItem from "./navigation-item";
+import { SidebarProps } from "../../types/layout-types";
 
 const items = [
   { href: "/app/home", icon: HomeIcon, title: "Home" },
@@ -20,12 +21,9 @@ const content = (
   </Box>
 );
 
-interface SidebarProps {
-  readonly onMobileClose: () => void;
-  readonly openMobile: boolean;
-}
+export default function Sidebar(props: Readonly<SidebarProps>) {
+  const { onMobileClose, openMobile } = props;
 
-export default function Sidebar({ onMobileClose, openMobile }: Readonly<SidebarProps>) {
   return (
     <>
       <Drawer

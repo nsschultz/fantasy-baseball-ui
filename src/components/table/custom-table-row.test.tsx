@@ -1,21 +1,13 @@
+import { ChildTableProps, TableColumnProps } from "../../types/table-types";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomTableRow from "./custom-table-row";
 import GlobalTheme from "../../global-theme";
-import { TableColumn } from "./child-table";
 import { ThemeProvider } from "@mui/material";
 
 type RowData = { id: number; name: string; age: number; type: number; averageDraftPick: number };
 
-type ChildProps = {
-  columns: TableColumn<RowData>[];
-  description: string;
-  rowKeyBuilder: (row: RowData) => number;
-  rows: RowData[];
-  title: string;
-};
-
-const columns: TableColumn<RowData>[] = [
+const columns: TableColumnProps<RowData>[] = [
   { field: "name", title: "Name" },
   { align: "right", field: "averageDraftPick", format: (value) => (value as number).toFixed(2), title: "ADP" },
 ];
@@ -26,7 +18,7 @@ const TestWrapper = ({
   handleDeleteOpen,
   handleEditOpen,
 }: {
-  childProps?: ChildProps;
+  childProps?: ChildTableProps<RowData>;
   handleDeleteOpen?: (v: RowData) => void;
   handleEditOpen?: (v: RowData) => void;
 }) => (

@@ -12,7 +12,8 @@ const searchbarInputProps = {
   ),
 };
 
-export default function TableToolbar<T extends RowValue>({ addProps, description, filterProps, searchProps, title }: Readonly<TableToolbarProps<T>>) {
+export default function TableToolbar<T extends RowValue>(props: Readonly<TableToolbarProps<T>>) {
+  const { addProps, description, filterProps, searchProps, title } = props;
   const [isAddOpen, setIsAddOpen] = React.useState(false);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 

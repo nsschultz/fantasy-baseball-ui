@@ -1,24 +1,23 @@
 import { render, screen } from "@testing-library/react";
 
 import CustomCard from "./custom-card";
-
-const title = "Card Title";
-const content = "Card Content";
-const extra = "More Content";
+import { CustomCardProps } from "../../types/card-types";
 
 describe("CustomCard", () => {
   describe("should render the card", () => {
     test("with additional content", () => {
-      render(<CustomCard title={title} content={<h2>{content}</h2>} additionalContent={<h1>{extra}</h1>} />);
-      expect(screen.getByText(title)).toBeTruthy();
-      expect(screen.getByText(content)).toBeTruthy();
-      expect(screen.getByText(extra)).toBeTruthy();
+      const props: CustomCardProps = { additionalContent: <h1>More Content</h1>, content: <h2>Card Content</h2>, title: "Card Title" };
+      render(<CustomCard {...props} />);
+      expect(screen.getByText("Card Title")).toBeTruthy();
+      expect(screen.getByText("Card Content")).toBeTruthy();
+      expect(screen.getByText("More Content")).toBeTruthy();
     });
     test("without additional content", () => {
-      render(<CustomCard title={title} content={<h2>{content}</h2>} />);
-      expect(screen.getByText(title)).toBeInTheDocument();
-      expect(screen.getByText(content)).toBeInTheDocument();
-      expect(screen.queryByText(extra)).toBeFalsy();
+      const props: CustomCardProps = { content: <h2>Card Content</h2>, title: "Card Title" };
+      render(<CustomCard {...props} />);
+      expect(screen.getByText("Card Title")).toBeInTheDocument();
+      expect(screen.getByText("Card Content")).toBeInTheDocument();
+      expect(screen.queryByText("More Content")).toBeFalsy();
     });
   });
 });

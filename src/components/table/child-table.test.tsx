@@ -1,7 +1,8 @@
-import ChildTable, { TableColumn } from "./child-table";
 import { render, screen } from "@testing-library/react";
 
+import ChildTable from "./child-table";
 import GlobalTheme from "../../global-theme";
+import { TableColumnProps } from "../../types/table-types";
 import { ThemeProvider } from "@mui/material";
 
 type ChildRow = {
@@ -13,7 +14,7 @@ type ChildRow = {
 };
 
 const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
-const columns: TableColumn<ChildRow>[] = [
+const columns: TableColumnProps<ChildRow>[] = [
   { field: "name", title: "Name" },
   { align: "right", field: "age", title: "Age" },
   { field: "type", format: (value) => playerTypes[value as keyof typeof playerTypes], title: "Type" },
@@ -38,7 +39,7 @@ describe("Child Table", () => {
   test("should render", () => {
     render(
       <ThemeProvider theme={GlobalTheme()}>
-        <ChildTable columns={columns} rowKeyBuilder={(row) => row.id} rows={rows} title={title} />
+        <ChildTable columns={columns} description="Table Description" rowKeyBuilder={(row) => row.id} rows={rows} title={title} />
       </ThemeProvider>
     );
     expect(screen.getByText(title)).toBeVisible();

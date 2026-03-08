@@ -1,35 +1,15 @@
-import { DialogProps, RowValue, TableToolbarProps } from "../../types/table-types";
+import { ChildRowProps, ParentTableProps, RowValue, TableColumnProps } from "../../types/table-types";
 import { Paper, SortDirection, Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 
 import CustomTableRow from "./custom-table-row";
 import React from "react";
-import { TableColumn } from "./child-table";
 import TableHeaderCell from "./table-header-cell";
 import TableToolbar from "./table-toolbar";
 import { defaultObjectComparator } from "../../funcs/sort-comparators";
 
-interface ChildProps<T extends RowValue> {
-  readonly columnSelector: (row: T) => ReadonlyArray<TableColumn<T>>;
-  readonly description: string;
-  readonly rowKeyBuilder: (row: T) => React.Key;
-  readonly rowSelector: (row: T) => ReadonlyArray<T>;
-  readonly title: string;
-}
+const actionColumn: TableColumnProps<RowValue> = { align: "center", field: "actions", title: "Actions" };
 
-interface ParentTableProps<T extends RowValue> {
-  readonly childProps?: ChildProps<T>;
-  readonly columns: ReadonlyArray<TableColumn<T>>;
-  readonly deleteProps?: DialogProps<T>;
-  readonly description: string;
-  readonly editProps?: DialogProps<T>;
-  readonly sortComparator: (obj1: T, obj2: T, key: string | null) => number;
-  readonly toolbarProps?: TableToolbarProps<T>;
-  readonly values: ReadonlyArray<T>;
-}
-
-const actionColumn: TableColumn<RowValue> = { align: "center", field: "actions", title: "Actions" };
-
-const buildChildProps = <T extends RowValue>(childProps: ChildProps<T> | undefined, row: T) =>
+const buildChildProps = <T extends RowValue>(childProps: ChildRowProps<T> | undefined, row: T) =>
   childProps
     ? {
         columns: childProps.columnSelector(row),
@@ -40,7 +20,7 @@ const buildChildProps = <T extends RowValue>(childProps: ChildProps<T> | undefin
       }
     : null;
 
-const getComparator = <T extends RowValue>(column: TableColumn<T> | undefined, defaultComparator: (obj1: T, obj2: T, key: string | null) => number) => {
+const getComparator = <T extends RowValue>(column: TableColumnProps<T> | undefined, defaultComparator: (obj1: T, obj2: T, key: string | null) => number) => {
   if (!column) return defaultComparator;
   if (column.sortComparator) return column.sortComparator;
   return defaultObjectComparator;
@@ -61,16 +41,8 @@ const stableSort = <T extends RowValue>(
   return stabilizedThis.map((el) => el[0]);
 };
 
-export default function ParentTable<T extends RowValue>({
-  childProps,
-  deleteProps,
-  description,
-  editProps,
-  columns,
-  sortComparator,
-  toolbarProps,
-  values,
-}: Readonly<ParentTableProps<T>>) {
+export default function ParentTable<T extends RowValue>(props: Readonly<ParentTableProps<T>>) {
+  const { childProps, columns, deleteProps, description, editProps, sortComparator, toolbarProps, values } = props;
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [deleteRow, setDeleteRow] = React.useState<T | null>(null);
   const [editOpen, setEditOpen] = React.useState(false);
@@ -89,7 +61,7 @@ export default function ParentTable<T extends RowValue>({
 
   React.useEffect(() => setPage(0), [values]);
 
-  const buildRows = (tableColumns: ReadonlyArray<TableColumn<T>>, valuesToRender: ReadonlyArray<T>, rowDescription: string) =>
+  const buildRows = (tableColumns: ReadonlyArray<TableColumnProps<T>>, valuesToRender: ReadonlyArray<T>, rowDescription: string) =>
     valuesToRender
       .slice(page * limit, (page + 1) * limit)
       .map((row) => (

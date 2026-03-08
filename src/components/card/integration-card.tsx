@@ -1,15 +1,10 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 
 import CustomCard from "./custom-card";
-import type { ReactNode } from "react";
+import { IntegrationCardProps } from "../../types/card-types";
 
-interface IntegrationCardProps {
-  readonly description: string;
-  readonly integrationButton: ReactNode;
-  readonly title: string;
-}
-
-export default function IntegrationCard({ description, integrationButton, title }: Readonly<IntegrationCardProps>) {
+export default function IntegrationCard(props: Readonly<IntegrationCardProps>) {
+  const { description, integrationButton, title } = props;
   const additionalContent = (
     <>
       <Divider />

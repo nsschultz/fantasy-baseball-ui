@@ -1,7 +1,7 @@
 import { CheckCircleOutlineOutlined, ErrorOutlineOutlined, InfoOutlined } from "@mui/icons-material";
 import { Divider, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 
-import { NotificationMessage } from "../../types/notification-type";
+import { NotificationMessage } from "../../types/notification-types";
 import { format } from "timeago.js";
 import { removeNotification } from "../../state/slice/notification-slice";
 import { useDispatch } from "react-redux";

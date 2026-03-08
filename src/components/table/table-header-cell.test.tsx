@@ -7,7 +7,7 @@ import { ThemeProvider } from "@mui/material";
 const field = "Field";
 const title = "FieldTitle";
 
-const validateTableCell = (align, direction, sortField) => {
+const validateTableCell = (align: string, direction: string, sortField: string) => {
   render(<TestWrapper align={align} direction={direction} sortField={sortField} />);
   expect(screen.getByText(title)).toBeVisible();
   if (direction) expect(screen.getByText(direction === "desc" ? "sorted descending" : "sorted ascending")).toBeVisible();
@@ -29,6 +29,6 @@ describe("TableHeaderCell", () => {
   describe("should render", () => {
     test("with sort ascending direction", () => validateTableCell("right", "asc", field));
     test("with sort descending direction", () => validateTableCell("right", "desc", field));
-    test("without sort direction", () => validateTableCell("left", false, "OtherField"));
+    test("without sort direction", () => validateTableCell("left", undefined, "OtherField"));
   });
 });

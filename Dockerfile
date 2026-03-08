@@ -8,7 +8,7 @@ RUN wget -O sonarqube.zip --no-verbose https://binaries.sonarsource.com/Distribu
     mkdir -p /root/.sonar/native-sonar-scanner/ && \
     mv sonar-scanner-"$SONAR_VERSION" /root/.sonar/native-sonar-scanner/sonar-scanner-"$SONAR_VERSION"-linux
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH=/app/node_modules/.bin:$PATH
 
 FROM dev AS code
 COPY ["package.json", "package-lock.json", "./"]
