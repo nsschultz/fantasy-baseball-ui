@@ -1,8 +1,13 @@
 import { makeMap } from "./map-maker";
 
-const simpleMap = [{ key: 1, value: "value1" }, { key: 2, value: "value2" }, null];
+interface SimpleMapItem {
+  key: number;
+  value: string;
+}
 
-const simpleMaker = (obj) => obj;
+const simpleMap: (SimpleMapItem | null)[] = [{ key: 1, value: "value1" }, { key: 2, value: "value2" }, null];
+
+const simpleMaker = <T>(obj: T): T => obj;
 
 describe("makeMap", () => {
   describe("should return empty object if", () => {
@@ -12,8 +17,8 @@ describe("makeMap", () => {
     test("valueMaker is not set", () => expect(makeMap(simpleMap, simpleMaker, null)).toEqual({}));
   });
   test("should return a proper object when valid inputs are given", () => {
-    const keyMaker = (obj) => obj.key;
-    const valueMaker = (obj) => obj.value;
+    const keyMaker = (obj: SimpleMapItem): number => obj.key;
+    const valueMaker = (obj: SimpleMapItem): string => obj.value;
     expect(makeMap(simpleMap, keyMaker, valueMaker)).toEqual({ 1: "value1", 2: "value2" });
   });
 });

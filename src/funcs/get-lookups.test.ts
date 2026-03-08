@@ -2,7 +2,7 @@ import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPosi
 
 import axios from "axios";
 
-let getSpy;
+let getSpy: jest.SpyInstance;
 const positions = [
   {
     code: "C",

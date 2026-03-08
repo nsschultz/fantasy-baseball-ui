@@ -1,6 +1,14 @@
 import { buildTeamDisplay, buildTeamMap } from "./team-helper";
 
-const teams = [
+interface Team {
+  code: string;
+  alternativeCode: string | null;
+  leagueId: string;
+  city: string;
+  nickname: string;
+}
+
+const teams: Team[] = [
   { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },
   { code: "ARZ", alternativeCode: "ARI", leagueId: "NL", city: "Arizona", nickname: "Diamondbacks" },
   { code: "ATL", alternativeCode: null, leagueId: "NL", city: "Atlanta", nickname: "Braves" },

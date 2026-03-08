@@ -1,8 +1,23 @@
 import { defaultObjectComparator, playerDefaultComparator, playerNameComparator, playerPositionsComparator, playerTeamComparator } from "./sort-comparators";
 
-const obj1 = { matching: 1, different: 1, prop1: 1 };
-const obj2 = { matching: 1, different: 2, prop2: 1 };
-const positions = [
+interface TestObject {
+  matching: number;
+  different: number;
+  prop1?: number;
+  prop2?: number;
+}
+
+interface Position {
+  code: string;
+  fullName: string;
+  playerType: number;
+  sortOrder: number;
+  additionalPositions: Position[];
+}
+
+const obj1: TestObject = { matching: 1, different: 1, prop1: 1 };
+const obj2: TestObject = { matching: 1, different: 2, prop2: 1 };
+const positions: Position[] = [
   {
     code: "C",
     fullName: "Catcher",
@@ -245,6 +260,7 @@ describe("playerPositionsComparator", () => {
       const player1 = { id: 1, positions: [positions[2], positions[3], positions[4]] };
       const player2 = { id: 1, positions: [positions[2], positions[3]] };
       expect(playerPositionsComparator(player1, player2)).toEqual(-1);
+      // eslint-disable-next-line @typescript-eslint/no-confusing-non-null-assertion
       expect(playerPositionsComparator(player2, player1)).toEqual(1);
     });
   });
