@@ -4,3 +4,7 @@ export interface NotificationMessage {
   readonly timestamp: number;
   readonly type: "success" | "error" | "info";
 }
+
+export interface NotificationState {
+  value: NotificationMessage[];
+}

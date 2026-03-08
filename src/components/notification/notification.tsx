@@ -1,3 +1,4 @@
+import { AppDispatch, RootState } from "../../state/store";
 import { Badge, Box, ClickAwayListener, Divider, IconButton, List, Paper, Popper, Tooltip, Typography } from "@mui/material";
 import { ClearAll, Notifications } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,9 +13,9 @@ const paperSx = { boxShadow: 24, maxWidth: 350, minWidth: 250, width: "100%" };
 export default function Notification() {
   const anchor = React.useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = React.useState(false);
-  const notifications: NotificationMessage[] = useSelector((state: { notification: { value: NotificationMessage[] } }) => state.notification.value);
+  const notifications: NotificationMessage[] = useSelector((state: RootState) => state.notification.value);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const handleClickAway = (event: MouseEvent | TouchEvent) => {
     const target = event.target as Node | null;
     if (anchor.current && target && anchor.current.contains(target)) return;
