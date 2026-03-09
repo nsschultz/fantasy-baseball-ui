@@ -1,13 +1,13 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
-import { buildPositionList, buildPositionMap, isChildPosition } from "../funcs/position-helper";
-import { buildTeamDisplay, buildTeamMap } from "../funcs/team-helper";
+import { buildPositionList, buildPositionMap, isChildPosition } from "../../funcs/position-helper";
+import { buildTeamDisplay, buildTeamMap } from "../../funcs/team-helper";
 
-import CustomCard from "../components/card/custom-card";
+import CustomCard from "../../components/card/custom-card";
 import { Helmet } from "react-helmet";
-import MultipleSelectTextField from "../components/input/multiple-select-text-field";
+import MultipleSelectTextField from "../../components/input/multiple-select-text-field";
 import PropTypes from "prop-types";
 import React from "react";
-import { StyledTextField } from "../components/styled/styled-text-field";
+import { StyledTextField } from "../../components/styled/styled-text-field";
 
 const samplePlayer = {
   age: 0,

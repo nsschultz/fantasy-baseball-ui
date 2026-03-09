@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import PlayerFilter from "./player-filter";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material";
-import store from "../state/store";
+import store from "../../state/store";
 
 const lookups = {
   leagusStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },

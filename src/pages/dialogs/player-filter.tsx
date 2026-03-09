@@ -1,14 +1,14 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from "@mui/material";
-import { buildPositionList, buildPositionMap, isChildPosition } from "../funcs/position-helper";
-import { buildTeamDisplay, buildTeamMap } from "../funcs/team-helper";
+import { buildPositionList, buildPositionMap, isChildPosition } from "../../funcs/position-helper";
+import { buildTeamDisplay, buildTeamMap } from "../../funcs/team-helper";
 import { useDispatch, useSelector } from "react-redux";
 
-import CustomCard from "../components/card/custom-card";
+import CustomCard from "../../components/card/custom-card";
 import { Helmet } from "react-helmet";
-import MultipleSelectTextField from "../components/input/multiple-select-text-field";
+import MultipleSelectTextField from "../../components/input/multiple-select-text-field";
 import PropTypes from "prop-types";
 import React from "react";
-import { modifyFilter } from "../state/slice/player-filter-slice";
+import { modifyFilter } from "../../state/slice/player-filter-slice";
 
 const buildGrid = (key, title, content) => (
   <Grid item key={key} lg={6} xs={12}>

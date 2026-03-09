@@ -1,9 +1,9 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
-import GlobalTheme from "../global-theme";
+import GlobalTheme from "../../global-theme";
 import PlayerEditor from "./player-editor";
 import { ThemeProvider } from "@mui/material";
-import { buildTeamDisplay } from "../funcs/team-helper";
+import { buildTeamDisplay } from "../../funcs/team-helper";
 
 let count, hasExisting, hasNew;
 const existingPositions = [
