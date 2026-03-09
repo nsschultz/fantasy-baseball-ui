@@ -1,12 +1,6 @@
 import { buildPositionList, buildPositionMap, isChildPosition, matchAnyPosition } from "./position-helper";
 
-interface Position {
-  code: string;
-  fullName: string;
-  playerType: number;
-  sortOrder: number;
-  additionalPositions: Position[];
-}
+import { Position } from "../types/position-types";
 
 const positions: Position[] = [
   {

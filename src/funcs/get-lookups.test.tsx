@@ -1,9 +1,14 @@
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "./get-lookups";
 
+import { Position } from "../types/position-types";
+import { Team } from "../types/player-types";
 import axios from "axios";
 
+jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+
 let getSpy: jest.SpyInstance;
-const positions = [
+const positions: Position[] = [
   {
     code: "C",
     fullName: "Catcher",
@@ -144,7 +149,7 @@ const positions = [
   { code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] },
   { code: "", fullName: "Unknown", playerType: 0, sortOrder: 2147483647, additionalPositions: [] },
 ];
-const teams = [
+const teams: Team[] = [
   { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },
   { code: "ARZ", alternativeCode: "ARI", leagueId: "NL", city: "Arizona", nickname: "Diamondbacks" },
   { code: "ATL", alternativeCode: null, leagueId: "NL", city: "Atlanta", nickname: "Braves" },
@@ -178,22 +183,21 @@ const teams = [
   { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
 ];
 
-const validateError = (func) => {
-  axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+const validateError = <T,>(func: (handleResponse?: (data: T) => void) => void) => {
+  mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
   return func((response) => expect(response).toEqual([]));
 };
-const validateMissing = (func, url) => {
+const validateMissing = <T,>(func: (handleResponse?: (data: T) => void) => void, url: string) => {
   func();
   expect(getSpy).not.toHaveBeenCalledWith(url);
 };
-const validateValid = (func, url, data) => {
-  axios.get.mockImplementationOnce(() => Promise.resolve({ data: data }));
+const validateValid = <T,>(func: (handleResponse?: (data: T) => void) => void, url: string, data: T) => {
+  mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: data }));
   const p = func((response) => expect(response).toEqual(data));
   expect(getSpy).toHaveBeenCalledWith(url);
   return p;
 };
 
-jest.mock("axios");
 afterEach(() => jest.clearAllMocks());
 beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
 

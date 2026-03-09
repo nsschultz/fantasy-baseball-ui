@@ -1,22 +1,18 @@
 import { defaultObjectComparator, playerDefaultComparator, playerNameComparator, playerPositionsComparator, playerTeamComparator } from "./sort-comparators";
 
-interface TestObject {
+import { Position } from "../types/position-types";
+import { RowValue } from "../types/table-types";
+import { Player, Team } from "../types/player-types";
+
+interface TestObject extends RowValue {
   matching: number;
   different: number;
   prop1?: number;
   prop2?: number;
 }
 
-interface Position {
-  code: string;
-  fullName: string;
-  playerType: number;
-  sortOrder: number;
-  additionalPositions: Position[];
-}
-
-const obj1: TestObject = { matching: 1, different: 1, prop1: 1 };
-const obj2: TestObject = { matching: 1, different: 2, prop2: 1 };
+const obj1: TestObject = { id: "123", matching: 1, different: 1, prop1: 1 };
+const obj2: TestObject = { id: "abc", matching: 1, different: 2, prop2: 1 };
 const positions: Position[] = [
   {
     code: "C",
@@ -158,6 +154,29 @@ const positions: Position[] = [
   { code: "P", fullName: "Pitcher", playerType: 2, sortOrder: 102, additionalPositions: [] },
   { code: "", fullName: "Unknown", playerType: 0, sortOrder: 2147483647, additionalPositions: [] },
 ];
+const team1: Team = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
+const team2: Team = { code: "SF", alternativeCode: null, leagueId: "NL", city: "San Francisco", nickname: "Giants" };
+
+const playerBuilder = (id: string, firstName: string, lastName: string, type: number, positions?: Position[], team?: Team): Player => ({
+  id: id,
+  mlbAmId: 0,
+  type: type,
+  firstName: firstName,
+  lastName: lastName,
+  age: 0,
+  status: 0,
+  averageDraftPick: 0,
+  averageDraftPickMin: 0,
+  averageDraftPickMax: 0,
+  reliability: 0,
+  mayberryMethod: 0,
+  league1: 0,
+  league2: 0,
+  battingStats: [],
+  pitchingStats: [],
+  team: team,
+  positions: positions,
+});
 
 describe("defaultObjectComparator", () => {
   describe("should return 0", () => {
@@ -179,31 +198,31 @@ describe("defaultObjectComparator", () => {
 describe("playerDefaultComparator", () => {
   describe("should return zero", () => {
     test("if type, last, first, and id match", () => {
-      const player1 = { id: 1, firstName: "first", lastName: "last", type: 1 };
-      const player2 = { id: 1, firstName: "first", lastName: "last", type: 1 };
+      const player1 = playerBuilder("1", "first", "last", 1);
+      const player2 = playerBuilder("1", "first", "last", 1);
       expect(playerDefaultComparator(player1, player2)).toEqual(0);
     });
     test("if neither player is set", () => expect(playerDefaultComparator()).toEqual(0));
   });
   describe("should return non-zero", () => {
     test("type doesn't match", () => {
-      const player1 = { id: 1, firstName: "first", lastName: "last", type: 1 };
-      const player2 = { id: 1, firstName: "first", lastName: "last", type: 2 };
+      const player1 = playerBuilder("1", "first", "last", 1);
+      const player2 = playerBuilder("1", "first", "last", 2);
       expect(playerDefaultComparator(player1, player2)).toEqual(1);
     });
     test("last name doesn't match", () => {
-      const player1 = { id: 1, firstName: "first", lastName: "last", type: 1 };
-      const player2 = { id: 1, firstName: "first", lastName: "smith", type: 1 };
+      const player1 = playerBuilder("1", "first", "last", 1);
+      const player2 = playerBuilder("1", "first", "smith", 1);
       expect(playerDefaultComparator(player1, player2)).toEqual(1);
     });
     test("first name doesn't match", () => {
-      const player1 = { id: 1, firstName: "first", lastName: "last", type: 1 };
-      const player2 = { id: 1, firstName: "james", lastName: "last", type: 1 };
+      const player1 = playerBuilder("1", "first", "last", 1);
+      const player2 = playerBuilder("1", "james", "last", 1);
       expect(playerDefaultComparator(player1, player2)).toEqual(1);
     });
     test("id doesn't match", () => {
-      const player1 = { id: 1, firstName: "first", lastName: "last", type: 1 };
-      const player2 = { id: 2, firstName: "first", lastName: "last", type: 1 };
+      const player1 = playerBuilder("1", "first", "last", 1);
+      const player2 = playerBuilder("2", "first", "last", 1);
       expect(playerDefaultComparator(player1, player2)).toEqual(1);
     });
   });
@@ -211,26 +230,26 @@ describe("playerDefaultComparator", () => {
 describe("playerNameComparator", () => {
   describe("should return zero", () => {
     test("if last, first, and id match", () => {
-      const player1 = { id: 1, firstName: "first", lastName: "last" };
-      const player2 = { id: 1, firstName: "first", lastName: "last" };
+      const player1 = playerBuilder("1", "first", "last", 0);
+      const player2 = playerBuilder("1", "first", "last", 0);
       expect(playerNameComparator(player1, player2)).toEqual(0);
     });
     test("if neither player is set", () => expect(playerNameComparator()).toEqual(0));
   });
   describe("should return non-zero", () => {
     test("if the last names don't match", () => {
-      const player1 = { id: 1, firstName: "john", lastName: "smith" };
-      const player2 = { id: 1, firstName: "john", lastName: "anderson" };
+      const player1 = playerBuilder("1", "john", "smith", 0);
+      const player2 = playerBuilder("1", "john", "anderson", 0);
       expect(playerNameComparator(player1, player2)).toEqual(-1);
     });
     test("if the first names don't match", () => {
-      const player1 = { id: 1, firstName: "james", lastName: "smith" };
-      const player2 = { id: 1, firstName: "john", lastName: "smith" };
+      const player1 = playerBuilder("1", "james", "smith", 0);
+      const player2 = playerBuilder("1", "john", "smith", 0);
       expect(playerNameComparator(player1, player2)).toEqual(1);
     });
     test("if the ids don't match", () => {
-      const player1 = { id: 1, firstName: "john", lastName: "smith" };
-      const player2 = { id: 2, firstName: "john", lastName: "smith" };
+      const player1 = playerBuilder("1", "john", "smith", 0);
+      const player2 = playerBuilder("2", "john", "smith", 0);
       expect(playerNameComparator(player1, player2)).toEqual(1);
     });
   });
@@ -238,29 +257,32 @@ describe("playerNameComparator", () => {
 describe("playerPositionsComparator", () => {
   describe("should return zero", () => {
     test("positions, name, and id match", () => {
-      const player1 = { positions: [positions[2], positions[3], positions[4]] };
-      const player2 = { positions: [positions[2], positions[3], positions[4]] };
+      const player1 = playerBuilder("1", "first", "last", 0, [positions[2], positions[3], positions[4]]);
+      const player2 = playerBuilder("1", "first", "last", 0, [positions[2], positions[3], positions[4]]);
       expect(playerPositionsComparator(player1, player2)).toEqual(0);
     });
     test("if neither player is set", () => expect(playerPositionsComparator()).toEqual(0));
-    test("if neither position array is set", () => expect(playerPositionsComparator({}, {})).toEqual(0));
+    test("if neither position array is set", () => {
+      const player1 = playerBuilder("1", "first", "last", 0);
+      const player2 = playerBuilder("1", "first", "last", 0);
+      expect(playerPositionsComparator(player1, player2)).toEqual(0);
+    });
   });
   describe("should return non-zero", () => {
     test("if the positions match, but the IDs don't", () => {
-      const player1 = { id: 1, positions: [positions[2], positions[3], positions[4]] };
-      const player2 = { id: 2, positions: [positions[2], positions[3], positions[4]] };
+      const player1 = playerBuilder("1", "first", "last", 0, [positions[2], positions[3], positions[4]]);
+      const player2 = playerBuilder("2", "first", "last", 0, [positions[2], positions[3], positions[4]]);
       expect(playerPositionsComparator(player1, player2)).toEqual(1);
     });
     test("if the positions don't match", () => {
-      const player1 = { id: 1, positions: [positions[2], positions[3], positions[4]] };
-      const player2 = { id: 1, positions: [positions[3], positions[4]] };
+      const player1 = playerBuilder("1", "first", "last", 0, [positions[2], positions[3], positions[4]]);
+      const player2 = playerBuilder("1", "first", "last", 0, [positions[3], positions[4]]);
       expect(playerPositionsComparator(player1, player2)).toEqual(1);
     });
     test("if the positions match but are of different lengths", () => {
-      const player1 = { id: 1, positions: [positions[2], positions[3], positions[4]] };
-      const player2 = { id: 1, positions: [positions[2], positions[3]] };
+      const player1 = playerBuilder("1", "first", "last", 0, [positions[2], positions[3], positions[4]]);
+      const player2 = playerBuilder("1", "first", "last", 0, [positions[2], positions[3]]);
       expect(playerPositionsComparator(player1, player2)).toEqual(-1);
-      // eslint-disable-next-line @typescript-eslint/no-confusing-non-null-assertion
       expect(playerPositionsComparator(player2, player1)).toEqual(1);
     });
   });
@@ -268,22 +290,26 @@ describe("playerPositionsComparator", () => {
 describe("playerTeamComparator", () => {
   describe("should return zero", () => {
     test("team, name, and id match", () => {
-      const player1 = { team: { code: "MIL" } };
-      const player2 = { team: { code: "MIL" } };
+      const player1 = playerBuilder("1", "first", "last", 0, undefined, team1);
+      const player2 = playerBuilder("1", "first", "last", 0, undefined, team1);
       expect(playerTeamComparator(player1, player2)).toEqual(0);
     });
     test("if neither player is set", () => expect(playerTeamComparator()).toEqual(0));
-    test("if neither team is set", () => expect(playerTeamComparator({}, {})).toEqual(0));
+    test("if neither team is set", () => {
+      const player1 = playerBuilder("1", "first", "last", 0);
+      const player2 = playerBuilder("1", "first", "last", 0);
+      expect(playerTeamComparator(player1, player2)).toEqual(0);
+    });
   });
   describe("should return non-zero", () => {
     test("if the teams match, but the IDs don't", () => {
-      const player1 = { id: 1, team: { code: "MIL" } };
-      const player2 = { id: 2, team: { code: "MIL" } };
+      const player1 = playerBuilder("1", "first", "last", 0, undefined, team1);
+      const player2 = playerBuilder("2", "first", "last", 0, undefined, team1);
       expect(playerTeamComparator(player1, player2)).toEqual(1);
     });
-    test("if the teas don't match", () => {
-      const player1 = { id: 1, team: { code: "MIL" } };
-      const player2 = { id: 1, team: { code: "SF" } };
+    test("if the teams don't match", () => {
+      const player1 = playerBuilder("1", "first", "last", 0, undefined, team1);
+      const player2 = playerBuilder("1", "first", "last", 0, undefined, team2);
       expect(playerTeamComparator(player1, player2)).toEqual(1);
     });
   });

@@ -1,12 +1,6 @@
 import { buildTeamDisplay, buildTeamMap } from "./team-helper";
 
-interface Team {
-  code: string;
-  alternativeCode: string | null;
-  leagueId: string;
-  city: string;
-  nickname: string;
-}
+import { Team } from "../types/player-types";
 
 const teams: Team[] = [
   { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },
@@ -45,9 +39,9 @@ const teams: Team[] = [
 describe("buildTeamDisplay", () => {
   test("should build a team display", () => expect(buildTeamDisplay(teams[16])).toEqual("Milwaukee Brewers"));
   test("should return empty string on null obj", () => expect(buildTeamDisplay()).toEqual(""));
-  test("should return empty string on empty obj", () => expect(buildTeamDisplay({})).toEqual(""));
-  test("should return just city if nickname is missing", () => expect(buildTeamDisplay({ city: "Jackson" })).toEqual("Jackson"));
-  test("should return just nickname if city is missing", () => expect(buildTeamDisplay({ nickname: "Jaguars" })).toEqual("Jaguars"));
+  test("should return empty string on empty obj", () => expect(buildTeamDisplay({ code: "", city: "", nickname: "" })).toEqual(""));
+  test("should return just city if nickname is missing", () => expect(buildTeamDisplay({ code: "", city: "Jackson", nickname: "" })).toEqual("Jackson"));
+  test("should return just nickname if city is missing", () => expect(buildTeamDisplay({ code: "", city: "", nickname: "Jaguars" })).toEqual("Jaguars"));
 });
 describe("buildTeamMap", () => {
   test("should build a team map", () =>
