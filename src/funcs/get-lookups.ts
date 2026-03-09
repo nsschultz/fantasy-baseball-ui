@@ -2,7 +2,7 @@ import { Position } from "../types/position-types";
 import { Team } from "../types/player-types";
 import axios from "axios";
 
-const getLookupValues = <T,>(url: string, handleResponse?: (data: T) => void): Promise<void> | undefined => {
+const getLookupValues = <T>(url: string, handleResponse?: (data: T) => void): Promise<void> | undefined => {
   if (!handleResponse) return;
   const p = axios
     .get<T>(url)

@@ -1,14 +1,14 @@
 import { Player } from "../types/player-types";
 import { RowValue } from "../types/table-types";
 
-const compare = <T,>(a: T, b: T): number => {
+const compare = <T>(a: T, b: T): number => {
   if (a == b) return 0;
   if (a == null) return 1;
   if (b == null) return -1;
   return b < a ? -1 : 1;
 };
 
-const objectCompare = <T,>(a: T | null | undefined, b: T | null | undefined): number => {
+const objectCompare = <T>(a: T | null | undefined, b: T | null | undefined): number => {
   if (a === b) return 0;
   if (a) return -1;
   return 1;
