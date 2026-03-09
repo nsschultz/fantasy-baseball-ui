@@ -1,4 +1,4 @@
-import { LayoutProps } from "../../types/layout-types";
+import { LayoutProps } from "../../types/component-types";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
 import Titlebar from "./titlebar";

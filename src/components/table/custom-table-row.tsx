@@ -1,14 +1,15 @@
+import { BaseEntity, ValueType } from "../../types/basic-types";
 import { Collapse, IconButton, TableCell, TableRow, Tooltip } from "@mui/material";
-import { CustomTableRowProps, RowValue, RowValueType, TableColumnProps } from "../../types/table-types";
+import { CustomTableRowProps, TableColumnProps } from "../../types/component-types";
 import { Edit, KeyboardArrowDown, KeyboardArrowUp, RemoveCircleOutline } from "@mui/icons-material";
 
 import ChildTable from "./child-table";
 import React from "react";
 
-const getDisplayValue = <T extends RowValue>(column: TableColumnProps<T>, value: RowValueType) =>
+const getDisplayValue = <T extends BaseEntity>(column: TableColumnProps<T>, value: ValueType) =>
   column.format ? column.format(value) : (value as React.ReactNode);
 
-export default function CustomTableRow<T extends RowValue>(props: Readonly<CustomTableRowProps<T>>) {
+export default function CustomTableRow<T extends BaseEntity>(props: Readonly<CustomTableRowProps<T>>) {
   const { childProps, columns, description, handleDeleteOpen, handleEditOpen, values } = props;
   const [open, setOpen] = React.useState(false);
 

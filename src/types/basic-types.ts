@@ -1,3 +1,6 @@
+export type BaseEntity = { id: React.Key } & Record<string, ValueType>;
+export type ValueType = number | object | string;
+
 export interface NotificationMessage {
   readonly message: string;
   readonly notificationKey: number;

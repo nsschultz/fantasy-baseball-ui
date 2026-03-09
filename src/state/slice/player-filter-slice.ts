@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { PlayerFilterModification, PlayerFilterStateType } from "../../types/player-filter-types";
+import { PlayerFilterModification, PlayerFilterStateType } from "../../types/implementation-types";
 
 const initialState: PlayerFilterStateType = {
   value: { name: "", l1statuses: [], l2statuses: [], positions: [], statuses: [], teams: [], types: [] },

@@ -1,4 +1,4 @@
-import { ChildTableProps, TableColumnProps } from "../../types/table-types";
+import { ChildTableProps, TableColumnProps } from "../../types/component-types";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import CustomTableRow from "./custom-table-row";

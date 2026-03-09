@@ -1,9 +1,10 @@
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { ChildTableProps, RowValue } from "../../types/table-types";
 
+import { BaseEntity } from "../../types/basic-types";
+import { ChildTableProps } from "../../types/component-types";
 import CustomTableRow from "./custom-table-row";
 
-export default function ChildTable<T extends RowValue>(props: Readonly<ChildTableProps<T>>) {
+export default function ChildTable<T extends BaseEntity>(props: Readonly<ChildTableProps<T>>) {
   return (
     <Box sx={{ paddingBottom: 2, paddingTop: 2 }}>
       <Typography align="left" color="textPrimary" variant="h4">

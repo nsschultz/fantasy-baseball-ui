@@ -1,5 +1,7 @@
 import { Box, TableCell, TableSortLabel } from "@mui/material";
-import { RowValue, TableHeaderProps } from "../../types/table-types";
+
+import { BaseEntity } from "../../types/basic-types";
+import { TableHeaderProps } from "../../types/component-types";
 
 const hiddenStyle = {
   border: 0,
@@ -13,7 +15,7 @@ const hiddenStyle = {
   width: 1,
 };
 
-export default function TableHeaderCell<T extends RowValue>(props: Readonly<TableHeaderProps<T>>) {
+export default function TableHeaderCell<T extends BaseEntity>(props: Readonly<TableHeaderProps<T>>) {
   const { column, handleSortRequest, order, orderBy } = props;
   const isActive = orderBy === column.field;
 

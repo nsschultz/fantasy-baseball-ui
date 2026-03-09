@@ -1,5 +1,5 @@
-import { Position } from "../types/position-types";
-import { Team } from "../types/player-types";
+import { Position, Team } from "../types/entity-types";
+
 import axios from "axios";
 
 const getLookupValues = <T>(url: string, handleResponse?: (data: T) => void): Promise<void> | undefined => {

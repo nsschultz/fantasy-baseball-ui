@@ -1,4 +1,4 @@
-import { Team } from "../types/player-types";
+import { Team } from "../types/entity-types";
 import { makeMap } from "./map-maker";
 
 export const buildTeamDisplay = (team?: Team | null): string => {

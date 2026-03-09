@@ -1,7 +1,6 @@
+import { Position, Team } from "../types/entity-types";
 import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPositions, getStatsTypeEnums, getTeams } from "./get-lookups";
 
-import { Position } from "../types/position-types";
-import { Team } from "../types/player-types";
 import axios from "axios";
 
 jest.mock("axios");
@@ -99,7 +98,7 @@ const positions: Position[] = [
   },
   {
     code: "CF",
-    fullName: "Center Feilder",
+    fullName: "Center Fielder",
     playerType: 1,
     sortOrder: 9,
     additionalPositions: [

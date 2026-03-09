@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, CardHeader, Divider } from "@mui/material";
 
-import { CustomCardProps } from "../../types/card-types";
+import { CustomCardProps } from "../../types/component-types";
 
 export default function CustomCard(props: Readonly<CustomCardProps>) {
   const { additionalContent, content, title } = props;

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
 import CustomCard from "./custom-card";
-import { CustomCardProps } from "../../types/card-types";
+import { CustomCardProps } from "../../types/component-types";
 
 describe("CustomCard", () => {
   describe("should render the card", () => {

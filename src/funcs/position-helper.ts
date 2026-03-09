@@ -1,4 +1,4 @@
-import { Position, PositionMap } from "../types/position-types";
+import { Position, PositionMap } from "../types/entity-types";
 
 import { makeMap } from "./map-maker";
 

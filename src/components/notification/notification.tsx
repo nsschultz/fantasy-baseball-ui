@@ -4,7 +4,7 @@ import { ClearAll, Notifications } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 
 import NotificationItem from "./notification-item";
-import { NotificationMessage } from "../../types/notification-types";
+import { NotificationMessage } from "../../types/basic-types";
 import React from "react";
 import { clearNotifications } from "../../state/slice/notification-slice";
 

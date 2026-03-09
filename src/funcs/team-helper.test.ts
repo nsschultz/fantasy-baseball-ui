@@ -1,6 +1,6 @@
 import { buildTeamDisplay, buildTeamMap } from "./team-helper";
 
-import { Team } from "../types/player-types";
+import { Team } from "../types/entity-types";
 
 const teams: Team[] = [
   { code: "", alternativeCode: null, leagueId: "", city: "Free Agent", nickname: "Free Agent" },

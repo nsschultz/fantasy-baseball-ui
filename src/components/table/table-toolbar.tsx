@@ -1,8 +1,9 @@
 import { AddCircleOutline, FilterAlt, FilterAltOutlined, Search } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField, Toolbar, Tooltip, Typography } from "@mui/material";
-import { RowValue, TableToolbarProps } from "../../types/table-types";
 
+import { BaseEntity } from "../../types/basic-types";
 import React from "react";
+import { TableToolbarProps } from "../../types/component-types";
 
 const searchbarInputProps = {
   startAdornment: (
@@ -12,7 +13,7 @@ const searchbarInputProps = {
   ),
 };
 
-export default function TableToolbar<T extends RowValue>(props: Readonly<TableToolbarProps<T>>) {
+export default function TableToolbar<T extends BaseEntity>(props: Readonly<TableToolbarProps<T>>) {
   const { addProps, description, filterProps, searchProps, title } = props;
   const [isAddOpen, setIsAddOpen] = React.useState(false);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);

@@ -1,6 +1,6 @@
 import { Checkbox, ListItemText, MenuItem } from "@mui/material";
 
-import { MultipleSelectTextFieldProps } from "../../types/input-types";
+import { MultipleSelectTextFieldProps } from "../../types/component-types";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { StyledTextField } from "../styled/styled-text-field";
 

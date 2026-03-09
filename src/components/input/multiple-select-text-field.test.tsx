@@ -3,15 +3,8 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import MultipleSelectTextField from "./multiple-select-text-field";
+import { Position } from "../../types/position-types";
 import { ThemeProvider } from "@mui/material";
-
-type Position = {
-  code: string;
-  fullName: string;
-  playerType: number;
-  sortOrder: number;
-  additionalPositions: Position[];
-};
 
 const positionMap: Record<string, Position> = {
   C: {

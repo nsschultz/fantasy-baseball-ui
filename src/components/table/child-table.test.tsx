@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 
 import ChildTable from "./child-table";
 import GlobalTheme from "../../global-theme";
-import { TableColumnProps } from "../../types/table-types";
+import { TableColumnProps } from "../../types/component-types";
 import { ThemeProvider } from "@mui/material";
 
 type ChildRow = {

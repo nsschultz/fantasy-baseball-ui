@@ -1,15 +1,16 @@
-import { ChildRowProps, ParentTableProps, RowValue, TableColumnProps } from "../../types/table-types";
+import { ChildRowProps, ParentTableProps, TableColumnProps } from "../../types/component-types";
 import { Paper, SortDirection, Table, TableBody, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
 
+import { BaseEntity } from "../../types/basic-types";
 import CustomTableRow from "./custom-table-row";
 import React from "react";
 import TableHeaderCell from "./table-header-cell";
 import TableToolbar from "./table-toolbar";
 import { defaultObjectComparator } from "../../funcs/sort-comparators";
 
-const actionColumn: TableColumnProps<RowValue> = { align: "center", field: "actions", title: "Actions" };
+const actionColumn: TableColumnProps<BaseEntity> = { align: "center", field: "actions", title: "Actions" };
 
-const buildChildProps = <T extends RowValue>(childProps: ChildRowProps<T> | undefined, row: T) =>
+const buildChildProps = <T extends BaseEntity>(childProps: ChildRowProps<T> | undefined, row: T) =>
   childProps
     ? {
         columns: childProps.columnSelector(row),
@@ -20,13 +21,13 @@ const buildChildProps = <T extends RowValue>(childProps: ChildRowProps<T> | unde
       }
     : null;
 
-const getComparator = <T extends RowValue>(column: TableColumnProps<T> | undefined, defaultComparator: (obj1: T, obj2: T, key: string | null) => number) => {
+const getComparator = <T extends BaseEntity>(column: TableColumnProps<T> | undefined, defaultComparator: (obj1: T, obj2: T, key: string | null) => number) => {
   if (!column) return defaultComparator;
   if (column.sortComparator) return column.sortComparator;
   return defaultObjectComparator;
 };
 
-const stableSort = <T extends RowValue>(
+const stableSort = <T extends BaseEntity>(
   array: ReadonlyArray<T>,
   comparator: (obj1: T, obj2: T, key: string | null) => number,
   order: SortDirection,
@@ -41,7 +42,7 @@ const stableSort = <T extends RowValue>(
   return stabilizedThis.map((el) => el[0]);
 };
 
-export default function ParentTable<T extends RowValue>(props: Readonly<ParentTableProps<T>>) {
+export default function ParentTable<T extends BaseEntity>(props: Readonly<ParentTableProps<T>>) {
   const { childProps, columns, deleteProps, description, editProps, sortComparator, toolbarProps, values } = props;
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [deleteRow, setDeleteRow] = React.useState<T | null>(null);

@@ -1,5 +1,5 @@
-import { Player } from "../types/player-types";
-import { RowValue } from "../types/table-types";
+import { BaseEntity } from "../types/basic-types";
+import { Player } from "../types/entity-types";
 
 const compare = <T>(a: T, b: T): number => {
   if (a == b) return 0;
@@ -14,7 +14,7 @@ const objectCompare = <T>(a: T | null | undefined, b: T | null | undefined): num
   return 1;
 };
 
-export const defaultObjectComparator = <T extends RowValue>(obj1: T | null | undefined, obj2: T | null | undefined, key: keyof T): number => {
+export const defaultObjectComparator = <T extends BaseEntity>(obj1: T | null | undefined, obj2: T | null | undefined, key: keyof T): number => {
   if (!obj1 || !obj2) return objectCompare(obj1, obj2);
   return compare(obj1[key], obj2[key]);
 };

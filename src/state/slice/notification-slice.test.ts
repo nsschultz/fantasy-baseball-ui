@@ -1,6 +1,6 @@
 import { addNotification, clearNotifications, removeNotification } from "./notification-slice";
 
-import { NotificationMessage } from "../../types/notification-types";
+import { NotificationMessage } from "../../types/basic-types";
 import store from "../store";
 
 const notifications: NotificationMessage[] = [

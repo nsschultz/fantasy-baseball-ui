@@ -1,6 +1,6 @@
 import { buildPositionList, buildPositionMap, isChildPosition, matchAnyPosition } from "./position-helper";
 
-import { Position } from "../types/position-types";
+import { Position } from "../types/entity-types";
 
 const positions: Position[] = [
   {

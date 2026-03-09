@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 
 import CustomCard from "./custom-card";
-import { IntegrationCardProps } from "../../types/card-types";
+import { IntegrationCardProps } from "../../types/component-types";
 
 export default function IntegrationCard(props: Readonly<IntegrationCardProps>) {
   const { description, integrationButton, title } = props;

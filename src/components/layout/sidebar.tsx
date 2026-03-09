@@ -2,7 +2,7 @@ import { Box, Drawer, List } from "@mui/material";
 import { HomeIcon, IntegrationIcon, PlayerIcon } from "./sidebar-icon";
 
 import NavigationItem from "./navigation-item";
-import { SidebarProps } from "../../types/layout-types";
+import { SidebarProps } from "../../types/component-types";
 
 const items = [
   { href: "/app/home", icon: HomeIcon, title: "Home" },

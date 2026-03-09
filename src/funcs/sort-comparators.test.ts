@@ -1,10 +1,9 @@
+import { Player, Position, Team } from "../types/entity-types";
 import { defaultObjectComparator, playerDefaultComparator, playerNameComparator, playerPositionsComparator, playerTeamComparator } from "./sort-comparators";
 
-import { Position } from "../types/position-types";
-import { RowValue } from "../types/table-types";
-import { Player, Team } from "../types/player-types";
+import { BaseEntity } from "../types/basic-types";
 
-interface TestObject extends RowValue {
+interface TestObject extends BaseEntity {
   matching: number;
   different: number;
   prop1?: number;

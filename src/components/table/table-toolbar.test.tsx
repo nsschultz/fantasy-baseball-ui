@@ -1,11 +1,12 @@
-import { DialogProps, FilterProps, RowValue, SearchProps, TableToolbarProps } from "../../types/table-types";
+import { DialogProps, FilterProps, SearchProps, TableToolbarProps } from "../../types/component-types";
 import { fireEvent, render, screen } from "@testing-library/react";
 
+import { BaseEntity } from "../../types/basic-types";
 import React from "react";
 import TableToolbar from "./table-toolbar";
 
-const addProps = (onClose: () => void): DialogProps<RowValue> => ({
-  buildDialog: (handleAddClose: (object: RowValue) => void, addOpen: boolean, row: RowValue) => {
+const addProps = (onClose: () => void): DialogProps<BaseEntity> => ({
+  buildDialog: (handleAddClose: (object: BaseEntity) => void, addOpen: boolean, row: BaseEntity) => {
     if (addOpen) handleAddClose(row);
     return null;
   },
@@ -21,7 +22,7 @@ const filterProps = (onClose: () => void, isFiltered: boolean): FilterProps => (
   isFiltered: isFiltered,
 });
 
-const TestWrapper = (props: Readonly<TableToolbarProps<RowValue>>) => <TableToolbar {...props} />;
+const TestWrapper = (props: Readonly<TableToolbarProps<BaseEntity>>) => <TableToolbar {...props} />;
 
 describe("TableToolbar", () => {
   describe("should render", () => {

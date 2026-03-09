@@ -4,7 +4,7 @@ import { Input, Menu } from "@mui/icons-material";
 import Logo from "./logo";
 import Notification from "../notification/notification";
 import { Link as RouterLink } from "react-router-dom";
-import { TitlebarProps } from "../../types/layout-types";
+import { TitlebarProps } from "../../types/component-types";
 
 const buildButtons = () => (
   <>

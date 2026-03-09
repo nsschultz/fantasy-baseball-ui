@@ -1,7 +1,7 @@
 import { Button, ListItem } from "@mui/material";
 import { NavLink as RouterLink, matchPath, useLocation } from "react-router-dom";
 
-import { NavigationItemProps } from "../../types/layout-types";
+import { NavigationItemProps } from "../../types/component-types";
 
 export default function NavigationItem(props: Readonly<NavigationItemProps>) {
   const { href, icon: Icon, title } = props;

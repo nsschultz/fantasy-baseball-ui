@@ -1,4 +1,5 @@
-import { ChildRowProps, DialogProps, ParentTableProps, RowValue, TableColumnProps, TableToolbarProps } from "../../types/table-types";
+import { ChildRowProps, DialogProps, ParentTableProps, TableColumnProps, TableToolbarProps } from "../../types/component-types";
+import { Player, Team } from "../../types/entity-types";
 import { defaultObjectComparator, playerNameComparator } from "../../funcs/sort-comparators";
 import { fireEvent, render, screen } from "@testing-library/react";
 
@@ -6,41 +7,66 @@ import GlobalTheme from "../../global-theme";
 import ParentTable from "./parent-table";
 import { ThemeProvider } from "@mui/material";
 
-let columns: readonly TableColumnProps<RowValue>[];
+let columns: readonly TableColumnProps<Player>[];
 let deleteCount = 0;
 let editCount = 0;
 const defaultRowDisplay = 10;
+const playerBuilder = (id: string, firstName: string, lastName: string, age: number, team: Team, type: number, averageDraftPick: number): Player => ({
+  id: id,
+  mlbAmId: 0,
+  type: type,
+  firstName: firstName,
+  lastName: lastName,
+  name: `${lastName}, ${firstName}`,
+  age: age,
+  status: 0,
+  averageDraftPick: averageDraftPick,
+  averageDraftPickMin: 0,
+  averageDraftPickMax: 0,
+  reliability: 0,
+  mayberryMethod: 0,
+  league1: 0,
+  league2: 0,
+  battingStats: [],
+  pitchingStats: [],
+  team: team,
+  positions: [],
+});
+
 const playerTypes = { 0: "", 1: "Batter", 2: "Pitcher" };
-const values: RowValue[] = [
-  { id: 10, firstName: "Nick", lastName: "Schultz", name: "Schultz, Nick", age: 40, team: { code: "TB" }, type: 1, averageDraftPick: 0 },
-  { id: 11, firstName: "Annie", lastName: "Schultz", name: "Schultz, Annie", age: 36, team: { code: "SF" }, type: 0, averageDraftPick: 0 },
-  { id: 12, firstName: "James", lastName: "Schultz", name: "Schultz, James", age: 10, team: { code: "MIL" }, type: 2, averageDraftPick: 1 },
-  { id: 13, firstName: "Samantha", lastName: "Schultz", name: "Schultz, Samantha", age: 7, team: { code: "MIL" }, type: 0, averageDraftPick: 0.99 },
-  { id: 14, firstName: "Ryan", lastName: "Braun", name: "Braun, Ryan", age: 37, team: { code: "MIL" }, type: 1, averageDraftPick: 0.08 },
-  { id: 15, firstName: "Robin", lastName: "Yount", name: "Yount, Robin", age: 65, team: { code: "MIL" }, type: 1, averageDraftPick: 0.19 },
-  { id: 16, firstName: "Paul", lastName: "Molitor", name: "Molitor, Paul", age: 64, team: { code: "MIL" }, type: 1, averageDraftPick: 0.04 },
-  { id: 17, firstName: "Rollie", lastName: "Fingers", name: "Fingers, Rollie", age: 74, team: { code: "MIL" }, type: 2, averageDraftPick: 0.34 },
-  { id: 18, firstName: "Hank", lastName: "Aaron", name: "Aaron, Hank", age: 86, team: { code: "MIL" }, type: 1, averageDraftPick: 0.44 },
-  { id: 19, firstName: "Ben", lastName: "Sheets", name: "Sheets, Ben", age: 43, team: { code: "MIL" }, type: 2, averageDraftPick: 0.15 },
-  { id: 20, firstName: "Bob", lastName: "Wickman", name: "Wickman, Bob", age: 52, team: { code: "MIL" }, type: 2, averageDraftPick: 0.27 },
+const team1: Team = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
+const team2: Team = { code: "SF", alternativeCode: null, leagueId: "NL", city: "San Francisco", nickname: "Giants" };
+const team3: Team = { code: "TB", alternativeCode: null, leagueId: "AL", city: "Tampa Bay", nickname: "Rays" };
+const values: Player[] = [
+  playerBuilder("10", "Nick", "Schultz", 40, team3, 1, 0),
+  playerBuilder("11", "Annie", "Schultz", 36, team2, 0, 0),
+  playerBuilder("12", "James", "Schultz", 10, team1, 2, 1),
+  playerBuilder("13", "Samantha", "Schultz", 7, team1, 0, 0.99),
+  playerBuilder("14", "Ryan", "Braun", 37, team1, 1, 0.08),
+  playerBuilder("15", "Robin", "Yount", 65, team1, 1, 0.19),
+  playerBuilder("16", "Paul", "Molitor", 64, team1, 1, 0.04),
+  playerBuilder("17", "Rollie", "Fingers", 74, team1, 2, 0.34),
+  playerBuilder("18", "Hank", "Aaron", 86, team1, 1, 0.44),
+  playerBuilder("19", "Ben", "Sheets", 43, team1, 2, 0.15),
+  playerBuilder("20", "Bob", "Wickman", 52, team1, 2, 0.27),
 ];
-const sortComparator = (obj1, obj2) => defaultObjectComparator(obj1, obj2, "id");
+const sortComparator = (obj1: Player, obj2: Player) => defaultObjectComparator(obj1, obj2, "id");
 const teams = { MIL: "BREWERS", SF: "GIANTS", TB: "RAYS" };
 
-const buildDelete = (handleDeleteClose: (arg0: RowValue) => void, deleteOpen: boolean, deleteRow: RowValue) => {
+const buildDelete = (handleDeleteClose: (arg0: Player) => void, deleteOpen: boolean, deleteRow: Player) => {
   deleteCount++;
   expect(deleteOpen).toEqual(true);
   handleDeleteClose(deleteRow);
   return null;
 };
-const buildEdit = (handleEditClose: (arg0: RowValue) => void, editOpen: boolean, editRow: RowValue) => {
+const buildEdit = (handleEditClose: (arg0: Player) => void, editOpen: boolean, editRow: Player) => {
   editCount++;
   expect(editOpen).toEqual(true);
   handleEditClose(editRow);
   return null;
 };
-const handleDeleteClose = (row: RowValue) => expect(row).toEqual(values[1]);
-const handleEditClose = (row: RowValue) => expect(row).toEqual(values[0]);
+const handleDeleteClose = (row: Player) => expect(row).toEqual(values[1]);
+const handleEditClose = (row: Player) => expect(row).toEqual(values[0]);
 
 beforeEach(
   () =>
@@ -55,7 +81,7 @@ beforeEach(
 beforeEach(() => (deleteCount = 0));
 beforeEach(() => (editCount = 0));
 
-const TestWrapper = (props: ParentTableProps<RowValue>) => (
+const TestWrapper = (props: ParentTableProps<Player>) => (
   <ThemeProvider theme={GlobalTheme()}>
     <ParentTable {...props} />
   </ThemeProvider>
@@ -69,7 +95,7 @@ describe("ParentTable", () => {
       expect(screen.getAllByRole("row")).toHaveLength(defaultRowDisplay + 1);
     });
     test("with the toolbar visible", () => {
-      const toolbarProps: TableToolbarProps<RowValue> = { description: "MyDescription", title: "MyTitle" };
+      const toolbarProps: TableToolbarProps<Player> = { description: "MyDescription", title: "MyTitle" };
       render(<TestWrapper columns={columns} description={"TheTable"} values={values} sortComparator={sortComparator} toolbarProps={toolbarProps} />);
       expect(screen.getByText("MyTitle")).toBeVisible();
     });
@@ -118,24 +144,24 @@ describe("ParentTable", () => {
     });
   });
   test("should handle deleting", () => {
-    const deleteProps: DialogProps<RowValue> = { buildDialog: buildDelete, handleClose: handleDeleteClose };
+    const deleteProps: DialogProps<Player> = { buildDialog: buildDelete, handleClose: handleDeleteClose };
     render(<TestWrapper columns={columns} deleteProps={deleteProps} description={"TheTable"} values={values} sortComparator={sortComparator} />);
     fireEvent.click(screen.getByTestId("row-delete-11"));
     expect(deleteCount).toEqual(1);
     expect(editCount).toEqual(0);
   });
   test("should handle editing", () => {
-    const editProps: DialogProps<RowValue> = { buildDialog: buildEdit, handleClose: handleEditClose };
+    const editProps: DialogProps<Player> = { buildDialog: buildEdit, handleClose: handleEditClose };
     render(<TestWrapper columns={columns} editProps={editProps} description={"TheTable"} values={values} sortComparator={sortComparator} />);
     fireEvent.click(screen.getByTestId("row-edit-10"));
     expect(deleteCount).toEqual(0);
     expect(editCount).toEqual(1);
   });
   test("should handle displaying a child table", () => {
-    const childProps: ChildRowProps<RowValue> = {
+    const childProps: ChildRowProps<Player> = {
       columnSelector: () => columns,
       description: "MyDescription",
-      rowKeyBuilder: (row: RowValue) => row.id,
+      rowKeyBuilder: (row: Player) => row.id,
       rowSelector: () => values,
       title: "Child Title",
     };
