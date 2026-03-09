@@ -183,15 +183,15 @@ const teams: Team[] = [
   { code: "WAS", alternativeCode: null, leagueId: "NL", city: "Washington", nickname: "Nationals" },
 ];
 
-const validateError = <T,>(func: (handleResponse?: (data: T) => void) => void) => {
+const validateError = <T>(func: (handleResponse?: (data: T) => void) => void) => {
   mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
   return func((response) => expect(response).toEqual([]));
 };
-const validateMissing = <T,>(func: (handleResponse?: (data: T) => void) => void, url: string) => {
+const validateMissing = <T>(func: (handleResponse?: (data: T) => void) => void, url: string) => {
   func();
   expect(getSpy).not.toHaveBeenCalledWith(url);
 };
-const validateValid = <T,>(func: (handleResponse?: (data: T) => void) => void, url: string, data: T) => {
+const validateValid = <T>(func: (handleResponse?: (data: T) => void) => void, url: string, data: T) => {
   mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: data }));
   const p = func((response) => expect(response).toEqual(data));
   expect(getSpy).toHaveBeenCalledWith(url);

@@ -10,7 +10,7 @@ scanner(
       "sonar.sources": "./src",
       "sonar.exclusions": "**/*.test.js, **/*.test.tsx, **/index.tsx, **/reportWebVitals.js, **/setupTests.js",
       "sonar.tests": "./src",
-      "sonar.test.inclusions": "**/*.test.js, **/*.test.tsx",
+      "sonar.test.inclusions": "**/*.test.js, **/*.test.ts, **/*.test.tsx",
       "sonar.typescript.lcov.reportPaths": "coverage/lcov.info",
       "sonar.testExecutionReportPaths": "reports/test-report.xml",
       "sonar.sourceEncoding": "UTF-8",
