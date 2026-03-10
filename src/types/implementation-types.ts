@@ -1,8 +1,29 @@
+import { EditablePlayer, Player, Position, Team } from "./entity-types";
+
 export type PlayerFilterKey = keyof PlayerFilterType;
+
+export interface PlayerDeleterProps {
+  onClose: (player?: Player) => void;
+  open: boolean;
+  player?: Player;
+}
+
+export interface PlayerEditorProps {
+  lookups: PlayerLookups;
+  onClose: (player?: EditablePlayer) => void;
+  open: boolean;
+  player?: Player;
+}
 
 export interface PlayerFilterModification<K extends PlayerFilterKey = PlayerFilterKey> {
   key: K;
   value: PlayerFilterType[K];
+}
+
+export interface PlayerFilterProps {
+  lookups: PlayerLookups;
+  onClose: () => void;
+  open: boolean;
 }
 
 export interface PlayerFilterStateType {
@@ -11,10 +32,18 @@ export interface PlayerFilterStateType {
 
 export interface PlayerFilterType {
   name: string;
-  l1statuses: Array<number>;
-  l2statuses: Array<number>;
-  positions: Array<string>;
-  statuses: Array<number>;
-  teams: Array<string>;
-  types: Array<number>;
+  l1statuses: string[];
+  l2statuses: string[];
+  positions: Position[];
+  statuses: string[];
+  teams: Team[];
+  types: string[];
+}
+
+export interface PlayerLookups {
+  leagusStatuses: Record<string, string>;
+  playerStatuses: Record<string, string>;
+  playerTypes: Record<string, string>;
+  positions: Position[];
+  teams: Team[];
 }

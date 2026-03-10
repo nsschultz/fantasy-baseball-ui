@@ -1,4 +1,6 @@
+import type { AppDispatch, RootState } from "../../state/store";
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from "@mui/material";
+import type { PlayerFilterKey, PlayerFilterProps, PlayerFilterType } from "../../types/implementation-types";
 import { buildPositionList, buildPositionMap, isChildPosition } from "../../funcs/position-helper";
 import { buildTeamDisplay, buildTeamMap } from "../../funcs/team-helper";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,32 +8,32 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomCard from "../../components/card/custom-card";
 import { Helmet } from "react-helmet";
 import MultipleSelectTextField from "../../components/input/multiple-select-text-field";
-import PropTypes from "prop-types";
 import React from "react";
 import { modifyFilter } from "../../state/slice/player-filter-slice";
 
-const buildGrid = (key, title, content) => (
+const buildGrid = (key: string, title: string, content: React.ReactNode) => (
   <Grid item key={key} lg={6} xs={12}>
     <CustomCard title={title} content={content} />
   </Grid>
 );
-const buildMultipleSelectField = (displayProps, field, handleOnChange, menuItems, selectedValues) => (
+const buildMultipleSelectField = <T,>(
+  displayProps: {
+    disableChecker?: (menuItems: Record<string, T>, selectedValues?: string[], key?: string) => boolean;
+    label: string;
+    listItemBuilder: (lookup: Record<string, T>, key: string) => React.ReactNode;
+    textValueBuilder: () => React.ReactNode;
+  },
+  field: string,
+  handleOnChange: (values: string[]) => void,
+  menuItems: Record<string, T>,
+  selectedValues: string[]
+) => (
   <MultipleSelectTextField displayProps={displayProps} field={field} handleOnChange={handleOnChange} menuItems={menuItems} selectedValues={selectedValues} />
 );
 
-/**
- * A view used for setting player values on either an existing player or on a new player object.
- * @param {object} lookups.leagusStatuses Object that maps the league status to it's code value.
- * @param {object} lookups.playerStatuses Object that maps the player status to it's code value.
- * @param {object} lookups.playerTypes    Object that maps the player type to it's code value.
- * @param {array}  lookups.positions      Array of position objects.
- * @param {array}  lookups.team           Array of team objects.
- * @param {func}   onClose                The action to call when the view is closed.
- * @param {bool}   open                   Bool indicating if the window is currently visible.
- * @returns A new instance of the PlayerView.
- */
-const PlayerFilter = ({ lookups, onClose, open }) => {
-  const filters = useSelector((state) => state.playerFilter.value);
+export default function PlayerFilter(props: Readonly<PlayerFilterProps>) {
+  const { lookups, onClose, open } = props;
+  const filters = useSelector((state: RootState) => state.playerFilter.value);
   const positionMap = buildPositionMap(lookups.positions);
   const teamMap = buildTeamMap(lookups.teams);
   const baseballInfoContent = (
@@ -114,8 +116,8 @@ const PlayerFilter = ({ lookups, onClose, open }) => {
     </>
   );
 
-  const dispatch = useDispatch();
-  const handleFilterChange = (key, values) => dispatch(modifyFilter({ key: key, value: values }));
+  const dispatch = useDispatch<AppDispatch>();
+  const handleFilterChange = <K extends PlayerFilterKey>(key: K, values: PlayerFilterType[K]) => dispatch(modifyFilter({ key: key, value: values }));
 
   return (
     <>
@@ -146,16 +148,4 @@ const PlayerFilter = ({ lookups, onClose, open }) => {
       </Dialog>
     </>
   );
-};
-PlayerFilter.propTypes = {
-  lookups: PropTypes.shape({
-    leagusStatuses: PropTypes.object.isRequired,
-    playerStatuses: PropTypes.object.isRequired,
-    playerTypes: PropTypes.object.isRequired,
-    positions: PropTypes.array.isRequired,
-    teams: PropTypes.array.isRequired,
-  }).isRequired,
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
-export default PlayerFilter;
+}

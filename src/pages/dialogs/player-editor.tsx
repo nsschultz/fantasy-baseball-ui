@@ -1,36 +1,54 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Typography } from "@mui/material";
+import type { EditablePlayer, PositionMap, Team } from "../../types/entity-types";
 import { buildPositionList, buildPositionMap, isChildPosition } from "../../funcs/position-helper";
 import { buildTeamDisplay, buildTeamMap } from "../../funcs/team-helper";
 
 import CustomCard from "../../components/card/custom-card";
 import { Helmet } from "react-helmet";
 import MultipleSelectTextField from "../../components/input/multiple-select-text-field";
-import PropTypes from "prop-types";
+import { PlayerEditorProps } from "../../types/implementation-types";
 import React from "react";
 import { StyledTextField } from "../../components/styled/styled-text-field";
 
-const samplePlayer = {
+const samplePlayer: EditablePlayer = {
   age: 0,
-  mlbAmId: 0,
   averageDraftPick: 9999,
+  averageDraftPickMax: 9999,
+  averageDraftPickMin: 9999,
   firstName: "",
   lastName: "",
   league1: 0,
   league2: 0,
+  mlbAmId: 0,
   positions: [],
   status: 0,
   team: undefined,
   type: 0,
 };
 
-const buildDefaultSelectField = (field, label, handleOnChange, defaultValue, lookup, disabled) =>
-  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (lookup, key) => (lookup[key] ? lookup[key] : "[default]"), disabled);
-const buildGrid = (key, title, content) => (
+const buildDefaultSelectField = (
+  field: string,
+  label: string,
+  handleOnChange: (value: string) => void,
+  defaultValue: string | number,
+  lookup: Record<string, string>,
+  disabled?: boolean
+) =>
+  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (itemLookup, key) => (itemLookup[key] ? itemLookup[key] : "[default]"), disabled);
+const buildGrid = (key: string, title: string, content: React.ReactNode) => (
   <Grid item key={key} lg={3} md={6} xs={12}>
     <CustomCard title={title} content={content} />
   </Grid>
 );
-const buildInputField = (field, label, handleOnChange, defaultValue, type, inputProps, disabled) => (
+const buildInputField = (
+  field: string,
+  label: string,
+  handleOnChange: (value: string) => void,
+  defaultValue: string | number,
+  type: "number" | "text",
+  inputProps?: Record<string, number>,
+  disabled?: boolean
+) => (
   <StyledTextField
     disabled={disabled}
     fullWidth
@@ -45,9 +63,23 @@ const buildInputField = (field, label, handleOnChange, defaultValue, type, input
     variant="filled"
   />
 );
-const buildNumberField = (field, label, handleOnChange, defaultValue, inputProps, disabled) =>
-  buildInputField(field, label, handleOnChange, defaultValue, "number", inputProps, disabled);
-const buildSingleSelectField = (field, label, handleOnChange, defaultValue, lookup, display, disabled) => (
+const buildNumberField = (
+  field: string,
+  label: string,
+  handleOnChange: (value: string) => void,
+  defaultValue: string | number,
+  inputProps?: Record<string, number>,
+  disabled?: boolean
+) => buildInputField(field, label, handleOnChange, defaultValue, "number", inputProps, disabled);
+const buildSingleSelectField = (
+  field: string,
+  label: string,
+  handleOnChange: (value: string) => void,
+  defaultValue: string | number,
+  lookup: Record<string, string>,
+  display: (lookup: Record<string, string>, key: string) => React.ReactNode,
+  disabled?: boolean
+) => (
   <StyledTextField
     disabled={disabled}
     fullWidth
@@ -66,9 +98,30 @@ const buildSingleSelectField = (field, label, handleOnChange, defaultValue, look
     ))}
   </StyledTextField>
 );
-const buildTextField = (field, label, handleOnChange, defaultValue) => buildInputField(field, label, handleOnChange, defaultValue, "text");
-const convertToNumber = (val) => parseInt(val, 10);
-const fixPlayer = (player) => {
+const buildTeamSelectField = (
+  field: string,
+  label: string,
+  handleOnChange: (value: string) => void,
+  defaultValue: string | number,
+  lookup: Record<string, Team>,
+  display: (lookup: Record<string, Team>, key: string) => React.ReactNode,
+  disabled?: boolean
+) =>
+  buildSingleSelectField(
+    field,
+    label,
+    handleOnChange,
+    defaultValue,
+    lookup as unknown as Record<string, string>,
+    (_lookup, key) => display(lookup, key),
+    disabled
+  );
+const buildTextField = (field: string, label: string, handleOnChange: (value: string) => void, defaultValue: string) =>
+  buildInputField(field, label, handleOnChange, defaultValue, "text");
+const convertToNumber = (val: string | number) => Number.parseInt(String(val), 10);
+const clampNumber = (val: string, min: number, max: number) => Math.min(max, Math.max(min, Number.parseFloat(val || "0")));
+const ensureStringArray = (values: string[] | string): string[] => (Array.isArray(values) ? values : [values]);
+const fixPlayer = (player: EditablePlayer): EditablePlayer => {
   player.age = convertToNumber(player.age);
   player.mlbAmId = convertToNumber(player.mlbAmId);
   player.averageDraftPick = convertToNumber(player.averageDraftPick * 100) / 100;
@@ -81,22 +134,11 @@ const fixPlayer = (player) => {
   return player;
 };
 
-/**
- * A view used for setting player values on either an existing player or on a new player object.
- * @param {object} lookups.leagusStatuses Object that maps the league status to it's code value.
- * @param {object} lookups.playerStatuses Object that maps the player status to it's code value.
- * @param {object} lookups.playerTypes    Object that maps the player type to it's code value.
- * @param {array}  lookups.positions      Array of position objects.
- * @param {array}  lookups.team           Array of team objects.
- * @param {func}   onClose                The action to call when the view is closed.
- * @param {bool}   open                   Bool indicating if the window is currently visible.
- * @param {object} player                 The data for the player being edited (does not need to be provided for adds).
- * @returns A new instance of the PlayerView.
- */
-const PlayerEditor = ({ lookups, onClose, open, player }) => {
-  const newPlayer = JSON.parse(JSON.stringify(player || samplePlayer));
+export default function PlayerEditor(props: Readonly<PlayerEditorProps>) {
+  const { lookups, onClose, open, player } = props;
+  const newPlayer: EditablePlayer = JSON.parse(JSON.stringify(player || samplePlayer));
   const [age, setAge] = React.useState(newPlayer.age);
-  const [averageDraftPick, setAverageDraftPick] = React.useState(newPlayer.averageDraftPick.toFixed(2));
+  const [averageDraftPick, setAverageDraftPick] = React.useState(Number(newPlayer.averageDraftPick.toFixed(2)));
   const [averageDraftPickMin, setAverageDraftPickMin] = React.useState(newPlayer.averageDraftPickMin);
   const [averageDraftPickMax, setAverageDraftPickMax] = React.useState(newPlayer.averageDraftPickMax);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
@@ -107,10 +149,10 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
   const [league2, setLeague2] = React.useState(newPlayer.league2);
   const [positions, setPositions] = React.useState(newPlayer.positions);
   const [status, setStatus] = React.useState(newPlayer.status);
-  const [team, setTeam] = React.useState(newPlayer.team || lookups.teams[0]);
+  const [team, setTeam] = React.useState<Team>(newPlayer.team || lookups.teams[0]);
   const teamMap = buildTeamMap(lookups.teams);
-  const [type, setType] = React.useState(newPlayer.type);
-  const [positionMap, setPositionMap] = React.useState(buildPositionMap(lookups.positions, type));
+  const [type, setType] = React.useState<string | number>(newPlayer.type);
+  const [positionMap, setPositionMap] = React.useState<PositionMap>(buildPositionMap(lookups.positions, type));
   const baseballInfoContent = (
     <>
       {buildDefaultSelectField(
@@ -134,12 +176,12 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
             textValueBuilder: () => positions.map((p) => p.code).join(),
           }}
           field="positions"
-          handleOnChange={(values) => setPositions(buildPositionList(values, positionMap))}
+          handleOnChange={(values) => setPositions(buildPositionList(ensureStringArray(values), positionMap))}
           menuItems={positionMap}
           selectedValues={positions.map((p) => p.code)}
         />
       }
-      {buildSingleSelectField(
+      {buildTeamSelectField(
         "team",
         "Team",
         (value) => setTeam(teamMap[value]),
@@ -147,28 +189,28 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
         teamMap,
         (lookup, key) => buildTeamDisplay(lookup[key])
       )}
-      {buildDefaultSelectField("status", "Status", (value) => setStatus(value), status, lookups.playerStatuses)}
+      {buildDefaultSelectField("status", "Status", (value) => setStatus(convertToNumber(value)), status, lookups.playerStatuses)}
     </>
   );
   const draftInfoContent = (
     <>
-      {buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPick)}
-      {buildNumberField("averageDraftPickMin", "ADP Min", (value) => setAverageDraftPickMin(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPickMin)}
-      {buildNumberField("averageDraftPickMax", "ADP Max", (value) => setAverageDraftPickMax(value < 1 ? 1 : value > 9999 ? 9999 : value), averageDraftPickMax)}
+      {buildNumberField("averageDraftPick", "ADP", (value) => setAverageDraftPick(clampNumber(value, 1, 9999)), averageDraftPick)}
+      {buildNumberField("averageDraftPickMin", "ADP Min", (value) => setAverageDraftPickMin(clampNumber(value, 1, 9999)), averageDraftPickMin)}
+      {buildNumberField("averageDraftPickMax", "ADP Max", (value) => setAverageDraftPickMax(clampNumber(value, 1, 9999)), averageDraftPickMax)}
     </>
   );
   const fantasyInfoContent = (
     <>
-      {buildNumberField("mlbAmId", "MLBAMID", (value) => setMlbAmId(value < 0 ? 0 : value), mlbAmId, { min: 0 }, isEdit)}
-      {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(value), league1, lookups.leagusStatuses)}
-      {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(value), league2, lookups.leagusStatuses)}
+      {buildNumberField("mlbAmId", "MLBAMID", (value) => setMlbAmId(Math.max(0, convertToNumber(value))), mlbAmId, { min: 0 }, isEdit)}
+      {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(convertToNumber(value)), league1, lookups.leagusStatuses)}
+      {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(convertToNumber(value)), league2, lookups.leagusStatuses)}
     </>
   );
   const personInfoContent = (
     <>
       {buildTextField("firstName", "First Name", (value) => setFirstName(value), firstName)}
       {buildTextField("lastName", "Last Name", (value) => setLastName(value), lastName)}
-      {buildNumberField("age", "Age", (value) => setAge(value < 0 ? 0 : value), age, { min: 0 })}
+      {buildNumberField("age", "Age", (value) => setAge(Math.max(0, convertToNumber(value))), age, { min: 0 })}
     </>
   );
 
@@ -187,7 +229,7 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
     newPlayer.positions = positions;
     newPlayer.status = status;
     newPlayer.team = team;
-    newPlayer.type = type;
+    newPlayer.type = convertToNumber(type);
     onClose(fixPlayer(newPlayer));
   };
 
@@ -225,17 +267,4 @@ const PlayerEditor = ({ lookups, onClose, open, player }) => {
       </Dialog>
     </>
   );
-};
-PlayerEditor.propTypes = {
-  lookups: PropTypes.shape({
-    leagusStatuses: PropTypes.object.isRequired,
-    playerStatuses: PropTypes.object.isRequired,
-    playerTypes: PropTypes.object.isRequired,
-    positions: PropTypes.array.isRequired,
-    teams: PropTypes.array.isRequired,
-  }).isRequired,
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  player: PropTypes.object,
-};
-export default PlayerEditor;
+}

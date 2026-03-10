@@ -1,5 +1,19 @@
 import { BaseEntity } from "./basic-types";
 
+export type EditablePlayer = Partial<Player> & {
+  age: number;
+  averageDraftPick: number;
+  averageDraftPickMax: number;
+  averageDraftPickMin: number;
+  firstName: string;
+  lastName: string;
+  league1: number;
+  league2: number;
+  mlbAmId: number;
+  positions: Position[];
+  status: number;
+  type: number;
+};
 export type PositionMap = Record<string, Position>;
 
 export interface BattingStats {

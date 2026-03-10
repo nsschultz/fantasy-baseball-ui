@@ -2,11 +2,12 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import PlayerFilter from "./player-filter";
+import { PlayerLookups } from "../../types/implementation-types";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "@mui/material";
 import store from "../../state/store";
 
-const lookups = {
+const lookups: PlayerLookups = {
   leagusStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
   playerStatuses: { 0: "Normal", 1: "Disabled List", 2: "Not Available", 3: "New Entry" },
   playerTypes: { 0: "Unknown", 1: "Batter", 2: "Pitcher" },

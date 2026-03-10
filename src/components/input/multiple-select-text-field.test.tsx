@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import MultipleSelectTextField from "./multiple-select-text-field";
-import { Position } from "../../types/position-types";
+import { Position } from "../../types/entity-types";
 import { ThemeProvider } from "@mui/material";
 
 const positionMap: Record<string, Position> = {

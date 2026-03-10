@@ -1,12 +1,14 @@
+import { EditablePlayer, Player, Position, Team } from "../../types/entity-types";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 import GlobalTheme from "../../global-theme";
 import PlayerEditor from "./player-editor";
+import { PlayerLookups } from "../../types/implementation-types";
 import { ThemeProvider } from "@mui/material";
 import { buildTeamDisplay } from "../../funcs/team-helper";
 
-let count, hasExisting, hasNew;
-const existingPositions = [
+let count: number, hasExisting: boolean, hasNew: boolean;
+const existingPositions: Position[] = [
   {
     code: "2B",
     fullName: "Second Baseman",
@@ -30,8 +32,8 @@ const existingPositions = [
     ],
   },
 ];
-const existingTeam = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
-const existingPlayer = {
+const existingTeam: Team = { code: "MIL", alternativeCode: null, leagueId: "NL", city: "Milwaukee", nickname: "Brewers" };
+const existingPlayer: Player = {
   mlbAmId: 9999,
   id: 1,
   age: 40,
@@ -47,8 +49,12 @@ const existingPlayer = {
   status: 0,
   team: existingTeam,
   type: 1,
+  battingStats: [],
+  mayberryMethod: 0,
+  pitchingStats: [],
+  reliability: 0,
 };
-const lookups = {
+const lookups: PlayerLookups = {
   leagusStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
   playerStatuses: { 0: "Normal", 1: "Disabled List", 2: "Not Available", 3: "New Entry" },
   playerTypes: { 0: "Unknown", 1: "Batter", 2: "Pitcher" },
@@ -295,7 +301,7 @@ const mutatePlayer = (player) => {
   }
 };
 const mutatePlayerStatus = (label, currentValue, newValue, enums) => mutateDropDown(label, enums[currentValue ?? 0], newValue);
-const onCloseDefault = (newPlayer) => {
+const onCloseDefault = (newPlayer: EditablePlayer) => {
   count++;
   if (hasExisting) verifyPlayer(existingPlayer, 40, 9999, 3.36, 1, 5, "Nick", "Schultz", 2, 3, existingPositions, 0, existingTeam, 1);
   if (hasNew)
@@ -304,20 +310,20 @@ const onCloseDefault = (newPlayer) => {
   else expect(newPlayer).toEqual(undefined);
 };
 const verifyPlayer = (
-  player,
-  age,
-  mlbAmId,
-  averageDraftPick,
-  averageDraftPickMin,
-  averageDraftPickMax,
-  firstName,
-  lastName,
-  league1,
-  league2,
-  positions,
-  status,
-  team,
-  type
+  player: EditablePlayer,
+  age: number,
+  mlbAmId: number,
+  averageDraftPick: number,
+  averageDraftPickMin: number,
+  averageDraftPickMax: number,
+  firstName: string,
+  lastName: string,
+  league1: number,
+  league2: number,
+  positions: Position[],
+  status: number,
+  team: Team,
+  type: number
 ) => {
   expect(player.age).toEqual(age);
   expect(player.mlbAmId).toEqual(mlbAmId);
@@ -340,7 +346,7 @@ beforeEach(() => (count = 0));
 beforeEach(() => (hasExisting = true));
 beforeEach(() => (hasNew = true));
 
-const TestWrapper = ({ onClose }) => (
+const TestWrapper = ({ onClose }: { onClose: (newPlayer: EditablePlayer) => void }) => (
   <ThemeProvider theme={GlobalTheme()}>
     <PlayerEditor lookups={lookups} player={hasExisting ? existingPlayer : undefined} open={true} onClose={onClose} />
   </ThemeProvider>
@@ -371,7 +377,7 @@ describe("PlayerEditor", () => {
   });
   describe("should not accept values", () => {
     test("below the min", () => {
-      const onClose = (newPlayer) => {
+      const onClose = (newPlayer: EditablePlayer) => {
         count++;
         expect(newPlayer.age).toEqual(0);
         expect(newPlayer.mlbAmId).toEqual(0);
@@ -387,7 +393,7 @@ describe("PlayerEditor", () => {
       expect(count).toEqual(1);
     });
     test("above the max", () => {
-      const onClose = (newPlayer) => {
+      const onClose = (newPlayer: EditablePlayer) => {
         count++;
         expect(newPlayer.averageDraftPick).toEqual(9999);
       };

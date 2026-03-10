@@ -1,9 +1,12 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@mui/material";
 
 import Alert from "@mui/material/Alert";
+import type { AlertColor } from "@mui/material/Alert";
+import type { AppDispatch } from "../state/store";
 import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
+import type { NotificationMessage } from "../types/basic-types";
 import React from "react";
 import { addNotification } from "../state/slice/notification-slice";
 import axios from "axios";
@@ -14,27 +17,29 @@ import { useDispatch } from "react-redux";
  * @returns A new instance of ImportExportData.
  */
 const ImportExportData = () => {
-  const [alertProps, setAlertProps] = React.useState({ message: "", severity: "info" });
+  const [alertProps, setAlertProps] = React.useState<{ message: string; severity: AlertColor }>({ message: "", severity: "info" });
   const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
 
-  const clearInputFile = (event) => (event.target.value = null);
-  const createNotification = (message, type) =>
+  const clearInputFile = (event: React.MouseEvent<HTMLInputElement>) => {
+    event.currentTarget.value = "";
+  };
+  const createNotification = (message: string, type: NotificationMessage["type"]) =>
     dispatch(addNotification({ notificationKey: Math.random() * Date.now(), message: message, timestamp: Date.now(), type: type }));
-  const dispatch = useDispatch();
-  const displayErrorMessage = (message) => createNotification(message, "error");
-  const displayInfoMessage = (message) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const displayErrorMessage = (message: string) => createNotification(message, "error");
+  const displayInfoMessage = (message: string) => {
     createNotification(message, "info");
     setSnackbar("info", message);
   };
-  const displaySuccessMessage = (message) => createNotification(message, "success");
+  const displaySuccessMessage = (message: string) => createNotification(message, "success");
   const exportOnClick = () => {
     axios
       .get(`${window.env.PLAYER_API_URL}/api/v3/action/export`, { responseType: "blob" })
       .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
       .catch(() => setSnackbar("error", "Failed to export the players"));
   };
-  const handleDialogClose = (shouldClear) => {
+  const handleDialogClose = (shouldClear: boolean) => {
     setIsClearDialogOpen(false);
     if (!shouldClear) return;
     axios
@@ -43,8 +48,9 @@ const ImportExportData = () => {
       .catch(() => displayErrorMessage("Failed to clear the players."));
     displayInfoMessage("Attempting to clear players");
   };
-  const onBatterFileChange = (event) => onFileChange(event.target.files[0], 1);
-  const onFileChange = (file, type) => {
+  const onBatterFileChange = (event: React.ChangeEvent<HTMLInputElement>) => onFileChange(event.target.files?.[0], 1);
+  const onFileChange = (file: File | undefined, type: 1 | 2) => {
+    if (!file) return;
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
@@ -53,8 +59,8 @@ const ImportExportData = () => {
       .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
     displayInfoMessage(`Attempting to upload the ${type} file.`);
   };
-  const onPitcherFileChange = (event) => onFileChange(event.target.files[0], 2);
-  const setSnackbar = (severity, message) => {
+  const onPitcherFileChange = (event: React.ChangeEvent<HTMLInputElement>) => onFileChange(event.target.files?.[0], 2);
+  const setSnackbar = (severity: AlertColor, message: string) => {
     setAlertProps({ message: message, severity: severity });
     setIsSnackbarOpen(true);
   };
@@ -71,14 +77,14 @@ const ImportExportData = () => {
   );
   const uploadBattersFileButton = (
     <Button color="primary" component="label" variant="contained">
-      Upload
       <input hidden onChange={onBatterFileChange} onClick={clearInputFile} type="file" />
+      <span>Upload</span>
     </Button>
   );
   const uploadPitchersFileButton = (
     <Button color="primary" component="label" variant="contained">
-      Upload
       <input hidden onChange={onPitcherFileChange} onClick={clearInputFile} type="file" />
+      <span>Upload</span>
     </Button>
   );
 
