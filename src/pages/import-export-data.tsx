@@ -12,11 +12,7 @@ import { addNotification } from "../state/slice/notification-slice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
-/**
- * Creates a new instance of the import/export page.
- * @returns A new instance of ImportExportData.
- */
-const ImportExportData = () => {
+export default function ImportExportData() {
   const [alertProps, setAlertProps] = React.useState<{ message: string; severity: AlertColor }>({ message: "", severity: "info" });
   const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
@@ -35,7 +31,7 @@ const ImportExportData = () => {
   const displaySuccessMessage = (message: string) => createNotification(message, "success");
   const exportOnClick = () => {
     axios
-      .get(`${window.env.PLAYER_API_URL}/api/v3/action/export`, { responseType: "blob" })
+      .get(`${globalThis.env.PLAYER_API_URL}/api/v3/action/export`, { responseType: "blob" })
       .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
       .catch(() => setSnackbar("error", "Failed to export the players"));
   };
@@ -43,7 +39,7 @@ const ImportExportData = () => {
     setIsClearDialogOpen(false);
     if (!shouldClear) return;
     axios
-      .delete(`${window.env.PLAYER_API_URL}/api/v3/player`)
+      .delete(`${globalThis.env.PLAYER_API_URL}/api/v3/player`)
       .then(() => displaySuccessMessage("Successfully cleared the players."))
       .catch(() => displayErrorMessage("Failed to clear the players."));
     displayInfoMessage("Attempting to clear players");
@@ -54,7 +50,7 @@ const ImportExportData = () => {
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);
     axios
-      .post(`${window.env.PLAYER_API_URL}/api/v3/action/upload/stats?player=${type}&stats=2`, formData)
+      .post(`${globalThis.env.PLAYER_API_URL}/api/v3/action/upload/stats?player=${type}&stats=2`, formData)
       .then(() => displaySuccessMessage(`Successfully uploaded the ${type} file.`))
       .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
     displayInfoMessage(`Attempting to upload the ${type} file.`);
@@ -142,5 +138,4 @@ const ImportExportData = () => {
       </Snackbar>
     </>
   );
-};
-export default ImportExportData;
+}

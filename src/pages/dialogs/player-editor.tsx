@@ -136,7 +136,7 @@ const fixPlayer = (player: EditablePlayer): EditablePlayer => {
 
 export default function PlayerEditor(props: Readonly<PlayerEditorProps>) {
   const { lookups, onClose, open, player } = props;
-  const newPlayer: EditablePlayer = JSON.parse(JSON.stringify(player || samplePlayer));
+  const newPlayer: EditablePlayer = structuredClone(player || samplePlayer);
   const [age, setAge] = React.useState(newPlayer.age);
   const [averageDraftPick, setAverageDraftPick] = React.useState(Number(newPlayer.averageDraftPick.toFixed(2)));
   const [averageDraftPickMin, setAverageDraftPickMin] = React.useState(newPlayer.averageDraftPickMin);

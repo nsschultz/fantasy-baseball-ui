@@ -11,7 +11,7 @@ import user from "@testing-library/user-event";
 
 let deleteSpy, getSpy, postSpy;
 
-jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 afterEach(() => jest.clearAllMocks());
 afterEach(() => store.dispatch(clearNotifications()));
 beforeEach(() => (deleteSpy = jest.spyOn(axios, "delete")));
@@ -36,19 +36,19 @@ describe("ImportExportData", () => {
   });
   describe("should handle", () => {
     test("a file download", async () => {
-      axios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
+      mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
       render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
       await waitFor(() => expect(getSpy).toHaveBeenCalledTimes(1));
     });
     test("errors on a file download", async () => {
-      axios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
       await waitFor(() => expect(getSpy).toHaveBeenCalledTimes(1));
     });
     test("a file upload", async () => {
-      axios.post.mockImplementationOnce(() => Promise.resolve({}));
+      mockedAxios.post.mockImplementationOnce(() => Promise.resolve({}));
       render(<TestWrapper />);
       const button = screen.getAllByRole("button", { name: "Upload" })[0];
       user.upload(button, new Blob(["file data"]));
@@ -56,7 +56,7 @@ describe("ImportExportData", () => {
       expect(store.getState().notification.value).toHaveLength(2);
     });
     test("errors during a file upload error", async () => {
-      axios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      mockedAxios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
       const button = screen.getAllByRole("button", { name: "Upload" })[1];
       user.upload(button, new Blob(["file data"]));
@@ -71,7 +71,7 @@ describe("ImportExportData", () => {
       expect(store.getState().notification.value).toHaveLength(0);
     });
     test("a clear being approved", async () => {
-      axios.delete.mockImplementationOnce(() => Promise.resolve({}));
+      mockedAxios.delete.mockImplementationOnce(() => Promise.resolve({}));
       render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Clear" }));
       fireEvent.click(screen.getByRole("button", { name: "Yes" }));
@@ -79,7 +79,7 @@ describe("ImportExportData", () => {
       expect(store.getState().notification.value).toHaveLength(2);
     });
     test("an error being thrown on clear", async () => {
-      axios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      mockedAxios.delete.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Clear" }));
       fireEvent.click(screen.getByRole("button", { name: "Yes" }));

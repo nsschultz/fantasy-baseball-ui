@@ -1,4 +1,5 @@
 export type BaseEntity = { id: React.Key } & Record<string, ValueType>;
+export type EnumLookup = Record<string, string>;
 export type ValueType = number | object | string;
 
 export interface NotificationMessage {

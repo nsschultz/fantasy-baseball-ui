@@ -3,7 +3,6 @@ import { getLeagueStatusEnums, getPlayerStatusEnums, getPlayerTypeEnums, getPosi
 
 import axios from "axios";
 
-jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 let getSpy: jest.SpyInstance;

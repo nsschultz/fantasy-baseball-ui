@@ -5,7 +5,7 @@ rm -rf env-config.js
 touch env-config.js
 
 # Read in values from .env file and create env-config.js
-echo "window.env = {" >> env-config.js
+echo "globalThis.env = {" >> env-config.js
 while read -r line || [[ -n "$line" ]];
 do
   # Split on the equals sign

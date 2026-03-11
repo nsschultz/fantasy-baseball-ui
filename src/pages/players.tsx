@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "@mui/material/Alert";
 import type { AlertColor } from "@mui/material/Alert";
+import { EnumLookup } from "../types/basic-types";
 import { Helmet } from "react-helmet";
 import ParentTable from "../components/table/parent-table";
 import PlayerDeleter from "./dialogs/player-deleter";
@@ -17,15 +18,9 @@ import axios from "axios";
 import { matchAnyPosition } from "../funcs/position-helper";
 import { modifyFilter } from "../state/slice/player-filter-slice";
 
-type EnumLookup = Record<string, string>;
-
 const convertToNumber = (val: string) => Number.parseInt(val, 10);
 
-/**
- * The player window which is used for admin level function against players.
- * @returns A new instance of Player.
- */
-const Players = () => {
+export default function Players() {
   const isMountedRef = React.useRef(false);
   const filters = useSelector((state: RootState) => state.playerFilter.value);
   const [filteredPlayers, setFilteredPlayers] = React.useState<Player[]>([]);
@@ -45,16 +40,21 @@ const Players = () => {
     { align: "right", field: "mlbAmId", title: "MLBAMID" },
     { field: "name", sortComparator: playerNameComparator, title: "Name" },
     { align: "right", field: "age", title: "Age" },
-    { field: "type", format: (value) => playerTypes[value], title: "Type" },
-    { field: "positions", format: (value) => value.map((p) => p.code).join(), sortComparator: playerPositionsComparator, title: "Position(s)" },
-    { field: "team", format: (value) => value.code, sortComparator: playerTeamComparator, title: "Team" },
-    { field: "status", format: (value) => playerStatuses[value], title: "Status" },
-    { field: "league1", format: (value) => leagueStatuses[value], title: "League #1 Status" },
-    { field: "league2", format: (value) => leagueStatuses[value], title: "League #2 Status" },
-    { align: "right", field: "averageDraftPick", format: (value) => value.toFixed(2), title: "ADP" },
+    { field: "type", format: (value: number) => playerTypes[value], title: "Type" },
+    {
+      field: "positions",
+      format: (value: Position[]) => value.map((p: Position) => p.code).join(),
+      sortComparator: playerPositionsComparator,
+      title: "Position(s)",
+    },
+    { field: "team", format: (value: Team) => value.code, sortComparator: playerTeamComparator, title: "Team" },
+    { field: "status", format: (value: number) => playerStatuses[value], title: "Status" },
+    { field: "league1", format: (value: number) => leagueStatuses[value], title: "League #1 Status" },
+    { field: "league2", format: (value: number) => leagueStatuses[value], title: "League #2 Status" },
+    { align: "right", field: "averageDraftPick", format: (value: number) => value.toFixed(2), title: "ADP" },
   ] as const;
   const columnsBattingStats = [
-    { field: "statsType", format: (value) => statsType[value], title: "" },
+    { field: "statsType", format: (value: number) => statsType[value], title: "" },
     { align: "right", field: "atBats", title: "AB" },
     { align: "right", field: "runs", title: "R" },
     { align: "right", field: "hits", title: "H" },
@@ -67,39 +67,39 @@ const Players = () => {
     { align: "right", field: "stolenBases", title: "SB" },
     { align: "right", field: "caughtStealing", title: "CS" },
     { align: "right", field: "totalBases", title: "TB" },
-    { align: "right", field: "battingAverage", format: (value) => value.toFixed(3), title: "BA" },
-    { align: "right", field: "onBasePercentage", format: (value) => value.toFixed(3), title: "OB" },
-    { align: "right", field: "sluggingPercentage", format: (value) => value.toFixed(3), title: "SLG" },
-    { align: "right", field: "onBasePlusSlugging", format: (value) => value.toFixed(3), title: "OPS" },
-    { align: "right", field: "contractRate", format: (value) => value.toFixed(2), title: "CT%" },
-    { align: "right", field: "power", format: (value) => value.toFixed(0), title: "PX" },
-    { align: "right", field: "walkRate", format: (value) => value.toFixed(2), title: "BB%" },
-    { align: "right", field: "speed", format: (value) => value.toFixed(0), title: "SPD" },
-    { align: "right", field: "basePerformanceValue", format: (value) => value.toFixed(0), title: "BPV" },
+    { align: "right", field: "battingAverage", format: (value: number) => value.toFixed(3), title: "BA" },
+    { align: "right", field: "onBasePercentage", format: (value: number) => value.toFixed(3), title: "OB" },
+    { align: "right", field: "sluggingPercentage", format: (value: number) => value.toFixed(3), title: "SLG" },
+    { align: "right", field: "onBasePlusSlugging", format: (value: number) => value.toFixed(3), title: "OPS" },
+    { align: "right", field: "contractRate", format: (value: number) => value.toFixed(2), title: "CT%" },
+    { align: "right", field: "power", format: (value: number) => value.toFixed(0), title: "PX" },
+    { align: "right", field: "walkRate", format: (value: number) => value.toFixed(2), title: "BB%" },
+    { align: "right", field: "speed", format: (value: number) => value.toFixed(0), title: "SPD" },
+    { align: "right", field: "basePerformanceValue", format: (value: number) => value.toFixed(0), title: "BPV" },
   ] as const;
   const columnsPitchingStats = [
-    { field: "statsType", format: (value) => statsType[value], title: "" },
+    { field: "statsType", format: (value: number) => statsType[value], title: "" },
     { align: "right", field: "wins", title: "W" },
     { align: "right", field: "losses", title: "L" },
     { align: "right", field: "qualityStarts", title: "QS" },
     { align: "right", field: "saves", title: "SV" },
     { align: "right", field: "blownSaves", title: "BS" },
     { align: "right", field: "holds", title: "HLD" },
-    { align: "right", field: "inningsPitched", format: (value) => value.toFixed(1), title: "IP" },
+    { align: "right", field: "inningsPitched", format: (value: number) => value.toFixed(1), title: "IP" },
     { align: "right", field: "hitsAllowed", title: "HA" },
     { align: "right", field: "earnedRuns", title: "ER" },
     { align: "right", field: "homeRunsAllowed", title: "HRA" },
     { align: "right", field: "baseOnBallsAllowed", title: "BBA" },
     { align: "right", field: "strikeOuts", title: "K" },
-    { align: "right", field: "earnedRunAverage", format: (value) => value.toFixed(2), title: "ERA" },
-    { align: "right", field: "walksAndHitsPerInningPitched", format: (value) => value.toFixed(2), title: "WHIP" },
-    { align: "right", field: "battingAverageOnBallsInPlay", format: (value) => value.toFixed(3), title: "BABIP" },
-    { align: "right", field: "strandRate", format: (value) => value.toFixed(2), title: "SR" },
-    { align: "right", field: "command", format: (value) => value.toFixed(2), title: "CMD" },
-    { align: "right", field: "dominance", format: (value) => value.toFixed(2), title: "DOM" },
-    { align: "right", field: "control", format: (value) => value.toFixed(2), title: "CON" },
-    { align: "right", field: "groundBallToFlyBallRate", format: (value) => value.toFixed(2), title: "GB/FB" },
-    { align: "right", field: "basePerformanceValue", format: (value) => value.toFixed(0), title: "BPV" },
+    { align: "right", field: "earnedRunAverage", format: (value: number) => value.toFixed(2), title: "ERA" },
+    { align: "right", field: "walksAndHitsPerInningPitched", format: (value: number) => value.toFixed(2), title: "WHIP" },
+    { align: "right", field: "battingAverageOnBallsInPlay", format: (value: number) => value.toFixed(3), title: "BABIP" },
+    { align: "right", field: "strandRate", format: (value: number) => value.toFixed(2), title: "SR" },
+    { align: "right", field: "command", format: (value: number) => value.toFixed(2), title: "CMD" },
+    { align: "right", field: "dominance", format: (value: number) => value.toFixed(2), title: "DOM" },
+    { align: "right", field: "control", format: (value: number) => value.toFixed(2), title: "CON" },
+    { align: "right", field: "groundBallToFlyBallRate", format: (value: number) => value.toFixed(2), title: "GB/FB" },
+    { align: "right", field: "basePerformanceValue", format: (value: number) => value.toFixed(0), title: "BPV" },
   ] as const;
 
   React.useEffect(() => {
@@ -121,11 +121,11 @@ const Players = () => {
 
   const addPlayer = (player: Player, onClose: (player?: Player) => void) => {
     axios
-      .post(`${window.env.PLAYER_API_URL}/api/v3/player`, player)
+      .post(`${globalThis.env.PLAYER_API_URL}/api/v3/player`, player)
       .then((response) => {
         onClose();
         axios
-          .get(`${window.env.PLAYER_API_URL}/api/v3/player/${response.data}`)
+          .get(`${globalThis.env.PLAYER_API_URL}/api/v3/player/${response.data}`)
           .then((response) => {
             response.data.name = `${response.data.firstName} ${response.data.lastName}`;
             setPlayers((currentPlayers) => [...currentPlayers, response.data]);
@@ -166,7 +166,7 @@ const Players = () => {
   };
   const deletePlayer = (player: Player, onClose: () => void) => {
     axios
-      .delete(`${window.env.PLAYER_API_URL}/api/v3/player/${player.id}`)
+      .delete(`${globalThis.env.PLAYER_API_URL}/api/v3/player/${player.id}`)
       .then(() => {
         const dataUpdate = players.filter((p) => p.id !== player.id);
         setPlayers([...dataUpdate]);
@@ -185,7 +185,7 @@ const Players = () => {
   const getChildRows = (player: Player) => (player.type === 1 ? player.battingStats : player.pitchingStats);
   const getPlayers = () => {
     axios
-      .get(`${window.env.PLAYER_API_URL}/api/v3/player`)
+      .get(`${globalThis.env.PLAYER_API_URL}/api/v3/player`)
       .then((response) => {
         if (isMountedRef.current) {
           const loadedPlayers = (response.data as Player[]).map((p) => ({ ...p, name: `${p.firstName} ${p.lastName}` }));
@@ -230,7 +230,7 @@ const Players = () => {
   const statsSelection = (player: Player) => (player.type === 1 ? columnsBattingStats : columnsPitchingStats);
   const updatePlayer = (player: Player, onClose: (player?: Player) => void) => {
     axios
-      .put(`${window.env.PLAYER_API_URL}/api/v3/player/${player.id}`, player)
+      .put(`${globalThis.env.PLAYER_API_URL}/api/v3/player/${player.id}`, player)
       .then(() => {
         const dataUpdate = players.map((p) => (p.id === player.id ? player : p));
         setPlayers([...dataUpdate]);
@@ -290,5 +290,4 @@ const Players = () => {
       </Snackbar>
     </>
   );
-};
-export default Players;
+}
