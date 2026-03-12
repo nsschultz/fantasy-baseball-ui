@@ -1,5 +1,6 @@
 # build files 
 build/
+dist/
 node_modules/
 env-config.js
 # scanning data

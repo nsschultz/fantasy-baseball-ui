@@ -1,4 +1,4 @@
-const scanner = require("sonarqube-scanner").default;
+import scanner from "sonarqube-scanner";
 
 scanner(
   {
@@ -8,9 +8,9 @@ scanner(
       "sonar.projectKey": "nsschultz_fantasy-baseball-ui",
       "sonar.organization": "nsschultz",
       "sonar.sources": "./src",
-      "sonar.exclusions": "**/*.test.js, **/index.js, **/reportWebVitals.js, **/setupTests.js",
+      "sonar.exclusions": "**/*.test.js, **/*.test.tsx, **/index.tsx, **/reportWebVitals.js, **/setupTests.js",
       "sonar.tests": "./src",
-      "sonar.test.inclusions": "**/*.test.js",
+      "sonar.test.inclusions": "**/*.test.js, **/*.test.ts, **/*.test.tsx",
       "sonar.typescript.lcov.reportPaths": "coverage/lcov.info",
       "sonar.testExecutionReportPaths": "reports/test-report.xml",
       "sonar.sourceEncoding": "UTF-8",

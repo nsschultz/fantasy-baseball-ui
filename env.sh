@@ -5,7 +5,7 @@ rm -rf env-config.js
 touch env-config.js
 
 # Read in values from .env file and create env-config.js
-echo "window.env = {" >> env-config.js
+echo "globalThis.env = {" >> env-config.js
 while read -r line || [[ -n "$line" ]];
 do
   # Split on the equals sign
@@ -18,4 +18,4 @@ do
   [[ -z $value ]] && value=${varvalue}
   echo "  $varname: \"$value\"," >> env-config.js
 done < .env
-echo "}" >> env-config.js
+echo "};" >> env-config.js
