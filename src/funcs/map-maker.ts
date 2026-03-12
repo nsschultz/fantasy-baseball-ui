@@ -1,8 +1,4 @@
-export const makeMap = <T, K extends string | number, V>(
-  values: T[] | null | undefined,
-  keyMaker: ((obj: T) => K) | null | undefined,
-  valueMaker: ((obj: T) => V) | null | undefined
-): Record<K, V> => {
+export const makeMap = <T, K extends string | number, V>(values: T[], keyMaker: (obj: T) => K, valueMaker: (obj: T) => V): Record<K, V> => {
   if (!values || !keyMaker || !valueMaker) return {} as Record<K, V>;
   return values.filter(Boolean).reduce(function (map, obj) {
     map[keyMaker(obj)] = valueMaker(obj);

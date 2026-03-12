@@ -3,12 +3,12 @@ export type EnumLookup = Record<string, string>;
 export type ValueType = number | object | string;
 
 export interface NotificationMessage {
-  readonly message: string;
-  readonly notificationKey: number;
-  readonly timestamp: number;
-  readonly type: "success" | "error" | "info";
+  message: string;
+  notificationKey: number;
+  timestamp: number;
+  type: "success" | "error" | "info";
 }
 
 export interface NotificationState {
-  value: NotificationMessage[];
+  value: Array<NotificationMessage>;
 }

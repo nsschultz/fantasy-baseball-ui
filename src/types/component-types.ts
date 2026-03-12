@@ -4,124 +4,129 @@ import { ReactNode } from "react";
 import { SortDirection } from "@mui/material";
 
 export interface ChildRowProps<T extends BaseEntity> {
-  readonly columnSelector: (row: T) => ReadonlyArray<TableColumnProps<T>>;
-  readonly description: string;
-  readonly rowKeyBuilder: (row: T) => React.Key;
-  readonly rowSelector: (row: T) => ReadonlyArray<T>;
-  readonly title: string;
+  columnSelector: (row: T) => Array<TableColumnProps<T>>;
+  description: string;
+  rowKeyBuilder: (row: T) => React.Key;
+  rowSelector: (row: T) => Array<T>;
+  title: string;
 }
 
 export interface ChildTableProps<T extends BaseEntity> {
-  readonly columns: ReadonlyArray<TableColumnProps<T>>;
-  readonly description: string;
-  readonly rowKeyBuilder: (row: T) => React.Key;
-  readonly rows: ReadonlyArray<T>;
-  readonly title: string;
+  columns: Array<TableColumnProps<T>>;
+  description: string;
+  rowKeyBuilder: (row: T) => React.Key;
+  rows: Array<T>;
+  title: string;
 }
 
 export interface CustomCardProps {
-  readonly additionalContent?: ReactNode;
-  readonly content: ReactNode;
-  readonly title: string;
+  additionalContent?: ReactNode;
+  content: ReactNode;
+  title: string;
 }
 
 export interface CustomTableRowProps<T extends BaseEntity> {
-  readonly childProps?: ChildTableProps<T>;
-  readonly columns: ReadonlyArray<TableColumnProps<T>>;
-  readonly description?: string;
-  readonly handleDeleteOpen?: (values: T) => void;
-  readonly handleEditOpen?: (values: T) => void;
-  readonly values: T;
+  childProps?: ChildTableProps<T>;
+  columns: ReadonlyArray<TableColumnProps<T>>;
+  description?: string;
+  handleDeleteOpen?: (values: T) => void;
+  handleEditOpen?: (values: T) => void;
+  values: T;
+}
+
+export interface DialogImplProps<T extends BaseEntity> {
+  onClose: (object?: T) => void;
+  open: boolean;
 }
 
 export interface DialogProps<T extends BaseEntity> {
-  readonly buildDialog: (handleClose: (object: T) => void, isOpen: boolean, row?: T) => React.ReactNode;
-  readonly handleClose: (object: T, onClose: (object?: T) => void) => void;
+  buildDialog: (handleClose: (object: T) => void, isOpen: boolean, row?: T) => React.ReactNode;
+  handleClose: (object: T, onClose: (object?: T) => void) => void;
 }
 
 export interface DisplayProps<T> {
-  readonly disableChecker?: (menuItems: Record<string, T>, selectedValues?: string[], key?: string) => boolean;
-  readonly label?: string;
-  readonly listItemBuilder: (menuItems: Record<string, T>, key: string) => React.ReactNode;
-  readonly textValueBuilder: () => React.ReactNode;
+  disableChecker?: (menuItems: Record<string, T>, selectedValues?: string[], key?: string) => boolean;
+  label?: string;
+  listItemBuilder: (menuItems: Record<string, T>, key: string) => React.ReactNode;
+  textValueBuilder: () => React.ReactNode;
 }
 
 export interface FilterProps {
-  readonly buildDialog: (handleClose: () => void, isOpen: boolean) => React.ReactNode;
-  readonly handleClose: () => void;
-  readonly isFiltered?: boolean;
+  buildDialog: (handleClose: () => void, isOpen: boolean) => React.ReactNode;
+  handleClose: () => void;
+  isFiltered?: boolean;
 }
 
 export interface IntegrationCardProps {
-  readonly description: string;
-  readonly integrationButton: ReactNode;
-  readonly title: string;
+  description: string;
+  integrationButton: ReactNode;
+  title: string;
 }
 
 export interface LayoutProps {
-  readonly isLoggedIn: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface MultipleSelectTextFieldProps<T> {
-  readonly displayProps: DisplayProps<T>;
-  readonly field: string;
-  readonly handleOnChange: (value: string[] | string) => void;
-  readonly menuItems: Record<string, T>;
-  readonly selectedValues?: string[];
+  displayProps: DisplayProps<T>;
+  field: string;
+  handleOnChange: (value: string[] | string) => void;
+  menuItems: Record<string, T>;
+  selectedValues?: string[];
 }
 
 export interface NavigationItemProps {
-  readonly href: string;
-  readonly icon: React.ElementType;
-  readonly title: string;
+  href: string;
+  icon: React.ElementType;
+  title: string;
 }
 
 export interface ParentTableProps<T extends BaseEntity> {
-  readonly childProps?: ChildRowProps<T>;
-  readonly columns: ReadonlyArray<TableColumnProps<T>>;
-  readonly deleteProps?: DialogProps<T>;
-  readonly description: string;
-  readonly editProps?: DialogProps<T>;
-  readonly sortComparator: (obj1: T, obj2: T, key: string | null) => number;
-  readonly toolbarProps?: TableToolbarProps<T>;
-  readonly values: ReadonlyArray<T>;
+  childProps?: ChildRowProps<T>;
+  columns: Array<TableColumnProps<T>>;
+  deleteProps?: DialogProps<T>;
+  description: string;
+  editProps?: DialogProps<T>;
+  sortComparator: (obj1: T, obj2: T, key: string | null) => number;
+  toolbarProps?: TableToolbarProps<T>;
+  values: Array<T>;
 }
 
 export interface SearchProps {
-  readonly handleSearch: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  readonly initialValue?: string;
-  readonly placeholder: string;
+  handleSearch: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  initialValue?: string;
+  placeholder: string;
 }
 
 export interface SidebarProps {
-  readonly onMobileClose: () => void;
-  readonly openMobile: boolean;
+  onMobileClose: () => void;
+  openMobile: boolean;
 }
 
 export interface TableColumnProps<T extends Record<string, ValueType>> {
-  readonly align?: "left" | "right" | "center" | "justify" | "inherit";
-  readonly field: keyof T & string;
-  readonly format?: (value: ValueType) => ValueType;
-  readonly sortComparator?: (obj1: T, obj2: T, key: string | null) => number;
-  readonly title: string;
+  align?: "left" | "right" | "center" | "justify" | "inherit";
+  field: keyof T & string;
+  format?: (value: ValueType) => ValueType;
+  sortComparator?: (obj1: T, obj2: T, key: string | null) => number;
+  title: string;
 }
 
 export interface TableHeaderProps<T extends BaseEntity> {
-  readonly column: TableColumnProps<T>;
-  readonly handleSortRequest: (event: React.MouseEvent<unknown>) => void;
-  readonly order?: SortDirection;
-  readonly orderBy?: string;
+  column: TableColumnProps<T>;
+  handleSortRequest: (event: React.MouseEvent<unknown>) => void;
+  order?: SortDirection;
+  orderBy?: string;
 }
 
 export interface TableToolbarProps<T extends BaseEntity> {
-  readonly addProps?: DialogProps<T>;
-  readonly description: string;
-  readonly filterProps?: FilterProps;
-  readonly searchProps?: SearchProps;
-  readonly title: string;
+  addProps?: DialogProps<T>;
+  description: string;
+  filterProps?: FilterProps;
+  searchProps?: SearchProps;
+  title: string;
 }
 
 export interface TitlebarProps {
-  readonly isLoggedIn: boolean;
-  readonly onOpenMobileNavigation: () => void;
+  isLoggedIn: boolean;
+  onOpenMobileNavigation: () => void;
 }

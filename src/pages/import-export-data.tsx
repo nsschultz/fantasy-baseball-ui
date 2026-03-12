@@ -17,11 +17,12 @@ export default function ImportExportData() {
   const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
 
+  const crypto = globalThis.crypto || globalThis.msCrypto;
   const clearInputFile = (event: React.MouseEvent<HTMLInputElement>) => {
     event.currentTarget.value = "";
   };
   const createNotification = (message: string, type: NotificationMessage["type"]) =>
-    dispatch(addNotification({ notificationKey: Math.random() * Date.now(), message: message, timestamp: Date.now(), type: type }));
+    dispatch(addNotification({ notificationKey: crypto.getRandomValues(new Uint32Array(1))[0], message: message, timestamp: Date.now(), type: type }));
   const dispatch = useDispatch<AppDispatch>();
   const displayErrorMessage = (message: string) => createNotification(message, "error");
   const displayInfoMessage = (message: string) => {
@@ -45,7 +46,7 @@ export default function ImportExportData() {
     displayInfoMessage("Attempting to clear players");
   };
   const onBatterFileChange = (event: React.ChangeEvent<HTMLInputElement>) => onFileChange(event.target.files?.[0], 1);
-  const onFileChange = (file: File | undefined, type: 1 | 2) => {
+  const onFileChange = (file: File, type: 1 | 2) => {
     if (!file) return;
     const formData = new FormData();
     formData.append(`${type}.csv`, file, file.name);

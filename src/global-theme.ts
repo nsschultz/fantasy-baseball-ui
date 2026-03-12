@@ -1,7 +1,7 @@
 import { Theme, createTheme } from "@mui/material/styles";
 
-const GlobalTheme = (): Theme =>
-  createTheme({
+export default function GlobalTheme(): Theme {
+  return createTheme({
     palette: {
       action: { active: "#ffffff", disabled: "#4d4d4d", disabledBackground: "#1f1f1f", hover: "#141414", selected: "#292929" },
       background: { default: "#222222", paper: "#333333" },
@@ -47,4 +47,4 @@ const GlobalTheme = (): Theme =>
       overline: { fontWeight: 500 },
     },
   });
-export default GlobalTheme;
+}

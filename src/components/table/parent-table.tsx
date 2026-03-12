@@ -10,7 +10,7 @@ import { defaultObjectComparator } from "../../funcs/sort-comparators";
 
 const actionColumn: TableColumnProps<BaseEntity> = { align: "center", field: "actions", title: "Actions" };
 
-const buildChildProps = <T extends BaseEntity>(childProps: ChildRowProps<T> | undefined, row: T) =>
+const buildChildProps = <T extends BaseEntity>(childProps: ChildRowProps<T>, row: T) =>
   childProps
     ? {
         columns: childProps.columnSelector(row),
@@ -21,7 +21,7 @@ const buildChildProps = <T extends BaseEntity>(childProps: ChildRowProps<T> | un
       }
     : null;
 
-const getComparator = <T extends BaseEntity>(column: TableColumnProps<T> | undefined, defaultComparator: (obj1: T, obj2: T, key: string | null) => number) => {
+const getComparator = <T extends BaseEntity>(column: TableColumnProps<T>, defaultComparator: (obj1: T, obj2: T, key: string) => number) => {
   if (!column) return defaultComparator;
   if (column.sortComparator) return column.sortComparator;
   return defaultObjectComparator;
@@ -29,9 +29,9 @@ const getComparator = <T extends BaseEntity>(column: TableColumnProps<T> | undef
 
 const stableSort = <T extends BaseEntity>(
   array: ReadonlyArray<T>,
-  comparator: (obj1: T, obj2: T, key: string | null) => number,
+  comparator: (obj1: T, obj2: T, key: string) => number,
   order: SortDirection,
-  orderBy: string | null
+  orderBy: string
 ) => {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
@@ -45,12 +45,12 @@ const stableSort = <T extends BaseEntity>(
 export default function ParentTable<T extends BaseEntity>(props: Readonly<ParentTableProps<T>>) {
   const { childProps, columns, deleteProps, description, editProps, sortComparator, toolbarProps, values } = props;
   const [deleteOpen, setDeleteOpen] = React.useState(false);
-  const [deleteRow, setDeleteRow] = React.useState<T | null>(null);
+  const [deleteRow, setDeleteRow] = React.useState<T>(null);
   const [editOpen, setEditOpen] = React.useState(false);
-  const [editRow, setEditRow] = React.useState<T | null>(null);
+  const [editRow, setEditRow] = React.useState<T>(null);
   const [limit, setLimit] = React.useState(10);
   const [order, setOrder] = React.useState<SortDirection>("asc");
-  const [orderBy, setOrderBy] = React.useState<string | null>(null);
+  const [orderBy, setOrderBy] = React.useState<string>(null);
   const [page, setPage] = React.useState(0);
   const rowCount = React.useMemo(() => values.length, [values]);
   const [rows, setRows] = React.useState<React.ReactNode[]>([]);

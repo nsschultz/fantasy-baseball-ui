@@ -2,7 +2,7 @@ import { Position, PositionMap } from "../types/entity-types";
 
 import { makeMap } from "./map-maker";
 
-export const buildPositionList = (selecteds: string[] | null | undefined, positionMap: PositionMap | null | undefined): Position[] => {
+export const buildPositionList = (selecteds: string[], positionMap: PositionMap): Position[] => {
   if (!selecteds || !positionMap) return [];
   const positionList = selecteds.map((s) => positionMap[s]).filter(Boolean);
   return positionList.filter((p) => !matchAnyPosition(positionList, p.code, false)).sort((a, b) => a.sortOrder - b.sortOrder);
@@ -15,7 +15,7 @@ export const buildPositionMap = (positions: Position[], type?: string | number |
     (position) => position
   );
 
-export const isChildPosition = (positions: PositionMap | null | undefined, selecteds: string[] | null | undefined, key: string | null | undefined): boolean =>
+export const isChildPosition = (positions: PositionMap, selecteds: string[], key: string): boolean =>
   positions && selecteds && key
     ? matchAnyPosition(
         selecteds.map((s) => positions[s]),
@@ -24,9 +24,5 @@ export const isChildPosition = (positions: PositionMap | null | undefined, selec
       )
     : false;
 
-export const matchAnyPosition = (
-  selecteds: (Position | null | undefined)[] | null | undefined,
-  key: string | null | undefined,
-  includeParent?: boolean
-): boolean =>
+export const matchAnyPosition = (selecteds: Position[], key: string, includeParent?: boolean): boolean =>
   selecteds && key ? selecteds.some((s) => s && ((includeParent && s.code === key) || s.additionalPositions.some((ap) => ap.code === key))) : false;

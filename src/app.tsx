@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 
 import GlobalStyles from "@mui/material/GlobalStyles";
@@ -11,7 +11,7 @@ import NotFound from "./pages/not-found";
 import Players from "./pages/players";
 import type { ReactElement } from "react";
 
-const routes = [
+const routes: RouteObject[] = [
   {
     path: "app",
     element: <Layout isLoggedIn={true} />,
