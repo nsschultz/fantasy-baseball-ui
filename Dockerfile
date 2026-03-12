@@ -33,4 +33,4 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/
 RUN chmod +x ./env.sh
 CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
-COPY --from=build /app/build .
+COPY --from=build /app/dist .
