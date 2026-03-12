@@ -8,7 +8,7 @@ import { ThemeProvider } from "@mui/material";
 import store from "../../state/store";
 
 const lookups: PlayerLookups = {
-  leagusStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
+  leagueStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
   playerStatuses: { 0: "Normal", 1: "Disabled List", 2: "Not Available", 3: "New Entry" },
   playerTypes: { 0: "Unknown", 1: "Batter", 2: "Pitcher" },
   positions: [

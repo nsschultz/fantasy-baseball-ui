@@ -95,22 +95,22 @@ export default function PlayerFilter(props: Readonly<PlayerFilterProps>) {
         {
           label: "League #1 Status(es)",
           listItemBuilder: (lookup, key) => lookup[key],
-          textValueBuilder: () => filters.l1statuses.map((t) => lookups.leagusStatuses[t]).join(),
+          textValueBuilder: () => filters.l1statuses.map((t) => lookups.leagueStatuses[t]).join(),
         },
         "l1statuses",
         (values) => handleFilterChange("l1statuses", values),
-        lookups.leagusStatuses,
+        lookups.leagueStatuses,
         filters.l1statuses
       )}
       {buildMultipleSelectField(
         {
           label: "League #2 Status(es)",
           listItemBuilder: (lookup, key) => lookup[key],
-          textValueBuilder: () => filters.l2statuses.map((t) => lookups.leagusStatuses[t]).join(),
+          textValueBuilder: () => filters.l2statuses.map((t) => lookups.leagueStatuses[t]).join(),
         },
         "l2statuses",
         (values) => handleFilterChange("l2statuses", values),
-        lookups.leagusStatuses,
+        lookups.leagueStatuses,
         filters.l2statuses
       )}
     </>

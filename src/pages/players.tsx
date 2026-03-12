@@ -122,29 +122,33 @@ export default function Players() {
   const addPlayer = (player: Player, onClose: (player?: Player) => void) => {
     axios
       .post(`${globalThis.env.PLAYER_API_URL}/api/v3/player`, player)
-      .then((response) => {
-        onClose();
-        axios
-          .get(`${globalThis.env.PLAYER_API_URL}/api/v3/player/${response.data}`)
-          .then((response) => {
-            response.data.name = `${response.data.firstName} ${response.data.lastName}`;
-            setPlayers((currentPlayers) => [...currentPlayers, response.data]);
-            setSeverity("success");
-            setMessage(`Successfully added ${player.name}`);
-            setOpen(true);
-          })
-          .catch(() => {
-            setSeverity("error");
-            setMessage(`Successfully added but unable to retrieve ${player.name}`);
-            setOpen(true);
-            setIsLoading(false);
-          });
-      })
-      .catch(() => {
-        setSeverity("error");
-        setMessage(`Unable to add ${player.name}`);
-        setOpen(true);
-      });
+      .then((response) => handleAddPlayerPostSuccess(player, onClose, response.data))
+      .catch(() => handleAddPlayerError(player));
+  };
+  const handleAddPlayerError = (player: Player) => {
+    setSeverity("error");
+    setMessage(`Unable to add ${player.name}`);
+    setOpen(true);
+  };
+  const handleAddPlayerPostSuccess = (player: Player, onClose: (player?: Player) => void, id: string) => {
+    onClose();
+    axios
+      .get(`${globalThis.env.PLAYER_API_URL}/api/v3/player/${id}`)
+      .then((response) => handleAddPlayerSuccess(player, response.data))
+      .catch(() => handleAddPlayerRetrievalError(player));
+  };
+  const handleAddPlayerRetrievalError = (player: Player) => {
+    setSeverity("error");
+    setMessage(`Successfully added but unable to retrieve ${player.name}`);
+    setOpen(true);
+    setIsLoading(false);
+  };
+  const handleAddPlayerSuccess = (player: Player, response: Player) => {
+    response.name = `${response.firstName} ${response.lastName}`;
+    setPlayers((currentPlayers) => [...currentPlayers, response]);
+    setSeverity("success");
+    setMessage(`Successfully added ${response.name}`);
+    setOpen(true);
   };
   const buildDelete = (handleDeleteClose: (player?: Player) => void, deleteOpen: boolean, deleteRow?: Player) => (
     <PlayerDeleter onClose={handleDeleteClose} open={deleteOpen} player={deleteRow} />
@@ -157,7 +161,7 @@ export default function Players() {
   );
   const buildLookups = () => {
     return {
-      leagusStatuses: leagueStatuses,
+      leagueStatuses: leagueStatuses,
       playerStatuses: playerStatuses,
       playerTypes: playerTypes,
       positions: positions,

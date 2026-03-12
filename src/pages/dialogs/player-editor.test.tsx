@@ -55,7 +55,7 @@ const existingPlayer: Player = {
   reliability: 0,
 };
 const lookups: PlayerLookups = {
-  leagusStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
+  leagueStatuses: { 0: "Available", 1: "Rostered", 2: "Unavailable", 3: "Scouted" },
   playerStatuses: { 0: "Normal", 1: "Disabled List", 2: "Not Available", 3: "New Entry" },
   playerTypes: { 0: "Unknown", 1: "Batter", 2: "Pitcher" },
   positions: [
@@ -285,8 +285,8 @@ const mutatePlayer = (player) => {
   fireEvent.change(screen.getByLabelText("Age"), { target: { value: 35 } });
   mutateDropDown("Team", buildTeamDisplay(player.team) || "​", "San Francisco Giants");
   mutatePlayerStatus("Status", player.status, "Disabled List", lookups.playerStatuses);
-  mutatePlayerStatus("League #1 Status", player.league1, "Rostered", lookups.leagusStatuses);
-  mutatePlayerStatus("League #2 Status", player.league2, "Unavailable", lookups.leagusStatuses);
+  mutatePlayerStatus("League #1 Status", player.league1, "Rostered", lookups.leagueStatuses);
+  mutatePlayerStatus("League #2 Status", player.league2, "Unavailable", lookups.leagueStatuses);
   fireEvent.change(screen.getByLabelText("ADP"), { target: { value: 7.51 } });
   fireEvent.change(screen.getByLabelText("ADP Min"), { target: { value: 3 } });
   fireEvent.change(screen.getByLabelText("ADP Max"), { target: { value: 17 } });

@@ -41,7 +41,7 @@ export interface PlayerFilterType {
 }
 
 export interface PlayerLookups {
-  leagusStatuses: Record<string, string>;
+  leagueStatuses: Record<string, string>;
   playerStatuses: Record<string, string>;
   playerTypes: Record<string, string>;
   positions: Position[];

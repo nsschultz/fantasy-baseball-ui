@@ -202,8 +202,8 @@ export default function PlayerEditor(props: Readonly<PlayerEditorProps>) {
   const fantasyInfoContent = (
     <>
       {buildNumberField("mlbAmId", "MLBAMID", (value) => setMlbAmId(Math.max(0, convertToNumber(value))), mlbAmId, { min: 0 }, isEdit)}
-      {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(convertToNumber(value)), league1, lookups.leagusStatuses)}
-      {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(convertToNumber(value)), league2, lookups.leagusStatuses)}
+      {buildDefaultSelectField("league1", "League #1 Status", (value) => setLeague1(convertToNumber(value)), league1, lookups.leagueStatuses)}
+      {buildDefaultSelectField("league2", "League #2 Status", (value) => setLeague2(convertToNumber(value)), league2, lookups.leagueStatuses)}
     </>
   );
   const personInfoContent = (
