@@ -16,7 +16,7 @@ afterEach(() => jest.clearAllMocks());
 afterEach(() => store.dispatch(clearNotifications()));
 beforeEach(() => (deleteSpy = jest.spyOn(axios, "delete")));
 beforeEach(() => (postSpy = jest.spyOn(axios, "post")));
-beforeEach(() => (getSpy = jest.spyOn(axios, "get")));
+beforeEach(() => (getSpy = jest.spyOn(axios, "get").mockResolvedValue({ data: {} })));
 
 const TestWrapper = () => (
   <Provider store={store}>
@@ -29,38 +29,44 @@ const TestWrapper = () => (
 describe("ImportExportData", () => {
   test("should render the buttons", () => {
     render(<TestWrapper />);
-    expect(screen.getAllByRole("button")).toHaveLength(4);
-    expect(screen.getAllByLabelText("Upload")).toHaveLength(2);
+    expect(screen.getAllByRole("button")).toHaveLength(3);
+    expect(screen.getByRole("button", { name: "Upload" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Export" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Clear" })).toBeVisible();
   });
   describe("should handle", () => {
     test("a file download", async () => {
-      mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data: "new data" }));
       render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
-      await waitFor(() => expect(getSpy).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(getSpy).toHaveBeenCalledWith(expect.stringContaining("/api/v3/action/export"), expect.any(Object)));
     });
     test("errors on a file download", async () => {
-      mockedAxios.get.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
+      getSpy.mockImplementation((url: string) => {
+        if (url.includes("/api/v3/action/export")) return Promise.reject(new Error("errorMessage"));
+        return Promise.resolve({ data: {} });
+      });
       render(<TestWrapper />);
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
-      await waitFor(() => expect(getSpy).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(getSpy).toHaveBeenCalledWith(expect.stringContaining("/api/v3/action/export"), expect.any(Object)));
     });
     test("a file upload", async () => {
       mockedAxios.post.mockImplementationOnce(() => Promise.resolve({}));
       render(<TestWrapper />);
-      const button = screen.getAllByRole("button", { name: "Upload" })[0];
-      user.upload(button, new Blob(["file data"]));
+      fireEvent.click(screen.getByRole("button", { name: "Upload" }));
+      const input = await screen.findByLabelText("Upload player file");
+      user.upload(input, new File(["file data"], "batters.csv", { type: "text/csv" }));
       await waitFor(() => expect(postSpy).toHaveBeenCalledTimes(1));
+      expect(postSpy).toHaveBeenCalledWith(expect.stringContaining("upload/stats"), expect.any(FormData));
       expect(store.getState().notification.value).toHaveLength(2);
     });
     test("errors during a file upload error", async () => {
       mockedAxios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
-      const button = screen.getAllByRole("button", { name: "Upload" })[1];
-      user.upload(button, new Blob(["file data"]));
+      fireEvent.click(screen.getByRole("button", { name: "Upload" }));
+      const input = await screen.findByLabelText("Upload player file");
+      user.upload(input, new File(["file data"], "pitchers.csv", { type: "text/csv" }));
       await waitFor(() => expect(postSpy).toHaveBeenCalledTimes(1));
+      expect(postSpy).toHaveBeenCalledWith(expect.stringContaining("upload/stats"), expect.any(FormData));
       expect(store.getState().notification.value).toHaveLength(2);
     });
     test("a clear being cancelled", async () => {
