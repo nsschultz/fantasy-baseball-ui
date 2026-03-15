@@ -1,4 +1,6 @@
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Snackbar } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, Divider, Grid, MenuItem, Snackbar } from "@mui/material";
+import type { EnumLookup, NotificationMessage } from "../types/basic-types";
+import { getPlayerTypeEnums, getStatsTypeEnums } from "../funcs/get-lookups";
 
 import Alert from "@mui/material/Alert";
 import type { AlertColor } from "@mui/material/Alert";
@@ -6,16 +8,54 @@ import type { AppDispatch } from "../state/store";
 import FileSaver from "file-saver";
 import { Helmet } from "react-helmet";
 import IntegrationCard from "../components/card/integration-card";
-import type { NotificationMessage } from "../types/basic-types";
 import React from "react";
+import { StyledTextField } from "../components/styled/styled-text-field";
 import { addNotification } from "../state/slice/notification-slice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
+const buildDefaultSelectField = (field: string, label: string, handleOnChange: (value: string) => void, defaultValue: string | number, lookup: EnumLookup) =>
+  buildSingleSelectField(field, label, handleOnChange, defaultValue, lookup, (itemLookup, key) => (itemLookup[key] ? itemLookup[key] : "[default]"));
+const buildSingleSelectField = (
+  key: string,
+  label: string,
+  handleOnChange: (value: string) => void,
+  defaultValue: string | number,
+  lookup: EnumLookup,
+  display: (lookup: EnumLookup, key: string) => React.ReactNode
+) => (
+  <StyledTextField
+    fullWidth
+    id={key}
+    label={label}
+    onChange={(event) => handleOnChange(event.target.value)}
+    select
+    size="small"
+    value={defaultValue}
+    variant="filled"
+  >
+    {Object.keys(lookup).map((key) => (
+      <MenuItem key={key} value={key}>
+        {display(lookup, key)}
+      </MenuItem>
+    ))}
+  </StyledTextField>
+);
+
 export default function ImportExportData() {
   const [alertProps, setAlertProps] = React.useState<{ message: string; severity: AlertColor }>({ message: "", severity: "info" });
-  const [isClearDialogOpen, setIsClearDialogOpen] = React.useState(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
+  const [isClearDialogOpen, setIsClearDialogOpen] = React.useState<boolean>(false);
+  const [isPlayerUploadDialogOpen, setIsPlayerUploadDialogOpen] = React.useState<boolean>(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState<boolean>(false);
+  const [playerType, setPlayerType] = React.useState<string>("0");
+  const [playerTypes, setPlayerTypes] = React.useState<EnumLookup>({});
+  const [statsType, setStatsType] = React.useState<string>("0");
+  const [statsTypes, setStatsTypes] = React.useState<EnumLookup>({});
+
+  React.useEffect(() => {
+    getPlayerTypeEnums((response) => setPlayerTypes(response));
+    getStatsTypeEnums((response) => setStatsTypes(response));
+  }, []);
 
   const crypto = globalThis.crypto || globalThis.msCrypto;
   const clearInputFile = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -36,7 +76,7 @@ export default function ImportExportData() {
       .then((response) => FileSaver.saveAs(new Blob([response.data]), "players.csv"))
       .catch(() => setSnackbar("error", "Failed to export the players"));
   };
-  const handleDialogClose = (shouldClear: boolean) => {
+  const handleClearDialogClose = (shouldClear: boolean) => {
     setIsClearDialogOpen(false);
     if (!shouldClear) return;
     axios
@@ -45,18 +85,19 @@ export default function ImportExportData() {
       .catch(() => displayErrorMessage("Failed to clear the players."));
     displayInfoMessage("Attempting to clear players");
   };
-  const onBatterFileChange = (event: React.ChangeEvent<HTMLInputElement>) => onFileChange(event.target.files?.[0], 1);
-  const onFileChange = (file: File, type: 1 | 2) => {
+  const onFileChange = (file: File) => {
+    setIsPlayerUploadDialogOpen(false);
     if (!file) return;
+    const fileName = `${playerTypes[playerType]}-${statsTypes[statsType]}.csv`.split(" ").join("_").toLocaleLowerCase();
     const formData = new FormData();
-    formData.append(`${type}.csv`, file, file.name);
+    formData.append(fileName, file, file.name);
     axios
-      .post(`${globalThis.env.PLAYER_API_URL}/api/v3/action/upload/stats?player=${type}&stats=2`, formData)
-      .then(() => displaySuccessMessage(`Successfully uploaded the ${type} file.`))
-      .catch(() => displayErrorMessage(`Failed to upload the ${type} file.`));
-    displayInfoMessage(`Attempting to upload the ${type} file.`);
+      .post(`${globalThis.env.PLAYER_API_URL}/api/v3/action/upload/stats?player=${playerType}&stats=${statsType}`, formData)
+      .then(() => displaySuccessMessage(`Successfully uploaded the ${fileName} file.`))
+      .catch(() => displayErrorMessage(`Failed to upload the ${fileName} file.`));
+    displayInfoMessage(`Attempting to upload the ${fileName} file.`);
   };
-  const onPitcherFileChange = (event: React.ChangeEvent<HTMLInputElement>) => onFileChange(event.target.files?.[0], 2);
+  const onUploadFileChange = (event: React.ChangeEvent<HTMLInputElement>) => onFileChange(event.target.files?.[0]);
   const setSnackbar = (severity: AlertColor, message: string) => {
     setAlertProps({ message: message, severity: severity });
     setIsSnackbarOpen(true);
@@ -72,16 +113,9 @@ export default function ImportExportData() {
       Export
     </Button>
   );
-  const uploadBattersFileButton = (
-    <Button color="primary" component="label" variant="contained">
-      <input hidden onChange={onBatterFileChange} onClick={clearInputFile} type="file" />
-      <span>Upload</span>
-    </Button>
-  );
-  const uploadPitchersFileButton = (
-    <Button color="primary" component="label" variant="contained">
-      <input hidden onChange={onPitcherFileChange} onClick={clearInputFile} type="file" />
-      <span>Upload</span>
+  const uploadPlayersFileButton = (
+    <Button color="primary" onClick={() => setIsPlayerUploadDialogOpen(true)} variant="contained">
+      Upload
     </Button>
   );
 
@@ -93,18 +127,11 @@ export default function ImportExportData() {
       <Box sx={{ backgroundColor: "background.default", minHeight: "100%", paddingBottom: 3, paddingTop: 3 }}>
         <Container maxWidth={false}>
           <Grid container spacing={3}>
-            <Grid item key="uploadBatters" lg={6} md={6} xs={12}>
+            <Grid item key="uploadPlayers" lg={6} md={6} xs={12}>
               <IntegrationCard
-                title="Upload Batter File"
-                description="Upload the latest version of the batting stats data."
-                integrationButton={uploadBattersFileButton}
-              />
-            </Grid>
-            <Grid item key="uploadPitchers" lg={6} md={6} xs={12}>
-              <IntegrationCard
-                title="Upload Pitcher File"
-                description="Upload the latest version of the pitching stats data."
-                integrationButton={uploadPitchersFileButton}
+                title="Upload Player File"
+                description="Choose player and stats types and upload the latest data file."
+                integrationButton={uploadPlayersFileButton}
               />
             </Grid>
             <Grid item key="exportPlayers" lg={6} md={6} xs={12}>
@@ -121,11 +148,30 @@ export default function ImportExportData() {
           <DialogContentText>Are you sure you want to clear the players?</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={() => handleDialogClose(false)} variant="contained">
+          <Button color="primary" onClick={() => handleClearDialogClose(false)} variant="contained">
             No
           </Button>
-          <Button color="secondary" onClick={() => handleDialogClose(true)} variant="contained">
+          <Button color="secondary" onClick={() => handleClearDialogClose(true)} variant="contained">
             Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={isPlayerUploadDialogOpen}>
+        <DialogContent>
+          <DialogContentText>Choose player and stats types and upload the latest data file.</DialogContentText>
+          <Divider />
+          <Box sx={{ padding: 2 }}>
+            {buildDefaultSelectField("playerType", "Player Type", (value: string) => setPlayerType(value), playerType, playerTypes)}
+            {buildDefaultSelectField("statsType", "Stats Type", (value: string) => setStatsType(value), statsType, statsTypes)}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button color="secondary" onClick={() => setIsPlayerUploadDialogOpen(false)} variant="contained">
+            Cancel
+          </Button>
+          <Button color="primary" component="label" variant="contained">
+            <input aria-label="Upload player file" hidden onChange={onUploadFileChange} onClick={clearInputFile} type="file" />
+            <span>Upload</span>
           </Button>
         </DialogActions>
       </Dialog>
