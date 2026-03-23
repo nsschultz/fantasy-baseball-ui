@@ -16,11 +16,14 @@ const samplePlayer: EditablePlayer = {
   averageDraftPickMax: 9999,
   averageDraftPickMin: 9999,
   firstName: "",
+  id: "00000000-0000-0000-0000-000000000000",
   lastName: "",
   league1: 0,
   league2: 0,
+  mayberryMethod: 0,
   mlbAmId: 0,
   positions: [],
+  reliability: 0,
   status: 0,
   team: undefined,
   type: 0,
@@ -142,7 +145,7 @@ export default function PlayerEditor(props: Readonly<PlayerEditorProps>) {
   const [averageDraftPickMin, setAverageDraftPickMin] = React.useState(newPlayer.averageDraftPickMin);
   const [averageDraftPickMax, setAverageDraftPickMax] = React.useState(newPlayer.averageDraftPickMax);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
-  const isEdit = newPlayer.id !== undefined;
+  const isEdit = Boolean(player);
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
   const [league1, setLeague1] = React.useState(newPlayer.league1);
   const [mlbAmId, setMlbAmId] = React.useState(newPlayer.mlbAmId);
