@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import GlobalTheme from "../global-theme";
 import ImportExportData from "./import-export-data";
@@ -19,8 +19,8 @@ beforeEach(() => (postSpy = jest.spyOn(axios, "post")));
 beforeEach(
   () =>
     (getSpy = jest.spyOn(axios, "get").mockImplementation((url: string) => {
-      if (url.includes("enumType=PlayerType")) return Promise.resolve({ data: { 0: "Batter", 2: "Pitcher" } });
-      if (url.includes("enumType=StatsType")) return Promise.resolve({ data: { 0: "Season", 2: "Projection" } });
+      if (url.includes("enumType=PlayerType")) return Promise.resolve({ data: { 0: "Unknown", 1: "Batter", 2: "Pitcher" } });
+      if (url.includes("enumType=StatsType")) return Promise.resolve({ data: { 0: "Unknown", 1: "Year to Date", 2: "Projected", 3: "Combined" } });
       return Promise.resolve({ data: {} });
     }))
 );
@@ -34,8 +34,9 @@ const TestWrapper = () => (
 );
 
 describe("ImportExportData", () => {
-  test("should render the buttons", () => {
+  test("should render the buttons", async () => {
     render(<TestWrapper />);
+    await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
     expect(screen.getAllByRole("button")).toHaveLength(3);
     expect(screen.getByRole("button", { name: "Upload" })).toBeVisible();
     expect(screen.getByRole("button", { name: "Export" })).toBeVisible();
@@ -44,6 +45,7 @@ describe("ImportExportData", () => {
   describe("should handle", () => {
     test("a file download", async () => {
       render(<TestWrapper />);
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
       await waitFor(() => expect(getSpy).toHaveBeenCalledWith(expect.stringContaining("/api/v3/action/export"), expect.any(Object)));
     });
@@ -53,12 +55,14 @@ describe("ImportExportData", () => {
         return Promise.resolve({ data: {} });
       });
       render(<TestWrapper />);
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       fireEvent.click(screen.getByRole("button", { name: "Export" }));
       await waitFor(() => expect(getSpy).toHaveBeenCalledWith(expect.stringContaining("/api/v3/action/export"), expect.any(Object)));
     });
     test("a file upload", async () => {
       mockedAxios.post.mockImplementationOnce(() => Promise.resolve({}));
       render(<TestWrapper />);
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       fireEvent.click(screen.getByRole("button", { name: "Upload" }));
       const input = await screen.findByLabelText("Upload player file");
       user.upload(input, new File(["file data"], "batters.csv", { type: "text/csv" }));
@@ -69,6 +73,7 @@ describe("ImportExportData", () => {
     test("errors during a file upload error", async () => {
       mockedAxios.post.mockImplementationOnce(() => Promise.reject(new Error("errorMessage")));
       render(<TestWrapper />);
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       fireEvent.click(screen.getByRole("button", { name: "Upload" }));
       const input = await screen.findByLabelText("Upload player file");
       user.upload(input, new File(["file data"], "pitchers.csv", { type: "text/csv" }));
@@ -78,6 +83,7 @@ describe("ImportExportData", () => {
     });
     test("upload dialog can be cancelled", async () => {
       render(<TestWrapper />);
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       fireEvent.click(screen.getByRole("button", { name: "Upload" }));
       await screen.findByLabelText("Upload player file");
       fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
@@ -87,17 +93,14 @@ describe("ImportExportData", () => {
     test("upload uses selected player and stats types", async () => {
       mockedAxios.post.mockImplementationOnce(() => Promise.resolve({}));
       render(<TestWrapper />);
+      await act(async () => await new Promise((resolve) => setTimeout(resolve, 120)));
       fireEvent.click(screen.getByRole("button", { name: "Upload" }));
-
       fireEvent.mouseDown(screen.getByLabelText("Player Type"));
       fireEvent.click(await screen.findByRole("option", { name: "Pitcher" }));
-
       fireEvent.mouseDown(screen.getByLabelText("Stats Type"));
-      fireEvent.click(await screen.findByRole("option", { name: "Projection" }));
-
+      fireEvent.click(await screen.findByRole("option", { name: "Projected" }));
       const input = await screen.findByLabelText("Upload player file");
       user.upload(input, new File(["file data"], "projection.csv", { type: "text/csv" }));
-
       await waitFor(() => expect(postSpy).toHaveBeenCalledTimes(1));
       expect(postSpy).toHaveBeenCalledWith(expect.stringContaining("player=2&stats=2"), expect.any(FormData));
     });
