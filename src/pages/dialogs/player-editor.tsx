@@ -145,7 +145,7 @@ export default function PlayerEditor(props: Readonly<PlayerEditorProps>) {
   const [averageDraftPickMin, setAverageDraftPickMin] = React.useState(newPlayer.averageDraftPickMin);
   const [averageDraftPickMax, setAverageDraftPickMax] = React.useState(newPlayer.averageDraftPickMax);
   const [firstName, setFirstName] = React.useState(newPlayer.firstName);
-  const isEdit = newPlayer.id !== undefined;
+  const isEdit = Boolean(player);
   const [lastName, setLastName] = React.useState(newPlayer.lastName);
   const [league1, setLeague1] = React.useState(newPlayer.league1);
   const [mlbAmId, setMlbAmId] = React.useState(newPlayer.mlbAmId);
